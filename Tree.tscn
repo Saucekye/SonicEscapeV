@@ -1,0 +1,277 @@
+[gd_scene load_steps=29 format=3 uid="uid://d3s7dd3hyko78"]
+
+[ext_resource type="Script" uid="uid://dmtjto4h2d67y" path="res://LevelChunks/tree.gd" id="1_gsb32"]
+[ext_resource type="Script" uid="uid://cx3j27u24ghmt" path="res://LevelChunks/leaf fall.gd" id="2_p3we6"]
+[ext_resource type="Texture2D" uid="uid://bvwnguwdciwxq" path="res://leaf.png" id="3_wt5bm"]
+[ext_resource type="Texture2D" uid="uid://boipt5yo10sgc" path="res://tree.png" id="4_70a00"]
+[ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="5_gpn3v"]
+[ext_resource type="Texture2D" uid="uid://dxf8pogn6c44i" path="res://etlage.png" id="6_qedbn"]
+[ext_resource type="AudioStream" uid="uid://dv2ns3aa8d31s" path="res://page-flip-01a.mp3" id="7_wgruj"]
+[ext_resource type="AudioStream" uid="uid://ci8ftav22k13s" path="res://Stellar Blade - Shelter (Main Menu Theme) English Ver..mp3" id="8_sopqj"]
+[ext_resource type="AudioStream" uid="uid://cewffediw5xu5" path="res://Wind Trees Sound Effect 1074.mp3" id="9_1p2b4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgpd8"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3241"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ndh0j"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_veg8t"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6qdq"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0j0l"]
+atlas = ExtResource("3_wt5bm")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oluko"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgpd8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3241")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ndh0j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_veg8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6qdq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0j0l")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_awk2w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2520, 448)]
+}
+
+[sub_resource type="Animation" id="Animation_2gnox"]
+resource_name = "fall"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3.0333333, 4.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(2520, 448), Vector2(2464, 536.00006), Vector2(2552, 624), Vector2(2520, 751.99994)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qllo3"]
+_data = {
+&"RESET": SubResource("Animation_awk2w"),
+&"fall": SubResource("Animation_2gnox")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_th0bb"]
+size = Vector2(192.00002, 204.22601)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ai5td"]
+atlas = ExtResource("5_gpn3v")
+region = Rect2(0, 0, 35, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4qar"]
+atlas = ExtResource("5_gpn3v")
+region = Rect2(35, 0, 35, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3c6oy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ai5td")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a4qar")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3c6oy"]
+atlas = ExtResource("6_qedbn")
+region = Rect2(0, 0, 720, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_662kx"]
+atlas = ExtResource("6_qedbn")
+region = Rect2(720, 0, 720, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vdc3"]
+atlas = ExtResource("6_qedbn")
+region = Rect2(1440, 0, 720, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ejxw"]
+atlas = ExtResource("6_qedbn")
+region = Rect2(2160, 0, 720, 656)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fgpd8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3c6oy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_662kx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vdc3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ejxw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_gsb32")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-40, -16)
+script = ExtResource("2_p3we6")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D"]
+z_index = -3
+position = Vector2(2520, 448)
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_oluko")
+autoplay = "default"
+frame_progress = 0.4652896
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/AnimatedSprite2D2"]
+libraries = {
+&"": SubResource("AnimationLibrary_qllo3")
+}
+
+[node name="Node2D4" type="Node2D" parent="."]
+position = Vector2(184, 8)
+script = ExtResource("2_p3we6")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D4"]
+z_index = -3
+position = Vector2(2520, 448)
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_oluko")
+autoplay = "default"
+frame_progress = 0.4652896
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D4/AnimatedSprite2D2"]
+libraries = {
+&"": SubResource("AnimationLibrary_qllo3")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2648.0002, 512.00006)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("4_70a00")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2672, 609.88696)
+shape = SubResource("RectangleShape2D_th0bb")
+
+[node name="Arrow" type="AnimatedSprite2D" parent="."]
+position = Vector2(2672, 616)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_3c6oy")
+autoplay = "default"
+frame_progress = 0.6626423
+speed_scale = 0.5
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextSprite" type="AnimatedSprite2D" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.6627451)
+position = Vector2(800, 440)
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_fgpd8")
+autoplay = "default"
+frame_progress = 0.68229836
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextSprite"]
+offset_left = -806.4
+offset_top = -384.0
+offset_right = -766.4
+offset_bottom = -344.0
+scale = Vector2(43.44, 21.052)
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1040.0
+offset_top = -215.99998
+offset_right = 446.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.4, 1.4)
+text = "When should you give up on somebody? On something? On a dream?
+On yourself? When is it okay to finally call it quits and tell yourself
+ it wasn't worth it, it never was? Well, I think if you're looking
+ at things that way, what's the point of doing anything?
+ Because a lot of us, we like to relish in the mistakes
+ that we've made in the past, instead of recognizing that if we had not
+ made them, we would have never learned. But with people it's different,
+ because there's a lot more time that gets sunk into relationships"
+fit_content = true
+scroll_following = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PageSfx" type="AudioStreamPlayer2D" parent="CanvasLayer"]
+position = Vector2(1272.0002, 512.00006)
+scale = Vector2(1.25, 1.25)
+stream = ExtResource("7_wgruj")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(2680, 640)
+stream = ExtResource("8_sopqj")
+max_distance = 900.0
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_1p2b4")
+volume_db = -5.0
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

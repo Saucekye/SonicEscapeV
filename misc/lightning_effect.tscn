@@ -1,0 +1,118 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2mnbj3x1l7sv"]
+
+[ext_resource type="Script" uid="uid://duhpi12f4jj5r" path="res://misc/lighting.gd" id="1_q67yc"]
+[ext_resource type="Texture2D" uid="uid://ccdnnmquwjj5j" path="res://misc/Effect 6.png" id="2_3jkma"]
+
+[sub_resource type="Animation" id="Animation_45dcn"]
+resource_name = "Left"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334, 0.4, 0.4666667, 0.53333336),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.13333334, 0.16666667, 0.20000002, 0.23333335, 0.26666668, 0.3, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area2D:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.13333334, 0.16666667, 0.20000002, 0.23333335, 0.26666668, 0.3, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_vnbwg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Area2D:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l6fyr"]
+_data = {
+&"Left": SubResource("Animation_45dcn"),
+&"RESET": SubResource("Animation_vnbwg")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2eccu"]
+size = Vector2(63.416016, 616.07324)
+
+[node name="LightningEffect" type="Node2D"]
+script = ExtResource("1_q67yc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(808.0001, 384.00006)
+scale = Vector2(2, 2)
+texture = ExtResource("2_3jkma")
+hframes = 9
+frame = 8
+
+[node name="AnimationTree" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_l6fyr")
+}
+autoplay = "Left"
+
+[node name="Area2D" type="Area2D" parent="." groups=["enemyattack"]]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(808.29065, 383.2163)
+shape = SubResource("RectangleShape2D_2eccu")
+
+[connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]

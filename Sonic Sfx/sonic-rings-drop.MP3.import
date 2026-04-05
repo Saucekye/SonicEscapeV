@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bbacywfoelksw"
+path="res://.godot/imported/sonic-rings-drop.MP3-bb21d3d897778fabe2002be34df72115.mp3str"
+
+[deps]
+
+source_file="res://Sonic Sfx/sonic-rings-drop.MP3"
+dest_files=["res://.godot/imported/sonic-rings-drop.MP3-bb21d3d897778fabe2002be34df72115.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

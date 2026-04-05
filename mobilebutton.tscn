@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cq4e5djythc48"]
+
+[node name="Button2" type="Button"]
+offset_left = 220.667
+offset_top = -20.0
+offset_right = 294.667
+offset_bottom = 2.00003
+scale = Vector2(0.75, 0.75)
+focus_mode = 0
+text = "Mobile"
+metadata/_edit_use_anchors_ = true

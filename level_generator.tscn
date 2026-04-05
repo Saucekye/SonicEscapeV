@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6axjprp04yee"]
+
+[ext_resource type="Script" uid="uid://ddqvnt1n1jnx" path="res://level_generator.gd" id="1_q7b6x"]
+
+[node name="LevelGenerator" type="Node2D"]
+script = ExtResource("1_q7b6x")
+max_chunks = 6

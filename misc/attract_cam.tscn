@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://brdjsv1g88l1v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3gosk"]
+radius = 64.49806
+
+[node name="AttractCam" type="Marker2D" groups=["AttractCam"]]
+
+[node name="Area2D" type="Area2D" parent="." groups=["AttractCam"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=["AttractCam"]]
+shape = SubResource("CircleShape2D_3gosk")

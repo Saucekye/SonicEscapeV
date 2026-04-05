@@ -1,0 +1,51 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://be01brj5lna8m"]
+
+[ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="1_nwj1w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nw0gx"]
+atlas = ExtResource("1_nwj1w")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dajqv"]
+atlas = ExtResource("1_nwj1w")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h52gc"]
+atlas = ExtResource("1_nwj1w")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwq3b"]
+atlas = ExtResource("1_nwj1w")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvtyn"]
+atlas = ExtResource("1_nwj1w")
+region = Rect2(256, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nw0gx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dajqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h52gc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwq3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvtyn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]

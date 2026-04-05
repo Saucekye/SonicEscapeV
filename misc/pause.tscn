@@ -1,0 +1,214 @@
+[gd_scene load_steps=3 format=3 uid="uid://buqmljuwcf7tp"]
+
+[ext_resource type="Script" uid="uid://cfai4fud6456t" path="res://misc/pause.gd" id="1_epbul"]
+[ext_resource type="Script" uid="uid://dkyt573s514rg" path="res://misc/keybind.gd" id="2_hmt0q"]
+
+[node name="Pause" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+follow_viewport_enabled = true
+script = ExtResource("1_epbul")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Menu" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = -232.0
+offset_top = -472.0
+offset_right = 268.0
+offset_bottom = 528.0
+alignment = 1
+
+[node name="Resume" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Resume
+"
+
+[node name="Settings" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Settings
+"
+
+[node name="Quit" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+text = "Quit
+"
+
+[node name="Settings" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = -232.0
+offset_top = -472.0
+offset_right = 268.0
+offset_bottom = 528.0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer"]
+layout_mode = 2
+text = "Music"
+
+[node name="Music" type="HSlider" parent="Panel/Settings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01000000000931322
+value = 0.5000000004656611
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer2"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFX" type="HSlider" parent="Panel/Settings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01000000000931322
+value = 0.5000000004656611
+
+[node name="Keybind" type="Button" parent="Panel/Settings"]
+layout_mode = 2
+text = "Keybind"
+
+[node name="Back" type="Button" parent="Panel/Settings"]
+layout_mode = 2
+text = "Back"
+
+[node name="Keybind" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.0
+offset_top = -111.0
+offset_right = 61.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("2_hmt0q")
+
+[node name="Label" type="Label" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="ForJump" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/ForJump"]
+layout_mode = 2
+text = "Jump"
+
+[node name="Button" type="Button" parent="Panel/Keybind/ForJump" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="forDash" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/forDash"]
+layout_mode = 2
+text = "Dash 1"
+
+[node name="Button" type="Button" parent="Panel/Keybind/forDash" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="forDash2" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/forDash2"]
+layout_mode = 2
+text = "Dash 2"
+
+[node name="Button" type="Button" parent="Panel/Keybind/forDash2" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="forTricks" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/forTricks"]
+layout_mode = 2
+text = "Tricks"
+
+[node name="Button" type="Button" parent="Panel/Keybind/forTricks" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="Left" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/Left"]
+layout_mode = 2
+text = "Left"
+
+[node name="Button" type="Button" parent="Panel/Keybind/Left" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="Right" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/Right"]
+layout_mode = 2
+text = "Right"
+
+[node name="Button" type="Button" parent="Panel/Keybind/Right" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="Up" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/Up"]
+layout_mode = 2
+text = "Up"
+
+[node name="Button" type="Button" parent="Panel/Keybind/Up" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="Down" type="HBoxContainer" parent="Panel/Keybind"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Keybind/Down"]
+layout_mode = 2
+text = "Down"
+
+[node name="Button" type="Button" parent="Panel/Keybind/Down" groups=["bind"]]
+layout_mode = 2
+text = "Bind"
+
+[node name="Button2" type="Button" parent="Panel/Keybind"]
+layout_mode = 2
+text = "RESET"
+
+[node name="Button" type="Button" parent="Panel/Keybind"]
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="Panel/Menu/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Panel/Menu/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Panel/Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="value_changed" from="Panel/Settings/HBoxContainer/Music" to="." method="_on_music_value_changed"]
+[connection signal="value_changed" from="Panel/Settings/HBoxContainer2/SFX" to="." method="_on_sfx_value_changed"]
+[connection signal="pressed" from="Panel/Settings/Keybind" to="." method="_on_keybind_pressed"]
+[connection signal="pressed" from="Panel/Settings/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Panel/Keybind/Button2" to="Panel/Keybind" method="_on_button_2_pressed"]
+[connection signal="pressed" from="Panel/Keybind/Button" to="." method="_on_button_pressed"]

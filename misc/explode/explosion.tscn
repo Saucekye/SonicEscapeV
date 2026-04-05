@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://b5wwccfl8vj4y"]
+
+[ext_resource type="Texture2D" uid="uid://dh2md5loq11el" path="res://misc/explode/explode.png" id="1_nswmg"]
+[ext_resource type="Script" uid="uid://b73gir0jlgsnx" path="res://misc/explode/explosion.gd" id="2_xq3u1"]
+[ext_resource type="AudioStream" uid="uid://cx08mnwfcbxe2" path="res://obstacles/Enemies/SA3_827.wav" id="3_0krb7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdcln"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(0, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lni25"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(125, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bb6r"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(250, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jldv0"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(375, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4onj"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(500, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kj0ns"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(625, 0, 125, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vsps1"]
+atlas = ExtResource("1_nswmg")
+region = Rect2(750, 0, 125, 125)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ktbdn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdcln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lni25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bb6r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jldv0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4onj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kj0ns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vsps1")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_ktbdn")
+frame = 6
+frame_progress = 1.0
+speed_scale = 3.0
+script = ExtResource("2_xq3u1")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_0krb7")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

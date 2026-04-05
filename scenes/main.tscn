@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://clnrhrasxrueq"]
+
+[ext_resource type="PackedScene" uid="uid://jaj4jn61o0dg" path="res://scenes/player.tscn" id="1_fjjpo"]
+[ext_resource type="Script" uid="uid://dareckv1sxp0y" path="res://scripts/touch_screen_joystick.gd" id="2_duapw"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_fjjpo")]
+position = Vector2(213, 111)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TouchScreenJoystick" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -386.0
+offset_right = 466.0
+grow_vertical = 0
+pivot_offset = Vector2(233, 193)
+script = ExtResource("2_duapw")
+anti_aliased = true
+deadzone = 40.0
+smooth_reset = true
+smooth_speed = 15.0
+change_opacity_when_touched = true
+use_input_actions = true

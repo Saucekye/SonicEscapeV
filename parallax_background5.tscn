@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://tmfpw4qh18yg"]
+
+[ext_resource type="Script" uid="uid://b6lgnvajaq8fb" path="res://parallax_background.gd" id="1_x450n"]
+[ext_resource type="Texture2D" uid="uid://defhlkn82fvq1" path="res://Sprites/bg0moon-and-stars-export.png" id="2_8jjiy"]
+[ext_resource type="Texture2D" uid="uid://dcqu4p4857krs" path="res://Background 6/7.png" id="4_fpeqh"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_x450n")
+
+[node name="ParallaxLayer8" type="ParallaxLayer" parent="."]
+modulate = Color(1, 1, 1, 0.92549)
+motion_scale = Vector2(0.025, 0.025)
+motion_mirroring = Vector2(1725, 0)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxLayer8"]
+position = Vector2(784, 144)
+rotation = 3.1415927
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_8jjiy")
+flip_h = true
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="."]
+modulate = Color(0.412152, 0.412152, 0.412152, 1)
+motion_scale = Vector2(0.15, 0.15)
+motion_mirroring = Vector2(1500, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer6"]
+position = Vector2(760, 360.00003)
+scale = Vector2(3, 3)
+texture = ExtResource("4_fpeqh")

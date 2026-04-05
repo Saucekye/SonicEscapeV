@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://jqr25otgqtj8"
+path="res://.godot/imported/step4.MP3-f6ef2ed73b3fc9265a28d5396a49aa1a.mp3str"
+
+[deps]
+
+source_file="res://Sonic Sfx/step4.MP3"
+dest_files=["res://.godot/imported/step4.MP3-f6ef2ed73b3fc9265a28d5396a49aa1a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

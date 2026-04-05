@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6pwlvi67j877"]
+
+[ext_resource type="PackedScene" uid="uid://budhiifw7reft" path="res://obstacles/rings/Rings.tscn" id="1_m5474"]
+
+[node name="Ring Strand" type="Node2D"]
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("1_m5474")]
+position = Vector2(0, -2)
+
+[node name="CharacterBody2D2" parent="." instance=ExtResource("1_m5474")]
+position = Vector2(-15, -2)
+
+[node name="CharacterBody2D3" parent="." instance=ExtResource("1_m5474")]
+position = Vector2(15, -2)
