@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cm4cdu8fyn1xe"
+path="res://.godot/imported/Tee Lopes - Stream Zone Act 1 (Live Stream Result).mp3-0a8c083122dba13ee2a70f327f685fdb.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Tee Lopes - Stream Zone Act 1 (Live Stream Result).mp3"
+dest_files=["res://.godot/imported/Tee Lopes - Stream Zone Act 1 (Live Stream Result).mp3-0a8c083122dba13ee2a70f327f685fdb.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

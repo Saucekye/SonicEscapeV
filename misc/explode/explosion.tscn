@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dh2md5loq11el" path="res://misc/explode/explode.png" id="1_nswmg"]
 [ext_resource type="Script" uid="uid://b73gir0jlgsnx" path="res://misc/explode/explosion.gd" id="2_xq3u1"]
-[ext_resource type="AudioStream" uid="uid://cx08mnwfcbxe2" path="res://obstacles/Enemies/SA3_827.wav" id="3_0krb7"]
+[ext_resource type="AudioStream" uid="uid://cx08mnwfcbxe2" path="res://Sounds/Obstacles/Enemies/SA3_827.wav" id="3_0krb7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rdcln"]
 atlas = ExtResource("1_nswmg")

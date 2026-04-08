@@ -20,12 +20,12 @@ config/windows_native_icon="res://1-8dac9c05.ico"
 
 [autoload]
 
-GlobalCanvasLayer="*res://CanvasLayer.gd"
-Test="*res://test.gd"
-MusicManager="*res://Music.gd"
+GlobalCanvasLayer="*res://Scripts/UI/CanvasLayer.gd"
+Test="*res://Scripts/Level/test.gd"
+MusicManager="*res://Scripts/Level/Music.gd"
 Pause="*res://misc/pause.tscn"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-Background="*res://backup/Background.gd"
+Background="*res://Scripts/Level/Background.gd"
 
 [display]
 
@@ -64,7 +64,7 @@ theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0
 theme/default_font_generate_mipmaps=true
-theme/custom_font="res://diest64.ttf"
+theme/custom_font="res://Fonts/diest64.ttf"
 
 [input]
 

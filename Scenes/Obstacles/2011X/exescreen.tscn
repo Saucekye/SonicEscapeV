@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://frxpswhk8odc"]
+
+[ext_resource type="Texture2D" uid="uid://cg2mm7uqmxn1u" path="res://Sprites/Obstacles/2011X/exescreen.webp" id="1_h8n3y"]
+[ext_resource type="Script" uid="uid://dajti7diylnnk" path="res://Scripts/Obstacles/2011X/exescreen.gd" id="1_s7u1t"]
+[ext_resource type="AudioStream" uid="uid://b3hjf0842powl" path="res://Sounds/Obstacles/2011X/jumpscare.MP3" id="3_sonl2"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_h8n3y"]
+
+[sub_resource type="Animation" id="Animation_2pts1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(776, 384)]
+}
+
+[sub_resource type="Animation" id="Animation_h8n3y"]
+resource_name = "start"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.20000002, 0.26666668, 0.33333337, 0.40000004, 0.4666667, 0.53333336, 0.6, 0.6666667, 0.73333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(776, 384), Vector2(749.33344, 448), Vector2(800.0001, 472), Vector2(776, 384), Vector2(749.33344, 448), Vector2(800.0001, 472), Vector2(776, 384), Vector2(749.33344, 448), Vector2(800.0001, 472), Vector2(776, 384), Vector2(749.33344, 448), Vector2(800.0001, 472)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s7u1t"]
+_data = {
+&"RESET": SubResource("Animation_2pts1"),
+&"start": SubResource("Animation_h8n3y")
+}
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_s7u1t")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 1)
+anchors_preset = -1
+offset_left = -391.99988
+offset_top = -168.0
+offset_right = -351.99988
+offset_bottom = -128.0
+scale = Vector2(58.013844, 28.177979)
+texture = SubResource("CanvasTexture_h8n3y")
+
+[node name="Exescreen" type="Sprite2D" parent="."]
+position = Vector2(776, 384)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_h8n3y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Exescreen"]
+libraries = {
+&"": SubResource("AnimationLibrary_s7u1t")
+}
+autoplay = "start"
+speed_scale = 2.5
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_sonl2")
+bus = &"SFX"

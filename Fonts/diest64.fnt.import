@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://cd3tl4joangxr"
+path="res://.godot/imported/diest64.fnt-1ec5663fbed9e7614010de88841ff462.fontdata"
+
+[deps]
+
+source_file="res://Fonts/diest64.fnt"
+dest_files=["res://.godot/imported/diest64.fnt-1ec5663fbed9e7614010de88841ff462.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

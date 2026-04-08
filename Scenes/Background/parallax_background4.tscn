@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkek3hxlkwseg"]
+
+[ext_resource type="Script" uid="uid://b6lgnvajaq8fb" path="res://Scripts/Background/parallax_background.gd" id="1_vqs6j"]
+[ext_resource type="Texture2D" uid="uid://b5mfw2xpd36jy" path="res://Sprites/Background/Industrial/Layer_4.png" id="2_vqs6j"]
+[ext_resource type="Texture2D" uid="uid://ror8yqs36qsg" path="res://Sprites/Background/Industrial/Layer_3.png" id="3_6i0wt"]
+[ext_resource type="Texture2D" uid="uid://djdbxn06024xy" path="res://Sprites/Background/Industrial/Layer_2.png" id="4_258fi"]
+[ext_resource type="Texture2D" uid="uid://cbsjrlp5sbmt0" path="res://Sprites/Background/Industrial/Layer_1.png" id="5_sq7fp"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_vqs6j")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.025, 0.025)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer2"]
+position = Vector2(848, 483)
+scale = Vector2(3, 3)
+texture = ExtResource("2_vqs6j")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer8" type="ParallaxLayer" parent="."]
+modulate = Color(1, 1, 1, 0.92549)
+motion_scale = Vector2(0.05, 0.05)
+motion_mirroring = Vector2(1725, 0)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxLayer8"]
+position = Vector2(846.00024, 454.00012)
+scale = Vector2(3, 3)
+texture = ExtResource("3_6i0wt")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(1600, 0)
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxLayer5"]
+position = Vector2(782.00006, 526.0001)
+scale = Vector2(3, 3)
+texture = ExtResource("4_258fi")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="."]
+modulate = Color(0.412152, 0.412152, 0.412152, 1)
+motion_scale = Vector2(0.15, 0.15)
+motion_mirroring = Vector2(1500, 0)
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxLayer6"]
+position = Vector2(846, 990.0001)
+scale = Vector2(3, 3)
+texture = ExtResource("5_sq7fp")
+region_rect = Rect2(1152, 0, 0, 0)

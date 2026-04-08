@@ -36,11 +36,10 @@ func _setup_button_focus():
 		$Panel/Keybind/Button.focus_mode = Control.FOCUS_ALL
 
 func _process(_delta):
-	camera = get_tree().get_first_node_in_group("Camera")
+	var camera = get_viewport().get_camera_2d()
+
 	if camera:
 		$Panel.global_position = camera.global_position
-	else:
-		$Panel.global_position = Vector2(800, 400)
 		
 	if current_scene == "Character_Select_Screen" or current_scene == "Node2D": 
 		$Panel/Menu/Quit.visible = true

@@ -1,0 +1,271 @@
+[gd_scene load_steps=37 format=3 uid="uid://du8tmmmv1djsb"]
+
+[ext_resource type="Script" uid="uid://gymuxm8c0542" path="res://Scripts/Level/test.gd" id="1_v82gw"]
+[ext_resource type="Script" uid="uid://m7r8oade04u5" path="res://Scripts/Level/Background.gd" id="2_dg6i6"]
+[ext_resource type="PackedScene" uid="uid://d15kscmsjedho" path="res://Scenes/Level/player_controller.tscn" id="3_tdo5i"]
+[ext_resource type="PackedScene" uid="uid://cefbrilp5bppc" path="res://Scenes/Background/parallax_background1.tscn" id="4_hxvbt"]
+[ext_resource type="PackedScene" uid="uid://mr56r75yd12u" path="res://Scenes/Level/UIGAME.tscn" id="4_ver2b"]
+[ext_resource type="PackedScene" uid="uid://03q1kvmsipj5" path="res://Scenes/Level/MusicPlayer.tscn" id="5_pecnm"]
+[ext_resource type="PackedScene" uid="uid://kfo66yptw24y" path="res://Scenes/Background/parallax_background3.tscn" id="6_shdnf"]
+[ext_resource type="PackedScene" uid="uid://dkek3hxlkwseg" path="res://Scenes/Background/parallax_background4.tscn" id="7_ojemq"]
+[ext_resource type="Script" uid="uid://bmvyjxfy7hcrv" path="res://backup/touch_screen_button.gd" id="8_jn4al"]
+[ext_resource type="PackedScene" uid="uid://tmfpw4qh18yg" path="res://Scenes/Background/parallax_background5.tscn" id="8_o55wa"]
+[ext_resource type="Script" uid="uid://bi3m1o3wi32ki" path="res://Scripts/UI/heldbutton.gd" id="9_be1k7"]
+[ext_resource type="Texture2D" uid="uid://4f4upg5q8of6" path="res://misc/JumpButton.png" id="9_sbwxq"]
+[ext_resource type="Script" uid="uid://8kknc44gx1yc" path="res://backup/minimap.gd" id="10_0gddc"]
+[ext_resource type="Texture2D" uid="uid://bqsxdu5e1d7s3" path="res://misc/Down.png" id="10_52gy7"]
+[ext_resource type="Texture2D" uid="uid://dxo3n2ja06old" path="res://misc/JumpButton2.png" id="10_dg6i6"]
+[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="10_jhuxi"]
+[ext_resource type="Texture2D" uid="uid://ci36cvi66mk1w" path="res://misc/Left.png" id="11_jn4al"]
+[ext_resource type="Texture2D" uid="uid://belo15u1ken26" path="res://misc/DashButton.png" id="11_rdms1"]
+[ext_resource type="Texture2D" uid="uid://r3thc1ra8gg7" path="res://Sprites/UI/TouchScreen/Up.png" id="12_tuwwi"]
+[ext_resource type="Texture2D" uid="uid://cyp3227le7pdb" path="res://misc/DashButton2.png" id="12_uxvhy"]
+[ext_resource type="Texture2D" uid="uid://bpmvaih2gw1fi" path="res://misc/Right.png" id="13_dykjn"]
+[ext_resource type="Texture2D" uid="uid://dirfiwdbagpo0" path="res://misc/DashButtonUp.png" id="13_gl7ep"]
+[ext_resource type="Texture2D" uid="uid://bqcu0fwoxx8qs" path="res://misc/DashButtonUp2.png" id="14_7xr6u"]
+[ext_resource type="Texture2D" uid="uid://hn4lao2snnog" path="res://misc/taunt.png" id="15_6w345"]
+[ext_resource type="Texture2D" uid="uid://cd444hdxehu5d" path="res://misc/taunt2.png" id="16_sbwxq"]
+[ext_resource type="Texture2D" uid="uid://dta3mjam4qhiq" path="res://misc/Down2.png" id="18_6w345"]
+[ext_resource type="Texture2D" uid="uid://rfuonnbr54co" path="res://misc/Left2.png" id="20_sbwxq"]
+[ext_resource type="Texture2D" uid="uid://dlan7sndausju" path="res://Sprites/UI/TouchScreen/Up2.png" id="22_dg6i6"]
+[ext_resource type="Texture2D" uid="uid://bqg4ys62sdf1w" path="res://misc/Right2.png" id="24_hxvbt"]
+[ext_resource type="PackedScene" uid="uid://b6axjprp04yee" path="res://Scenes/Level/level_generator.tscn" id="26_sbwxq"]
+[ext_resource type="PackedScene" uid="uid://bf005udbg2cyc" path="res://Scenes/Level/levelintro.tscn" id="27_nrx2j"]
+[ext_resource type="Texture2D" uid="uid://dwsu82cgu25qs" path="res://misc/mapbuttonpress.png" id="33_o55wa"]
+[ext_resource type="Texture2D" uid="uid://b5erm30htstwr" path="res://misc/mapbutton.png" id="33_tgfrd"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jhuxi"]
+load_path = "res://.godot/imported/bigger.svg-afc60be1e17c300ee4c7697eb41a38a1.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tgfrd"]
+load_path = "res://.godot/imported/bigger_1.svg-c5be18a7586fc3e33e6afbc629dcdbf1.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgfrd"]
+shader = ExtResource("10_jhuxi")
+shader_parameter/brightnessMult = 4.0
+shader_parameter/wiggleMult = 0.005
+shader_parameter/chromaticAberrationOffset = 0.001
+
+[node name="Node2D" type="Node2D"]
+physics_interpolation_mode = 2
+script = ExtResource("1_v82gw")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_dg6i6")
+parallax_1 = ExtResource("4_hxvbt")
+parallax_2 = ExtResource("4_hxvbt")
+parallax_4 = ExtResource("6_shdnf")
+parallax_5 = ExtResource("7_ojemq")
+parallax_6 = ExtResource("8_o55wa")
+
+[node name="PlayerController" parent="." instance=ExtResource("3_tdo5i")]
+position = Vector2(838.3867, 676.9116)
+
+[node name="CanvasLayer" parent="." instance=ExtResource("4_ver2b")]
+
+[node name="TextureRect" parent="CanvasLayer/Sprite2D3" index="0"]
+anchors_preset = -1
+
+[node name="Label2" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="0"]
+anchors_preset = -1
+
+[node name="TextureRect2" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="2"]
+anchors_preset = -1
+
+[node name="Label" parent="CanvasLayer/Sprite2D3" index="3"]
+anchors_preset = -1
+
+[node name="Button" parent="CanvasLayer/Sprite2D" index="0"]
+anchors_preset = -1
+
+[node name="Button2" parent="CanvasLayer/Sprite2D" index="1"]
+anchors_preset = -1
+
+[node name="Button3" type="Button" parent="CanvasLayer/Sprite2D" index="2"]
+anchors_preset = -1
+offset_left = 439.1266
+offset_top = -20.399876
+offset_right = 502.1266
+offset_bottom = 1.6001263
+scale = Vector2(0.75, 0.75)
+focus_mode = 0
+action_mode = 0
+text = "Pause
+"
+
+[node name="Node2D" parent="CanvasLayer/Sprite2D" index="3" instance=ExtResource("5_pecnm")]
+position = Vector2(450.6667, 13.333334)
+scale = Vector2(0.4, 0.4)
+
+[node name="TextureProgressBar" parent="CanvasLayer/Sprite2D" index="4"]
+anchors_preset = -1
+
+[node name="Timer" parent="CanvasLayer/Sprite2D" index="5"]
+anchors_preset = -1
+
+[node name="BestTime" parent="CanvasLayer/Sprite2D" index="6"]
+anchors_preset = -1
+
+[node name="TextureButton" type="TouchScreenButton" parent="CanvasLayer/Sprite2D" index="7"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-29.3333, -24)
+scale = Vector2(0.52, 0.475718)
+texture_normal = SubResource("CompressedTexture2D_jhuxi")
+texture_pressed = SubResource("CompressedTexture2D_tgfrd")
+
+[node name="Label" parent="CanvasLayer" index="6"]
+anchors_preset = -1
+
+[node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = -1
+offset_left = -648.0
+offset_top = -440.0
+offset_right = 2320.0
+offset_bottom = 1096.0
+color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Node2D" parent="CanvasLayer"]
+position = Vector2(-8, 368)
+script = ExtResource("10_0gddc")
+map_scale = 0.04000000000814907
+map_offset = Vector2(0, 0)
+
+[node name="DarkOverlay" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_tgfrd")
+anchors_preset = -1
+offset_left = -648.0
+offset_top = -440.0
+offset_right = 2320.0
+offset_bottom = 1096.0
+color = Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 0.34901962)
+
+[node name="TouchScreenButton" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("8_jn4al")
+
+[node name="Button2" type="TextureButton" parent="CanvasLayer/TouchScreenButton"]
+modulate = Color(1, 1, 1, 0.5921569)
+layout_mode = 0
+offset_left = 1248.0001
+offset_top = 520.00006
+offset_right = 1332.0001
+offset_bottom = 604.00006
+scale = Vector2(2.5, 2.5)
+action_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("9_sbwxq")
+texture_pressed = ExtResource("10_dg6i6")
+script = ExtResource("9_be1k7")
+
+[node name="dash" type="TouchScreenButton" parent="CanvasLayer/TouchScreenButton/Button2"]
+position = Vector2(-64.8, -63.6)
+texture_normal = ExtResource("11_rdms1")
+texture_pressed = ExtResource("12_uxvhy")
+action = "airspin"
+
+[node name="dash2" type="TouchScreenButton" parent="CanvasLayer/TouchScreenButton/Button2"]
+position = Vector2(1.6, -120.4)
+texture_normal = ExtResource("13_gl7ep")
+texture_pressed = ExtResource("14_7xr6u")
+action = "airup"
+
+[node name="trick" type="TouchScreenButton" parent="CanvasLayer/TouchScreenButton/Button2"]
+position = Vector2(67.2, -60.8)
+texture_normal = ExtResource("15_6w345")
+texture_pressed = ExtResource("16_sbwxq")
+action = "trick"
+
+[node name="Down" type="TextureButton" parent="CanvasLayer/TouchScreenButton"]
+modulate = Color(1, 1, 1, 0.5921569)
+layout_mode = 0
+offset_left = 194.00002
+offset_top = 495.0
+offset_right = 278.0
+offset_bottom = 579.0
+scale = Vector2(2.5, 2.5)
+action_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("10_52gy7")
+texture_pressed = ExtResource("18_6w345")
+script = ExtResource("9_be1k7")
+simulated_key = 4194322
+debug_prints = true
+
+[node name="Left" type="TextureButton" parent="CanvasLayer/TouchScreenButton/Down"]
+layout_mode = 0
+offset_left = -65.33333
+offset_top = -68.66663
+offset_right = 7.6666718
+offset_bottom = -5.6666336
+action_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("11_jn4al")
+texture_pressed = ExtResource("20_sbwxq")
+script = ExtResource("9_be1k7")
+simulated_key = 4194319
+debug_prints = true
+
+[node name="Up" type="TextureButton" parent="CanvasLayer/TouchScreenButton/Down"]
+layout_mode = 0
+offset_top = -127.99966
+offset_right = 73.00001
+offset_bottom = -64.99966
+action_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("12_tuwwi")
+texture_pressed = ExtResource("22_dg6i6")
+script = ExtResource("9_be1k7")
+simulated_key = 4194320
+debug_prints = true
+
+[node name="Right" type="TextureButton" parent="CanvasLayer/TouchScreenButton/Down"]
+layout_mode = 0
+offset_left = 65.33333
+offset_top = -69.333336
+offset_right = 138.33333
+offset_bottom = -6.333336
+action_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("13_dykjn")
+texture_pressed = ExtResource("24_hxvbt")
+script = ExtResource("9_be1k7")
+simulated_key = 4194321
+debug_prints = true
+
+[node name="map" type="TextureButton" parent="CanvasLayer/TouchScreenButton"]
+modulate = Color(1, 1, 1, 0.5176471)
+layout_mode = 0
+offset_left = 1400.0
+offset_top = 72.0
+offset_right = 1473.0
+offset_bottom = 135.0
+scale = Vector2(2, 2)
+action_mode = 0
+texture_normal = ExtResource("33_tgfrd")
+texture_pressed = ExtResource("33_o55wa")
+script = ExtResource("9_be1k7")
+simulated_key = 4194306
+debug_prints = true
+
+[node name="LevelGenerator" parent="." instance=ExtResource("26_sbwxq")]
+minimap_path = NodePath("../CanvasLayer/Control")
+
+[node name="CanvasLayer2" parent="." instance=ExtResource("27_nrx2j")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(797.3711, 989.5244)
+enabled = false
+zoom = Vector2(2, 2)
+
+[connection signal="fast" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_fast"]
+[connection signal="hurt" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_hurt"]
+[connection signal="slow" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_slow"]
+[connection signal="pressed" from="CanvasLayer/Sprite2D/Button3" to="CanvasLayer" method="_on_button_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Sprite2D/TextureButton" to="PlayerController" method="_on_texture_button_pressed"]
+
+[editable path="CanvasLayer"]

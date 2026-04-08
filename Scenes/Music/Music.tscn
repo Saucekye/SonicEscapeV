@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://tgq6h5u671wt"]
+
+[ext_resource type="Script" uid="uid://cfxseifbgn3wk" path="res://Scripts/Level/Music.gd" id="1_etf3b"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+process_mode = 3
+bus = &"Music"
+script = ExtResource("1_etf3b")

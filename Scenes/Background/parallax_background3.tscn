@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://kfo66yptw24y"]
+
+[ext_resource type="Script" uid="uid://b6lgnvajaq8fb" path="res://Scripts/Background/parallax_background.gd" id="1_3dby6"]
+[ext_resource type="Texture2D" uid="uid://dffms173kfgip" path="res://Sprites/Background/Town/1.png" id="2_n38iq"]
+[ext_resource type="Texture2D" uid="uid://ca1q221r4p4nk" path="res://Sprites/Background/Town/2.png" id="3_5f4tu"]
+[ext_resource type="Texture2D" uid="uid://cs41t58bv3vpv" path="res://Sprites/Background/Town/3.png" id="4_u32ky"]
+[ext_resource type="Texture2D" uid="uid://rlmtk5468bty" path="res://Sprites/Background/Town/4.png" id="5_7qmpw"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_3dby6")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.025, 0.025)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer2"]
+position = Vector2(848, 483)
+scale = Vector2(3, 3)
+texture = ExtResource("2_n38iq")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer8" type="ParallaxLayer" parent="."]
+modulate = Color(1, 1, 1, 0.92549)
+motion_scale = Vector2(0.05, 0.05)
+motion_mirroring = Vector2(1725, 0)
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxLayer8"]
+position = Vector2(806.0001, 918)
+scale = Vector2(3, 3)
+texture = ExtResource("3_5f4tu")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(1600, 0)
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxLayer5"]
+position = Vector2(814, 926)
+scale = Vector2(3, 3)
+texture = ExtResource("4_u32ky")
+region_rect = Rect2(1152, 0, 0, 0)
+
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="."]
+modulate = Color(0.412152, 0.412152, 0.412152, 1)
+motion_scale = Vector2(0.15, 0.15)
+motion_mirroring = Vector2(1500, 0)
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxLayer6"]
+position = Vector2(814, 934)
+scale = Vector2(3, 3)
+texture = ExtResource("5_7qmpw")
+region_rect = Rect2(1152, 0, 0, 0)

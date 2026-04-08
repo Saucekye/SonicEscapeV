@@ -90,7 +90,7 @@ text = "Back"
 
 [node name="Keybind" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

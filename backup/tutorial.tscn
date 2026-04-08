@@ -1,15 +1,15 @@
 [gd_scene load_steps=32 format=3 uid="uid://bx3auj0inifum"]
 
-[ext_resource type="Script" uid="uid://gymuxm8c0542" path="res://test.gd" id="1_65xsp"]
-[ext_resource type="PackedScene" uid="uid://dlccemope06kw" path="res://test_player_controller.tscn" id="7_65xsp"]
-[ext_resource type="PackedScene" uid="uid://mr56r75yd12u" path="res://UIGAME.tscn" id="8_t3kkb"]
-[ext_resource type="PackedScene" uid="uid://03q1kvmsipj5" path="res://MusicPlayer.tscn" id="9_ju0rc"]
+[ext_resource type="Script" uid="uid://gymuxm8c0542" path="res://Scripts/Level/test.gd" id="1_65xsp"]
+[ext_resource type="PackedScene" uid="uid://dlccemope06kw" path="res://Scenes/Level/test_player_controller.tscn" id="7_65xsp"]
+[ext_resource type="PackedScene" uid="uid://mr56r75yd12u" path="res://Scenes/Level/UIGAME.tscn" id="8_t3kkb"]
+[ext_resource type="PackedScene" uid="uid://03q1kvmsipj5" path="res://Scenes/Level/MusicPlayer.tscn" id="9_ju0rc"]
 [ext_resource type="Script" uid="uid://8kknc44gx1yc" path="res://backup/minimap.gd" id="10_oh0tr"]
-[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://backup/crteffect.gdshader" id="11_7rife"]
+[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="11_7rife"]
 [ext_resource type="Script" uid="uid://bmvyjxfy7hcrv" path="res://backup/touch_screen_button.gd" id="12_uiyfe"]
 [ext_resource type="Texture2D" uid="uid://4f4upg5q8of6" path="res://misc/JumpButton.png" id="13_mhdy8"]
 [ext_resource type="Texture2D" uid="uid://dxo3n2ja06old" path="res://misc/JumpButton2.png" id="14_j5cu1"]
-[ext_resource type="Script" uid="uid://bi3m1o3wi32ki" path="res://heldbutton.gd" id="15_jov3m"]
+[ext_resource type="Script" uid="uid://bi3m1o3wi32ki" path="res://Scripts/UI/heldbutton.gd" id="15_jov3m"]
 [ext_resource type="Texture2D" uid="uid://belo15u1ken26" path="res://misc/DashButton.png" id="16_od6ya"]
 [ext_resource type="Texture2D" uid="uid://cyp3227le7pdb" path="res://misc/DashButton2.png" id="17_37ea3"]
 [ext_resource type="Texture2D" uid="uid://dirfiwdbagpo0" path="res://misc/DashButtonUp.png" id="18_r3h4p"]
@@ -20,20 +20,18 @@
 [ext_resource type="Texture2D" uid="uid://dta3mjam4qhiq" path="res://misc/Down2.png" id="23_wuec1"]
 [ext_resource type="Texture2D" uid="uid://ci36cvi66mk1w" path="res://misc/Left.png" id="24_caloh"]
 [ext_resource type="Texture2D" uid="uid://rfuonnbr54co" path="res://misc/Left2.png" id="25_mhw77"]
-[ext_resource type="Texture2D" uid="uid://r3thc1ra8gg7" path="res://misc/Up.png" id="26_ka513"]
-[ext_resource type="Texture2D" uid="uid://dlan7sndausju" path="res://misc/Up2.png" id="27_7c8ty"]
+[ext_resource type="Texture2D" uid="uid://r3thc1ra8gg7" path="res://Sprites/UI/TouchScreen/Up.png" id="26_ka513"]
+[ext_resource type="Texture2D" uid="uid://dlan7sndausju" path="res://Sprites/UI/TouchScreen/Up2.png" id="27_7c8ty"]
 [ext_resource type="Texture2D" uid="uid://bpmvaih2gw1fi" path="res://misc/Right.png" id="28_mhhb5"]
 [ext_resource type="Texture2D" uid="uid://bqg4ys62sdf1w" path="res://misc/Right2.png" id="29_35n5f"]
 [ext_resource type="Texture2D" uid="uid://b5erm30htstwr" path="res://misc/mapbutton.png" id="30_4b6r7"]
 [ext_resource type="Texture2D" uid="uid://dwsu82cgu25qs" path="res://misc/mapbuttonpress.png" id="31_lwr8l"]
-[ext_resource type="PackedScene" uid="uid://c6arj1knmpytn" path="res://LevelChunks/tutorial.tscn" id="33_65xsp"]
-[ext_resource type="PackedScene" uid="uid://bf005udbg2cyc" path="res://levelintro.tscn" id="33_iq6v1"]
+[ext_resource type="PackedScene" uid="uid://c6arj1knmpytn" path="res://Scenes/LevelChunks/tutorial.tscn" id="33_65xsp"]
+[ext_resource type="PackedScene" uid="uid://bf005udbg2cyc" path="res://Scenes/Level/levelintro.tscn" id="33_iq6v1"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jhuxi"]
-load_path = "res://.godot/imported/bigger.svg-afc60be1e17c300ee4c7697eb41a38a1.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tgfrd"]
-load_path = "res://.godot/imported/bigger_1.svg-c5be18a7586fc3e33e6afbc629dcdbf1.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tgfrd"]
 shader = ExtResource("11_7rife")
@@ -104,6 +102,7 @@ texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
 [node name="Label" parent="CanvasLayer" index="6"]
 anchors_preset = -1
+offset_bottom = -39.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1

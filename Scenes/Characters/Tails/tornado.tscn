@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2foft6l46p7p"]
+
+[ext_resource type="Texture2D" uid="uid://g8scctmthgd4" path="res://Scenes/Characters/Tails/Tornado.png" id="1_5ivcd"]
+[ext_resource type="Script" uid="uid://be2qy2l0in1k" path="res://Scripts/Characters/Tails/tornado.gd" id="1_6kks0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dvkcm"]
+size = Vector2(92, 23)
+
+[node name="Tornado" type="CharacterBody2D"]
+scale = Vector2(1.25, 1.25)
+script = ExtResource("1_6kks0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -2)
+shape = SubResource("RectangleShape2D_dvkcm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_5ivcd")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+zoom = Vector2(0.95, 0.95)

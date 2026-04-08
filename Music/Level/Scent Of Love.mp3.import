@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cll8kes517od7"
+path="res://.godot/imported/Scent Of Love.mp3-04d967036242ab7962e4617927d71d54.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Scent Of Love.mp3"
+dest_files=["res://.godot/imported/Scent Of Love.mp3-04d967036242ab7962e4617927d71d54.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
