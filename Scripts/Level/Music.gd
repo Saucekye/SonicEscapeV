@@ -32,7 +32,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	# Persistent across scenes
-	get_tree().root.add_child(self)
+	#get_tree().root.add_child(self)
 	set_owner(null)
 
 	current_scene_name = get_tree().current_scene.name

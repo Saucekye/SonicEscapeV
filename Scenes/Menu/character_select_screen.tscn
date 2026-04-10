@@ -1,27 +1,26 @@
-[gd_scene load_steps=26 format=3 uid="uid://dwkxx7a6fwjqv"]
+[gd_scene load_steps=25 format=3 uid="uid://dwkxx7a6fwjqv"]
 
 [ext_resource type="Script" uid="uid://ilgl2nqnrs7" path="res://Scripts/Menu/character_select_screen.gd" id="1_nlrn3"]
 [ext_resource type="PackedScene" uid="uid://die03v6a7cw0k" path="res://misc/Icons.tscn" id="2_d8uyd"]
-[ext_resource type="Script" uid="uid://bxhib4dswhgyf" path="res://misc/selecticons.gd" id="2_snpbp"]
 [ext_resource type="Texture2D" uid="uid://clkwmxnx7hr6n" path="res://Sprites/UI/Icon/UI Icon Red.png" id="3_vwxb7"]
 [ext_resource type="Texture2D" uid="uid://10m122r0757x" path="res://Sprites/UI/Icon/UI Icon Yellow.png" id="4_0van7"]
 [ext_resource type="Script" uid="uid://q2ssjlxxiw3j" path="res://Scripts/Level/CharacterManager.gd" id="5_8mv32"]
-[ext_resource type="Texture2D" uid="uid://du7tjcgip7io5" path="res://Scenes/Characters/Tails/icon.png" id="7_a5rpx"]
-[ext_resource type="Texture2D" uid="uid://btlvpn04xuhe5" path="res://Scenes/Characters/Knuckles/Icon.png" id="8_2i687"]
+[ext_resource type="Texture2D" uid="uid://du7tjcgip7io5" path="res://scenes/Characters/Tails/icon.png" id="7_a5rpx"]
+[ext_resource type="Texture2D" uid="uid://btlvpn04xuhe5" path="res://scenes/Characters/Knuckles/Icon.png" id="8_2i687"]
 [ext_resource type="Script" uid="uid://cybq0rxdygsnf" path="res://Scripts/UI/starticon.gd" id="9_73vdo"]
-[ext_resource type="Texture2D" uid="uid://c8po8bidqr685" path="res://Scenes/Characters/Sonic/icon2.png" id="9_cgfmd"]
+[ext_resource type="Texture2D" uid="uid://c8po8bidqr685" path="res://scenes/Characters/Sonic/icon2.png" id="9_cgfmd"]
 [ext_resource type="Texture2D" uid="uid://b607mxbj3tr2i" path="res://misc/Miku (1).png" id="9_eh470"]
 [ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="10_4o5oy"]
 [ext_resource type="Texture2D" uid="uid://cus77x304r23l" path="res://Sprites/UI/Icon/UI Icon Pink.png" id="12_up6kj"]
 [ext_resource type="Texture2D" uid="uid://cp34mgs8rprwn" path="res://Sprites/UI/Icon/UI Icon Black.png" id="13_g0mmr"]
 [ext_resource type="Texture2D" uid="uid://v6b1nseoyd8s" path="res://Sprites/UI/Icon/UI Icon Purple.png" id="13_up6kj"]
-[ext_resource type="Texture2D" uid="uid://b5egmnj3iwf03" path="res://Scenes/Characters/Amy/Icon1.png" id="13_v4rvu"]
-[ext_resource type="Texture2D" uid="uid://cmnvscrn7jx8v" path="res://Scenes/Characters/Rouge/rougeicon.png" id="14_8453p"]
-[ext_resource type="Texture2D" uid="uid://dod8xj5btd0gq" path="res://Scenes/Characters/Blaze/blazeicon.png" id="14_v4rvu"]
+[ext_resource type="Texture2D" uid="uid://b5egmnj3iwf03" path="res://scenes/Characters/Amy/Icon1.png" id="13_v4rvu"]
+[ext_resource type="Texture2D" uid="uid://cmnvscrn7jx8v" path="res://scenes/Characters/Rouge/rougeicon.png" id="14_8453p"]
+[ext_resource type="Texture2D" uid="uid://dod8xj5btd0gq" path="res://scenes/Characters/Blaze/blazeicon.png" id="14_v4rvu"]
 [ext_resource type="Texture2D" uid="uid://cmmx4yg2d44rd" path="res://Sprites/UI/Icon/UI Icon Orange.png" id="17_8453p"]
 [ext_resource type="AudioStream" uid="uid://b18fk14jfygjw" path="res://misc/SE_COM_AB_RESULT_0.wav" id="17_xoff6"]
-[ext_resource type="Texture2D" uid="uid://ebmyb37nvs72" path="res://Scenes/Characters/Cream/creamicon.png" id="18_6j3rh"]
-[ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="19_phoin"]
+[ext_resource type="Texture2D" uid="uid://ebmyb37nvs72" path="res://scenes/Characters/Cream/creamicon.png" id="18_6j3rh"]
+[ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://scenes/Characters/Metal Sonic/metalicon.png" id="19_phoin"]
 [ext_resource type="Texture2D" uid="uid://dquf4877dk8p6" path="res://Sprites/UI/Icon/UI Icon Blue Black.png" id="19_y1kjk"]
 [ext_resource type="Script" uid="uid://b5sumnaf7bajt" path="res://Scripts/Menu/tutorial.gd" id="21_phoin"]
 
@@ -109,56 +108,48 @@ script = ExtResource("5_8mv32")
 
 [node name="Sonic" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-507, -139)
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("9_cgfmd")
 hover_color = Color(0.38, 1, 1, 1)
 
 [node name="Tails" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-331, -140)
 texture = ExtResource("4_0van7")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("7_a5rpx")
 hover_color = Color(1, 0.931, 0.31, 1)
 
 [node name="Knuckles" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-503, 9)
 texture = ExtResource("3_vwxb7")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("8_2i687")
 hover_color = Color(1, 0.45, 0.45, 1)
 
 [node name="Amy" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-334, 4)
 texture = ExtResource("12_up6kj")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("13_v4rvu")
 hover_color = Color(1, 0.25, 0.77499986, 1)
 
 [node name="Rouge" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 150)
 texture = ExtResource("13_g0mmr")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("14_8453p")
 hover_color = Color(0.74558026, 0.7455802, 0.74558014, 1)
 
 [node name="Blaze" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-512, 302)
 texture = ExtResource("13_up6kj")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("14_v4rvu")
 hover_color = Color(0.47605157, 0.4804187, 1, 1)
 
 [node name="Cream" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 302)
 texture = ExtResource("17_8453p")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("18_6j3rh")
 hover_color = Color(1, 0.70533335, 0.48000005, 1)
 
 [node name="MetalSonic" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-344, 454)
 texture = ExtResource("19_y1kjk")
-script = ExtResource("2_snpbp")
 sprite2_texture = ExtResource("19_phoin")
 hover_color = Color(0.64, 0.68799996, 1, 1)
 
@@ -166,7 +157,6 @@ hover_color = Color(0.64, 0.68799996, 1, 1)
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = -211.0
 offset_top = -847.0
 offset_right = -171.0
@@ -187,7 +177,6 @@ texture = ExtResource("9_cgfmd")
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 168.0
 offset_top = -868.0
 offset_right = 208.0
@@ -207,7 +196,6 @@ skew = 0.958781
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 563.0
 offset_top = -915.0
 offset_right = 603.0
@@ -268,7 +256,7 @@ hover_color = Color(1, 1, 1, 1)
 
 [node name="Start" type="Label" parent="Start"]
 z_index = 2
-anchors_preset = -1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

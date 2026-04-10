@@ -391,12 +391,12 @@ func _physics_process(delta):
 	handle_movement_input(delta)
 
 	# ── Apply Velocity (rotated to match slope) ────────────────────────
-	if abs(time_elapsed) > 60 or abs(motion.x) > 500:
-		# At high speed or high momentum, rotate the velocity vector to stick to slopes
+	if is_grounded and (abs(time_elapsed) > 60 or abs(motion.x) > 500):
+		# At high speed or high momentum, and whlie grounded, rotate the velocity vector to stick to slopes
 		up_direction = get_floor_normal()
 		velocity = Vector2(motion.x, motion.y).rotated(rot)
 	else:
-		# At low speed, use flat velocity (avoids sliding on gentle slopes)
+		# At low speed, or  ariborn, use flat velocity (avoids sliding on gentle slopes)
 		up_direction = Vector2(0,-1)
 		velocity = Vector2(motion.x, motion.y)
 		

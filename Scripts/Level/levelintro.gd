@@ -13,6 +13,7 @@ signal start
 
 var flash_colors = [Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE]
 var current_flash = 0
+var is_in_intro : bool = false
 
 func _ready() -> void:
 	$Node2D/Label.text = "FLOOR " + str(Test.level) 
@@ -31,6 +32,7 @@ func _ready() -> void:
 	# Start your original animation AND flashy effects
 	animation_player.play("start")
 	start_flashy_intro()
+	is_in_intro = true
 
 func start_flashy_intro():
 	# Start particle effects immediately
@@ -112,11 +114,14 @@ func shake_screen():
 			randf_range(-5, 5),
 			randf_range(-5, 5)
 		)
-		shake_tween.tween_property(self, "position", original_pos + shake_offset, 0.05)
+		shake_tween.tween_property(self, "offset", original_pos + shake_offset, 0.05)
 	
-	shake_tween.tween_property(self, "position", original_pos, 0.1)
+	shake_tween.tween_property(self, "offset", original_pos, 0.1)
 
 func finish_intro():
+	
+	is_in_intro = false
+	
 	# Add screen shake for impact
 	shake_screen()
 	
@@ -145,5 +150,5 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 # Optional: Skip intro on input
 func _input(event):
-	if event.is_pressed():
+	if event.is_pressed() and is_in_intro:
 		finish_intro()

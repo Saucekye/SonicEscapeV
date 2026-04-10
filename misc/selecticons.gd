@@ -42,6 +42,7 @@ class TextureSet extends Resource:
 
 # === Interaction Setup ===
 var tween: Tween
+var flash_tween : Tween
 var area_2d: Area2D
 var collision_shape: CollisionShape2D
 var original_scale: Vector2
@@ -182,11 +183,13 @@ func animate_hover_out():
 	tween = create_tween().set_parallel(true)
 	tween.tween_property(self, "scale", original_scale, animation_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	tween.tween_property(self, "modulate", original_modulate, animation_duration * 0.5)
+	flash_tween.kill()
 	if hover_outline:
 		tween.tween_property(hover_outline, "modulate:a", 0.0, animation_duration * 0.5)
 		tween.tween_callback(func(): hover_outline.visible = false).set_delay(animation_duration * 0.5)
 
-func animate_select():
+func animate_select():	
+	flash_tween.kill()
 	tween.kill()
 	tween = create_tween().set_parallel(true)
 	var pop_scale = original_scale * select_scale * 1.2
@@ -211,9 +214,9 @@ func animate_deselect():
 		tween.tween_callback(func(): selection_indicator.visible = false).set_delay(animation_duration * 0.5)
 
 func create_lightning_flash():
-	var flash = create_tween()
-	flash.tween_property(self, "modulate", lightning_color * lightning_intensity, 0.05)
-	flash.tween_property(self, "modulate", hover_color, 0.1)
+	flash_tween = create_tween()
+	flash_tween.tween_property(self, "modulate", lightning_color * lightning_intensity, 0.05)
+	flash_tween.tween_property(self, "modulate", hover_color, 0.1)
 
 func create_lightning_burst():
 	var burst_tween = create_tween().set_parallel(true)
