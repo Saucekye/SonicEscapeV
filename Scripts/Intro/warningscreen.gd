@@ -1,7 +1,7 @@
 extends Control
 signal cutscene
 
-@export var next_scene_path: String = "uid://cap4asy61pcru"
+@export var next_scene_path: String = "res://Scenes/Intro/titlescreen.tscn"
 var has_started = true
 var fade_rect: ColorRect
 var next_scene: PackedScene
@@ -17,7 +17,7 @@ func _ready() -> void:
 	Pause.current_scene = ""
 	$start/AnimationPlayer.play("start")
 	# Start loading the scene in the background
-	ResourceLoader.load_threaded_request("uid://cap4asy61pcru")
+	ResourceLoader.load_threaded_request("res://Scenes/Intro/titlescreen.tscn")
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	emit_signal("cutscene")
@@ -42,6 +42,6 @@ func fade_and_change_scene():
 	tween.tween_callback(change_scene)
 
 func change_scene():
-	var result = ResourceLoader.load_threaded_get("uid://cap4asy61pcru")
+	var result = ResourceLoader.load_threaded_get("res://Scenes/Intro/titlescreen.tscn")
 	if result is PackedScene:
 		get_tree().change_scene_to_packed(result)

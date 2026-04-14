@@ -1,6 +1,6 @@
 extends Control
 
-@export var next_scene_path: String = "uid://dwkxx7a6fwjqv"  # Replace with your scene path
+@export var next_scene_path: String = "res://Scenes/Menu/character_select_screen.tscn"  # Replace with your scene path
 var fade_rect: ColorRect
 
 func _ready() -> void:

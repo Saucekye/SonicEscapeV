@@ -6,10 +6,10 @@ var playinganim = false
 @onready var dropdown = $OptionButton
 
 var music_options = {
-	"V0.1": {"stream": preload("uid://cm4cdu8fyn1xe"), "volume": -8},
-	"V0.2": {"stream": preload("uid://cuxyymynrsqi"), "volume": -8},
-	"V0.3": {"stream": preload("uid://bitqppth1j4is"), "volume": 0},
-	"V0.4": {"stream": preload("uid://b6a8xl4uefk31"), "volume": -8}
+	"V0.1": {"stream": preload("res://Music/Level/Tee Lopes - Stream Zone Act 1 (Live Stream Result).mp3"), "volume": -8},
+	"V0.2": {"stream": preload("res://Music/Level/Overcast - Breeze in the Clouds OST.mp3"), "volume": -8},
+	"V0.3": {"stream": preload("res://Music/Level/Omega Strikers - A Demon's Thunder (Mako's Theme) (In-Game Version) [16 Minute Extended Version].mp3"), "volume": 0},
+	"V0.4": {"stream": preload("res://Music/Level/Drift Back Home.mp3"), "volume": -8}
 }
 
 func _ready() -> void:

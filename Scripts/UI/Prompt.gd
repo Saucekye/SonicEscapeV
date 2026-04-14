@@ -6,7 +6,7 @@ var music_bus_index = AudioServer.get_bus_index("Music")
 var textures = []
 var texture_change = false
 var follower_spawned = false
-var follower_scene = preload("uid://dpj08vjlgwa1f")
+var follower_scene = preload("res://Scenes/Obstacles/2011X/exe.tscn")
 var follower_instance = null
 
 # Called when the node enters the scene tree for the first time
@@ -20,18 +20,18 @@ func _ready() -> void:
 	$CanvasLayer/Label2.pivot_offset = $CanvasLayer/Label2.size / 2
 	
 	textures = [
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://cdxuohxia4kw6"),
-		preload("uid://ci36npswg4o57"),
-		preload("uid://ci36npswg4o57"),
-		preload("uid://ci36npswg4o57"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Obstacles/2011X/Sprite-00062.png"),
+		preload("res://Sprites/Background/Eggman/Sprite-0006.png"),
+		preload("res://Sprites/Background/Eggman/Sprite-0006.png"),
+		preload("res://Sprites/Background/Eggman/Sprite-0006.png"),
 	]
 
 func update_position_based_on_orientation():
@@ -73,7 +73,7 @@ func _process(delta: float) -> void:
 			texture_change = true
 			
 			# Spawn follower if texture is Sprite-00062.png
-			if new_texture.resource_path == "uid://cdxuohxia4kw6" and not follower_spawned:
+			if new_texture.resource_path == "res://Sprites/Obstacles/2011X/Sprite-00062.png" and not follower_spawned:
 				spawn_follower()
 			
 	elif GlobalCanvasLayer.tricks > 15:

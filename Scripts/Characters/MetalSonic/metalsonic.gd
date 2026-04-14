@@ -108,10 +108,10 @@ var has_jumped = false
 # ─────────────────────────────────────────────
 # Preloaded Scenes
 # ─────────────────────────────────────────────
-var smoke = preload("uid://dpp3j0rwg8wss")
-var sparkle = preload("uid://b633yjwidnycl")
-var smokeground = preload("uid://ishiv4y3pvou")
-var ring_scene = preload("uid://budhiifw7reft")
+var smoke = preload("res://Scenes/Effect/Smoke Attack.tscn")
+var sparkle = preload("res://Scenes/Effect/Sparkle.tscn")
+var smokeground = preload("res://misc/runsmoke.tscn")
+var ring_scene = preload("res://Scenes/Obstacles/Rings/Rings.tscn")
 
 # ─────────────────────────────────────────────
 # Spin Dash
@@ -249,7 +249,7 @@ func _physics_process(delta):
 			if max_speed == 500 && is_on_floor():
 				$Trail2D.visible = true
 				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("uid://cqw3kk4kkqrgw")
+				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
 				$Sfx.play()
 				smokeemit()
 
@@ -585,7 +585,7 @@ func throw_item():
 	# ── 6. Sound and cooldown ─────────────────────────────────────────
 	if sfx:
 		sfx.pitch_scale = 1.2
-		sfx.stream = load("uid://dutidbdnytlyq")
+		sfx.stream = load("res://Sounds/SonicSFX/SA_113.wav")
 		sfx.play()
 
 	item_pickup_cooldown = 0.5
@@ -698,7 +698,7 @@ func calculate_dynamic_speed():
 			if max_speed == 500 && is_on_floor():
 				$Trail2D.visible = true
 				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("uid://cqw3kk4kkqrgw")
+				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
 				$Sfx.play()
 				smokeemit()
 			if abs(slopefactor) > 0:
@@ -901,7 +901,7 @@ func handle_jump_input(is_grounded):
 			if ball == false and grinding == false:
 				ap.play("jump")
 				sfx.pitch_scale = 1
-				sfx.stream = load("uid://j3tn5ok4auoc")
+				sfx.stream = load("res://Sounds/SonicSFX/Jump.wav")
 				sfx.play()
 
 func is_coyote_time_active():
@@ -1039,7 +1039,7 @@ func airdown():
 	ap.play("stomp")
 	fall_gravity = 10500
 	sfx.pitch_scale = 2
-	sfx.stream = load("uid://c48uo6nsvtwks")
+	sfx.stream = load("res://Sounds/SonicSFX/Spiked.wav")
 	sfx.play()
 	motion.x = 0
 	await get_tree().create_timer(0.13).timeout
@@ -1099,7 +1099,7 @@ func perform_trick():
 	last_trick = new_trick
 	sparkemit()
 	sfx.pitch_scale = 1
-	sfx.stream = load("uid://cmgglys1pxv6r")
+	sfx.stream = load("res://Sounds/SonicSFX/sparklesfx.MP3")
 	sfx.play()
 	ap.play(new_trick)
 	await get_tree().create_timer(0.3).timeout
@@ -1116,7 +1116,7 @@ func spinaudio():
 	var random_audio = audio_files[random_index]
 	if random_audio:
 		voice.stream = load(random_audio)
-		sfx.stream = load("uid://dbniep05xipg")
+		sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
 		sfx.pitch_scale = 2
 		sfx.play()
 		voice.play()
@@ -1157,12 +1157,12 @@ func spindash():
 			ap.speed_scale = 1
 			ap.play("revup")
 			$Sfx.pitch_scale = clamp(spin_charge/2, 0, 2)
-			$Sfx.stream = load("uid://pwbp6qm00an7")
+			$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 			$Sfx.play()
 
 	elif is_on_floor() and Input.is_action_just_released("ui_down") and is_spinning:
 		$Sfx.pitch_scale = 1.5
-		$Sfx.stream = load("uid://hc8osl0ymetj")
+		$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
 		$Sfx.play()
 		is_spinning = false
 		crouch = true
@@ -1229,7 +1229,7 @@ func _on_dash_2_pressed() -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Rings"):
 		if ouch == false:
-			$Sfx.stream = load("uid://bxpw87oj3chwf")
+			$Sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
 			$Sfx.pitch_scale = 1
 			$Sfx.play()
 
@@ -1325,7 +1325,7 @@ func hurt():
 		if Test.meter <= 0:
 			Test.meter = 0
 	$Sfx.pitch_scale = 1
-	$Sfx.stream = load("uid://bbacywfoelksw")
+	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
 	$Sfx.play()
 	ouch = true
 	motion = Vector2(0, 0)

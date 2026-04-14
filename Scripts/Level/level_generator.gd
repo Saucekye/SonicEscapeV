@@ -3,21 +3,21 @@ extends Node2D
 # ─────────────────────────────
 # Chunk Scenes
 # ─────────────────────────────
-@export var chunk_start: PackedScene = preload("uid://2vg18io3wgjg")
+@export var chunk_start: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Start.tscn")
 
-@export var chunk_01: PackedScene = preload("uid://ce880tm5sbkl6")
-@export var chunk_02: PackedScene = preload("uid://bwy756v3ldq7c")
-@export var chunk_03: PackedScene = preload("uid://cwqrwtqtgigw0")
-@export var chunk_04: PackedScene = preload("uid://d1fedyq3ps8pl")
-@export var chunk_05: PackedScene = preload("uid://7l5fead2dlpk")
-@export var chunk_06: PackedScene = preload("uid://nqlljj7gak2")
+@export var chunk_01: PackedScene = preload("res://Scenes/LevelChunks/Chunk_01.tscn")
+@export var chunk_02: PackedScene = preload("res://Scenes/LevelChunks/Chunk_02.tscn")
+@export var chunk_03: PackedScene = preload("res://Scenes/LevelChunks/Chunk_03.tscn")
+@export var chunk_04: PackedScene = preload("res://Scenes/LevelChunks/Chunk_04.tscn")
+@export var chunk_05: PackedScene = preload("res://Scenes/LevelChunks/Chunk_05.tscn")
+@export var chunk_06: PackedScene = preload("res://Scenes/LevelChunks/Chunk_06.tscn")
 
-@export var chunk_boss: PackedScene = preload("uid://cmdy43nkuhsn1")
-@export var chunk_end: PackedScene = preload("uid://coioy8s66m7ea")
-@export var chunk_rest: PackedScene = preload("uid://cnud6pf5aurei")
+@export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
+@export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
+@export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
 
 # Miku
-@export var miku_scene: PackedScene = preload("uid://p2ybublbkfdp")
+@export var miku_scene: PackedScene = preload("res://Scenes/Obstacles/Miku/miku.tscn")
 
 # ─────────────────────────────
 # Settings

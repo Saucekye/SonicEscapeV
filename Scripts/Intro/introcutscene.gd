@@ -14,7 +14,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		$AnimationPlayer.play("play4")
 	
 	if anim_name == "play4":
-		var result = ResourceLoader.load_threaded_get("uid://cap4asy61pcru")
+		var result = ResourceLoader.load_threaded_get("res://Scenes/Intro/titlescreen.tscn")
 		if result is PackedScene:
 			get_tree().change_scene_to_packed(result)
 		else:

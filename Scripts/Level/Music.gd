@@ -9,17 +9,17 @@ var volume := -15
 # Fixed music per scene
 # ─────────────────────────────
 var scene_music := {
-	"CharacterSelectScreen": preload("uid://c6n8dxpyff6vw"),
-	"warningscreen": preload("uid://dsik0il3nyc8u")
+	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
+	"warningscreen": preload("res://Music/Intro/sos(3).MP3")
 }
 
 # ─────────────────────────────
 # Node2D playlist
 # ─────────────────────────────
 var node2d_music_pool := [
-	preload("uid://d36stmjt5ako"),
-	preload("uid://qtdltg818wt3"),
-	preload("uid://cll8kes517od7")
+	preload("res://Music/Level/TNH NebulaChemical CyberFunk!  Fog Funk Cyberspace REMIX (Sonic Frontiers).mp3"),
+	preload("res://Music/Level/Great Desert (Reboot Type A).mp3"),
+	preload("res://Music/Level/Scent Of Love.mp3")
 ]
 
 var node2d_track_index := 0

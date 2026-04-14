@@ -84,9 +84,9 @@ func _on_start_sprite_clicked(sprite: Sprite2D) -> void:
 	set_process_input(false)
 	#$Start/AudioStreamPlayer2.play()
 	# FIXED: Await the fade and scene change
-	await fade_and_change_scene("uid://du8tmmmv1djsb")
+	await fade_and_change_scene("res://Scenes/Level/test3.tscn")
 
 func _on_tutorial_tutorial() -> void:
 	set_process_input(false)
-	await fade_and_change_scene("uid://bx3auj0inifum")
+	await fade_and_change_scene("res://backup/tutorial.tscn")
 	Test.level = 1

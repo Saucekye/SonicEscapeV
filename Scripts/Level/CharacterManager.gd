@@ -102,21 +102,21 @@ func update_highlight_for_node(highlight_node: Node, character: SelectableCharac
 
 	match character.name:
 		"Sonic":
-			highlight_node.get_node("Texture").texture = load("uid://d16xowsxib0ud")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Sonic/Sonichighlight.png")
 		"Tails":
-			highlight_node.get_node("Texture").texture = load("uid://ba2nrptuf8o28")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Tails/highlight.png")
 		"Knuckles":
-			highlight_node.get_node("Texture").texture = load("uid://i2ru8nd8dbkx")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Knuckles/knuckleshighlight.png")
 		"Amy":
-			highlight_node.get_node("Texture").texture = load("uid://b7b3aoxjloatg")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Amy/Amyhighlight.png")
 		"Rouge":
-			highlight_node.get_node("Texture").texture = load("uid://y7swlsm1vwe")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Rouge/rougehighlight.png")
 		"Blaze":
-			highlight_node.get_node("Texture").texture = load("uid://0pqykd7js0sl")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Blaze/blazehighlight.png")
 		"Cream":
-			highlight_node.get_node("Texture").texture = load("uid://dm8pt578ayk7d")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Cream/creamhighlight.png")
 		"MetalSonic":
-			highlight_node.get_node("Texture").texture = load("uid://dxg1bmoka6hlt")
+			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Metal Sonic/metalhighlight1.png")
 		_:
 			highlight_node.get_node("Texture").texture = null
 

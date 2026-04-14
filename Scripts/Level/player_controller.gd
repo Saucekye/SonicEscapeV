@@ -10,15 +10,15 @@ var music = false
 var mobile = false
 var end = false
 
-@onready var sonic_scene = preload("uid://cnc5piy6378ni")
-@onready var tails_scene = preload("uid://i57ed86f5x36")
-@onready var knuckles_scene = preload("uid://cqii2a60sj5ox")
-@onready var amy_scene = preload("uid://coplphurnieop")
-@onready var blaze_scene = preload("uid://deluxsuyw8dyd")
-@onready var rouge_scene = preload("uid://84nvlp6r1vdx")
-@onready var cream_scene = preload("uid://by161kvq5b43r")
-@onready var metal_scene = preload("uid://bf2bqamx68rb2")
-@onready var camera = preload("uid://b1ij6bh8rcq34")
+@onready var sonic_scene = preload("res://Scenes/Characters/Sonic/Player.tscn")
+@onready var tails_scene = preload("res://Scenes/Characters/Tails/Tails.tscn")
+@onready var knuckles_scene = preload("res://Scenes/Characters/Knuckles/Knuckles.tscn")
+@onready var amy_scene = preload("res://Scenes/Characters/Amy/amy.tscn")
+@onready var blaze_scene = preload("res://Scenes/Characters/Blaze/Blaze.tscn")
+@onready var rouge_scene = preload("res://Scenes/Characters/Rouge/Rouge.tscn")
+@onready var cream_scene = preload("res://Scenes/Characters/Cream/Cream.tscn")
+@onready var metal_scene = preload("res://Scenes/Characters/Metal Sonic/metalsonic.tscn")
+@onready var camera = preload("res://Scenes/Level/camera.tscn")
 
 var sonic_instance: CharacterBody2D
 var tails_instance: CharacterBody2D

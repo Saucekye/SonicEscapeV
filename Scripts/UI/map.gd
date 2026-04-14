@@ -1,11 +1,11 @@
 extends TileMapLayer
 
-const DEFAULT_TEXTURE: Texture2D = preload("uid://cyfepbfpcsnnk")
-const WHITE_TEXTURE: Texture2D = preload("uid://c0nh53qt2kem3")
-const DARK_BLUE_TEXTURE: Texture2D = preload("uid://c445bptnbjv8h")
-const BLUE_TEXTURE: Texture2D = preload("uid://benymv5usuft2")
-const DARK_TEXTURE: Texture2D = preload("uid://0p2tvd4ht6t6")
-const RED_TEXTURE: Texture2D = preload("uid://rk41slfbxvub")
+const DEFAULT_TEXTURE: Texture2D = preload("res://Sprites/Tileset/NewTilesetPlatform2-export.png")
+const WHITE_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Tileset White.png")
+const DARK_BLUE_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Dark Blue.png")
+const BLUE_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Blue.png")
+const DARK_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Dark.png")
+const RED_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Red.png")
 
 func _ready():
 	_swap_texture()
