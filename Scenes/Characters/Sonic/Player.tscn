@@ -1,6 +1,6 @@
-[gd_scene load_steps=48 format=3 uid="uid://cnc5piy6378ni"]
+[gd_scene load_steps=53 format=3 uid="uid://cnc5piy6378ni"]
 
-[ext_resource type="Script" uid="uid://chuuwjpt4uofb" path="res://Scripts/Characters/Sonic/CharacterBody2D.gd" id="1_ams0n"]
+[ext_resource type="Script" uid="uid://c6h8863cerwy4" path="res://Scripts/Characters/Sonic/sonic.gd" id="1_vuqnu"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_vuqnu"]
 [ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="3_yxy1h"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_xqug3"]
@@ -9,6 +9,11 @@
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_6xb3l"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_uvhn0"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_x6aia"]
+[ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/airspin.tscn" id="9_yxy1h"]
+[ext_resource type="PackedScene" uid="uid://cqpabthyx2bvr" path="res://Scenes/Characters/Components/flick.tscn" id="10_yxy1h"]
+[ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/airup.tscn" id="11_xqug3"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/stomp.tscn" id="12_levbm"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/trick.tscn" id="13_k0gmh"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2087,7 +2092,7 @@ collision_layer = 2
 collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
-script = ExtResource("1_ams0n")
+script = ExtResource("1_vuqnu")
 
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1
@@ -2161,6 +2166,16 @@ bus = &"SFX"
 stream = ExtResource("5_levbm")
 volume_db = -10.0
 bus = &"SFX"
+
+[node name="Airspin" parent="." instance=ExtResource("9_yxy1h")]
+
+[node name="Flick" parent="." instance=ExtResource("10_yxy1h")]
+
+[node name="Airup" parent="." instance=ExtResource("11_xqug3")]
+
+[node name="Stomp" parent="." instance=ExtResource("12_levbm")]
+
+[node name="Trick" parent="." instance=ExtResource("13_k0gmh")]
 
 [node name="SpinTimer" type="Timer" parent="."]
 

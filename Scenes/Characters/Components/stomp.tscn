@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnggrubhy13x8"]
+
+[ext_resource type="Script" uid="uid://bxpn7sk5wi8sd" path="res://Scripts/Characters/Components/stomp.gd" id="1_qux1t"]
+
+[node name="Stomp" type="Node"]
+script = ExtResource("1_qux1t")

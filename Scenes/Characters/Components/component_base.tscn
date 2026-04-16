@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cky31s0dfygw3"]
+
+[ext_resource type="Script" uid="uid://d18d41illbyli" path="res://Scripts/Characters/Components/component_base.gd" id="1_f8dch"]
+
+[node name="ComponentBase" type="Node"]
+script = ExtResource("1_f8dch")
