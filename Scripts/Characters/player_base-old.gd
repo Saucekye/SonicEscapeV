@@ -1,5 +1,6 @@
 @abstract
-class_name Player extends CharacterBody2D
+#class_name Player 
+extends CharacterBody2D
 
 # ─────────────────────────────────────────────
 # Node References
@@ -17,17 +18,7 @@ class_name Player extends CharacterBody2D
 @export var stored_layer: int
 @export var stored_mask: int
 
-@export var skid_min_speed : float = 500	## The minimum speed needed to maintain a skid after letting go of a direction while running
-
 var in_loop = false  # True while the character is inside a loop section
-
-# Fly meter - even only a few characters use it, the base still always needs reference to one
-@onready var flymeter: TextureProgressBar = $Flymeter
-
-# Raycasts nodes
-@onready var wall_cast: RayCast2D = $CollisionShape2D/WallCast
-@onready var wall_cast_2: RayCast2D = $CollisionShape2D/WallCast2
-@onready var raycast: RayCast2D = $CollisionShape2D/Raycast
 
 # ─────────────────────────────────────────────
 # Signals (used to report trick rating to UI/score system)
@@ -178,6 +169,8 @@ var player: CharacterBody2D         # Reference to the followed player, resolved
 var hang = false        # True while attached to a flying player (disables move_and_slide)
 var hangable = false    # Whether attachment is currently allowed (cleared on ground contact)
 
+@onready var flymeter: TextureProgressBar = $Flymeter
+
 
 func _ready():
 	$Trail2D.visible = false    # Trail starts hidden; shown when speed is high enough
@@ -186,7 +179,6 @@ func _ready():
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
 	
 func _process(delta):
-	flymeter.value = flymeter_amount  # Sync the fly meter UI bar every frame
 	# Handle virtual joystick on mobile — converts stick input into action events
 	if Test.mobile == true:
 		handle_stick_input()	
@@ -231,13 +223,6 @@ func _physics_process(delta):
 	if is_grounded:
 		last_grounded_time = Time.get_ticks_msec() / 1000.0  # Stamp for coyote time
 	was_on_floor = is_grounded
-	
-	if is_grounded and not prev_grounded:
-		# Just landed — reset flying state and hide the fly arrow indicator
-		$Arrow.visible = false
-		flying = false
-		fall_gravity = default
-		has_jumped = false
 	
 	# Reset has_jumped on fresh landing (allows coyote jump on next edge)
 	if is_grounded and not prev_grounded:
@@ -369,7 +354,7 @@ func _physics_process(delta):
 			acc = 25
 			
 	# ── AI Follow Logic ────────────────────────────────────────────────
-	if not is_player and not flying:
+	if is_player == false:
 		player = get_node(player_path) as CharacterBody2D
 		
 		if in_loop:
@@ -952,10 +937,6 @@ func update_momentum_effects():
 
 func handle_floor_logic(delta):	
 	if is_on_floor():
-		# Landing resets fly meter and hides the meter bar
-		flymeter_amount = 85
-		flymeter.visible = false
-		
 		if not hang:
 			hangable = false  # Can't initiate a hang while grounded
 		
@@ -969,6 +950,15 @@ func handle_floor_logic(delta):
 		dashed = false
 		can_dash = true
 		can_stomp = true
+		
+		# ── Drop Dash Release ──────────────────────────────────────────
+		if is_drop_dashing and drop_dash_charge >= drop_dash_charge_time:
+			if Input.is_action_pressed("ui_accept"):
+				execute_drop_dash()
+			else:
+				# Button was released before landing — cancel the drop dash
+				is_drop_dashing = false
+				drop_dash_charge = 0.0
 
 		trail.visible = abs(motion.x) > 500
 		
@@ -1003,9 +993,6 @@ func handle_floor_logic(delta):
 			
 		if motion.x == 0:
 			peelout()
-			
-		# Ground attack/action — only triggers if not already mid-aciton
-		handle_ground_action()
 
 	# Exit ball mode when any action button is pressed
 	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("trick") or Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("airup")) and ball == true and is_on_floor():
@@ -1076,7 +1063,7 @@ func handle_air_logic(delta, is_grounded):
 		
 		# Play jump animation if not in a special air state
 		if dashed == false:
-			if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not flying and not hang and not is_on_wall() and not is_on_floor():
+			if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not hang and not is_on_wall() and not is_on_floor():
 				if ap.current_animation != "stomp":
 					ap.play("jump")
 			# Clamp horizontal speed at low momentum
@@ -1091,7 +1078,7 @@ func handle_air_logic(delta, is_grounded):
 		handle_air_actions(is_grounded)
 
 @abstract
-func handle_air_actions(is_grounded) -> void
+func handle_air_actions(is_grounded)
 	#if grinding == false:
 		## ── Air Dash (flick) ───────────────────────────────────────────
 		#if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and can_dash == true and not $CollisionShape2D/WallCast.is_colliding() and not $CollisionShape2D/WallCast2.is_colliding() and not is_coyote_time_active():
@@ -1128,9 +1115,6 @@ func handle_air_actions(is_grounded) -> void
 		#if Input.is_action_just_pressed("trick") and not (is_on_wall_only() and (not $CollisionShape2D/Raycast.is_colliding()) and rot == 0):
 			#$Parry/AnimationPlayer.play("play")
 			#perform_trick()
-
-@abstract
-func handle_ground_action() -> void
 
 func handle_jump_input(is_grounded):
 	var slope_influence = abs(slopefactor)
@@ -1183,35 +1167,34 @@ func is_coyote_time_active():
 	var time_since_grounded = Time.get_ticks_msec() / 1000.0 - last_grounded_time
 	return time_since_grounded < coyote_time and motion.y >= 0 and not was_on_floor
 
-@abstract
-func handle_wall_mechanics() -> void
+func handle_wall_mechanics():
 	# Wall-slide and wall-jump logic — only fires when pressing against a wall in the air
-	#if ($CollisionShape2D/WallCast.is_colliding() or $CollisionShape2D/WallCast2.is_colliding()) and (not $CollisionShape2D/Raycast.is_colliding()) and rot == 0:
-		#if is_player == true:
-			#tricknumber()
-			#GlobalCanvasLayer.tricks = 0
-		#falling = false
-		#dashed = false
-		#ball = false
-		#crouch = false
-		#motion.y = (motion.y)/1.3  # Slow the fall while on the wall
-		#ap.play("onwallair")
-		#
-		## Flip sprite to face away from the wall
-		#if $CollisionShape2D/WallCast.is_colliding():
-			#$Sprite2D.flip_h = true
-		#else:
-			#$Sprite2D.flip_h = false
-		#
-		#var wall_normal = get_wall_normal()
-		#var push_dir = 1 if wall_normal.x > 0 else -1  # Direction away from the wall
-		#
-		#if (Input.is_action_just_pressed("ui_accept")):
-			## Wall jump: push away from wall and launch upward
-			#position += Vector2(push_dir * 25, 0).rotated(rot)
-			#motion.x = 2500 * push_dir
-			#motion.y = (jump_velocity) / 1.5
-			#just_wall_jumped = true
+	if ($CollisionShape2D/WallCast.is_colliding() or $CollisionShape2D/WallCast2.is_colliding()) and (not $CollisionShape2D/Raycast.is_colliding()) and rot == 0:
+		if is_player == true:
+			tricknumber()
+			GlobalCanvasLayer.tricks = 0
+		falling = false
+		dashed = false
+		ball = false
+		crouch = false
+		motion.y = (motion.y)/1.3  # Slow the fall while on the wall
+		ap.play("onwallair")
+		
+		# Flip sprite to face away from the wall
+		if $CollisionShape2D/WallCast.is_colliding():
+			$Sprite2D.flip_h = true
+		else:
+			$Sprite2D.flip_h = false
+		
+		var wall_normal = get_wall_normal()
+		var push_dir = 1 if wall_normal.x > 0 else -1  # Direction away from the wall
+		
+		if (Input.is_action_just_pressed("ui_accept")):
+			# Wall jump: push away from wall and launch upward
+			position += Vector2(push_dir * 25, 0).rotated(rot)
+			motion.x = 2500 * push_dir
+			motion.y = (jump_velocity) / 1.5
+			just_wall_jumped = true
 
 # ─────────────────────────────────────────────
 # Animation
@@ -1236,25 +1219,25 @@ func update_animations():
 
 func handle_idle_animations():
 	# Play appropriate idle/crouch animation when standing still
-	if ball != true and crouch != true and is_spinning == false and wait == false and not is_spinningdash and swipe == false:
-		if direction == 0 and abs(motion.x) > skid_min_speed:
-			ap.play("skid")   # Skid even at low speed (abs > 0, vs Sonic's > 500)
+	if ball != true and crouch != true and is_spinning == false and wait == false and is_spinningdash == false:
+		if direction == 0 and abs(motion.x) > 500:
+			ap.play("skid")  # Skidding to a stop
 		else:
 			ap.play("stance")
 		ap.speed_scale = 1
-		if Input.is_action_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false and swipe == false:
+		if Input.is_action_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false:
 			ap.play("Crouch")
 
 func handle_movement_animations(doturn):
 	# doturn < 1 means the character is slower than half speed — play "turn" transition anim
-	if doturn < 1 and doturn > -1 and doturn == abs(doturn) and grinding == false and swipe == false:
+	if doturn < 1 and doturn > -1 and doturn == abs(doturn) and grinding == false:
 		ap.speed_scale = 0.75
 		if ball != true and (time_elapsed < 10) and control_lock == false:
 			ap.play("turn")
 	else:
 		# Scale animation speed with actual movement speed
 		ap.speed_scale = doturn*1.1
-		if ball != true and grinding == false and swipe == false:
+		if ball != true and grinding == false:
 			# Choose animation tier based on current speed
 			ap.play("Dash max" if abs(motion.x) > 1100 else "Dash" if time_elapsed > 50 or abs(motion.x) > 500 else "run")
 			if abs(motion.x) > 500:
@@ -1320,7 +1303,6 @@ func dash(direction):
 	dashed = true
 	ball = false
 	crouch = false
-	flying = false
 	can_dash = false
 	ap.play("flick")
 	motion.y = -450
@@ -1578,10 +1560,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 			Test.meter += 50  # Springs give a meter bonus
 		
 	if area.is_in_group("Rail"):
-		# Grinding resets fly state and meter
-		flymeter.visible = false 
-		flying = false
-		flymeter_amount = 85
 		# Landing on a grind rail
 		hang = false
 		hangable = false
@@ -1590,12 +1568,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		can_dash = true
 		dashed = false
 		motion.y = 0  # Snap vertical motion to rail level
-
-	if area.is_in_group("Player"):
-		# Show the directional arrow when near a player while flying
-		# (signals to the other player that this character can carry them)
-		if flying == true:
-			$Arrow.visible = true
 		
 	if area.is_in_group("enemyattack"):
 		hurt()
@@ -1710,15 +1682,17 @@ func _on_invincibity_timeout() -> void:
 	invincible = false
 	$Sprite2D.modulate.a = 1
 
+
 func _on_attackbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Enemy"):
-		if not is_on_floor() and swipe == false:
+		if not is_on_floor():
 			# Bounce off enemies in the air; height scales with current momentum
 			if time_elapsed >= 50:
 				motion.y = -1000
 			else:
 				motion.y = -750
 		Test.meter += 5  # Gain meter for every enemy hit
+
 
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	$onscreentimer.stop()  # Stop the out-of-screen repositioning timer when back on screen

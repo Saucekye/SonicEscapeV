@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2ipguhs5a8nb"]
+
+[ext_resource type="Script" uid="uid://b2l0pjsfvgkn4" path="res://Scripts/Characters/Components/Air Actions/fly.gd" id="1_ckfsd"]
+
+[node name="Fly" type="Node"]
+script = ExtResource("1_ckfsd")

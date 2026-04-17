@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl17rh8kbubo"]
+
+[ext_resource type="Script" uid="uid://bh44et7kex1x0" path="res://Scripts/Characters/Components/Air Actions/swipe_attack.gd" id="1_yt173"]
+
+[node name="SwipeAttack" type="Node"]
+script = ExtResource("1_yt173")

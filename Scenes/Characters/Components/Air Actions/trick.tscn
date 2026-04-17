@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cigx0ij4736vq"]
+
+[ext_resource type="Script" uid="uid://cony0gcwhdbfh" path="res://Scripts/Characters/Components/Air Actions/trick.gd" id="1_2466o"]
+
+[node name="Trick" type="Node"]
+script = ExtResource("1_2466o")

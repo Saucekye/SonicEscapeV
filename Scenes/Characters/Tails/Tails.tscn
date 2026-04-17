@@ -1,17 +1,20 @@
-[gd_scene load_steps=53 format=3 uid="uid://i57ed86f5x36"]
+[gd_scene load_steps=56 format=3 uid="uid://i57ed86f5x36"]
 
-[ext_resource type="Script" uid="uid://ccwff0xeyijo2" path="res://Scripts/Characters/Tails/tails.gd" id="1_56hwh"]
+[ext_resource type="Script" uid="uid://bt72s4dk8esif" path="res://Scripts/Characters/Tails/tails.gd" id="1_56hwh"]
+[ext_resource type="PackedScene" uid="uid://bl17rh8kbubo" path="res://Scenes/Characters/Components/Air Actions/swipe_attack.tscn" id="1_iek5w"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_3pbuu"]
-[ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="2_fptrw"]
+[ext_resource type="PackedScene" uid="uid://c2ipguhs5a8nb" path="res://Scenes/Characters/Components/Air Actions/fly.tscn" id="2_dmr0s"]
 [ext_resource type="Texture2D" uid="uid://qggvt4ph46qu" path="res://Sprites/Characters/Tails/tailssheet.png" id="3_570r3"]
-[ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="3_kcmdp"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="4_r82b0"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="5_hev88"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="6_02t37"]
+[ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="6_3c8l4"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="6_ggtxd"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="7_odso4"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="11_les0h"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="12_3c4rp"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="16_idr0s"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="17_aawou"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2786,17 +2789,15 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_56hwh")
 
-[node name="Flymeter" type="TextureProgressBar" parent="."]
-anchors_preset = -1
-offset_left = -0.393367
-offset_top = 0.331327
-offset_right = 63.6066
-offset_bottom = 17.3313
-rotation = -1.56731
-scale = Vector2(0.01, 0.01)
-max_value = 85.0
-texture_under = ExtResource("2_fptrw")
-texture_progress = ExtResource("3_kcmdp")
+[node name="Fly" parent="." instance=ExtResource("2_dmr0s")]
+
+[node name="SwipeAttack" parent="." instance=ExtResource("1_iek5w")]
+
+[node name="Stomp" parent="." instance=ExtResource("16_idr0s")]
+
+[node name="Trick" parent="." instance=ExtResource("17_aawou")]
+
+[node name="Flymeter" parent="." instance=ExtResource("6_3c8l4")]
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0.0799999, 0.280001)

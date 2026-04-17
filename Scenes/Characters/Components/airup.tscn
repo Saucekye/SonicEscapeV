@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://db1uis5pei1bq"]
-
-[ext_resource type="Script" uid="uid://drrepe0tqtpk4" path="res://Scripts/Characters/Components/airup.gd" id="1_i5p74"]
-
-[node name="Airup" type="Node"]
-script = ExtResource("1_i5p74")

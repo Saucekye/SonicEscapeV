@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqpabthyx2bvr"]
-
-[ext_resource type="Script" uid="uid://dhxrgyxt5ri8t" path="res://Scripts/Characters/Components/flick.gd" id="1_obvdd"]
-
-[node name="Flick" type="Node"]
-script = ExtResource("1_obvdd")

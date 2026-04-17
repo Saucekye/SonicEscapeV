@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cgwf2325rtxoc"]
-
-[ext_resource type="Script" uid="uid://l1nbysj7rcch" path="res://Scripts/Characters/Components/airspin.gd" id="1_umebb"]
-
-[node name="Airspin" type="Node"]
-script = ExtResource("1_umebb")
