@@ -2789,6 +2789,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_thhbk")
+skid_min_speed = 0.0
 
 [node name="Fly" parent="." instance=ExtResource("2_q2ouv")]
 

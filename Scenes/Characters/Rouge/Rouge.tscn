@@ -1,11 +1,18 @@
-[gd_scene load_steps=53 format=3 uid="uid://84nvlp6r1vdx"]
+[gd_scene load_steps=60 format=3 uid="uid://84nvlp6r1vdx"]
 
-[ext_resource type="Script" uid="uid://cef1sawdcrptx" path="res://Scripts/Characters/Knuckles/knuckles.gd" id="1_j7v3w"]
+[ext_resource type="Script" uid="uid://7wxui6ffl844" path="res://Scripts/Characters/Knuckles/knuckles.gd" id="1_j7v3w"]
+[ext_resource type="PackedScene" uid="uid://hj332s057asw" path="res://Scenes/Characters/Components/Air Actions/glide.tscn" id="2_3q2es"]
+[ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="2_fen2b"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_shde5"]
+[ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="3_2hxrt"]
 [ext_resource type="Texture2D" uid="uid://b6iv81y4pdkmq" path="res://Sprites/Characters/Rouge/rouge.png" id="3_e4sc3"]
+[ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="4_nm4xs"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="4_wip3k"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="5_e3pgy"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_hktpw"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="6_5gpwu"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_om0eb"]
+[ext_resource type="PackedScene" uid="uid://bnyfi3disj12u" path="res://Scenes/Characters/Components/Wall Mechanics/wall_climb.tscn" id="7_ehiok"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_j2htw"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_dungh"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="9_8lemr"]
@@ -2876,6 +2883,20 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_j7v3w")
+
+[node name="Glide" parent="." instance=ExtResource("2_3q2es")]
+
+[node name="Airspin" parent="." instance=ExtResource("3_2hxrt")]
+
+[node name="Airup" parent="." instance=ExtResource("4_nm4xs")]
+
+[node name="Stomp" parent="." instance=ExtResource("5_e3pgy")]
+
+[node name="Trick" parent="." instance=ExtResource("6_5gpwu")]
+
+[node name="WallClimb" parent="." instance=ExtResource("7_ehiok")]
+
+[node name="Flymeter" parent="." instance=ExtResource("2_fen2b")]
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0.0799999, 0.280001)

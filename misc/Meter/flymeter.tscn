@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="2_bnnr7"]
 
 [node name="Flymeter" type="TextureProgressBar"]
+visible = false
 offset_left = -0.393367
 offset_top = 0.331327
 offset_right = 63.6066

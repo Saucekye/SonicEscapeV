@@ -2788,6 +2788,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_56hwh")
+skid_min_speed = 0.0
 
 [node name="Fly" parent="." instance=ExtResource("2_dmr0s")]
 
@@ -2798,6 +2799,7 @@ script = ExtResource("1_56hwh")
 [node name="Trick" parent="." instance=ExtResource("17_aawou")]
 
 [node name="Flymeter" parent="." instance=ExtResource("6_3c8l4")]
+visible = true
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0.0799999, 0.280001)

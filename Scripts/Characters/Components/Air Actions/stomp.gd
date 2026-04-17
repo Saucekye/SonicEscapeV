@@ -1,5 +1,7 @@
 extends Components_Action
 
+@export var speed_y : int = 1000
+
 func action() -> void:
 	player.can_dash = true
 	player.can_stomp = false
@@ -10,8 +12,9 @@ func action() -> void:
 	player.falling = true
 	player.dashed = true
 	player.can_dash = true
+	player.flying = false
 	player.time_elapsed = 0
-	player.motion.y = 1000
+	player.motion.y = speed_y
 	player.ap.play("stomp")
 	player.fall_gravity = 10500     # Very high fall gravity for a fast, snappy slam
 	player.sfx.pitch_scale = 2

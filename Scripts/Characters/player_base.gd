@@ -41,63 +41,63 @@ signal amazing
 # ─────────────────────────────────────────────
 # Movement State Variables
 # ─────────────────────────────────────────────
-var is_boosting = false         # True while the ground boost is active (drains meter)
-var stomp_no_bounce = false     # Unused/reserved: prevent bounce after stomp
-var is_jumping = false          # True between pressing jump and releasing it
-var jump_pressed = false        # Tracks whether jump was pressed this frame
-var wait = false                # True when the idle "wait" animation is playing
-var max_speed = 500             # Current speed cap — increases with momentum
-const SPEED = 10.0              # Unused base speed constant (legacy)
-const JUMP_VELOCITY = -500.0    # Unused constant (jump uses the formula-based jump_velocity instead)
-var acc = 15                    # Horizontal acceleration — increases with slope/momentum
-const fric = 60                 # Base friction constant used in several friction calculations
-const DASHSPEED = 10000         # Unused dash speed constant (legacy)
-var can_dash = true             # Whether the aerial dash is available
-var dashx = false               # True after a dash; used to delay friction re-application
-var dashed = false              # Flags that a special air action has been used this airtime
-var crouch = false              # True when crouching or about to roll
-var spin = 0                    # Unused spin variable (legacy)
-var ball = false                # True when rolling (spin ball mode)
-var falling = false             # True when in a falling/stomp/airspin state
-var time_elapsed = 0            # Momentum accumulator — higher = more speed/less friction
-var saveddir = 0                # Unused saved direction variable
-var last_trick = ""             # Tracks the last trick performed, to cycle through them in order
-var can_stomp = true            # Whether the downward air stomp is currently allowed
-var bounce = 0                  # How many consecutive stomps have been performed (affects bounce height)
-var next_bounce = false         # True when the character should bounce on the next floor contact
-var is_ready = false            # True when the peel-out charge is active
-var is_spinningdash = false     # True when the spin dash charge is active
+var is_boosting = false         ## True while the ground boost is active (drains meter)
+var stomp_no_bounce = false     ## Unused/reserved: prevent bounce after stomp
+var is_jumping = false          ## True between pressing jump and releasing it
+var jump_pressed = false        ## Tracks whether jump was pressed this frame
+var wait = false                ## True when the idle "wait" animation is playing
+var max_speed = 500             ## Current speed cap — increases with momentum
+const SPEED = 10.0              ## Unused base speed constant (legacy)
+const JUMP_VELOCITY = -500.0    ## Unused constant (jump uses the formula-based jump_velocity instead)
+var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
+const fric = 60                 ## Base friction constant used in several friction calculations
+const DASHSPEED = 10000         ## Unused dash speed constant (legacy)
+var can_dash = true             ## Whether the aerial dash is available
+var dashx = false               ## True after a dash; used to delay friction re-application
+var dashed = false              ## Flags that a special air action has been used this airtime
+var crouch = false              ## True when crouching or about to roll
+var spin = 0                    ## Unused spin variable (legacy)
+var ball = false                ## True when rolling (spin ball mode)
+var falling = false             ## True when in a falling/stomp/airspin state
+var time_elapsed = 0            ## Momentum accumulator — higher = more speed/less friction
+var saveddir = 0                ## Unused saved direction variable
+var last_trick = ""             ## Tracks the last trick performed, to cycle through them in order
+var can_stomp = true            ## Whether the downward air stomp is currently allowed
+var bounce = 0                  ## How many consecutive stomps have been performed (affects bounce height)
+var next_bounce = false         ## True when the character should bounce on the next floor contact
+var is_ready = false            ## True when the peel-out charge is active
+var is_spinningdash = false     ## True when the spin dash charge is active
 
-var flying = false      # True while the fly/hover ability is active
-var flymeter_amount = 85       # Remaining fly energy (drains per flutter, resets on ground/rail)
-var swipe = false       # True during the swipe attack animation window
+var flying = false      ## True while the fly/hover ability is active
+var flymeter_amount = 85       ## Remaining fly energy (drains per flutter, resets on ground/rail)
+var swipe = false       ## True during the swipe attack animation window
 
-var is_drilling = false             # True while the wall-drill ability is active
-var drill_start_time = 0.0          # Timestamp when drilling started (currently unused)
-var original_collision_mask = collision_mask  # Saved mask — restored when drilling ends
+var is_drilling = false             ## True while the wall-drill ability is active
+var drill_start_time = 0.0          ## Timestamp when drilling started (currently unused)
+var original_collision_mask = collision_mask  ## Saved mask — restored when drilling ends
 
 # ─────────────────────────────────────────────
 # Drop Dash Variables
 # ─────────────────────────────────────────────
-var is_drop_dashing = false         # True once the drop dash is fully charged in the air
-var drop_dash_charge = 0.0          # Timer tracking how long jump has been held in air
-var drop_dash_charge_time = 0.3     # Seconds required to fully charge a drop dash
-var drop_dash_speed = 1400          # Speed applied when the drop dash triggers on landing
+var is_drop_dashing = false         ## True once the drop dash is fully charged in the air
+var drop_dash_charge = 0.0          ## Timer tracking how long jump has been held in air
+var drop_dash_charge_time = 0.3     ## Seconds required to fully charge a drop dash
+var drop_dash_speed = 1400          ## Speed applied when the drop dash triggers on landing
 
 # ─────────────────────────────────────────────
 # Physics & Rotation State
 # ─────────────────────────────────────────────
-var motion := Vector2(0,0)      # Internal velocity — applied to CharacterBody2D.velocity each frame
-var rot := 0.0                  # Current rotation (snapped to floor angle)
-var slopeangle := 0.0           # Angle of the surface the character is standing on
-var slopefactor := 0.0          # X component of the floor normal; used to scale slope effects
-var grounded := false           # Tracks the previous grounded state for momentum conversion on landing
-var falloffwall = false         # Unused wall-fall flag (legacy)
-var control_lock = false        # When true, player input cannot change direction (e.g. during spindash charge)
-var stuck = false               # Unused stuck flag
-var canjump = false             # Legacy coyote jump flag (replaced by is_coyote_time_active())
-var ouch = false                # True while the hurt animation/invincibility is playing
-var invincible = false          # True during invincibility frames after taking damage
+var motion := Vector2(0,0)      ## Internal velocity — applied to CharacterBody2D.velocity each frame
+var rot := 0.0                  ## Current rotation (snapped to floor angle)
+var slopeangle := 0.0           ## Angle of the surface the character is standing on
+var slopefactor := 0.0          ## X component of the floor normal; used to scale slope effects
+var grounded := false           ## Tracks the previous grounded state for momentum conversion on landing
+var falloffwall = false         ## Unused wall-fall flag (legacy)
+var control_lock = false        ## When true, player input cannot change direction (e.g. during spindash charge)
+var stuck = false               ## Unused stuck flag
+var canjump = false             ## Legacy coyote jump flag (replaced by is_coyote_time_active())
+var ouch = false                ## True while the hurt animation/invincibility is playing
+var invincible = false          ## True during invincibility frames after taking damage
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -105,82 +105,82 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 # Jump Arc (formula-based — avoids magic numbers)
 # These exports allow tuning jump feel from the Inspector.
 # ─────────────────────────────────────────────
-@export var jump_height : float = 260           # Peak height in pixels
-@export var jump_time_to_peak : float = 0.5     # Seconds to reach peak
-@export var jump_time_to_descent : float = 0.45 # Seconds to fall back down
+@export var jump_height : float = 260           ## Peak height in pixels
+@export var jump_time_to_peak : float = 0.5     ## Seconds to reach peak
+@export var jump_time_to_descent : float = 0.45 ## Seconds to fall back down
 
-# Fall gravity used as a baseline reference for restoring gravity after special moves
+## Fall gravity used as a baseline reference for restoring gravity after special moves
 var default = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
 
-# Gravity during the upward arc (weaker = floatier rise)
+## Gravity during the upward arc (weaker = floatier rise)
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
 
-# Gravity during the downward arc (stronger = snappier fall)
+## Gravity during the downward arc (stronger = snappier fall)
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
 
 # ─────────────────────────────────────────────
 # Attachment System (grabbing onto a flying player)
 # ─────────────────────────────────────────────
-var attached_to_entity: Node2D = null       # The flying player this character is holding onto
-var entity_attachment_offset: Vector2 = Vector2.ZERO  # Offset from the entity's position at time of attach
+var attached_to_entity: Node2D = null       ## The flying player this character is holding onto
+var entity_attachment_offset: Vector2 = Vector2.ZERO  ## Offset from the entity's position at time of attach
 
 # ─────────────────────────────────────────────
 # Item Holding System
 # ─────────────────────────────────────────────
-var held_item: Node2D = null                        # Reference to the item currently being carried
-var item_hold_offset: Vector2 = Vector2(0, -30)     # Where the item appears relative to the character
+var held_item: Node2D = null                        ## Reference to the item currently being carried
+var item_hold_offset: Vector2 = Vector2(0, -30)     ## Where the item appears relative to the character
 
 # ─────────────────────────────────────────────
 # Direction & Wall Jump State
 # ─────────────────────────────────────────────
-var reverse_to_right = false    # Unused reverse direction flag
-var reverse_to_left = true      # Unused reverse direction flag
+var reverse_to_right = false    ## Unused reverse direction flag
+var reverse_to_left = true      ## Unused reverse direction flag
 var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0  # Initial upward velocity on jump
-var direction = 0               # Current horizontal input: -1, 0, or 1
-var just_wall_jumped = false    # Prevents double-triggering wall jump logic
-var has_jumped = false          # Prevents coyote jump after a real jump
+var direction = 0               ## Current horizontal input: -1, 0, or 1
+var just_wall_jumped = false    ## Prevents double-triggering wall jump logic
+var has_jumped = false          ## Prevents coyote jump after a real jump
 
 # ─────────────────────────────────────────────
 # Preloaded Scenes
 # ─────────────────────────────────────────────
-var smoke = preload("res://Scenes/Effect/Smoke Attack.tscn")          # Air dash / burst smoke
-var sparkle = preload("res://Scenes/Effect/Sparkle.tscn")             # Trick sparkle effect
-var smokeground = preload("res://misc/runsmoke.tscn")   # Foot dust when running fast
-var ring_scene = preload("res://Scenes/Obstacles/Rings/Rings.tscn")  # Rings scattered on damage
+var smoke = preload("res://Scenes/Effect/Smoke Attack.tscn")          ## Air dash / burst smoke
+var sparkle = preload("res://Scenes/Effect/Sparkle.tscn")             ## Trick sparkle effect
+var smokeground = preload("res://misc/runsmoke.tscn")   ## Foot dust when running fast
+var ring_scene = preload("res://Scenes/Obstacles/Rings/Rings.tscn")  ## Rings scattered on damage
 
 # ─────────────────────────────────────────────
 # Spin Dash Variables
 # ─────────────────────────────────────────────
-var spin_charge = 0                 # Number of times the charge button was pressed during spindash
-var spin_dash_speed = 0             # Calculated release speed for spindash/peelout
-var is_spinning = false             # True while any spinning charge is held
-var max_spin_charge = 20            # Unused cap on spin charge level
-var spin_dash_acceleration = 600    # Speed added per charge press
+var spin_charge = 0                 ## Number of times the charge button was pressed during spindash
+var spin_dash_speed = 0             ## Calculated release speed for spindash/peelout
+var is_spinning = false             ## True while any spinning charge is held
+var max_spin_charge = 20            ## Unused cap on spin charge level
+var spin_dash_acceleration = 600    ## Speed added per charge press
 
 # ─────────────────────────────────────────────
 # Coyote Time Variables
 # ─────────────────────────────────────────────
-var coyote_time := 0.25             # Seconds after leaving a ledge where you can still jump
-var last_grounded_time := 0.0       # Timestamp of the last frame on the ground
-var was_on_floor := false           # Whether the character was on the floor last frame
-var prev_grounded = false           # Previous grounded state (for landing detection)
-var grinding = false                # True while grinding on a rail
+var coyote_time := 0.25             ## Seconds after leaving a ledge where you can still jump
+var last_grounded_time := 0.0       ## Timestamp of the last frame on the ground
+var was_on_floor := false           ## Whether the character was on the floor last frame
+var prev_grounded = false           ## Previous grounded state (for landing detection)
+var grinding = false                ## True while grinding on a rail
 
 # Misc
-var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  # Unused texture path
-var stickdir = Vector2(0,0)         # Virtual joystick input direction (mobile only)
-@export var player_path: NodePath   # Path to the player node this AI character should follow
-var player: CharacterBody2D         # Reference to the followed player, resolved from player_path
+var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
+var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
+@export var player_path: NodePath   ## Path to the player node this AI character should follow
+var player: CharacterBody2D         ## Reference to the followed player, resolved from player_path
 
 # ─────────────────────────────────────────────
 # Hanging / Rail State
 # ─────────────────────────────────────────────
-var hang = false        # True while attached to a flying player (disables move_and_slide)
-var hangable = false    # Whether attachment is currently allowed (cleared on ground contact)
+var hang = false        ## True while attached to a flying player (disables move_and_slide)
+var hangable = false    ## Whether attachment is currently allowed (cleared on ground contact)
 
 
 func _ready():
-	$Trail2D.visible = false    # Trail starts hidden; shown when speed is high enough
+	$Trail2D.visible = false    # #Trail starts hidden; shown when speed is high enough
 	timer.wait_time = 12        # Wall-exit speed reset delay
 	$Sprite2D.visible = true
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
@@ -1017,31 +1017,6 @@ func handle_floor_logic(delta):
 	# Boost input check (currently returns early without doing anything — boost is handled in _physics_process)
 	if Input.is_action_just_pressed("airspin") and ball == false and not crouch and not is_spinning and not is_spinningdash and Test.meter >= 50 and abs(motion.x) > 0:
 		return
-
-func execute_drop_dash():
-	# Trigger a drop dash burst on landing after a charged air hold
-	is_drop_dashing = false
-	drop_dash_charge = 0.0
-	ball = true
-	crouch = true
-	
-	var dash_direction = 1 if not sprite.flip_h else -1
-	if direction != 0:
-		dash_direction = sign(direction)
-	
-	# Only apply if below the speed threshold (avoids fighting existing fast momentum)
-	if max_speed <= 1000:
-		motion.x = drop_dash_speed * dash_direction
-		time_elapsed = 100
-		max_speed = 1000
-		acc = 5000
-	
-	smokeemit()
-	$Sfx.pitch_scale = 1.8
-	$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
-	$Sfx.play()
-	ap.play("ball")
-	ap.speed_scale = 2
 			
 func reset_dash_after_delay() -> void:
 	# Unused coroutine — originally intended to delay can_dash reset
@@ -1050,45 +1025,51 @@ func reset_dash_after_delay() -> void:
 	can_stomp = true
 
 func handle_air_logic(delta, is_grounded):
-	if not is_on_floor():
-		# Enable attachment only when freely airborne (not grinding or dashing)
-		if not hang and not grinding and not dashed:
-			hangable = true
-			
-		rot = 0  # Always reset rotation while airborne
+	if is_on_floor():
+		return
+	# Enable attachment only when freely airborne (not grinding or dashing)
+	if not hang and not grinding and not dashed:
+		hangable = true
 		
-		if not hang:
-			control_lock = false  # Restore directional input in the air
-			
-		crouch = false
-		floor_snap_length = 0  # No floor snapping in the air
+	rot = 0  # Always reset rotation while airborne
+	
+	if not hang:
+		control_lock = false  # Restore directional input in the air
+		
+	crouch = false
+	floor_snap_length = 0  # No floor snapping in the air
 
-		# Cancel a pending bounce if airborne without falling
-		if next_bounce == true and falling == false:
-			next_bounce = false
+	# Cancel a pending bounce if airborne without falling
+	if next_bounce == true and falling == false:
+		next_bounce = false
+	
+	# You can enter ball mode upon landing
+	if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+		crouch = true
+		ball = true
+	
+	# ── Drop Dash Charging ─────────────────────────────────────────
+	# Charge the drop dash by holding jump while airborne
+	if Input.is_action_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
+		drop_dash_charge += delta
+		if drop_dash_charge >= drop_dash_charge_time:
+			is_drop_dashing = true  # Fully charged — ready to fire on landing
+	
+	# Play jump animation if not in a special air state
+	if dashed == false:
+		if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not flying and not hang and not is_on_wall() and not is_on_floor():
+			if ap.current_animation != "stomp":
+				ap.play("jump")
+		# Clamp horizontal speed at low momentum
+		if time_elapsed < 50 and ball == false:
+			motion.x = clamp(motion.x , -1000, 1000)
+			time_elapsed = 0
+		elif time_elapsed >= 60 and ball == false:
+			# Slightly higher clamp on flat trajectory
+			if slopefactor == 0:
+				motion.x = clamp(motion.x , -1300, 1300)
 		
-		# ── Drop Dash Charging ─────────────────────────────────────────
-		# Charge the drop dash by holding jump while airborne
-		if Input.is_action_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
-			drop_dash_charge += delta
-			if drop_dash_charge >= drop_dash_charge_time:
-				is_drop_dashing = true  # Fully charged — ready to fire on landing
-		
-		# Play jump animation if not in a special air state
-		if dashed == false:
-			if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not flying and not hang and not is_on_wall() and not is_on_floor():
-				if ap.current_animation != "stomp":
-					ap.play("jump")
-			# Clamp horizontal speed at low momentum
-			if time_elapsed < 50 and ball == false:
-				motion.x = clamp(motion.x , -1000, 1000)
-				time_elapsed = 0
-			elif time_elapsed >= 60 and ball == false:
-				# Slightly higher clamp on flat trajectory
-				if slopefactor == 0:
-					motion.x = clamp(motion.x , -1300, 1300)
-			
-		handle_air_actions(is_grounded)
+	handle_air_actions(is_grounded)
 
 @abstract
 func handle_air_actions(is_grounded) -> void
@@ -1131,6 +1112,42 @@ func handle_air_actions(is_grounded) -> void
 
 @abstract
 func handle_ground_action() -> void
+
+# ─────────────────────────────────────────────
+# Glide Physics (Knuckles-unique)
+# Called every frame while the glide is active and jump is held.
+# ─────────────────────────────────────────────
+func handle_glide_physics():
+	if (flying and Input.is_action_pressed("ui_accept")) and not Input.is_action_just_released("ui_accept") and not is_on_wall():
+		if ap.current_animation != "fly":
+			ap.play("fly")
+			ap.speed_scale = 1
+
+		# Clamp vertical speed to a gentle glide descent range
+		motion.y = clamp(motion.y, -100, 400)
+
+		# Maintain forward horizontal momentum during glide
+		var glide_direction = 1 if sprite.flip_h == false else -1
+		if abs(motion.x) < 1100:
+			motion.x = move_toward(motion.x, 1100 * glide_direction, acc * get_process_delta_time())
+
+		# ── Glide End Conditions ───────────────────────────────────────
+		if is_on_floor():
+			# Landed — end glide and emit smoke
+			flying = false
+			fall_gravity = default
+			can_dash = true
+			smokeemit()
+		elif is_on_wall():
+			# Hit a wall — transition to wall-climb (handle_wall_mechanics takes over)
+			flying = false
+			fall_gravity = default
+			can_dash = true
+		elif not Input.is_action_pressed("ui_accept"):
+			# Button released mid-glide — fall normally
+			flying = false
+			fall_gravity = default
+			falling = true
 
 func handle_jump_input(is_grounded):
 	var slope_influence = abs(slopefactor)
@@ -1219,18 +1236,23 @@ func handle_wall_mechanics() -> void
 func update_animations():
 	# doturn is a 0–2 scale representing how close to max speed the character is (used for anim speed)
 	var doturn = abs(((abs(motion.x)/max_speed)*2))
-	if ouch == false:
+	if not ouch:
+		# Don't override the climb animation while on a wall
+		if (wall_cast.is_colliding() or wall_cast_2.is_colliding()) and (not raycast.is_colliding()) and rot == 0:
+			return
 		if is_on_floor():
-			if ball == true and grinding == false:
+			if ball and not grinding:
 				ap.speed_scale = 1
 				ap.play("ball")
 			
-			if direction == 0 and grinding == false:
+			if direction == 0 and not grinding:
 				handle_idle_animations()
 			else:
 				handle_movement_animations(doturn)
 		else:
-			ap.speed_scale = 1  # Reset speed scale in air (individual air anims control their own)
+			# Don't reset speed scale while the glide animation is playing
+			if not flying:
+				ap.speed_scale = 1  # Reset speed scale in air (individual air anims control their own)
 	else:
 		ap.play("hurt")
 
@@ -1574,6 +1596,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Spring"):
 		if is_player == true:
 			tricknumber()
+			flying = false          # Springs cancel the glide
 			GlobalCanvasLayer.tricks = 0
 			Test.meter += 50  # Springs give a meter bonus
 		
