@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://hj332s057asw"]
+
+[ext_resource type="Script" uid="uid://cjiiai4vlheox" path="res://Scripts/Characters/Components/Air Actions/glide.gd" id="1_fvnds"]
+
+[node name="Glide" type="Node"]
+script = ExtResource("1_fvnds")

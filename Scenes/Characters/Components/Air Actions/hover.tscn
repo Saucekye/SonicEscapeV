@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0shm35wgl3so"]
+
+[ext_resource type="Script" uid="uid://xx6wbxfhpjq6" path="res://Scripts/Characters/Components/Air Actions/hover.gd" id="1_bu1lo"]
+
+[node name="Hover" type="Node"]
+script = ExtResource("1_bu1lo")
