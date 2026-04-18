@@ -472,9 +472,9 @@ func _physics_process(delta):
 
 	# ── Per-Frame Sub-Systems ──────────────────────────────────────────
 	handle_floor_logic(delta)
-	handle_air_logic(delta, is_grounded)
+	handle_air_logic(delta, is_grounded)	## Abstract Method
 	handle_jump_input(is_grounded)
-	handle_wall_mechanics()
+	handle_wall_mechanics()		## Abstract Method
 	update_animations()
 	handle_hitbox()
 	handle_item(delta)
@@ -1005,7 +1005,7 @@ func handle_floor_logic(delta):
 			peelout()
 			
 		# Ground attack/action — only triggers if not already mid-aciton
-		handle_ground_action()
+		handle_ground_action()	## Abstract method
 
 	# Exit ball mode when any action button is pressed
 	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("trick") or Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("airup")) and ball == true and is_on_floor():
@@ -1073,81 +1073,12 @@ func handle_air_logic(delta, is_grounded):
 
 @abstract
 func handle_air_actions(is_grounded) -> void
-	#if grinding == false:
-		## ── Air Dash (flick) ───────────────────────────────────────────
-		#if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and can_dash == true and not $CollisionShape2D/WallCast.is_colliding() and not $CollisionShape2D/WallCast2.is_colliding() and not is_coyote_time_active():
-			#dash(direction)
-			#can_dash = false
-			#can_stomp = true
-			#ap.play("flick")
-				#
-		## ── Air Spin (horizontal boost, costs meter) ───────────────────
-		#if is_player == true and Test.meter >= 50 and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and direction != 0:
-			#airspin()
-			#ap.play("airspin")
-			#time_elapsed = 200
-			#max_speed = 1600
-			#can_dash = true
-			#can_stomp = true
-			#bounce = 0
-				#
-		## ── Air Up (vertical boost, costs meter) ──────────────────────
-		#if is_player == true and Test.meter >= 50 and ((Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_up")) or Input.is_action_just_pressed("airup")):
-			#airup()
-			#can_dash = true
-			#can_stomp = true
-			#bounce = 0
-			#
-		## ── Stomp (downward slam) ──────────────────────────────────────
-		#if Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_down") and can_stomp == true and not is_on_wall():
-			#airdown()
-			#can_dash = true
-			#can_stomp = false
-			
-				#
-		## ── Trick ──────────────────────────────────────────────────────
-		#if Input.is_action_just_pressed("trick") and not (is_on_wall_only() and (not $CollisionShape2D/Raycast.is_colliding()) and rot == 0):
-			#$Parry/AnimationPlayer.play("play")
-			#perform_trick()
 
 @abstract
 func handle_ground_action() -> void
 
-# ─────────────────────────────────────────────
-# Glide Physics (Knuckles-unique)
-# Called every frame while the glide is active and jump is held.
-# ─────────────────────────────────────────────
-func handle_glide_physics():
-	if (flying and Input.is_action_pressed("ui_accept")) and not Input.is_action_just_released("ui_accept") and not is_on_wall():
-		if ap.current_animation != "fly":
-			ap.play("fly")
-			ap.speed_scale = 1
-
-		# Clamp vertical speed to a gentle glide descent range
-		motion.y = clamp(motion.y, -100, 400)
-
-		# Maintain forward horizontal momentum during glide
-		var glide_direction = 1 if sprite.flip_h == false else -1
-		if abs(motion.x) < 1100:
-			motion.x = move_toward(motion.x, 1100 * glide_direction, acc * get_process_delta_time())
-
-		# ── Glide End Conditions ───────────────────────────────────────
-		if is_on_floor():
-			# Landed — end glide and emit smoke
-			flying = false
-			fall_gravity = default
-			can_dash = true
-			smokeemit()
-		elif is_on_wall():
-			# Hit a wall — transition to wall-climb (handle_wall_mechanics takes over)
-			flying = false
-			fall_gravity = default
-			can_dash = true
-		elif not Input.is_action_pressed("ui_accept"):
-			# Button released mid-glide — fall normally
-			flying = false
-			fall_gravity = default
-			falling = true
+@abstract
+func handle_wall_mechanics() -> void
 
 func handle_jump_input(is_grounded):
 	var slope_influence = abs(slopefactor)
@@ -1199,36 +1130,6 @@ func is_coyote_time_active():
 		return false
 	var time_since_grounded = Time.get_ticks_msec() / 1000.0 - last_grounded_time
 	return time_since_grounded < coyote_time and motion.y >= 0 and not was_on_floor
-
-@abstract
-func handle_wall_mechanics() -> void
-	# Wall-slide and wall-jump logic — only fires when pressing against a wall in the air
-	#if ($CollisionShape2D/WallCast.is_colliding() or $CollisionShape2D/WallCast2.is_colliding()) and (not $CollisionShape2D/Raycast.is_colliding()) and rot == 0:
-		#if is_player == true:
-			#tricknumber()
-			#GlobalCanvasLayer.tricks = 0
-		#falling = false
-		#dashed = false
-		#ball = false
-		#crouch = false
-		#motion.y = (motion.y)/1.3  # Slow the fall while on the wall
-		#ap.play("onwallair")
-		#
-		## Flip sprite to face away from the wall
-		#if $CollisionShape2D/WallCast.is_colliding():
-			#$Sprite2D.flip_h = true
-		#else:
-			#$Sprite2D.flip_h = false
-		#
-		#var wall_normal = get_wall_normal()
-		#var push_dir = 1 if wall_normal.x > 0 else -1  # Direction away from the wall
-		#
-		#if (Input.is_action_just_pressed("ui_accept")):
-			## Wall jump: push away from wall and launch upward
-			#position += Vector2(push_dir * 25, 0).rotated(rot)
-			#motion.x = 2500 * push_dir
-			#motion.y = (jump_velocity) / 1.5
-			#just_wall_jumped = true
 
 # ─────────────────────────────────────────────
 # Animation

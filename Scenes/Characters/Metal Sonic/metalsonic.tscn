@@ -1,9 +1,13 @@
-[gd_scene load_steps=52 format=3 uid="uid://bf2bqamx68rb2"]
+[gd_scene load_steps=56 format=3 uid="uid://bf2bqamx68rb2"]
 
-[ext_resource type="Script" uid="uid://cp4hgomoro7p4" path="res://Scripts/Characters/MetalSonic/metalsonic.gd" id="1_xon7e"]
+[ext_resource type="Script" uid="uid://cn8fdth1pf7um" path="res://Scripts/Characters/MetalSonic/metalsonic.gd" id="1_xon7e"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_ya1xr"]
+[ext_resource type="PackedScene" uid="uid://c2ipguhs5a8nb" path="res://Scenes/Characters/Components/Air Actions/fly.tscn" id="2_yk428"]
+[ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="3_hopts"]
 [ext_resource type="Texture2D" uid="uid://bm3a5bk4unx1p" path="res://Sprites/Characters/MetalSonic/metalsonic.png" id="3_m1qu7"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_cht55"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_lhsoh"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_hvbcv"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_t7fmt"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_2tq67"]
 [ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="9_x4wmt"]
@@ -2012,6 +2016,21 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_3tkgg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_hp6x6"]
 resource_name = "play"
 length = 0.3
@@ -2028,21 +2047,6 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_3tkgg"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l6ohk"]
 _data = {
 &"RESET": SubResource("Animation_3tkgg"),
@@ -2056,6 +2060,25 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_xon7e")
+
+[node name="Fly" parent="." instance=ExtResource("2_yk428")]
+
+[node name="Airspin" parent="." instance=ExtResource("3_hopts")]
+
+[node name="Stomp" parent="." instance=ExtResource("4_lhsoh")]
+
+[node name="Trick" parent="." instance=ExtResource("5_hvbcv")]
+
+[node name="Flymeter" type="TextureProgressBar" parent="."]
+offset_left = -0.393367
+offset_top = 0.33132696
+offset_right = 63.606632
+offset_bottom = 17.331327
+rotation = -1.56731
+scale = Vector2(0.01, 0.01)
+max_value = 85.0
+texture_under = ExtResource("9_x4wmt")
+texture_progress = ExtResource("10_li3im")
 
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1
@@ -2165,17 +2188,6 @@ position = Vector2(8.68, 8.84)
 rect = Rect2(-10, -10, 2.5, 2.5)
 
 [node name="onscreentimer" type="Timer" parent="."]
-
-[node name="Flymeter" type="TextureProgressBar" parent="."]
-offset_left = -0.393367
-offset_top = 0.331327
-offset_right = 63.6066
-offset_bottom = 17.3313
-rotation = -1.56731
-scale = Vector2(0.01, 0.01)
-max_value = 85.0
-texture_under = ExtResource("9_x4wmt")
-texture_progress = ExtResource("10_li3im")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0.0799999, 0.280001)

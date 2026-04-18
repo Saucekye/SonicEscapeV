@@ -1,11 +1,17 @@
-[gd_scene load_steps=52 format=3 uid="uid://deluxsuyw8dyd"]
+[gd_scene load_steps=58 format=3 uid="uid://deluxsuyw8dyd"]
 
-[ext_resource type="Script" uid="uid://c4ukoawtxc1br" path="res://Scripts/Characters/Blaze/blaze.gd" id="1_fioc4"]
+[ext_resource type="Script" uid="uid://uhvmshiwaoy4" path="res://Scripts/Characters/Blaze/blaze.gd" id="1_fioc4"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_itywx"]
+[ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="2_m0yi4"]
+[ext_resource type="PackedScene" uid="uid://b0shm35wgl3so" path="res://Scenes/Characters/Components/Air Actions/hover.tscn" id="2_ss304"]
 [ext_resource type="Texture2D" uid="uid://w744lsvt15wv" path="res://Scenes/Characters/Blaze/blaze.png" id="3_fioc4"]
+[ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="3_ss304"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_1dccu"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_305ry"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_ed1cx"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_nnxwy"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_fwb28"]
+[ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="7_305ry"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_m46o0"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_lwbsf"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="9_ah0rx"]
@@ -2112,6 +2118,18 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fioc4")
 
+[node name="Hover" parent="." instance=ExtResource("2_ss304")]
+
+[node name="Airspin" parent="." instance=ExtResource("2_m0yi4")]
+
+[node name="Airup" parent="." instance=ExtResource("3_ss304")]
+
+[node name="Stomp" parent="." instance=ExtResource("4_305ry")]
+
+[node name="Trick" parent="." instance=ExtResource("5_ed1cx")]
+
+[node name="Flymeter" parent="." instance=ExtResource("7_305ry")]
+
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1
 width = 30.0
@@ -2221,6 +2239,9 @@ rect = Rect2(-10, -10, 2.5, 2.5)
 
 [node name="onscreentimer" type="Timer" parent="."]
 
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, 0.24000001)
+
 [node name="Arrow" type="AnimatedSprite2D" parent="."]
 visible = false
 z_index = 1
@@ -2229,9 +2250,6 @@ scale = Vector2(0.009, 0.009)
 sprite_frames = SubResource("SpriteFrames_3p5yj")
 autoplay = "default"
 speed_scale = 0.8
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(0, 0.24000001)
 
 [node name="Parry" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)

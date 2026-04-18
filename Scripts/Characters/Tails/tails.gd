@@ -8,6 +8,7 @@ extends Player
 func handle_air_actions(is_grounded) -> void:
 	if grinding == true:
 		return
+		
 	# ── Fly (hold jump while airborne) ────────────────────────────
 	# Two separate conditions: sustained fly while holding, and initial press
 	if can_dash == true and flying == true and flymeter_amount >= 1 and Input.is_action_pressed("ui_accept") and (not Input.is_action_pressed("ui_down") or Input.is_action_pressed("ui_down")):
@@ -33,6 +34,8 @@ func handle_air_actions(is_grounded) -> void:
 		trick_component.action()
 
 func handle_ground_action() -> void:
+	# ── Swipe Attack (grounded) ─────────────────────────────────────────
+	# Only triggers when not already swiping
 	if Input.is_action_just_pressed("airspin") and dashed == false and swipe == false:
 		swipe_attack_component.action()
 
