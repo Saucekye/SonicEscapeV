@@ -2,13 +2,14 @@ extends Components_Action
 
 func action() -> void:
 # ── Drop Dash Release ──────────────────────────────────────────
-	if player.is_drop_dashing and player.drop_dash_charge >=  player.drop_dash_charge_time:
-		if Input.is_action_pressed("ui_accept"):
-			_execute_drop_dash()
-		else:
-			# Button was released before landing — cancel the drop dash
-			player.is_drop_dashing = false
-			player.drop_dash_charge = 0.0
+	if not player.is_drop_dashing or not player.drop_dash_charge >= player.drop_dash_charge_time:
+		return
+	if Input.is_action_pressed("ui_accept"):
+		_execute_drop_dash()
+	else:
+		# Button was released before landing — cancel the drop dash
+		player.is_drop_dashing = false
+		player.drop_dash_charge = 0.0
 
 func _execute_drop_dash() -> void:
 	# Trigger a drop dash burst on landing after a charged air hold

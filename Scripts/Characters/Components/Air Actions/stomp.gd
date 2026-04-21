@@ -3,6 +3,9 @@ extends Components_Action
 @export var speed_y : int = 1000
 
 func action() -> void:
+	if not (Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_down") and player.can_stomp == true and not player.is_on_wall()):
+		return
+	
 	player.can_dash = true
 	player.can_stomp = false
 	

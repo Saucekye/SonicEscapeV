@@ -2135,7 +2135,6 @@ script = ExtResource("1_vuqnu")
 [node name="DropDash" parent="." instance=ExtResource("8_acmx4")]
 
 [node name="Flymeter" parent="." instance=ExtResource("7_uvhn0")]
-visible = false
 
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1

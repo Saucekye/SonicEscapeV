@@ -1,6 +1,9 @@
 extends Components_Action
 
 func action() -> void:
+	if not (Input.is_action_just_pressed("trick") and not (player.is_on_wall_only() and (not player.raycast.is_colliding()) and player.rot == 0) and player.flying == false):
+		return
+			
 	player.ap.play("play")
 	
 	# Cycle through trick animations in order; gain meter and count tricks

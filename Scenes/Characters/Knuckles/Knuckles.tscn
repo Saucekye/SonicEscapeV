@@ -2883,14 +2883,6 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fda6k")
-is_player = null
-stored_layer = null
-stored_mask = null
-skid_min_speed = null
-jump_height = null
-jump_time_to_peak = null
-jump_time_to_descent = null
-player_path = null
 
 [node name="Glide" parent="." instance=ExtResource("1_xty85")]
 

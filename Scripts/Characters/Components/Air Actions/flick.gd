@@ -1,6 +1,9 @@
 extends Components_Action
 
 func action() -> void:
+	if not (Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and player.can_dash == true and not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding() and not player.is_coyote_time_active()):
+		return
+	
 	player.can_dash = false
 	player.can_stomp = true
 	player.ap.play("flick")
@@ -25,6 +28,7 @@ func action() -> void:
 		player.max_speed = 1000
 		player.acc = 5000
 		player.motion.x = 1050 * sign(player.direction) if player.direction != 0 else 1050 * (1 if player.sprite.flip_h == false else -1)
+	
 	await get_tree().create_timer(0.13).timeout
 	player.fall_gravity = player.default   # Restore gravity after dash hang
 	player.dashx = true

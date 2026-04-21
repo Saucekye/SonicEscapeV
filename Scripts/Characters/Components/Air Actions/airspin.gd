@@ -8,6 +8,8 @@ extends Components_Action
 @export var x_speed : int = 1200
 
 func action() -> void:
+	if not (player.is_player == true and Test.meter >= 50 and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and not player.flying):
+		return
 	player.ap.play("airspin")
 	player.time_elapsed = max_speed_startup
 	player.max_speed = max_speed_startup
