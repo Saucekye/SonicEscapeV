@@ -295,11 +295,10 @@ func flash_sprite(duration: float = 0.1) -> void:
 func _on_hit_box_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("Playerattack") and begin == true:
-
 		await flash_sprite()
-
-		area.get_parent().can_stomp = true
-		area.get_parent().bounce = 0
+		if area.is_in_group("Player"):
+			area.get_parent().can_stomp = true
+			area.get_parent().bounce = 0
 
 		attackstaken += 1
 

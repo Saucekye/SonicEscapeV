@@ -11,8 +11,8 @@ extends Node2D
 @export var chunk_04: PackedScene = preload("res://Scenes/LevelChunks/Chunk_04.tscn")
 @export var chunk_05: PackedScene = preload("res://Scenes/LevelChunks/Chunk_05.tscn")
 @export var chunk_06: PackedScene = preload("res://Scenes/LevelChunks/Chunk_06.tscn")
-
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
+@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
 
@@ -46,19 +46,19 @@ func _ready():
 	if Test.level == 0:
 		_spawn_rest_level()
 	elif Test.level % 4 == 0:
-		if randi() % 2 == 0:
+		var roll = rng.randi_range(0, 2)
+		if roll == 0:
 			_spawn_boss_level()
+		elif roll == 1:
+			_spawn_boss1_level()
 		else:
 			_spawn_rest_level()
 	else:
 		_spawn_start_chunk()
 		_spawn_middle_chunks()
 		_spawn_end_chunk()
-
-	# Spawn Miku on the ground in middle chunks
 		_spawn_miku_on_ground()
 
-	# Build minimap
 	if minimap_path != NodePath() and has_node(minimap_path):
 		get_node(minimap_path).build_map(chunks)
 
@@ -76,6 +76,15 @@ func _spawn_rest_level():
 
 func _spawn_boss_level():
 	var chunk := chunk_boss.instantiate()
+	add_child(chunk)
+	var start = chunk.get_node("Start").global_position
+	chunk.global_position = first_chunk_offset - start
+	last_end_position = chunk.get_node("End").global_position
+	chunks.append(chunk)
+	end_spawned = true
+
+func _spawn_boss1_level():
+	var chunk := chunk_boss1.instantiate()
 	add_child(chunk)
 	var start = chunk.get_node("Start").global_position
 	chunk.global_position = first_chunk_offset - start
@@ -144,7 +153,7 @@ func _spawn_miku_on_ground():
 
 	# Player start position
 	var player_start_pos = chunks[0].get_node("Start").global_position
-	var min_distance := 100  # Minimum distance from player
+	var min_distance := 100
 
 	var attempts := 1000
 	while attempts > 0:
@@ -161,7 +170,7 @@ func _spawn_miku_on_ground():
 				if tilemap.get_cell_source_id(0, above) == -1:
 					var world_pos = tilemap.map_to_world(cell)
 					world_pos += tilemap.global_position
-					world_pos += Vector2(0, -32)  # Slightly above tile
+					world_pos += Vector2(0, -32)
 					if world_pos.distance_to(player_start_pos) >= min_distance:
 						miku.global_position = world_pos
 						return
