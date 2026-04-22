@@ -1,14 +1,20 @@
-[gd_scene load_steps=49 format=3 uid="uid://coplphurnieop"]
+[gd_scene load_steps=58 format=3 uid="uid://coplphurnieop"]
 
-[ext_resource type="Script" uid="uid://dwt852hxg6kwi" path="res://Scripts/Characters/Amy/amy.gd" id="1_whybq"]
+[ext_resource type="Script" uid="uid://hyh5d2v8has2" path="res://Scripts/Characters/Amy/amy.gd" id="1_whybq"]
+[ext_resource type="PackedScene" uid="uid://bl17rh8kbubo" path="res://Scenes/Characters/Components/Air Actions/swipe_attack.tscn" id="2_oejq8"]
+[ext_resource type="PackedScene" uid="uid://cqpabthyx2bvr" path="res://Scenes/Characters/Components/Air Actions/flick.tscn" id="3_ysoxq"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="4_jjvf4"]
+[ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_ocgdo"]
+[ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_dj5vv"]
 [ext_resource type="Texture2D" uid="uid://dyri5qcxv2plu" path="res://Sprites/Characters/Amy/amy.png" id="5_whybq"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="6_f7cq1"]
+[ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="6_ysoxq"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="7_kpv6k"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="8_5w0gx"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="9_i65mo"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_qsu3h"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="10_8qel3"]
+[ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="15_ocgdo"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2772,6 +2778,28 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_vk4aa"]
+atlas = ExtResource("15_ocgdo")
+region = Rect2(0, 0, 35, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rx4k"]
+atlas = ExtResource("15_ocgdo")
+region = Rect2(35, 0, 35, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dj5vv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vk4aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rx4k")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 4
@@ -2779,6 +2807,16 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_whybq")
+
+[node name="SwipeAttack" parent="." instance=ExtResource("2_oejq8")]
+
+[node name="Flick" parent="." instance=ExtResource("3_ysoxq")]
+
+[node name="Stomp" parent="." instance=ExtResource("4_ocgdo")]
+
+[node name="Trick" parent="." instance=ExtResource("5_dj5vv")]
+
+[node name="Flymeter" parent="." instance=ExtResource("6_ysoxq")]
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0.0799999, 0.280001)
@@ -2904,6 +2942,15 @@ texture = ExtResource("9_qsu3h")
 libraries = {
 &"": SubResource("AnimationLibrary_l6ohk")
 }
+
+[node name="Arrow" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-0.0005471043, -0.30784926)
+scale = Vector2(0.009, 0.009)
+sprite_frames = SubResource("SpriteFrames_dj5vv")
+autoplay = "default"
+speed_scale = 0.8
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

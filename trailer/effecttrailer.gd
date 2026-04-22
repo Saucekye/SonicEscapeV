@@ -82,7 +82,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Check if the body is in the active_player group OR has is_player = true
 	if body.is_in_group("Player") == true:
 		if body.is_player == true:
-			var scene = load("res://exe/exescreen.tscn")
+			var scene = load("res://Scenes/Obstacles/2011X/exescreen.tscn")
 			var instance = scene.instantiate()
 			get_parent().get_node("CanvasLayer").add_child(instance)
 			Test.fail = true
