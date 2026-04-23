@@ -1,7 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://du8tmmmv1djsb"]
+[gd_scene load_steps=38 format=3 uid="uid://du8tmmmv1djsb"]
 
 [ext_resource type="Script" uid="uid://gymuxm8c0542" path="res://Scripts/Level/test.gd" id="1_v82gw"]
 [ext_resource type="Script" uid="uid://m7r8oade04u5" path="res://Scripts/Level/Background.gd" id="2_dg6i6"]
+[ext_resource type="PackedScene" uid="uid://d2s0icaltqary" path="res://Scenes/Background/parallax_background.tscn" id="3_byomp"]
 [ext_resource type="PackedScene" uid="uid://d15kscmsjedho" path="res://Scenes/Level/player_controller.tscn" id="3_tdo5i"]
 [ext_resource type="PackedScene" uid="uid://cefbrilp5bppc" path="res://Scenes/Background/parallax_background1.tscn" id="4_hxvbt"]
 [ext_resource type="PackedScene" uid="uid://mr56r75yd12u" path="res://Scenes/Level/UIGAME.tscn" id="4_ver2b"]
@@ -35,10 +36,8 @@
 [ext_resource type="Texture2D" uid="uid://b5erm30htstwr" path="res://misc/mapbutton.png" id="33_tgfrd"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jhuxi"]
-load_path = "res://.godot/imported/bigger.svg-afc60be1e17c300ee4c7697eb41a38a1.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tgfrd"]
-load_path = "res://.godot/imported/bigger_1.svg-c5be18a7586fc3e33e6afbc629dcdbf1.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tgfrd"]
 shader = ExtResource("10_jhuxi")
@@ -52,7 +51,7 @@ script = ExtResource("1_v82gw")
 
 [node name="Background" type="Node2D" parent="."]
 script = ExtResource("2_dg6i6")
-parallax_1 = ExtResource("4_hxvbt")
+parallax_1 = ExtResource("3_byomp")
 parallax_2 = ExtResource("4_hxvbt")
 parallax_4 = ExtResource("6_shdnf")
 parallax_5 = ExtResource("7_ojemq")
@@ -118,6 +117,7 @@ texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
 [node name="Label" parent="CanvasLayer" index="6"]
 anchors_preset = -1
+offset_bottom = -39.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
