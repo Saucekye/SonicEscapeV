@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://drj4ufn7mbhgn"
+path="res://.godot/imported/Another Life.MP3-acf50cb6a72ff309ca6ea5289912882e.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Another Life.MP3"
+dest_files=["res://.godot/imported/Another Life.MP3-acf50cb6a72ff309ca6ea5289912882e.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

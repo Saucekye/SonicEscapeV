@@ -19,7 +19,9 @@ var scene_music := {
 var node2d_music_pool := [
 	preload("res://Music/Level/TNH NebulaChemical CyberFunk!  Fog Funk Cyberspace REMIX (Sonic Frontiers).mp3"),
 	preload("res://Music/Level/Great Desert (Reboot Type A).mp3"),
-	preload("res://Music/Level/Scent Of Love.mp3")
+	preload("res://Music/Level/Scent Of Love.mp3"),
+	preload("res://Music/Level/Another Life.MP3"),
+	preload("res://Music/Level/Luxury.MP3")
 ]
 
 var node2d_track_index := 0

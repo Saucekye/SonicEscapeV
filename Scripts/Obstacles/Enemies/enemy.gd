@@ -53,7 +53,7 @@ func damage(delta):
 		if damage_timer <= 0.0:
 			if not player_body.invincible:
 				player_body.hurt()
-				$AudioStreamPlayer2D.stream = load("res://obstacles/Enemies/16_enmsn_egft_sword_ver.wav")
+				$AudioStreamPlayer2D.stream = load("res://Sounds/Obstacles/Enemies/16_enmsn_egft_sword_ver.wav")
 				$AudioStreamPlayer2D.play()
 				$Sprite2D/AnimationPlayer.play("attack")
 				damage_timer = DAMAGE_COOLDOWN
@@ -65,8 +65,8 @@ func dead():
 		velocity.x = launch
 		$Sprite2D/AnimationPlayer.play("hurt")
 		var sounds = [
-			load("res://obstacles/Enemies/01_enmsn_cmn_damage3.wav"),
-			load("res://obstacles/Enemies/01_enmsn_cmn_damage1.wav")
+			load("res://Sounds/Obstacles/Enemies/01_enmsn_cmn_damage3.wav"),
+			load("res://Sounds/Obstacles/Enemies/01_enmsn_cmn_damage1.wav")
 		]
 		$AudioStreamPlayer2D.stream = sounds[randi() % sounds.size()]
 		$AudioStreamPlayer2D.play()

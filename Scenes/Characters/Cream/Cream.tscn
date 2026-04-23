@@ -2800,6 +2800,7 @@ skid_min_speed = 0.0
 [node name="Trick" parent="." instance=ExtResource("5_q2ouv")]
 
 [node name="Flymeter" type="TextureProgressBar" parent="."]
+anchors_preset = -1
 offset_left = -0.393367
 offset_top = 0.331327
 offset_right = 63.6066
