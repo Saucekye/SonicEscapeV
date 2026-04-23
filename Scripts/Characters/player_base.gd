@@ -1636,6 +1636,8 @@ func _on_invincibity_timeout() -> void:
 
 func _on_attackbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Enemy"):
+		can_stomp = true
+		bounce = 0
 		if not is_on_floor() and swipe == false:
 			# Bounce off enemies in the air; height scales with current momentum
 			if time_elapsed >= 50:

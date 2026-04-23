@@ -300,6 +300,7 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 
+
 		attackstaken += 1
 
 		if attackstaken >= 3 and state == BossState.IDLE:

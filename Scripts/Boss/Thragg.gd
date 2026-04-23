@@ -314,6 +314,9 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("Playerattack"):
 		await flash_sprite()
+		if area.is_in_group("Player"):
+			area.get_parent().can_stomp = true
+			area.get_parent().bounce = 0
 
 # --------------------------------------------------
 # PLAYER DETECTION
