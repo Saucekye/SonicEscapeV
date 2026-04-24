@@ -1,6 +1,6 @@
 [gd_scene load_steps=42 format=4 uid="uid://cmdy43nkuhsn1"]
 
-[ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scenes/LevelChunks/chunk_boss.gd" id="1_2eccu"]
+[ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_2eccu"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="1_yyfmi"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="2_pb8k7"]
 [ext_resource type="Script" uid="uid://euovds2xf1xo" path="res://Scripts/Boss/neometalfight.gd" id="4_yyfmi"]
