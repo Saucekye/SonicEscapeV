@@ -50,7 +50,7 @@ var max_speed = 500             ## Current speed cap — increases with momentum
 const SPEED = 10.0              ## Unused base speed constant (legacy)
 const JUMP_VELOCITY = -500.0    ## Unused constant (jump uses the formula-based jump_velocity instead)
 var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
-const fric = 60                 ## Base friction constant used in several friction calculations
+const fric = 60.0                 ## Base friction constant used in several friction calculations
 const DASHSPEED = 10000         ## Unused dash speed constant (legacy)
 var can_dash = true             ## Whether the aerial dash is available
 var dashx = false               ## True after a dash; used to delay friction re-application
@@ -67,11 +67,22 @@ var bounce = 0                  ## How many consecutive stomps have been perform
 var next_bounce = false         ## True when the character should bounce on the next floor contact
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
+@export var MIN_ROT_BALL : float = 0.79	## The minimum rotation where crouching will force the player straight into a ball
+@export var  ABOSLUTE_MAX_SPEED : float = 1400	## Factoring in slopes, this is the absolute max motion.x a player can travel
+@export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
+@export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
+@export var  MAX_LOW_SPEED : float = 500	## The maximum motion.x when player is traveling at low speed
 
+# ─────────────────────────────────────────────
+# Flying State Variables
+# ─────────────────────────────────────────────
 var flying = false      ## True while the fly/hover ability is active
 var flymeter_amount = 85       ## Remaining fly energy (drains per flutter, resets on ground/rail)
 var swipe = false       ## True during the swipe attack animation window
 
+# ─────────────────────────────────────────────
+# Drilling State Variables
+# ─────────────────────────────────────────────
 var is_drilling = false             ## True while the wall-drill ability is active
 var drill_start_time = 0.0          ## Timestamp when drilling started (currently unused)
 var original_collision_mask = collision_mask  ## Saved mask — restored when drilling ends
@@ -185,7 +196,7 @@ func _ready():
 	$Sprite2D.visible = true
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
 	
-func _process(delta):
+func _process(_delta):
 	flymeter.value = flymeter_amount  # Sync the fly meter UI bar every frame
 	# Handle virtual joystick on mobile — converts stick input into action events
 	if Test.mobile == true:
@@ -238,6 +249,8 @@ func _physics_process(delta):
 		flying = false
 		fall_gravity = default
 		has_jumped = false
+		if not Input.is_action_pressed("crouch"):
+			ball = false
 	
 	# Reset has_jumped on fresh landing (allows coyote jump on next edge)
 	if is_grounded and not prev_grounded:
@@ -290,9 +303,13 @@ func _physics_process(delta):
 			# If landing on a steep slope while falling faster than moving horizontally,
 			# convert some vertical speed into horizontal speed (like Sonic's slope physics)
 			if abs(slopeangle) >= 0.5 and abs(motion.y) > abs(motion.x):
-				var downhill_direction = -sign(slopefactor)
+				var downhill_direction = sign(slopefactor)
+				print(sign(motion.x))
+				print(downhill_direction)
 				if sign(motion.x) == downhill_direction or motion.x == 0:
-					motion.x += motion.y * slopefactor
+					print(motion.y * slopefactor)
+					const SLOPE_FACTOR_MULTIPLIER : float = 0.8
+					motion.x += motion.y * slopefactor * SLOPE_FACTOR_MULTIPLIER
 			grounded = true
 		
 		rot = slopeangle  # Snap rotation to the floor angle
@@ -330,43 +347,52 @@ func _physics_process(delta):
 	var slope_influence = abs(slopefactor)
 	var slope_acceleration = sign(-slopefactor * direction)
 	
-	if abs(motion.x) > 1250:
-		# Moving very fast — let speed self-govern and reduce acceleration
-		max_speed = abs(motion.x)
+	#print("------MAX SPEED---------")
+	#print(max_speed)
+	#print("---- CURRENT SPEED -------")
+	#print(motion.x)
+	
+	# Old implementation
+	#if abs(motion.x) > 1200:
+		## Moving very fast — let speed self-govern and reduce acceleration
+		#max_speed = abs(motion.x)
+		#acc = 5 + 10 * slope_influence
+	#
+	if abs(motion.x) >= ABOSLUTE_MAX_SPEED:
+		max_speed = ABOSLUTE_MAX_SPEED
 		acc = 5 + 10 * slope_influence
-		
 	else:
 		# Normal speed range — passive momentum system
-		if time_elapsed > 50:
-			if max_speed == 500 && is_on_floor():
+		if time_elapsed > 50 or motion.x > MAX_LOW_SPEED:
+			if max_speed == MAX_LOW_SPEED && is_on_floor():
 				# Just crossed the momentum threshold — play break-speed effects
 				$Trail2D.visible = true
 				$Sfx.pitch_scale = 2
 				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
 				$Sfx.play()
 				smokeemit()
-
 			if abs(slopefactor) > 0:
 				# On a slope — adjust max speed by direction (downhill vs uphill)
 				if slope_acceleration > 0:
-					max_speed = 1000
-					acc = 5 + 10 * slope_influence
+					max_speed = BASE_MAX_SPEDD - (BASE_MAX_SPEDD/5)
+					acc = 10 + 2 * slope_influence
 				else:
 					if ball == true:
-						max_speed = 1800
+						max_speed = ABOSLUTE_MAX_SPEED
 						acc = 5 + 10 * slope_influence
+						print(acc)
 					else:
-						max_speed = 1200
-						acc = 5 + 10 * slope_influence
+						max_speed = MAX_SPEED
+						acc = 12.5 + 5 * slope_influence
 			else:
 				# Flat ground — minimum speed boost after gaining momentum
-				if max_speed <= 900:
-					max_speed = 900
+				if max_speed <= BASE_MAX_SPEDD:
+					max_speed = BASE_MAX_SPEDD
 					acc = 5
 		else:
 			# Low momentum — standard starting speed and acceleration
-			max_speed = 500
-			acc = 25
+			max_speed = MAX_LOW_SPEED
+			acc = 25 + 10 * slope_influence
 			
 	# ── AI Follow Logic ────────────────────────────────────────────────
 	if not is_player and not flying:
@@ -402,9 +428,9 @@ func _physics_process(delta):
 					control_lock = false
 				direction = sign(direction)  # Normalize to -1 or 1
 			else:
-				if abs(Input.get_joy_axis(0,0)) > 0.5:
+				if abs(Input.get_joy_axis(0,JOY_AXIS_LEFT_X)) > 0.5:
 					# Controller analog stick — combine with digital input
-					direction = Input.get_axis("ui_left", "ui_right") + Input.get_joy_axis(0,0)
+					direction = Input.get_axis("ui_left", "ui_right") + Input.get_joy_axis(0,JOY_AXIS_LEFT_X)
 					if spin_charge == 0:
 						control_lock = false
 					direction = sign(direction)
@@ -694,10 +720,10 @@ func throw_item():
 		has_input = true
 		print("Mobile throw:", throw_direction)
 
-	elif abs(Input.get_joy_axis(0, 0)) > 0.5 or abs(Input.get_joy_axis(0, 1)) > 0.5:
+	elif abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_X)) > 0.5 or abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)) > 0.5:
 		throw_direction = Vector2(
-			Input.get_joy_axis(0, 0),
-			Input.get_joy_axis(0, 1)
+			Input.get_joy_axis(0, JOY_AXIS_LEFT_X),
+			Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
 		).normalized()
 		has_input = true
 		print("Controller raw:", throw_direction)
@@ -877,7 +903,6 @@ func apply_friction(delta):
 		else:
 			# Slope physics: gravity component along the surface drives acceleration/deceleration
 			var floor_normal = get_floor_normal()
-			var slopefactor = floor_normal.x
 			var slope_accel = gravity * slopefactor
 			
 			# Minor speed multiplier when rolling fast downhill
@@ -991,12 +1016,12 @@ func handle_floor_logic(delta):
 			crouch = false
 			
 		# Enter ball mode when pressing down while moving or on a slope
-		if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+		if (velocity.x != 0 or rot > MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
 			
 		# Auto-stand from ball when fully stopped on flat ground
-		if motion.x == 0 and abs(slopefactor) < 0.4:
+		if motion.x == 0 and abs(slopefactor) <  MIN_ROT_BALL:
 			crouch = false
 			ball = false
 			spindash()
@@ -1185,11 +1210,11 @@ func handle_movement_animations(doturn):
 
 func runsmoke():
 	# Spawn a ground dust puff at the feet and mirror it to the movement direction
-	var runsmoke = smokeground.instantiate()
-	runsmoke.position = position
-	get_parent().add_child(runsmoke)
-	runsmoke.rotation_degrees = rot
-	runsmoke.flip_h = velocity.x < 0
+	var runsmoke_effect : Node = smokeground.instantiate()
+	runsmoke_effect.position = position
+	get_parent().add_child(runsmoke_effect)
+	runsmoke_effect.rotation_degrees = rot
+	runsmoke_effect.flip_h = velocity.x < 0
 	await get_tree().create_timer(0.13).timeout  # Brief delay before cleanup (handled in runsmoke scene)
 
 func smokeemit():
@@ -1229,7 +1254,7 @@ func roll():
 	else:
 		ball = crouch == true  # Stay in ball only if still crouching
 
-func switch_direction(direction):
+func switch_direction(_direction):
 	# Flip sprite and invert animation playback direction to face the correct way
 	ap.speed_scale *= -1    
 	sprite.flip_h = direction == -1
@@ -1237,7 +1262,7 @@ func switch_direction(direction):
 # ─────────────────────────────────────────────
 # Special Moves
 # ─────────────────────────────────────────────
-func dash(direction):
+func dash(_direction):
 	# Air dash: brief horizontal burst with a pop upward and no gravity
 	falling = true
 	dashed = true
@@ -1345,9 +1370,9 @@ func perform_trick():
 func spinaudio():
 	# Play a random spin voice line + spin SFX
 	var audio_files = [
-		"res://Sonic VoiceLines/spin1.MP3",
-		"res://Sonic VoiceLines/spin2.MP3",
-		"res://Sonic VoiceLines/spin3.MP3"
+		"res://Sounds/SonicVoiceLines/spin1.MP3",
+		"res://Sounds/SonicVoiceLines/spin2.MP3",
+		"res://Sounds/SonicVoiceLines/spin3.MP3"
 	]
 	var random_index = randi() % audio_files.size()
 	var random_audio = audio_files[random_index]
@@ -1378,11 +1403,11 @@ func _on_wait_timer_timeout():
 	wait = true
 	ap.play("wait")
 
-func _on_animation_player_current_animation_changed(name: String):
+func _on_animation_player_current_animation_changed(anim_name: String):
 	# Reset the wait timer any time a non-wait animation starts playing
-	if name == "stance":
+	if anim_name == "stance":
 		$WaitTimer.start()
-	elif name != "wait":
+	elif anim_name != "wait":
 		wait = false
 		$WaitTimer.stop()
 
@@ -1404,7 +1429,7 @@ func spindash():
 			crouch = true
 			ap.speed_scale = 1
 			ap.play("revup")
-			$Sfx.pitch_scale = clamp(spin_charge/2, 0, 2)
+			$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 1, 2)
 			$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 			$Sfx.play()
 
@@ -1568,7 +1593,7 @@ func emit_rings():
 	if Test.rings < 6:
 		Test.rings = 0
 	else:
-		loss = int(Test.rings / 2)
+		loss = round((float)(Test.rings) / 2)
 		Test.rings -= loss
 	
 	# Lookup table: maps total rings held to how many ring objects to spawn
@@ -1594,7 +1619,7 @@ func emit_rings():
 		19: spawn_count = 7
 		_:
 			# For larger ring counts: scatter half of lost rings, capped at 10
-			spawn_count = clamp(int(loss / 2), 1, 10)
+			spawn_count = clamp(int((float)(loss) / 2), 1, 10)
 	
 	for i in range(spawn_count):
 		var ring = ring_scene.instantiate()
@@ -1669,6 +1694,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		is_spinning = true
 		ap.speed_scale = 0.8
 		ap.play("peel out")
-		$Sfx.pitch_scale = clamp(spin_charge/2, 0, 2)
+		$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
 		$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 		$Sfx.play()

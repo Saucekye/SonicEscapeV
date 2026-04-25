@@ -14,7 +14,7 @@ var trick = ""
 var quit = false
 var ridenemies = false
 var fail = false
-var level = 4
+var level = 0
 var current_background : int = 0
 var current_background_name : String = ""
 

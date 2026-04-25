@@ -1,7 +1,7 @@
 extends Components_Action
 
 func action() -> void:
-	if not (Input.is_action_just_pressed("trick") and not (player.is_on_wall_only() and (not player.raycast.is_colliding()) and player.rot == 0) and player.flying == false):
+	if not (Input.is_action_just_pressed("trick") and not (player.is_on_wall_only() and (not player.raycast.is_colliding()) and player.rot == 0) and not player.flying):
 		return
 			
 	player.ap.play("play")

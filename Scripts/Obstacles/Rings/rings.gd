@@ -30,8 +30,10 @@ func _on_node_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		var player_body = area.get_parent()
 		if player_body.ouch == false:
-			$Node2D.monitoring = false
-			$Node2D.monitorable = false
+			$Node2D.set_deferred("monitoring", false)
+			$Node2D.set_deferred("monitorable", false)
+			print("WHAT NODE 2D")
+			print($Node2D)
 			Test.rings += 1
 			Test.meter += 5
 			$BlinkTimer.stop()
