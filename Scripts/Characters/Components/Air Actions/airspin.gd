@@ -1,5 +1,6 @@
 extends Components_Action
 
+@export var meter_cost : int = 50
 @export var await_time : float = 0.13
 @export var time_elapsed : int = 200
 @export var max_speed_startup : int = 1600
@@ -8,7 +9,7 @@ extends Components_Action
 @export var x_speed : int = 1200
 
 func action() -> void:
-	if not (player.is_player == true and Test.meter >= 50 and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and not player.flying):
+	if not (player.is_player == true and Test.meter >= meter_cost and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and not player.flying):
 		return
 	player.ap.play("airspin")
 	player.time_elapsed = max_speed_startup
@@ -22,7 +23,7 @@ func action() -> void:
 	player.dashed = true
 	player.ball = false
 	if player.is_player == true:
-		Test.meter -= 50
+		Test.meter -= meter_cost
 	player.ap.play("airspin")
 	player.motion.y = -abs(y_sped)
 	player.fall_gravity = 0         # Brief gravity suspension for the spin hang-time

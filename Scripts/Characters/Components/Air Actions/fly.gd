@@ -1,5 +1,12 @@
 extends Components_Action
 
+@export var flymeter : TextureProgressBar
+@export var fly_meter_drain : float = 1		## Number of units drained while flying
+
+func _process(_delta):
+	# Sync the fly meter UI bar every frame
+	flymeter.value = player.flymeter_current_amount  
+
 func action() -> void:
 	# ── Fly (hold jump while airborne) ────────────────────────────
 	# Two separate conditions: sustained fly while holding, and initial press
@@ -20,14 +27,14 @@ func _flight() -> void:
 	player.ball = false
 	player.crouch = false
 	player.flying = true
-	player.flymeter_amount -= 1              # Drain one unit of fly energy per flutter call
+	player.flymeter_current_amount -= fly_meter_drain	# Drain one unit of fly energy per flutter call
 	player.ap.play("fly")
 	player.motion.y = -450            # Small upward push per flutter
 	player.sfx.pitch_scale = 2
 	player.fall_gravity = 700         # Reduced gravity while hovering (vs default ~1700+)
 
 	# Disable further dashing if meter is depleted
-	if player.flymeter_amount >= 1:
+	if player.flymeter_current_amount >= 1:
 		player.can_dash = true
 	else:
 		player.can_dash = false

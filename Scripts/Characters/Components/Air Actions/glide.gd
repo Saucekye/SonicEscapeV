@@ -1,5 +1,7 @@
 extends Components_Action
 
+@export var min_glide_speed : float = 1100
+
 func action() -> void:
 	if player.flying == true and Input.is_action_pressed("ui_accept"):
 		_handle_glide_physics()
@@ -29,7 +31,7 @@ func _dash(direction) -> void:
 	var glide_direction = sign(direction) if direction != 0 else (1 if player.sprite.flip_h == false else -1)
 	if abs(player.motion.x) < 1100:
 		# Only set speed if below the glide threshold; respects existing momentum
-		player.motion.x = 1100 * glide_direction
+		player.motion.x = min_glide_speed * glide_direction
 		player.max_speed = 850   # Lower cap during glide to keep it controlled
 		player.acc = 3000
 		player.time_elapsed = 60
@@ -46,8 +48,8 @@ func _handle_glide_physics() -> void:
 
 	# Maintain forward horizontal momentum during glide
 	var glide_direction = 1 if player.sprite.flip_h == false else -1
-	if abs(player.motion.x) < 1100:
-		player.motion.x = move_toward(player.motion.x, 1100 * glide_direction, player.acc * get_process_delta_time())
+	if abs(player.motion.x) < min_glide_speed:
+		player.motion.x = move_toward(player.motion.x, min_glide_speed * glide_direction, player.acc * get_process_delta_time())
 
 	# ── Glide End Conditions ───────────────────────────────────────
 	if player.is_on_floor():

@@ -1,9 +1,10 @@
 extends Components_Action
 
+@export var meter_cost : int = 50
 @export var launch_speed : int = 1100	## The y velocity the player is launched up, the value is automatically made neative.
 
 func action() -> void:
-	if not (player.is_player == true and Test.meter >= 50 and ((Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_up")) or Input.is_action_just_pressed("airup")) and not player.flying):
+	if not (player.is_player == true and Test.meter >= meter_cost and ((Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_up")) or Input.is_action_just_pressed("airup")) and not player.flying):
 		return
 	player.can_dash = true
 	player.can_stomp = true
@@ -13,7 +14,7 @@ func action() -> void:
 	player.dashed = true
 	player.ball = false
 	if player.is_player == true:
-		Test.meter -= 50
+		Test.meter -= meter_cost
 	player.ap.play("airup")
 	player.motion.y = -abs(launch_speed)
 	player.spinaudio()

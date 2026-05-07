@@ -1,6 +1,32 @@
 extends Components_Action
 
 @export var speed_y : int = 1000
+@export var fall_gravity : int = 10500
+@export var bounce_one : float = 750
+@export var bounce_two : float = 950
+@export var bounce_three : float = 1100
+
+func _physics_process(_delta: float) -> void:
+	# ── Bounce Logic (from airdown / stomp) ────────────────────────────
+	if player.is_on_floor():
+		if player.falling == false and player.next_bounce == false:
+			player.bounce = 0  # Reset bounce counter when landing normally
+			
+		if Input.is_action_pressed("airspin"):
+			# Holding airspin cancels the next bounce
+			player.next_bounce = false
+			player.can_stomp = true
+			
+		# Trigger the bounce height for consecutive stomps
+		if player.next_bounce == true and player.falling == true:
+			match player.bounce:
+				1:
+					player.motion.y = -bounce_one
+				2:
+					player.motion.y = -bounce_two
+				_ when player.bounce >= 3: 
+					player.motion.y = -bounce_three
+			player.can_stomp = true
 
 func action() -> void:
 	if not (Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_down") and player.can_stomp == true and not player.is_on_wall()):
@@ -19,7 +45,7 @@ func action() -> void:
 	player.time_elapsed = 0
 	player.motion.y = speed_y
 	player.ap.play("stomp")
-	player.fall_gravity = 10500     # Very high fall gravity for a fast, snappy slam
+	player.fall_gravity = fall_gravity     # Very high fall gravity for a fast, snappy slam
 	player.sfx.pitch_scale = 2
 	player.sfx.stream = load("res://Sounds/SonicSFX/Spiked.wav")
 	player.sfx.play()

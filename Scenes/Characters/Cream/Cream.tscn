@@ -2791,7 +2791,8 @@ floor_max_angle = 1.55334
 script = ExtResource("1_thhbk")
 skid_min_speed = 0.0
 
-[node name="Fly" parent="." instance=ExtResource("2_q2ouv")]
+[node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_q2ouv")]
+flymeter = NodePath("../Flymeter")
 
 [node name="SwipeAttack" parent="." instance=ExtResource("3_q3xbi")]
 
@@ -2800,7 +2801,6 @@ skid_min_speed = 0.0
 [node name="Trick" parent="." instance=ExtResource("5_q2ouv")]
 
 [node name="Flymeter" type="TextureProgressBar" parent="."]
-anchors_preset = -1
 offset_left = -0.393367
 offset_top = 0.331327
 offset_right = 63.6066

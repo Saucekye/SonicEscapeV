@@ -1,5 +1,8 @@
 extends Components_Action
 
+@export var climb_up_speed : float = 280
+@export var climb_down_speed : float = 280
+
 func action() -> void:
 	if (not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding()) or (player.raycast.is_colliding()) or player.rot != 0:
 		return
@@ -19,11 +22,11 @@ func action() -> void:
 
 	# ── Wall Climbing ──────────────────────────────────────────────
 	if Input.is_action_pressed("ui_up"):
-		player.motion.y = -280         # Climb upward
+		player.motion.y = -climb_up_speed        # Climb upward
 		player.ap.play("climb")
 		player.ap.speed_scale = 1.0
 	elif Input.is_action_pressed("ui_down"):
-		player.motion.y = 280          # Slide down
+		player.motion.y = climb_down_speed          # Slide down
 		player.ap.play("climb")
 		player.ap.speed_scale = -1.0   # Reverse animation when sliding down
 	else:

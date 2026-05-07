@@ -367,7 +367,7 @@ func _physics_process(delta):
 				max_speed = move_toward(max_speed, 0, speed_change_rate * delta)
 	else:
 		# ── Player Input ───────────────────────────────────────────────
-		if ((not is_on_floor() and ball == true) or ball == false):
+		if ((not is_on_floor() and ball == true) or ball == false) and !control_lock:
 			if abs(stickdir.x) > 0.5 and Test.mobile == true:
 				# Mobile virtual joystick input
 				direction = stickdir.x
@@ -387,7 +387,8 @@ func _physics_process(delta):
 					if direction > 0 or direction < 0:
 						if spin_charge == 0:
 							control_lock = false
-
+		else:
+			direction = 0
 	handle_movement_input(delta)
 
 	# ── Apply Velocity (rotated to match slope) ────────────────────────
@@ -784,6 +785,7 @@ func tricknumber():
 		Test.trick = "amazing"
 
 func handle_movement_input(delta):
+	add_slope_speed(delta)
 	if direction and not control_lock:
 		if ball == false or !is_on_floor():
 			var target_speed = max_speed * direction
@@ -821,13 +823,11 @@ func handle_movement_input(delta):
 		# If barely moving in the intended direction, reset momentum to a walking baseline
 		if (motion.x/direction) < 1:
 			time_elapsed = 30
-
 	else:
-		if not is_boosting:
-			apply_friction(delta)
+		apply_friction(delta)
 
 func apply_friction(delta):
-	if ball == false:
+	if ball == false and !control_lock:
 		if time_elapsed > 50 or not is_on_floor():
 			# High-speed or airborne friction — gradual slowdown
 			motion.x = move_toward(motion.x, 0, 500 * delta)
@@ -836,37 +836,45 @@ func apply_friction(delta):
 			# Stationary friction — snap to stop quickly
 			motion.x = move_toward(motion.x, 0, 5000 * delta)
 			time_elapsed = 0
-	elif !is_on_floor() and ball == true:
+	elif !is_on_floor() and ball == true and !control_lock:
 		# Airborne ball: very little drag
 		control_lock = false
 		motion.x = move_toward(motion.x, 0, fric/4 * delta)
+
+
+func add_slope_speed(delta):
+	# Ball on floor
+	if abs(slopefactor) < 0.1:
+		# Flat ground: gentle roll-down friction
+		motion.x = move_toward(motion.x, 0, 300 * delta)
+		if motion.x == 0:
+			time_elapsed = 0
 	else:
-		# Ball on floor
-		if abs(slopefactor) < 0.1:
-			# Flat ground: gentle roll-down friction
-			motion.x = move_toward(motion.x, 0, 300 * delta)
-			if motion.x == 0:
-				time_elapsed = 0
-		else:
-			# Slope physics: gravity component along the surface drives acceleration/deceleration
-			var floor_normal = get_floor_normal()
-			var slopefactor = floor_normal.x
-			var slope_accel = gravity * slopefactor
-			
-			# Minor speed multiplier when rolling fast downhill
-			if ball == true and slope_accel > 0 and time_elapsed > 60:
-				slope_accel *= 2
-			
-			if abs(motion.x) < 10:
-				# Nearly stopped — let slope gravity get it moving again
-				motion.x += slope_accel * delta
-			elif sign(motion.x) != sign(slope_accel):
-				# Moving uphill — resist with slope gravity
+		# Slope physics: gravity component along the surface drives acceleration/deceleration
+		var floor_normal = get_floor_normal()
+		var slopefactor = floor_normal.x * 4
+		var slope_accel = gravity * slopefactor
+		
+		# Minor speed multiplier when rolling fast downhill
+		if (ball or is_boosting) and slope_accel > 0 and time_elapsed > 60 and sign(motion.x) != sign(slope_accel):
+			slope_accel *= 2
+		
+		if abs(motion.x) < 10:
+			# Nearly stopped — let slope gravity get it moving again
+			motion.x += slope_accel * delta
+		elif sign(motion.x) != sign(slope_accel) or control_lock:
+			# Moving uphill — resist with slope gravity
+			if (abs(motion.x) < 300 or control_lock) and is_on_floor() and (int(sprite.flip_h)*2)-1 == sign(rot):
+				control_lock = true
+				print(control_lock, motion.x, "DeltaTest")
+				motion.x += ((int(sprite.flip_h)*2)-1)*30
+			elif !control_lock:
 				motion.x = move_toward(motion.x, 0, abs(slope_accel) * delta * 1/3)
-			else:
-				# Moving downhill — add slope acceleration
-				motion.x += slope_accel * delta
-				
+		else:
+			# Moving downhill — add slope acceleration
+			motion.x += slope_accel * delta
+		apply_floor_snap()
+
 func calculate_dynamic_speed():
 	# Standalone speed calculation (currently unused in _physics_process — logic is inline instead)
 	var slope_influence = abs(slopefactor)
@@ -930,9 +938,9 @@ func handle_floor_logic(delta):
 		
 		# Shorter snap at low speed; longer snap at high speed to hug slopes better
 		if time_elapsed <= 50:
-			floor_snap_length = 10
+			floor_snap_length = 20
 		else:
-			floor_snap_length = 30
+			floor_snap_length = 40
 
 		falling = false
 		dashed = false
@@ -954,7 +962,7 @@ func handle_floor_logic(delta):
 			apply_friction(delta)
 			
 		# Reset crouching if now moving forward while not in ball mode
-		if abs(motion.x) > 0 and ball == false:
+		if (abs(motion.x) > 0 and ball == false and (int(sprite.flip_h)*2)-1 != sign(motion.x)) or (abs(rot) < deg_to_rad(20) and control_lock):
 			crouch = false
 			control_lock = false
 		
@@ -1108,7 +1116,7 @@ func handle_jump_input(is_grounded):
 	
 	# Variable jump height: cut upward velocity when button is released early
 	if is_jumping and !Input.is_action_pressed("ui_accept") and motion.y < 0:
-		motion.y *= 0.8
+		motion.y *= 0.3
 		is_jumping = false
 	
 	if Input.is_action_just_pressed("ui_accept") and (grinding or is_grounded or is_coyote_time_active()) and (ball or (!crouch and !ball)) and not just_wall_jumped and not is_spinning:
@@ -1206,7 +1214,7 @@ func update_animations():
 func handle_idle_animations():
 	# Play appropriate idle/crouch animation when standing still
 	if ball != true and crouch != true and is_spinning == false and wait == false and is_spinningdash == false:
-		if direction == 0 and abs(motion.x) > 500:
+		if (direction == 0 or (int(sprite.flip_h)*2)-1 != sign(motion.x)) and abs(motion.x) > 100:
 			ap.play("skid")  # Skidding to a stop
 		else:
 			ap.play("stance")

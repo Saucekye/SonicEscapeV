@@ -7,6 +7,7 @@ extends Player
 @onready var trick_component: Node = $Trick
 @onready var wall_jump_component: Node = $WallJump
 @onready var drop_dash_component: Node = $DropDash
+@onready var peelout_component: Node = $Peelout
 
 func handle_air_actions(is_grounded) -> void:
 	if grinding == true:
@@ -18,7 +19,8 @@ func handle_air_actions(is_grounded) -> void:
 	trick_component.action()
 
 func handle_ground_action() -> void:
-	drop_dash_component.action()
+	drop_dash_component.action() 
+	peelout_component.action()
 
 func handle_wall_mechanics() -> void:
 	wall_jump_component.action()
