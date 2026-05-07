@@ -11,13 +11,11 @@ class_name Player extends CharacterBody2D
 @onready var sfx = $Sfx
 @onready var voice = $Voice
 
-@export var is_player := true        # If false, this character is AI-controlled and will follow a player node
-
+@export_group("Node References")
+@export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
 # Collision layers stored before entering special zones (e.g. loops), restored on exit
 @export var stored_layer: int
 @export var stored_mask: int
-
-@export var skid_min_speed : float = 500	## The minimum speed needed to maintain a skid after letting go of a direction while running
 
 var in_loop = false  # True while the character is inside a loop section
 
@@ -41,15 +39,22 @@ signal amazing
 # ─────────────────────────────────────────────
 # Movement State Variables
 # ─────────────────────────────────────────────
+@export_group("Movement Variables")
+@export var max_speed = 500             ## Current speed cap — increases with momentum
+@export var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
+@export var skid_min_speed : float = 500	## The minimum speed needed to maintain a skid after letting go of a direction while running
+@export var MIN_ROT_BALL : float = 0.79		## The minimum rotation where crouching will force the player straight into a ball
+@export var  ABOSLUTE_MAX_SPEED : float = 1400	## Factoring in slopes, this is the absolute max motion.x a player can travel
+@export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
+@export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
+@export var  MAX_LOW_SPEED : float = 500	## The maximum motion.x when player is traveling at low speed
 var is_boosting = false         ## True while the ground boost is active (drains meter)
 var stomp_no_bounce = false     ## Unused/reserved: prevent bounce after stomp
 var is_jumping = false          ## True between pressing jump and releasing it
 var jump_pressed = false        ## Tracks whether jump was pressed this frame
 var wait = false                ## True when the idle "wait" animation is playing
-var max_speed = 500             ## Current speed cap — increases with momentum
 const SPEED = 10.0              ## Unused base speed constant (legacy)
 const JUMP_VELOCITY = -500.0    ## Unused constant (jump uses the formula-based jump_velocity instead)
-var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
 const fric = 60.0                 ## Base friction constant used in several friction calculations
 const DASHSPEED = 10000         ## Unused dash speed constant (legacy)
 var can_dash = true             ## Whether the aerial dash is available
@@ -67,17 +72,14 @@ var bounce = 0                  ## How many consecutive stomps have been perform
 var next_bounce = false         ## True when the character should bounce on the next floor contact
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
-@export var MIN_ROT_BALL : float = 0.79	## The minimum rotation where crouching will force the player straight into a ball
-@export var  ABOSLUTE_MAX_SPEED : float = 1400	## Factoring in slopes, this is the absolute max motion.x a player can travel
-@export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
-@export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
-@export var  MAX_LOW_SPEED : float = 500	## The maximum motion.x when player is traveling at low speed
 
 # ─────────────────────────────────────────────
 # Flying State Variables
 # ─────────────────────────────────────────────
+@export_group("Flying Variables")
+@export var flymeter_amount = 85	## Max amount of flying energy
+var flymeter_current_amount : float = 85	## Remaining fly energy (drains per flutter, resets on ground/rail)
 var flying = false      ## True while the fly/hover ability is active
-var flymeter_amount = 85       ## Remaining fly energy (drains per flutter, resets on ground/rail)
 var swipe = false       ## True during the swipe attack animation window
 
 # ─────────────────────────────────────────────
@@ -116,6 +118,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 # Jump Arc (formula-based — avoids magic numbers)
 # These exports allow tuning jump feel from the Inspector.
 # ─────────────────────────────────────────────
+@export_group("Jump Arc Variables")
 @export var jump_height : float = 260           ## Peak height in pixels
 @export var jump_time_to_peak : float = 0.5     ## Seconds to reach peak
 @export var jump_time_to_descent : float = 0.45 ## Seconds to fall back down
@@ -146,7 +149,7 @@ var item_hold_offset: Vector2 = Vector2(0, -30)     ## Where the item appears re
 # ─────────────────────────────────────────────
 var reverse_to_right = false    ## Unused reverse direction flag
 var reverse_to_left = true      ## Unused reverse direction flag
-var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0  # Initial upward velocity on jump
+var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0  ## Initial upward velocity on jump
 var direction = 0               ## Current horizontal input: -1, 0, or 1
 var just_wall_jumped = false    ## Prevents double-triggering wall jump logic
 var has_jumped = false          ## Prevents coyote jump after a real jump
@@ -178,6 +181,7 @@ var prev_grounded = false           ## Previous grounded state (for landing dete
 var grinding = false                ## True while grinding on a rail
 
 # Misc
+@export_group("Misc")
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
 @export var player_path: NodePath   ## Path to the player node this AI character should follow
@@ -197,7 +201,6 @@ func _ready():
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
 	
 func _process(_delta):
-	flymeter.value = flymeter_amount  # Sync the fly meter UI bar every frame
 	# Handle virtual joystick on mobile — converts stick input into action events
 	if Test.mobile == true:
 		handle_stick_input()	
@@ -322,27 +325,6 @@ func _physics_process(delta):
 			rot = 0
 			up_direction = Vector2(0, -1)  # Reset up direction to world-up
 	
-	# ── Bounce Logic (from airdown / stomp) ────────────────────────────
-	if is_on_floor():
-		if falling == false and next_bounce == false:
-			bounce = 0  # Reset bounce counter when landing normally
-			
-		if Input.is_action_pressed("airspin"):
-			# Holding airspin cancels the next bounce
-			next_bounce = false
-			can_stomp = true
-			
-		# Trigger the bounce height for consecutive stomps
-		if next_bounce == true and falling == true:
-			match bounce:
-				1:
-					motion.y = -750
-				2:
-					motion.y = -950	
-				_ when bounce >= 3: 
-					motion.y = -1100
-			can_stomp = true
-			
 	# ── Dynamic Speed / Acceleration ───────────────────────────────────
 	var slope_influence = abs(slopefactor)
 	var slope_acceleration = sign(-slopefactor * direction)
@@ -978,7 +960,7 @@ func update_momentum_effects():
 func handle_floor_logic(delta):	
 	if is_on_floor():
 		# Landing resets fly meter and hides the meter bar
-		flymeter_amount = 85
+		flymeter_current_amount = flymeter_amount
 		flymeter.visible = false
 		
 		if not hang:
@@ -998,8 +980,10 @@ func handle_floor_logic(delta):
 		trail.visible = abs(motion.x) > 500
 		
 		if ball == true:
+			trail.scale.y = 1.018
 			apply_friction(delta)
-			
+		else:
+			trail.scale.y = 1
 		# Reset crouching if now moving forward while not in ball mode
 		if abs(motion.x) > 0 and ball == false:
 			crouch = false
@@ -1530,7 +1514,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		# Grinding resets fly state and meter
 		flymeter.visible = false 
 		flying = false
-		flymeter_amount = 85
+		flymeter_current_amount = flymeter_amount
 		# Landing on a grind rail
 		hang = false
 		hangable = false

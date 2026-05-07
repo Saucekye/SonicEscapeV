@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://cnc5piy6378ni"]
+[gd_scene load_steps=61 format=3 uid="uid://cnc5piy6378ni"]
 
 [ext_resource type="Script" uid="uid://c6h8863cerwy4" path="res://Scripts/Characters/Sonic/sonic.gd" id="1_vuqnu"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_vuqnu"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cbeunrav4iw1h" path="res://Scenes/Characters/Components/Wall Mechanics/wall_jump.tscn" id="7_x6aia"]
 [ext_resource type="PackedScene" uid="uid://dbsocjeageuyq" path="res://Scenes/Characters/Components/Ground Actions/drop_dash.tscn" id="8_acmx4"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_uvhn0"]
+[ext_resource type="PackedScene" uid="uid://bj1cb0wpm05fr" path="res://Scenes/Characters/Components/Ground Actions/peelout.tscn" id="9_x4ndc"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_x6aia"]
 [ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="9_yxy1h"]
 [ext_resource type="PackedScene" uid="uid://cqpabthyx2bvr" path="res://Scenes/Characters/Components/Air Actions/flick.tscn" id="10_yxy1h"]
@@ -2134,10 +2135,13 @@ script = ExtResource("1_vuqnu")
 
 [node name="DropDash" parent="." instance=ExtResource("8_acmx4")]
 
+[node name="Peelout" parent="." instance=ExtResource("9_x4ndc")]
+
 [node name="Flymeter" parent="." instance=ExtResource("7_uvhn0")]
 
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1
+points = PackedVector2Array(-0.79999995, -1.3199999)
 width = 30.0
 width_curve = SubResource("Curve_7xxox")
 default_color = Color(0.239216, 0.352941, 1, 0.466667)
