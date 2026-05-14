@@ -8,6 +8,11 @@ extends Components_Action
 
 func _physics_process(_delta: float) -> void:
 	# ── Bounce Logic (from airdown / stomp) ────────────────────────────
+	
+	# Prevent player from doing action while on wall
+	if player.wall_cast.is_colliding() or player.wall_cast_2.is_colliding():
+		return
+	
 	if player.is_on_floor():
 		if player.falling == false and player.next_bounce == false:
 			player.bounce = 0  # Reset bounce counter when landing normally

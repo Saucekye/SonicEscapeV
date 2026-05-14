@@ -39,6 +39,7 @@ func _dash(direction) -> void:
 func _handle_glide_physics() -> void:
 	if not ((player.flying and Input.is_action_pressed("ui_accept")) and not Input.is_action_just_released("ui_accept") and not player.is_on_wall()):
 		return
+		
 	if player.ap.current_animation != "fly":
 		player.ap.play("fly")
 		player.ap.speed_scale = 1

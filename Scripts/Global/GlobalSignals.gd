@@ -1,0 +1,3 @@
+extends Node
+
+signal game_over		## emitted from the playable character to notify scenes that the player ghave game over'd

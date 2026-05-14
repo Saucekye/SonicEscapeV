@@ -6,8 +6,6 @@ extends Player
 @onready var trick_component: Node = $Trick
 
 func handle_air_actions(is_grounded) -> void:
-	if grinding == true:
-		return
 	swipe_attack_component.action()
 	flick_component.action()
 	stomp_component.action()

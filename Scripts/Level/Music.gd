@@ -4,6 +4,7 @@ var level = 0
 var current_scene_name := ""
 var new_scene_name := ""
 var volume := -15
+var is_muted = false
 
 # ─────────────────────────────
 # Fixed music per scene
@@ -32,6 +33,7 @@ func _ready() -> void:
 	bus = "Music"
 	volume_db = volume
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	GlobalSignals.game_over.connect(_on_game_over)
 
 	# Persistent across scenes
 	#get_tree().root.add_child(self)
@@ -131,3 +133,10 @@ func set_music_for_scene(scene_name: String) -> void:
 		stream = scene_music[scene_name]
 		Test.musicplaying = false
 		print("Set music for scene:", scene_name)
+
+func _on_game_over():
+	const FADEOUT_TIME : float = 3.0
+	var fadeout_tween = get_tree().create_tween()
+	fadeout_tween.tween_property(self, "volume_db", -40, FADEOUT_TIME)
+	await fadeout_tween.finished
+	playing = false

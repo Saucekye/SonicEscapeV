@@ -6,6 +6,12 @@ extends Components_Action
 func action() -> void:
 	if not (player.is_player == true and Test.meter >= meter_cost and ((Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_up")) or Input.is_action_just_pressed("airup")) and not player.flying):
 		return
+	
+	# Prevent character from doing action while on wall
+	if player.wall_cast.is_colliding() or player.wall_cast_2.is_colliding():
+		return
+		
+	player.can_dash = true
 	player.can_dash = true
 	player.can_stomp = true
 	player.bounce = 0

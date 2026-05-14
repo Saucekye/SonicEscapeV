@@ -11,6 +11,11 @@ extends Components_Action
 func action() -> void:
 	if not (player.is_player == true and Test.meter >= meter_cost and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and not player.flying):
 		return
+	
+	# Prevent from doing action while on wall
+	if player.wall_cast.is_colliding() or player.wall_cast_2.is_colliding():
+		return
+		
 	player.ap.play("airspin")
 	player.time_elapsed = max_speed_startup
 	player.max_speed = max_speed_startup

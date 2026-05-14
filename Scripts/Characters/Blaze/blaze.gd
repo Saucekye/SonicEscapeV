@@ -8,8 +8,6 @@ extends Player
 @onready var wall_jump_component: Node = $WallJump
 
 func handle_air_actions(is_grounded) -> void:
-	if grinding == true:
-		return
 	hover_component.action()
 	airspin_component.action()
 	airup_component.action()

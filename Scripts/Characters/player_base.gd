@@ -72,7 +72,7 @@ var bounce = 0                  ## How many consecutive stomps have been perform
 var next_bounce = false         ## True when the character should bounce on the next floor contact
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
-
+var is_player_dead : bool = false		## Indicates that the player character has died, remove all playability
 # ─────────────────────────────────────────────
 # Flying State Variables
 # ─────────────────────────────────────────────
@@ -180,6 +180,11 @@ var was_on_floor := false           ## Whether the character was on the floor la
 var prev_grounded = false           ## Previous grounded state (for landing detection)
 var grinding = false                ## True while grinding on a rail
 
+# ─────────────────────────────────────────────
+# Player Signals
+# ─────────────────────────────────────────────
+
+
 # Misc
 @export_group("Misc")
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
@@ -236,6 +241,11 @@ func _on_launch_finished():
 	print("Spring path finished! Movement restored.")
 
 func _physics_process(delta):
+	
+	# Evil functionality that prevent all input if player is dead
+	if is_player_dead:
+		return
+	
 	# Release boost if the airspin button is let go
 	if Input.is_action_just_released("airspin"):
 		is_boosting = false
@@ -979,11 +989,12 @@ func handle_floor_logic(delta):
 
 		trail.visible = abs(motion.x) > 500
 		
-		if ball == true:
-			trail.scale.y = 1.018
+		if ball:
+			trail.offset.y = 15
 			apply_friction(delta)
 		else:
-			trail.scale.y = 1
+			trail.offset.y = 0
+			
 		# Reset crouching if now moving forward while not in ball mode
 		if abs(motion.x) > 0 and ball == false:
 			crouch = false
@@ -1036,6 +1047,11 @@ func reset_dash_after_delay() -> void:
 func handle_air_logic(delta, is_grounded):
 	if is_on_floor():
 		return
+		
+	# Change trail offset to 0 value
+	if ball:
+		trail.offset.y = 0
+		
 	# Enable attachment only when freely airborne (not grinding or dashing)
 	if not hang and not grinding and not dashed:
 		hangable = true
@@ -1077,8 +1093,10 @@ func handle_air_logic(delta, is_grounded):
 			# Slightly higher clamp on flat trajectory
 			if slopefactor == 0:
 				motion.x = clamp(motion.x , -1300, 1300)
-		
-	handle_air_actions(is_grounded)
+				
+	# Prevent character from using air tricks while grinding
+	if not grinding:
+		handle_air_actions(is_grounded)
 
 @abstract
 func handle_air_actions(is_grounded) -> void
@@ -1239,8 +1257,7 @@ func roll():
 		ball = crouch == true  # Stay in ball only if still crouching
 
 func switch_direction(_direction):
-	# Flip sprite and invert animation playback direction to face the correct way
-	ap.speed_scale *= -1    
+	# Flip sprite to face the correct way
 	sprite.flip_h = direction == -1
 
 # ─────────────────────────────────────────────
@@ -1495,20 +1512,17 @@ func _on_control_lock_timer_timeout() -> void:
 func _on_coyote_timer_timeout() -> void:
 	canjump = false  # Legacy coyote timer — coyote logic now uses timestamps instead
 
-
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Rings"):
-		if ouch == false:
-			$Sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
-			$Sfx.pitch_scale = 1
-			$Sfx.play()
+	if area.is_in_group("Rings") and ouch == false:
+		$Sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
+		$Sfx.pitch_scale = 1
+		$Sfx.play()
 			
-	if area.is_in_group("Spring"):
-		if is_player == true:
-			tricknumber()
-			flying = false          # Springs cancel the glide
-			GlobalCanvasLayer.tricks = 0
-			Test.meter += 50  # Springs give a meter bonus
+	if area.is_in_group("Spring") and is_player:
+		tricknumber()
+		flying = false          # Springs cancel the glide
+		GlobalCanvasLayer.tricks = 0
+		Test.meter += 50  # Springs give a meter bonus
 		
 	if area.is_in_group("Rail"):
 		# Grinding resets fly state and meter
@@ -1524,11 +1538,10 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		dashed = false
 		motion.y = 0  # Snap vertical motion to rail level
 
-	if area.is_in_group("Player"):
+	if area.is_in_group("Player") and flying:
 		# Show the directional arrow when near a player while flying
 		# (signals to the other player that this character can carry them)
-		if flying == true:
-			$Arrow.visible = true
+		$Arrow.visible = true
 		
 	if area.is_in_group("enemyattack"):
 		hurt()
@@ -1565,11 +1578,29 @@ func pick_upward_angle() -> float:
 	var selected_range = valid_ranges[randi() % valid_ranges.size()]
 	return randf_range(selected_range.x, selected_range.y)		
 		
-		
+func player_death():
+	if not is_player:
+		return
+	ap.speed_scale = 1
+	ap.play("death")
+	$Sfx.volume_db = 10
+	$Sfx.pitch_scale = 1
+	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
+	$Sfx.play()
+	# Prevent physics process method from running anymore
+	set_physics_process(false)
+	
 func emit_rings():
 	# Scatter a portion of held rings on taking damage (mimics classic Sonic ring loss)
 	if Test.rings <= 0:
+		player_death()
 		return
+	else:
+		# Play damage sound while emitting rings
+		# Only play ring loss sound when you have rings
+		$Sfx.pitch_scale = 1
+		$Sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
+		$Sfx.play()
 	
 	var loss : int
 	var spawn_count : int
@@ -1579,6 +1610,7 @@ func emit_rings():
 	else:
 		loss = round((float)(Test.rings) / 2)
 		Test.rings -= loss
+		
 	
 	# Lookup table: maps total rings held to how many ring objects to spawn
 	match Test.rings + loss:
@@ -1613,7 +1645,7 @@ func emit_rings():
 		ring.global_position = position
 		ring.velocity = Vector2.RIGHT.rotated(angle) * speed
 		ring.loss = true  # Marks the ring as a "lost" ring (typically has a pickup timer)
-		get_parent().add_child(ring)
+		get_parent().call_deferred("add_child", ring)
 		
 func hurt():
 	# Trigger damage response: scatter rings, drain meter, play hurt animation, begin invincibility
@@ -1622,9 +1654,6 @@ func hurt():
 		Test.meter -= 50
 		if Test.meter <= 0:
 			Test.meter = 0
-	$Sfx.pitch_scale = 1
-	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
-	$Sfx.play()
 	ouch = true
 	motion = Vector2(0, 0)
 	time_elapsed = 0
@@ -1681,3 +1710,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
 		$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 		$Sfx.play()
+	if anim_name == "death":
+		GlobalSignals.emit_signal("game_over")
+		

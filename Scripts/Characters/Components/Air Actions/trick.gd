@@ -3,8 +3,10 @@ extends Components_Action
 func action() -> void:
 	if not (Input.is_action_just_pressed("trick") and not (player.is_on_wall_only() and (not player.raycast.is_colliding()) and player.rot == 0) and not player.flying):
 		return
-			
-	player.ap.play("play")
+	
+	# Prevent player from doing action while on wall
+	if player.wall_cast.is_colliding() or player.wall_cast_2.is_colliding():
+		return
 	
 	# Cycle through trick animations in order; gain meter and count tricks
 	player.dashed = true

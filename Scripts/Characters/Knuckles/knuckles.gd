@@ -8,8 +8,6 @@ extends Player
 @onready var wall_climb_component: Node = $WallClimb
 
 func handle_air_actions(is_grounded) -> void:
-	if grinding == true:
-		return
 	glide_component.action()#
 	airspin_component.action()	# Lower speed cap than Sonic's airspin (1300 vs 1200... actually 1300 here vs 1200 there)
 	airup_component.action()

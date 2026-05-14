@@ -20,12 +20,13 @@ config/windows_native_icon="res://1-8dac9c05.ico"
 
 [autoload]
 
-GlobalCanvasLayer="*res://Scripts/UI/CanvasLayer.gd"
 Test="*res://Scripts/Level/test.gd"
+GlobalCanvasLayer="*res://Scripts/UI/CanvasLayer.gd"
 MusicManager="*res://Scripts/Level/Music.gd"
 Pause="*res://misc/pause.tscn"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 Background="*res://Scripts/Level/Background.gd"
+GlobalSignals="*res://Scripts/Global/GlobalSignals.gd"
 
 [display]
 

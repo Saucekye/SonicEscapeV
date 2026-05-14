@@ -10,8 +10,6 @@ extends Player
 @onready var peelout_component: Node = $Peelout
 
 func handle_air_actions(is_grounded) -> void:
-	if grinding == true:
-		return
 	flick_component.action()
 	airspin_component.action()
 	airup_component.action()

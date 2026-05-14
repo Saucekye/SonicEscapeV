@@ -1,6 +1,6 @@
 [gd_scene load_steps=58 format=4 uid="uid://4fx1ywk7nj3i"]
 
-[ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_qdjoc"]
+[ext_resource type="Script" path="res://Scripts/Level/chunk_boss.gd" id="1_qdjoc"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="3_tx716"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_wbbos"]
 [ext_resource type="Texture2D" uid="uid://bw1flg41fowo" path="res://Sprites/Boss/Thragg/anissa.png" id="5_0iqyq"]
@@ -1284,7 +1284,6 @@ script = ExtResource("6_i4wqq")
 
 [node name="TextureRect2" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_rabum")
-anchors_preset = -1
 offset_left = -688.0001
 offset_top = 248.0
 offset_right = -648.0001
@@ -1349,7 +1348,6 @@ stream = ExtResource("8_qkeek")
 volume_db = -15.0
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
-anchors_preset = -1
 offset_left = -1536.0
 offset_top = -1000.0
 offset_right = 1344.0
