@@ -1049,8 +1049,13 @@ func handle_air_logic(delta, is_grounded):
 		return
 		
 	# Change trail offset to 0 value
-	if ball:
+	if flying:
 		trail.offset.y = 0
+	elif ball:
+		trail.offset.y = 15
+	else:
+		trail.offset.y = 0
+		
 		
 	# Enable attachment only when freely airborne (not grinding or dashing)
 	if not hang and not grinding and not dashed:
