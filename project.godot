@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="justforthevid (4.5)"
+config/name="ESCAPE"
 run/main_scene="uid://dtwtf3r7d23cv"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)

@@ -55,10 +55,10 @@ func _start():
 	begin = true
 
 
-func _ready():
-	self.process_mode = Node.PROCESS_MODE_DISABLED
-	get_parent().get_node("CharacterBody2D").visible = false
-	get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED
+#func _ready():
+	#self.process_mode = Node.PROCESS_MODE_DISABLED
+	#get_parent().get_node("CharacterBody2D").visible = false
+	#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED
 
 func _process(delta):
 	# ---------------- DEATH PHYSICS ----------------

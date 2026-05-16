@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="11_45dcn"]
 [ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="11_bht0p"]
 [ext_resource type="AudioStream" uid="uid://bprfc8e5lshpo" path="res://misc/ha(2).MP3" id="12_l6fyr"]
-[ext_resource type="PackedScene" uid="uid://p2ybublbkfdp" path="res://Scenes/Obstacles/Miku/miku.tscn" id="19_v8pan"]
+[ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="17_3cjkc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wlcxu"]
 shader = ExtResource("9_m05y8")
@@ -1063,7 +1063,7 @@ position = Vector2(1828.7343, 668.7998)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1264, 392)
-zoom = Vector2(1.3, 1.3)
+zoom = Vector2(1.15, 1.15)
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(808, 599.99994)
@@ -1185,14 +1185,16 @@ volume_db = -20.0
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(1336, 8)
+collision_layer = 4294967295
+collision_mask = 4294967295
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(457.96375, 372.90115)
 shape = SubResource("RectangleShape2D_yyfmi")
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("19_v8pan")]
-position = Vector2(1272.0002, 600.00006)
-scale = Vector2(125, 125)
+[node name="Ring Strand" parent="." instance=ExtResource("17_3cjkc")]
+position = Vector2(1274, 637)
+scale = Vector2(3, 3)
 
 [connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
 [connection signal="area_entered" from="Node2D/Sprite2D/HitBox" to="Node2D" method="_on_hit_box_area_entered"]

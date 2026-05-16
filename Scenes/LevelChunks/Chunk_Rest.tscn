@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://cnud6pf5aurei"]
+[gd_scene load_steps=6 format=4 uid="uid://cnud6pf5aurei"]
 
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="1_th0bb"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="2_rcdb3"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="3_wn42b"]
 [ext_resource type="PackedScene" uid="uid://jm53xtlq4dj3" path="res://Scenes/Obstacles/Goal/goal.tscn" id="4_rcdb3"]
 [ext_resource type="PackedScene" uid="uid://d3s7dd3hyko78" path="res://Scenes/Obstacles/Rest Tree/Tree.tscn" id="4_wn42b"]
-[ext_resource type="PackedScene" uid="uid://p2ybublbkfdp" path="res://Scenes/Obstacles/Miku/miku.tscn" id="15_0n2r8"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -43,10 +42,6 @@ scale = Vector2(2.5, 2.5)
 [node name="Area2D" parent="." instance=ExtResource("4_wn42b")]
 position = Vector2(-1344, 0)
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("15_0n2r8")]
-position = Vector2(1160.0001, 632)
-scale = Vector2(125, 125)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1344, 432)
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(1.1, 1.1)

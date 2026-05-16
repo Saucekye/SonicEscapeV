@@ -12,11 +12,11 @@ func _ready():
 	$CanvasLayer/TextSprite.modulate.a = 0
 	$CanvasLayer/Label.modulate.a = 0
 	
-	randomize()
-	if randf() < 0.5:
-		var player = get_parent().get_node("CharacterBody2D")
-		player.visible = false
-		player.process_mode = Node.PROCESS_MODE_DISABLED
+	#randomize()
+	#if randf() < 0.5:
+		#var player = get_parent().get_node("CharacterBody2D")
+		#player.visible = false
+		#player.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	
 

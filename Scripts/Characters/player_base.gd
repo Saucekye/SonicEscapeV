@@ -1548,7 +1548,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		# (signals to the other player that this character can carry them)
 		$Arrow.visible = true
 		
-	if area.is_in_group("enemyattack"):
+	if area.is_in_group("enemyattack") and ouch == false:
 		hurt()
 
 func attach_item(item):

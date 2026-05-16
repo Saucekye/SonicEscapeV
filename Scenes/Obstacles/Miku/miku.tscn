@@ -1,8 +1,10 @@
 [gd_scene load_steps=16 format=3 uid="uid://p2ybublbkfdp"]
 
 [ext_resource type="Script" uid="uid://kiay27di5xa2" path="res://Scripts/Obstacles/Miku/miku.gd" id="1_10iud"]
-[ext_resource type="Texture2D" uid="uid://vaqnyux5gavu" path="res://Sprites/Obstacles/Miku/itch.png" id="2_hwr23"]
+[ext_resource type="Texture2D" uid="uid://dfpngk75wdo5u" path="res://Sprites/Obstacles/Miku/miku1.png" id="2_c3to5"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="3_hwr23"]
+[ext_resource type="Texture2D" uid="uid://b43ncnbj172hw" path="res://Sprites/Obstacles/Miku/freeorm1.png" id="3_kvapj"]
+[ext_resource type="Texture2D" uid="uid://bct1b4hpuo2oh" path="res://Sprites/Obstacles/Miku/freeorm2.png" id="4_7bsax"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vk4aa"]
 atlas = ExtResource("3_hwr23")
@@ -53,115 +55,67 @@ tracks/1/keys = {
 "values": [Vector2(-0.039999995, 0.11999999)]
 }
 
-[sub_resource type="Animation" id="Animation_vk4aa"]
-resource_name = "idle"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-0.04, -0.08)]
-}
-
-[sub_resource type="Animation" id="Animation_hwr23"]
-resource_name = "listen"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [14, 15, 16, 17, 18]
-}
-
 [sub_resource type="Animation" id="Animation_qwr3p"]
 resource_name = "ride"
-length = 0.4
+length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.16666667, 0.26666668),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [10, 11, 12, 13]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0.04)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 11, 12, 12]
+}
 
 [sub_resource type="Animation" id="Animation_mpywb"]
 resource_name = "wave"
-length = 0.4
+length = 0.7
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [4, 5, 6, 7, 8, 9]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-0.04, -0.08)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333333, 0.2, 0.26666668, 0.33333334, 0.4, 0.46666667, 0.53333336),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_axxh4"]
 _data = {
 &"RESET": SubResource("Animation_0rx4k"),
-&"idle": SubResource("Animation_vk4aa"),
-&"listen": SubResource("Animation_hwr23"),
 &"ride": SubResource("Animation_qwr3p"),
 &"wave": SubResource("Animation_mpywb")
 }
@@ -182,6 +136,7 @@ collision_mask = 16
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_10iud")
+textures = Array[Texture2D]([ExtResource("2_c3to5"), ExtResource("3_kvapj"), ExtResource("4_7bsax")])
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, -0.03999996)
@@ -190,9 +145,8 @@ position = Vector2(0, -0.03999996)
 z_index = 1
 position = Vector2(-0.039999995, 0.11999999)
 scale = Vector2(0.009, 0.009)
-texture = ExtResource("2_hwr23")
-hframes = 5
-vframes = 4
+texture = ExtResource("2_c3to5")
+hframes = 13
 
 [node name="Arrow" type="AnimatedSprite2D" parent="."]
 visible = false

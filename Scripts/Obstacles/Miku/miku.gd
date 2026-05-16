@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@export var textures : Array[Texture2D]
+
 # Physics variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var bounce_factor = 0.0
@@ -33,6 +35,11 @@ var upright_threshold = 0.1
 # --------------------------------------------------
 
 func _ready():
+
+	# RANDOM SPRITE
+	if textures.size() > 0:
+		$Sprite2D.texture = textures.pick_random()
+
 	$Arrow.visible = false
 	$Attackbox.monitorable = false
 	$Attackbox.monitoring = false
@@ -70,7 +77,7 @@ func _physics_process(delta):
 
 		set_item_group(true)
 
-		rotation += spin_speed * delta * 1.5
+		rotation += spin_speed * delta * 1
 
 		$Attackbox.monitorable = true
 		$Attackbox.monitoring = true
@@ -158,14 +165,14 @@ func _physics_process(delta):
 
 	if should_be_idle:
 		if not is_in_idle_state:
-			$AnimationPlayer.play("idle")
+			$AnimationPlayer.play("wave")
 			is_in_idle_state = true
 			idle_timer = 0.0
 		else:
 			idle_timer += delta
 
 			if idle_timer >= 4.0 and idle_variant == "":
-				idle_variant = ["wave", "listen"].pick_random()
+				idle_variant = ["wave"].pick_random()
 				$AnimationPlayer.play(idle_variant)
 	else:
 		idle_timer = 0.0

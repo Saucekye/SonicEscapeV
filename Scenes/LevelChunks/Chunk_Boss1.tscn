@@ -1,6 +1,6 @@
-[gd_scene load_steps=58 format=4 uid="uid://4fx1ywk7nj3i"]
+[gd_scene load_steps=59 format=4 uid="uid://4fx1ywk7nj3i"]
 
-[ext_resource type="Script" path="res://Scripts/Level/chunk_boss.gd" id="1_qdjoc"]
+[ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_qdjoc"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="3_tx716"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_wbbos"]
 [ext_resource type="Texture2D" uid="uid://bw1flg41fowo" path="res://Sprites/Boss/Thragg/anissa.png" id="5_0iqyq"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cmepllxv1pfol" path="res://Sounds/Environmental/strongwin.MP3" id="9_0iqyq"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="10_yxo0d"]
 [ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="11_45ap3"]
+[ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_qdjoc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0iqyq"]
 atlas = ExtResource("5_qkeek")
@@ -1254,7 +1255,7 @@ position = Vector2(1828.7343, 668.7998)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1264, 392)
-zoom = Vector2(1.3, 1.3)
+zoom = Vector2(1.15, 1.15)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -3
@@ -1273,6 +1274,8 @@ autoplay = "default"
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(806, 19)
+collision_layer = 4294967295
+collision_mask = 4294967295
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(457.96375, 372.90115)
@@ -1284,6 +1287,7 @@ script = ExtResource("6_i4wqq")
 
 [node name="TextureRect2" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_rabum")
+anchors_preset = -1
 offset_left = -688.0001
 offset_top = 248.0
 offset_right = -648.0001
@@ -1348,6 +1352,7 @@ stream = ExtResource("8_qkeek")
 volume_db = -15.0
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
+anchors_preset = -1
 offset_left = -1536.0
 offset_top = -1000.0
 offset_right = 1344.0
@@ -1375,6 +1380,10 @@ position = Vector2(800, 544)
 
 [node name="Marker2D1" type="Marker2D" parent="."]
 position = Vector2(1728, 544)
+
+[node name="Ring Strand" parent="." instance=ExtResource("16_qdjoc")]
+position = Vector2(1266, 639)
+scale = Vector2(3, 3)
 
 [connection signal="area_entered" from="Area2D" to="Node2D" method="_on_area_2d_area_entered"]
 [connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
