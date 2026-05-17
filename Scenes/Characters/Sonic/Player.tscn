@@ -2281,6 +2281,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
+debug_prevent_death = true
 
 [node name="Airspin" parent="." instance=ExtResource("9_yxy1h")]
 
@@ -2299,7 +2300,6 @@ script = ExtResource("1_vuqnu")
 [node name="Peelout" parent="." instance=ExtResource("9_x4ndc")]
 
 [node name="Flymeter" parent="." instance=ExtResource("7_uvhn0")]
-anchors_preset = -1
 
 [node name="Trail2D" type="Line2D" parent="."]
 z_index = 1

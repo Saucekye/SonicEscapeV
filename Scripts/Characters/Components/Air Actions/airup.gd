@@ -29,5 +29,8 @@ func action() -> void:
 	player.fall_gravity = player.default
 	await get_tree().create_timer(0.3).timeout  # Small delay before entering "falling" state
 	player.falling = true
-	player.ap.play("falling")
+	# The awaits can interrupt the death animation,
+	# Only enter falling animation if last animation was airup
+	if player.last_animation == "airup":
+		player.ap.play("falling")
 	
