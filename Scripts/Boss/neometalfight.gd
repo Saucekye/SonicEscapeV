@@ -225,8 +225,8 @@ func start_attack3():
 			
 		if health <= 30 and not phase2_voice_played:
 			phase2_voice_played = true
-			get_parent().get_node("CharacterBody2D").visible = true
-			get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_INHERIT
+			#get_parent().get_node("CharacterBody2D").visible = true
+			#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_INHERIT
 
 		state = BossState.ATTACK3
 
