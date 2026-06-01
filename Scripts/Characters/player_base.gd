@@ -1597,7 +1597,7 @@ func player_death():
 	
 func emit_rings():
 	# Scatter a portion of held rings on taking damage (mimics classic Sonic ring loss)
-	if Test.rings <= 0:
+	if Test.rings <= 0 and invincible == false:
 		player_death()
 		return
 	else:
@@ -1620,7 +1620,7 @@ func emit_rings():
 	# Lookup table: maps total rings held to how many ring objects to spawn
 	match Test.rings + loss:
 		1:  spawn_count = 0
-		2:  spawn_count = 1
+		2:  spawn_count = 0
 		3:  spawn_count = 2
 		4:  spawn_count = 2
 		5:  spawn_count = 2

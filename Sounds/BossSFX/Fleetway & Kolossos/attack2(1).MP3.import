@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b6ybqvq84efwa"
+path="res://.godot/imported/attack2(1).MP3-7a467ac6b1503f731d5fa8c89618f9a0.mp3str"
+
+[deps]
+
+source_file="res://Sounds/BossSFX/Fleetway & Kolossos/attack2(1).MP3"
+dest_files=["res://.godot/imported/attack2(1).MP3-7a467ac6b1503f731d5fa8c89618f9a0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

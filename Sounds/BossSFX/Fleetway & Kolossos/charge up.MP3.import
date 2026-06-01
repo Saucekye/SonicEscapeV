@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cqr6xvqcl1k2r"
+path="res://.godot/imported/charge up.MP3-e17381f3f27c715d9a78b0f31e840778.mp3str"
+
+[deps]
+
+source_file="res://Sounds/BossSFX/Fleetway & Kolossos/charge up.MP3"
+dest_files=["res://.godot/imported/charge up.MP3-e17381f3f27c715d9a78b0f31e840778.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

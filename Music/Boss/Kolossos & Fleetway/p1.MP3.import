@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c6x2nbeuvfl8q"
+path="res://.godot/imported/p1.MP3-9801f5e35d8946955b8b18393ab644f5.mp3str"
+
+[deps]
+
+source_file="res://Music/Boss/Kolossos & Fleetway/p1.MP3"
+dest_files=["res://.godot/imported/p1.MP3-9801f5e35d8946955b8b18393ab644f5.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

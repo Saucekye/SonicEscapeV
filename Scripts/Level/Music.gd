@@ -11,7 +11,8 @@ var is_muted = false
 # ─────────────────────────────
 var scene_music := {
 	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
-	"warningscreen": preload("res://Music/Intro/sos(3).MP3")
+	"warningscreen": preload("res://Music/Intro/sos(3).MP3"),
+	
 }
 
 # ─────────────────────────────
@@ -63,18 +64,21 @@ func _process(delta: float) -> void:
 	# ─────────────────────────────
 	# Music play logic (yours)
 	# ─────────────────────────────
-	if current_scene_name != "Node2D":
+	
+	if current_scene_name != "Node2D" and current_scene_name != "Titlescreen":
 		if Test.music and not Test.musicplaying:
 			Test.musicplaying = true
 			volume_db = volume
 			play()
 
-	if current_scene_name == "Node2D":
+	if current_scene_name == "Node2D" and current_scene_name != "Titlescreen":
 		if (Test.level > 0 and not Test.level % 4 == 0) \
 		and Test.music and not Test.musicplaying:
 			Test.musicplaying = true
 			volume_db = volume
 			play()
+			
+
 
 	if volume_db != volume:
 		volume_db = volume

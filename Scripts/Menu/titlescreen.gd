@@ -4,8 +4,6 @@ extends Control
 var fade_rect: ColorRect
 
 func _ready() -> void:
-	
-
 	$Title3/AnimationPlayer.play("fade")
 	Pause.current_scene = ""
 
