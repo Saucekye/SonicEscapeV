@@ -1255,7 +1255,7 @@ position = Vector2(1828.7343, 668.7998)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1264, 392)
-zoom = Vector2(1.15, 1.15)
+zoom = Vector2(1.1, 1.1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -3
@@ -1287,6 +1287,7 @@ script = ExtResource("6_i4wqq")
 
 [node name="TextureRect2" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_rabum")
+anchors_preset = -1
 offset_left = -688.0001
 offset_top = 248.0
 offset_right = -648.0001
@@ -1351,6 +1352,7 @@ stream = ExtResource("9_0iqyq")
 volume_db = -15.0
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
+anchors_preset = -1
 offset_left = -1536.0
 offset_top = -1000.0
 offset_right = 1344.0
@@ -1374,10 +1376,10 @@ volume_db = -20.0
 position = Vector2(1264, 360)
 
 [node name="Marker2D2" type="Marker2D" parent="."]
-position = Vector2(800, 544)
+position = Vector2(864, 560)
 
 [node name="Marker2D1" type="Marker2D" parent="."]
-position = Vector2(1728, 544)
+position = Vector2(1664, 568)
 
 [node name="Ring Strand" parent="." instance=ExtResource("16_qdjoc")]
 position = Vector2(1266, 639)

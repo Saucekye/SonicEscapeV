@@ -1589,7 +1589,7 @@ func pick_upward_angle() -> float:
 	return randf_range(selected_range.x, selected_range.y)		
 		
 func player_death():
-	if not is_player or debug_prevent_death:
+	if not is_player:
 		return
 	ap.speed_scale = 1
 	ap.play("death")
@@ -1603,7 +1603,7 @@ func player_death():
 	
 func emit_rings():
 	# Scatter a portion of held rings on taking damage (mimics classic Sonic ring loss)
-	if Test.rings <= 0 and invincible == false:
+	if Test.rings <= 0 and invincible == false and ouch == false:
 		player_death()
 		return
 	else:
@@ -1626,7 +1626,7 @@ func emit_rings():
 	# Lookup table: maps total rings held to how many ring objects to spawn
 	match Test.rings + loss:
 		1:  spawn_count = 0
-		2:  spawn_count = 0
+		2:  spawn_count = 1
 		3:  spawn_count = 2
 		4:  spawn_count = 2
 		5:  spawn_count = 2

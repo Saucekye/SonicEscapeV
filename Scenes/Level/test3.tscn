@@ -150,7 +150,7 @@ scale = Vector2(0.7, 0.7)
 script = ExtResource("8_jn4al")
 
 [node name="Button2" type="TextureButton" parent="CanvasLayer/TouchScreenButton"]
-modulate = Color(1, 1, 1, 0.5921569)
+modulate = Color(1, 1, 1, 0.30980393)
 layout_mode = 0
 offset_left = 1416.6667
 offset_top = 598.3333
@@ -182,7 +182,7 @@ texture_pressed = ExtResource("16_sbwxq")
 action = "trick"
 
 [node name="Down" type="TextureButton" parent="CanvasLayer/TouchScreenButton"]
-modulate = Color(1, 1, 1, 0.5921569)
+modulate = Color(1, 1, 1, 0.34117648)
 layout_mode = 0
 offset_left = -155.00005
 offset_top = 575.0

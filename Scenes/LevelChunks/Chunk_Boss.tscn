@@ -1063,7 +1063,7 @@ position = Vector2(1828.7343, 668.7998)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1264, 392)
-zoom = Vector2(1.15, 1.15)
+zoom = Vector2(1.1, 1.1)
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(808, 599.99994)
@@ -1130,9 +1130,10 @@ color = Color(1, 1, 1, 0)
 wait_time = 5.0
 
 [node name="Marker2D1" type="Marker2D" parent="Node2D"]
+position = Vector2(73.33333, 5.086263e-05)
 
 [node name="Marker2D2" type="Marker2D" parent="Node2D"]
-position = Vector2(773.333, 0)
+position = Vector2(699.99994, 5.086263e-05)
 
 [node name="Marker2D3" type="Marker2D" parent="Node2D"]
 position = Vector2(393.333, -4.7683716e-06)

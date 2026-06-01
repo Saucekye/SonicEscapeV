@@ -359,7 +359,7 @@ func take_damage(amount = 1):
 # --------------------------------------------------
 
 func start_death():
-
+	GlobalCanvasLayer.tricks += 10
 	dying = true
 	state = BossState.DEAD
 	$AudioStreamPlayer2.stop()
