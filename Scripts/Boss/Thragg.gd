@@ -109,8 +109,9 @@ func start_attack_loop():
 		else:
 			await start_follow_attack()
 			next_attack = 0
-
-		state = BossState.FLY
+			
+		if state != BossState.DEAD:
+			state = BossState.FLY
 
 # --------------------------------------------------
 # FLYING
@@ -204,10 +205,14 @@ func start_punch_attack() -> void:
 	# --------------------------------------------------
 	anim.play("attack1")
 	await anim.animation_finished
-
+	
 	# --------------------------------------------------
 	# attack1to (INTERRUPTIBLE + PLAYER SUCK)
 	# --------------------------------------------------
+	if health < 1:
+		state = BossState.DEAD
+		return
+	
 	anim.play("attack1to")
 	$TextureRect2.visible = true
 
@@ -246,7 +251,13 @@ func start_punch_attack() -> void:
 			active_player.global_position += pull_dir * pull_strength * get_process_delta_time()
 
 		await get_tree().process_frame
-
+		
+		# If boss is defeathed the sucking animation is happening,
+		# make sure to set their state to dead
+		if health < 1:
+			state = BossState.DEAD
+			return
+		
 	anim.play("idle")
 	$TextureRect2.visible = false
 

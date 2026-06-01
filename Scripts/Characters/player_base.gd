@@ -2,6 +2,12 @@
 class_name Player extends CharacterBody2D
 
 # ─────────────────────────────────────────────
+# Debuh Variables
+# ─────────────────────────────────────────────
+@export_group("Debug Variables")
+@export var debug_prevent_death = false
+
+# ─────────────────────────────────────────────
 # Node References
 # ─────────────────────────────────────────────
 @onready var ap = $AnimationPlayer
@@ -73,6 +79,7 @@ var next_bounce = false         ## True when the character should bounce on the 
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
 var is_player_dead : bool = false		## Indicates that the player character has died, remove all playability
+var last_animation : String = ""			## Keeps track of the last animation. Useful for things like airup where you go from air up aniamtion to falling animation only if you were previously in air
 # ─────────────────────────────────────────────
 # Flying State Variables
 # ─────────────────────────────────────────────
@@ -241,10 +248,6 @@ func _on_launch_finished():
 	print("Spring path finished! Movement restored.")
 
 func _physics_process(delta):
-	
-	# Evil functionality that prevent all input if player is dead
-	if is_player_dead:
-		return
 	
 	# Release boost if the airspin button is let go
 	if Input.is_action_just_released("airspin"):
@@ -1410,6 +1413,8 @@ func _on_wait_timer_timeout():
 	ap.play("wait")
 
 func _on_animation_player_current_animation_changed(anim_name: String):
+	# Keep track of the last animation chnaged
+	last_animation = anim_name
 	# Reset the wait timer any time a non-wait animation starts playing
 	if anim_name == "stance":
 		$WaitTimer.start()
@@ -1584,7 +1589,7 @@ func pick_upward_angle() -> float:
 	return randf_range(selected_range.x, selected_range.y)		
 		
 func player_death():
-	if not is_player:
+	if not is_player or debug_prevent_death:
 		return
 	ap.speed_scale = 1
 	ap.play("death")
@@ -1592,6 +1597,7 @@ func player_death():
 	$Sfx.pitch_scale = 1
 	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
 	$Sfx.play()
+	is_player_dead = true
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	
