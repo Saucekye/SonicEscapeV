@@ -10,7 +10,7 @@ var music = false
 var mobile = false
 var end = false
 
-@onready var sonic_scene = preload("res://Scenes/Characters/Sonic/Player.tscn")
+@onready var sonic_scene = preload("res://Scenes/Characters/Sonic/Sonic.tscn")
 @onready var tails_scene = preload("res://Scenes/Characters/Tails/Tails.tscn")
 @onready var knuckles_scene = preload("res://Scenes/Characters/Knuckles/Knuckles.tscn")
 @onready var amy_scene = preload("res://Scenes/Characters/Amy/amy.tscn")

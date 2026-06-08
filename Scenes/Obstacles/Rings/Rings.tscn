@@ -138,7 +138,7 @@ _data = {
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-scale = Vector2(2.5, 2.5)
+scale = Vector2(1.5, 1.5)
 collision_layer = 256
 collision_mask = 256
 collision_priority = 10.0
