@@ -8,7 +8,7 @@
 position = Vector2(0, -2)
 
 [node name="CharacterBody2D2" parent="." instance=ExtResource("1_m5474")]
-position = Vector2(-15, -2)
+position = Vector2(-75, -1)
 
 [node name="CharacterBody2D3" parent="." instance=ExtResource("1_m5474")]
-position = Vector2(15, -2)
+position = Vector2(75, -2)

@@ -1072,7 +1072,6 @@ script = ExtResource("4_yyfmi")
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_wlcxu")
-anchors_preset = -1
 offset_left = -160.0
 offset_top = -453.33328
 offset_right = 1176.0
@@ -1116,7 +1115,6 @@ debug_color = Color(0.97221905, 0.13375625, 0.26391807, 0.41960785)
 layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer"]
-anchors_preset = -1
 offset_left = -472.0
 offset_top = -512.00006
 offset_right = -432.0
@@ -1195,7 +1193,6 @@ shape = SubResource("RectangleShape2D_yyfmi")
 
 [node name="Ring Strand" parent="." instance=ExtResource("17_3cjkc")]
 position = Vector2(1274, 637)
-scale = Vector2(3, 3)
 
 [connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
 [connection signal="area_entered" from="Node2D/Sprite2D/HitBox" to="Node2D" method="_on_hit_box_area_entered"]
