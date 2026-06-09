@@ -997,7 +997,7 @@ func handle_floor_logic(delta):
 			apply_friction(delta)
 		else:
 			trail.offset.y = 0
-		print(trail.offset.y)
+			
 		# Reset crouching if now moving forward while not in ball mode
 		if abs(motion.x) > 0 and ball == false:
 			crouch = false
@@ -1058,7 +1058,6 @@ func handle_air_logic(delta, is_grounded):
 		trail.offset.y = 15
 	else:
 		trail.offset.y = 0
-	print(trail.offset.y)
 		
 	# Enable attachment only when freely airborne (not grinding or dashing)
 	if not hang and not grinding and not dashed:

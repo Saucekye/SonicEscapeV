@@ -74,6 +74,6 @@ script = ExtResource("4_yd1ov")
 position = Vector2(1606.3955, 748.7894)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(5331.4004, 749.7922)
+position = Vector2(5331.4004, 748.7922)
 
 [editable path="Level/Node2D"]
