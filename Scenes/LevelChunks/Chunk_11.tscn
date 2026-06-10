@@ -34,7 +34,7 @@ script = ExtResource("4_xd3j4")
 position = Vector2(918.40027, 748.7922)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(3987.4004, -786.2078)
+position = Vector2(4063.4004, -596.2078)
 
 [node name="Rails" type="Node2D" parent="."]
 
