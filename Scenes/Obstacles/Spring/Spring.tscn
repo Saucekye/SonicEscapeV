@@ -133,10 +133,11 @@ _data = {
 }
 
 [node name="Node2D" type="Area2D" groups=["Spring"]]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(1.5, 1.5)
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_k6s6r")
+show_arc = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 4)
@@ -149,7 +150,7 @@ hframes = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
-"": SubResource("AnimationLibrary_ayyd5")
+&"": SubResource("AnimationLibrary_ayyd5")
 }
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
@@ -159,3 +160,4 @@ bus = &"SFX"
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="property_list_changed" from="." to="." method="_on_property_list_changed"]
+[connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

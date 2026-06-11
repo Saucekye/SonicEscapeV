@@ -16,15 +16,12 @@ position = Vector2(24, 24)
 
 [node name="Ring Strand3" parent="Rings" instance=ExtResource("3_h1lyu")]
 position = Vector2(2048, 264)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand4" parent="Rings" instance=ExtResource("3_h1lyu")]
 position = Vector2(3000, 1072)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand5" parent="Rings" instance=ExtResource("3_h1lyu")]
 position = Vector2(4288, 1280)
-scale = Vector2(3, 3)
 
 [node name="Level" type="Node2D" parent="."]
 z_index = -2

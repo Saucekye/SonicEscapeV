@@ -16,70 +16,54 @@ position = Vector2(-1168, -128)
 
 [node name="Enemy14" parent="Enemies" instance=ExtResource("1_6h2da")]
 position = Vector2(25944.002, 3552)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy28" parent="Enemies" instance=ExtResource("1_6h2da")]
 position = Vector2(26312, 4472)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy7" parent="Enemies" instance=ExtResource("1_6h2da")]
 position = Vector2(25008, 2864.0002)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy9" parent="Enemies" instance=ExtResource("2_5wulp")]
 position = Vector2(24872, 3656)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy10" parent="Enemies" instance=ExtResource("2_5wulp")]
 position = Vector2(26304, 4248)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy11" parent="Enemies" instance=ExtResource("2_5wulp")]
 position = Vector2(24864.002, 3400)
-scale = Vector2(1.2, 1.2)
 
 [node name="Rings" type="Node2D" parent="."]
 position = Vector2(24, 24)
 
 [node name="Ring Strand24" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(21184, 2536)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand26" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22312, 3024)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand27" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22312, 2888)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand28" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22512, 2744.0002)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand30" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22512, 2624)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand31" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22784, 2504)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand32" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22784, 2392)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand33" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(25584.002, 3520)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand34" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(23328, 2496)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand35" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(23264, 3128)
-scale = Vector2(3, 3)
 
 [node name="Level" type="Node2D" parent="."]
 z_index = -2

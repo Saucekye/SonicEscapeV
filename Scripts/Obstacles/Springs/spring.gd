@@ -36,6 +36,7 @@ func _notification(what):
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		$AudioStreamPlayer2D.play()
+		$Sprite2D/AnimationPlayer.play("play")
 
 		var player_body = area.get_parent()
 		player_body.apply_spring_boost(spring_velocity)
@@ -44,3 +45,8 @@ func _on_area_entered(area: Area2D) -> void:
 
 func _on_property_list_changed() -> void:
 		queue_redraw()
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "play":
+		$Sprite2D/AnimationPlayer.play("idle")

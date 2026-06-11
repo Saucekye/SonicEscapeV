@@ -4,7 +4,7 @@
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="1_ng4el"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="2_y4scb"]
 [ext_resource type="PackedScene" uid="uid://tgq6h5u671wt" path="res://Scenes/Music/Music.tscn" id="3_3sdgx"]
-[ext_resource type="PackedScene" uid="uid://bmuul5b8h0ode" path="res://Scenes/Characters/Sonic/Sonic.tscn" id="3_m2tl8"]
+[ext_resource type="PackedScene" uid="uid://bmuul5b8h0ode" path="res://Scenes/Characters/Sonic/Sonic-old.tscn" id="3_m2tl8"]
 [ext_resource type="Script" uid="uid://bk6guicx7ti3" path="res://Scripts/Level/Camera2D.gd" id="4_y4scb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5kg4"]

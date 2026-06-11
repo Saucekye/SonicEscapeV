@@ -980,10 +980,10 @@ func handle_floor_logic(delta):
 			hangable = false  # Can't initiate a hang while grounded
 		
 		# Shorter snap at low speed; longer snap at high speed to hug slopes better
-		if time_elapsed <= 50:
+		if motion.x <= 300:
 			floor_snap_length = 10
 		else:
-			floor_snap_length = 30
+			floor_snap_length = 35
 
 		falling = false
 		dashed = false
@@ -1058,7 +1058,6 @@ func handle_air_logic(delta, is_grounded):
 		trail.offset.y = 15
 	else:
 		trail.offset.y = 0
-		
 		
 	# Enable attachment only when freely airborne (not grinding or dashing)
 	if not hang and not grinding and not dashed:

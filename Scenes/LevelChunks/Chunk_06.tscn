@@ -15,26 +15,21 @@ position = Vector2(-1168, -128)
 
 [node name="Enemy18" parent="Enemies" instance=ExtResource("1_qb7uf")]
 position = Vector2(20888, 3712.0002)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy8" parent="Enemies" instance=ExtResource("2_ie1us")]
 position = Vector2(21312, 2816)
-scale = Vector2(1.2, 1.2)
 
 [node name="Enemy26" parent="Enemies" instance=ExtResource("2_ie1us")]
 position = Vector2(20896, 3496)
-scale = Vector2(1.2, 1.2)
 
 [node name="Rings" type="Node2D" parent="."]
 position = Vector2(24, 24)
 
 [node name="Ring Strand23" parent="Rings" instance=ExtResource("1_ptwbk")]
 position = Vector2(19736, 3488)
-scale = Vector2(3, 3)
 
 [node name="Ring Strand25" parent="Rings" instance=ExtResource("1_ptwbk")]
 position = Vector2(20480, 2736)
-scale = Vector2(3, 3)
 
 [node name="Level" type="Node2D" parent="."]
 z_index = -2
@@ -42,9 +37,7 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Spring4" parent="Level" instance=ExtResource("4_cuyld")]
 position = Vector2(25809, 4223)
-scale = Vector2(1.5, 1.5)
 spring_velocity = Vector2(0, -1500)
-show_arc = false
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Level"]
 position = Vector2(4360, 1800)
