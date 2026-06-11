@@ -22,9 +22,9 @@ point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_7fdvf"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -494, 95, 0, 0, 0, 0, -230.9549, 16.102142, 0, 0, 0, 0, 240, 16, -23.395494, 44.793118, 23.395494, -44.793118, 376, -88, 0.71768093, 35.292538, -0.71768093, -35.292538, 437, -247, 0, 0, 0, 0, 426, -342, 0, 0, 0, 0, 408, -375, 0, 0, 0, 0, 368, -417, 0, 0, 0, 0, 324, -457, 37.550346, -3.6340213, -37.550346, 3.6340213, 180, -478, 11.851692, -128.28052, -11.851692, 128.28052, -69, -296, -46.8192, -31.916162, 46.8192, 31.916162, 6, -67, 0, 0, 0, 0, 792, -48, 0, 0, 0, 0, 1072, -96, 0, 0, 0, 0, 1256, -168)
+"points": PackedVector2Array(0, 0, 0, 0, -494, 95, 0, 0, 0, 0, -230.9549, 16.102142, 0, 0, 0, 0, 240, 16, -96.9635, 39.95311, 96.9635, -39.95311, 403, -16, -19.450317, 272.70856, 19.450317, -272.70856, 558, -287, 184.85435, 28.68598, -184.85435, -28.68598, 313, -616, 65.09169, -201.84851, -65.09169, 201.84851, -165, -484, -65.2112, -79.34817, 65.2112, 79.34817, -123, -137, 0, 0, 0, 0, 792, -48, 0, 0, 0, 0, 1072, -96, 0, 0, 0, 0, 1256, -168)
 }
-point_count = 15
+point_count = 11
 
 [sub_resource type="Curve2D" id="Curve2D_fyvao"]
 _data = {
@@ -51,7 +51,7 @@ script = ExtResource("4_sqfxv")
 position = Vector2(1606.3955, 748.7894)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(9900.4, 748.7922)
+position = Vector2(9900.8, 748.792)
 
 [node name="Rails" type="Node2D" parent="."]
 
@@ -65,7 +65,7 @@ scale = Vector2(2.2545176, 0.67129624)
 curve = SubResource("Curve2D_ggb02")
 
 [node name="Path2D3" parent="Rails" instance=ExtResource("3_fyvao")]
-position = Vector2(7898.4004, 652.7922)
+position = Vector2(7941.4004, 579.7922)
 curve = SubResource("Curve2D_7fdvf")
 
 [node name="Path2D4" parent="Rails" instance=ExtResource("3_fyvao")]
@@ -75,16 +75,16 @@ curve = SubResource("Curve2D_fyvao")
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Enemy" parent="Enemies" instance=ExtResource("6_101p1")]
-position = Vector2(3682.4004, 676.7922)
+position = Vector2(3682.4006, 723.7922)
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("6_101p1")]
-position = Vector2(5115.4004, 692.7922)
+position = Vector2(5115.4004, 754.7922)
 
 [node name="Enemy3" parent="Enemies" instance=ExtResource("6_101p1")]
-position = Vector2(5337.4004, 692.7922)
+position = Vector2(5337.4004, 756.79224)
 
 [node name="Enemy4" parent="Enemies" instance=ExtResource("6_101p1")]
-position = Vector2(5575.4004, 699.7922)
+position = Vector2(5575.4004, 765.79224)
 
 [node name="Enemy5" parent="Enemies" instance=ExtResource("5_7fdvf")]
 position = Vector2(8727.4, 1853.7922)
@@ -104,7 +104,7 @@ spring_velocity = Vector2(0, -1400)
 position = Vector2(2295.4004, 717.7922)
 
 [node name="Ring Strand2" parent="Rings" instance=ExtResource("1_ggb02")]
-position = Vector2(5505.4004, 455.79218)
+position = Vector2(5428.4004, 338.79218)
 
 [node name="Ring Strand3" parent="Rings" instance=ExtResource("1_ggb02")]
 position = Vector2(9129.4, 1733.7922)

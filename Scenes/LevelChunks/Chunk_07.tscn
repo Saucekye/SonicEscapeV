@@ -70,14 +70,15 @@ position = Vector2(4426.75, 1774.7402)
 
 [node name="Node2D3" parent="Level/Springs" instance=ExtResource("1_2hwph")]
 position = Vector2(5425.5005, 239.74023)
+spring_velocity = Vector2(0, -1400)
 
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Start" type="Marker2D" parent="."]
-position = Vector2(1184.4003, 595.7922)
+position = Vector2(1184, 595.2)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(4678.4004, -172.20782)
+position = Vector2(4678.4, -172.8)
 
 [node name="Enemy" parent="." instance=ExtResource("6_b0sn6")]
 position = Vector2(4166.4004, 287.79218)

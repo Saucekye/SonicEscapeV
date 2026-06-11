@@ -4,31 +4,34 @@ extends Node2D
 # Chunk Scenes
 # ─────────────────────────────
 @export var chunk_start: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Start.tscn")
-
-@export var chunk_01: PackedScene = preload("res://Scenes/LevelChunks/Chunk_01.tscn")
-@export var chunk_02: PackedScene = preload("res://Scenes/LevelChunks/Chunk_02.tscn")
-@export var chunk_03: PackedScene = preload("res://Scenes/LevelChunks/Chunk_03.tscn")
-@export var chunk_04: PackedScene = preload("res://Scenes/LevelChunks/Chunk_04.tscn")
-@export var chunk_05: PackedScene = preload("res://Scenes/LevelChunks/Chunk_05.tscn")
-@export var chunk_06: PackedScene = preload("res://Scenes/LevelChunks/Chunk_06.tscn")
-@export var chunk_07 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_07.tscn")
-@export var chunk_08 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_08.tscn")
-@export var chunk_09 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_09.tscn")
-@export var chunk_10 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_10.tscn")
-@export var chunk_11 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_11.tscn")
-@export var chunk_12 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_12.tscn")
-@export var chunk_13 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_13.tscn")
-@export var chunk_14 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_14.tscn")
-@export var chunk_15 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_15.tscn")
-@export var chunk_16 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_16.tscn")
-@export var chunk_17 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_17.tscn")
-@export var chunk_18 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_18.tscn")
-@export var chunk_19 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_19.tscn")
+#
+#@export var chunk_01: PackedScene = preload("res://Scenes/LevelChunks/Chunk_01.tscn")
+#@export var chunk_02: PackedScene = preload("res://Scenes/LevelChunks/Chunk_02.tscn")
+#@export var chunk_03: PackedScene = preload("res://Scenes/LevelChunks/Chunk_03.tscn")
+#@export var chunk_04: PackedScene = preload("res://Scenes/LevelChunks/Chunk_04.tscn")
+#@export var chunk_05: PackedScene = preload("res://Scenes/LevelChunks/Chunk_05.tscn")
+#@export var chunk_06: PackedScene = preload("res://Scenes/LevelChunks/Chunk_06.tscn")
+#@export var chunk_07 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_07.tscn")
+#@export var chunk_08 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_08.tscn")
+#@export var chunk_09 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_09.tscn")
+#@export var chunk_10 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_10.tscn")
+#@export var chunk_11 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_11.tscn")
+#@export var chunk_12 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_12.tscn")
+#@export var chunk_13 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_13.tscn")
+#@export var chunk_14 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_14.tscn")
+#@export var chunk_15 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_15.tscn")
+#@export var chunk_16 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_16.tscn")
+#@export var chunk_17 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_17.tscn")
+#@export var chunk_18 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_18.tscn")
+#@export var chunk_19 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_19.tscn")
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
 @export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
+
+# Load all level and boss chunks from an exported array
+@export var level_chunks : Array
 
 # Miku
 @export var miku_scene: PackedScene = preload("res://Scenes/Obstacles/Miku/miku.tscn")
@@ -141,10 +144,9 @@ func _spawn_next_chunk():
 	chunks.append(chunk)
 
 func _pick_random_chunk() -> PackedScene:
-	var options := [chunk_01, chunk_19, chunk_13, chunk_14, chunk_15, chunk_17, chunk_18]
 	if last_chunk_scene != null:
-		options.erase(last_chunk_scene)
-	var chosen = options[rng.randi_range(0, options.size() - 1)]
+		level_chunks.erase(last_chunk_scene)
+	var chosen = level_chunks[rng.randi_range(0, level_chunks.size() - 1)]
 	last_chunk_scene = chosen
 	return chosen
 

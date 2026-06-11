@@ -9,7 +9,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_2666m"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -1016.0001, -576, 0, 0, 0, 0, -824.0001, -576, 0, 0, 0, 0, -56.000122, -320, 0, 0, 0, 0, 63.999878, -320)
+"points": PackedVector2Array(0, 0, 0, 0, -952.0001, -577, 0, 0, 0, 0, -824.0001, -576, 0, 0, 0, 0, -56.000122, -320, 0, 0, 0, 0, 63.999878, -320)
 }
 point_count = 4
 
@@ -50,11 +50,11 @@ curve = SubResource("Curve2D_2666m")
 
 [node name="Node2D" parent="Springs" instance=ExtResource("5_ipcvq")]
 position = Vector2(3262.4004, 147.79218)
+spring_velocity = Vector2(0, -1300)
 
 [node name="Node2D2" parent="Springs" instance=ExtResource("5_ipcvq")]
 position = Vector2(1662.4003, -541.2078)
-gravityarc = 2000.0
-show_arc = true
+spring_velocity = Vector2(0, -1800)
 
 [node name="Rings" type="Node2D" parent="."]
 
@@ -62,19 +62,19 @@ show_arc = true
 position = Vector2(2326.4004, 564.7922)
 
 [node name="CharacterBody2D" parent="Rings" instance=ExtResource("2_rlmd8")]
-position = Vector2(1670.4003, -683.2078)
+position = Vector2(1663.4003, -683.2078)
 
 [node name="CharacterBody2D2" parent="Rings" instance=ExtResource("2_rlmd8")]
-position = Vector2(1670.4004, -747.2078)
+position = Vector2(1663.4004, -747.2078)
 
 [node name="CharacterBody2D3" parent="Rings" instance=ExtResource("2_rlmd8")]
-position = Vector2(1670.4004, -811.2078)
+position = Vector2(1663.4004, -811.2078)
 
 [node name="CharacterBody2D4" parent="Rings" instance=ExtResource("2_rlmd8")]
-position = Vector2(1670.4004, -875.2078)
+position = Vector2(1663.4004, -875.2078)
 
 [node name="CharacterBody2D5" parent="Rings" instance=ExtResource("2_rlmd8")]
-position = Vector2(1669.4003, -939.2078)
+position = Vector2(1662.4003, -939.2078)
 
 [node name="Ring Strand2" parent="Rings" instance=ExtResource("1_2666m")]
 position = Vector2(3014.4004, -1088.2078)
