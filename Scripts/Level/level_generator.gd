@@ -17,6 +17,13 @@ extends Node2D
 @export var chunk_10 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_10.tscn")
 @export var chunk_11 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_11.tscn")
 @export var chunk_12 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_12.tscn")
+@export var chunk_13 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_13.tscn")
+@export var chunk_14 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_14.tscn")
+@export var chunk_15 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_15.tscn")
+@export var chunk_16 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_16.tscn")
+@export var chunk_17 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_17.tscn")
+@export var chunk_18 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_18.tscn")
+@export var chunk_19 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_19.tscn")
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
 @export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
@@ -134,7 +141,7 @@ func _spawn_next_chunk():
 	chunks.append(chunk)
 
 func _pick_random_chunk() -> PackedScene:
-	var options := [chunk_01, chunk_02, chunk_12, chunk_11, chunk_08, chunk_09, chunk_10]
+	var options := [chunk_01, chunk_19, chunk_13, chunk_14, chunk_15, chunk_17, chunk_18]
 	if last_chunk_scene != null:
 		options.erase(last_chunk_scene)
 	var chosen = options[rng.randi_range(0, options.size() - 1)]
