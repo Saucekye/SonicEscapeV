@@ -31,7 +31,7 @@ extends Node2D
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
 
 # Load all level and boss chunks from an exported array
-@export var level_chunks : Array
+@export var level_chunks : Array[PackedScene] 
 
 # Miku
 @export var miku_scene: PackedScene = preload("res://Scenes/Obstacles/Miku/miku.tscn")
