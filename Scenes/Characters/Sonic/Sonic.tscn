@@ -1,8 +1,11 @@
-[gd_scene load_steps=62 format=3 uid="uid://cnc5piy6378ni"]
+[gd_scene load_steps=65 format=3 uid="uid://cnc5piy6378ni"]
 
 [ext_resource type="Script" uid="uid://c6h8863cerwy4" path="res://Scripts/Characters/Sonic/sonic.gd" id="1_vuqnu"]
+[ext_resource type="AudioStream" uid="uid://bggamthtohfiw" path="res://Sounds/SonicVoiceLines/spin1.MP3" id="2_4vxdd"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_vuqnu"]
+[ext_resource type="AudioStream" uid="uid://jomre1jy0efa" path="res://Sounds/SonicVoiceLines/spin2.MP3" id="3_sex4o"]
 [ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="3_yxy1h"]
+[ext_resource type="AudioStream" uid="uid://bulul2iutnsau" path="res://Sounds/SonicVoiceLines/spin3.MP3" id="4_bxdx6"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_xqug3"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_levbm"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_k0gmh"]
@@ -2282,6 +2285,7 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
 debug_prevent_death = true
+audio_files = [ExtResource("2_4vxdd"), ExtResource("3_sex4o"), ExtResource("4_bxdx6")]
 
 [node name="Airspin" parent="." instance=ExtResource("9_yxy1h")]
 

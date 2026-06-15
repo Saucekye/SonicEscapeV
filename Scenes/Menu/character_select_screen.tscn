@@ -1,10 +1,12 @@
-[gd_scene load_steps=67 format=3 uid="uid://dwkxx7a6fwjqv"]
+[gd_scene load_steps=96 format=3 uid="uid://dwkxx7a6fwjqv"]
 
 [ext_resource type="Script" uid="uid://ilgl2nqnrs7" path="res://Scripts/Menu/character_select_screen.gd" id="1_nlrn3"]
 [ext_resource type="PackedScene" uid="uid://die03v6a7cw0k" path="res://misc/Icons.tscn" id="2_d8uyd"]
 [ext_resource type="Texture2D" uid="uid://clkwmxnx7hr6n" path="res://Sprites/UI/Icon/UI Icon Red.png" id="3_vwxb7"]
 [ext_resource type="Texture2D" uid="uid://10m122r0757x" path="res://Sprites/UI/Icon/UI Icon Yellow.png" id="4_0van7"]
+[ext_resource type="Texture2D" uid="uid://cryqy7nh658mt" path="res://Sprites/Logo/Sonic_Escape_5.png" id="4_m2jvv"]
 [ext_resource type="Script" uid="uid://q2ssjlxxiw3j" path="res://Scripts/Level/CharacterManager.gd" id="5_8mv32"]
+[ext_resource type="Texture2D" uid="uid://23rf8v6c6dnk" path="res://Sprites/Intro/131415.png" id="5_wgavx"]
 [ext_resource type="Texture2D" uid="uid://du7tjcgip7io5" path="res://Scenes/Characters/Tails/icon.png" id="7_a5rpx"]
 [ext_resource type="Texture2D" uid="uid://btlvpn04xuhe5" path="res://Scenes/Characters/Knuckles/Icon.png" id="8_2i687"]
 [ext_resource type="Script" uid="uid://cybq0rxdygsnf" path="res://Scripts/UI/starticon.gd" id="9_73vdo"]
@@ -24,6 +26,19 @@
 [ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="19_phoin"]
 [ext_resource type="Texture2D" uid="uid://dquf4877dk8p6" path="res://Sprites/UI/Icon/UI Icon Blue Black.png" id="19_y1kjk"]
 [ext_resource type="Script" uid="uid://b5sumnaf7bajt" path="res://Scripts/Menu/tutorial.gd" id="21_phoin"]
+[ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="27_taprc"]
+[ext_resource type="Texture2D" uid="uid://2ru4380gp75j" path="res://Sprites/Intro/456.png" id="28_7g24f"]
+[ext_resource type="Texture2D" uid="uid://qggvt4ph46qu" path="res://Sprites/Characters/Tails/tailssheet.png" id="28_640u5"]
+[ext_resource type="VideoStream" uid="uid://c8gm04gu6p4bk" path="res://Videos/Tutorial-level-video.ogv" id="29_7g24f"]
+[ext_resource type="Shader" uid="uid://rjapj8dx7ufb" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
+[ext_resource type="Texture2D" uid="uid://dkmnifpu1kn4k" path="res://Sprites/Intro/789.png" id="29_udxrr"]
+[ext_resource type="Texture2D" uid="uid://cjr4dukic68mv" path="res://Sprites/Characters/Knuckles/knucklesheet.png" id="29_xlc5t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cmxlk"]
+shader = ExtResource("10_4o5oy")
+shader_parameter/brightnessMult = 2.0000000298024
+shader_parameter/wiggleMult = 0.0
+shader_parameter/chromaticAberrationOffset = 0.001
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhxux"]
 atlas = ExtResource("4_0van7")
@@ -313,18 +328,160 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cmxlk"]
-shader = ExtResource("10_4o5oy")
-shader_parameter/brightnessMult = 2.0000000298024
-shader_parameter/wiggleMult = 0.0
-shader_parameter/chromaticAberrationOffset = 0.001
+[sub_resource type="AtlasTexture" id="AtlasTexture_sml2w"]
+atlas = ExtResource("5_wgavx")
+region = Rect2(0, 0, 1773, 1120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7d5gd"]
+atlas = ExtResource("27_taprc")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjens"]
+atlas = ExtResource("27_taprc")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g71pu"]
+atlas = ExtResource("27_taprc")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pebg1"]
+atlas = ExtResource("27_taprc")
+region = Rect2(256, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7f5ij"]
+atlas = ExtResource("27_taprc")
+region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0n6qb"]
+atlas = ExtResource("27_taprc")
+region = Rect2(384, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4l5qx"]
+atlas = ExtResource("27_taprc")
+region = Rect2(448, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xa6t5"]
+atlas = ExtResource("27_taprc")
+region = Rect2(512, 128, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0qdhy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7d5gd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjens")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g71pu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pebg1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7f5ij")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0n6qb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4l5qx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xa6t5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lwlhj"]
+atlas = ExtResource("28_640u5")
+region = Rect2(256, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2y7el"]
+atlas = ExtResource("28_640u5")
+region = Rect2(320, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sqfr"]
+atlas = ExtResource("28_640u5")
+region = Rect2(384, 512, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7g0qs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lwlhj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2y7el")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sqfr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tf1nn"]
+atlas = ExtResource("29_xlc5t")
+region = Rect2(512, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6dg0"]
+atlas = ExtResource("29_xlc5t")
+region = Rect2(576, 320, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1a0r8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tf1nn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6dg0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6fn6"]
+atlas = ExtResource("29_udxrr")
+region = Rect2(0, 0, 1784, 1037)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clwaf"]
+atlas = ExtResource("28_7g24f")
+region = Rect2(0, 0, 998, 1011)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_52ucb"]
+shader = ExtResource("29_mm3wv")
+shader_parameter/scanlines_1 = 500.0
+shader_parameter/scanlines_2 = 25.0
+shader_parameter/scan_reduction = 0.1
+shader_parameter/vinnette_alpla = 1.0
+shader_parameter/vinnette_inner_radius = 0.0
+shader_parameter/vinnette_outer_radius = 1.0
 
 [node name="CharacterSelectScreen" type="Control"]
 process_mode = 3
 layout_mode = 3
+anchors_preset = 0
 offset_top = -56.0
 offset_bottom = -56.0
 script = ExtResource("1_nlrn3")
+
+[node name="ColorRect5" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_cmxlk")
+layout_mode = 0
+offset_left = -342.0
+offset_top = -393.0
+offset_right = -291.82654
+offset_bottom = -336.0416
+scale = Vector2(46.12, 27.88)
+mouse_filter = 2
 
 [node name="ColorRect3" type="ColorRect" parent="."]
 clip_children = 2
@@ -458,7 +615,6 @@ hover_color = Color(0.64, 0.68799996, 1, 1)
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = -211.0
 offset_top = -847.0
 offset_right = -171.0
@@ -479,7 +635,6 @@ texture = ExtResource("9_cgfmd")
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 168.0
 offset_top = -868.0
 offset_right = 208.0
@@ -499,7 +654,6 @@ skew = 0.958781
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 563.0
 offset_top = -915.0
 offset_right = 603.0
@@ -518,10 +672,10 @@ skew = 0.958781
 [node name="ColorRect4" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_cmxlk")
 layout_mode = 0
-offset_left = -132.0
-offset_top = -151.0
-offset_right = -92.0
-offset_bottom = -111.0
+offset_left = -355.0
+offset_top = -376.0
+offset_right = -304.82654
+offset_bottom = -319.0416
 scale = Vector2(46.12, 27.88)
 mouse_filter = 2
 
@@ -534,16 +688,16 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 1120.0
-offset_top = 56.000004
+offset_top = 56.0
 offset_right = 1296.0
-offset_bottom = 70.0
+offset_bottom = 78.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3, 3)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-text = "TUTORIAL"
+text = "TUTORIALS"
 horizontal_alignment = 1
 script = ExtResource("21_phoin")
 hover_scale = 1.1000000000058208
@@ -560,7 +714,7 @@ hover_color = Color(1, 1, 1, 1)
 
 [node name="Start" type="Label" parent="Start"]
 z_index = 2
-anchors_preset = -1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -581,6 +735,214 @@ horizontal_alignment = 1
 [node name="Openingsfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("17_xoff6")
 bus = &"SFX"
+
+[node name="TutorialElements" type="Control" parent="."]
+z_index = 5
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TutorialCover" type="ColorRect" parent="TutorialElements"]
+visible = false
+layout_mode = 0
+offset_right = 1713.0
+offset_bottom = 1095.0
+color = Color(0, 0, 0, 0.78431374)
+
+[node name="GameLogo" type="TextureRect" parent="TutorialElements"]
+visible = false
+layout_mode = 0
+offset_left = 355.0
+offset_top = 96.0
+offset_right = 1300.0
+offset_bottom = 652.0
+texture = ExtResource("4_m2jvv")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Characters" type="TextureRect" parent="TutorialElements"]
+visible = false
+layout_mode = 0
+offset_left = 224.0
+offset_top = 80.0
+offset_right = 1254.0
+offset_bottom = 776.0
+texture = SubResource("AtlasTexture_sml2w")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="CharacterTypes" type="Control" parent="TutorialElements"]
+visible = false
+anchors_preset = 0
+offset_left = -74.0
+offset_top = 12.0
+offset_right = -34.0
+offset_bottom = 52.0
+
+[node name="SpeedLabel" type="Label" parent="TutorialElements/CharacterTypes"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 380.00003
+offset_top = 136.0
+offset_right = 556.0
+offset_bottom = 158.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+theme_override_colors/font_color = Color(0.4569313, 0.99999994, 0.99697393, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "SPEED"
+horizontal_alignment = 1
+script = ExtResource("21_phoin")
+hover_scale = 1.1000000000058208
+hover_color = Color(1, 1, 1, 1)
+
+[node name="FlightLabel" type="Label" parent="TutorialElements/CharacterTypes"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 380.0
+offset_top = 292.0
+offset_right = 556.0
+offset_bottom = 314.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+theme_override_colors/font_color = Color(0.961513, 0.961513, 2.3102762e-06, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "FLIGHT"
+horizontal_alignment = 1
+script = ExtResource("21_phoin")
+hover_scale = 1.1000000000058208
+hover_color = Color(1, 1, 1, 1)
+
+[node name="PowerLabel" type="Label" parent="TutorialElements/CharacterTypes"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 380.0
+offset_top = 446.00003
+offset_right = 556.0
+offset_bottom = 468.00003
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+theme_override_colors/font_color = Color(0.953047, 3.1525642e-06, 1.347661e-06, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "POWER"
+horizontal_alignment = 1
+script = ExtResource("21_phoin")
+hover_scale = 1.1000000000058208
+hover_color = Color(1, 1, 1, 1)
+
+[node name="Speed" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
+position = Vector2(1083, 156)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_0qdhy")
+autoplay = "default"
+frame_progress = 0.7488655
+
+[node name="Flight" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
+position = Vector2(1080, 334)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_7g0qs")
+autoplay = "default"
+frame_progress = 0.32786795
+
+[node name="Power" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
+position = Vector2(1084, 486)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1a0r8")
+autoplay = "default"
+frame_progress = 0.44211745
+
+[node name="Bosses" type="Control" parent="TutorialElements"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Group" type="TextureRect" parent="TutorialElements/Bosses"]
+layout_mode = 0
+offset_left = 678.0
+offset_top = 68.0
+offset_right = 1640.0
+offset_bottom = 832.0
+texture = SubResource("AtlasTexture_h6fn6")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Metal" type="TextureRect" parent="TutorialElements/Bosses"]
+layout_mode = 0
+offset_left = 261.0
+offset_top = 96.0
+offset_right = 738.0
+offset_bottom = 889.0
+texture = SubResource("AtlasTexture_clwaf")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Video" type="Control" parent="TutorialElements"]
+visible = false
+z_index = 4
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 36.0
+offset_right = 20.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="TutorialElements/Video"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 224.0
+offset_top = 60.0
+offset_right = 1368.0
+offset_bottom = 780.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("29_7g24f")
+loop = true
+buffering_msec = 1000
+
+[node name="ColorRect" type="ColorRect" parent="TutorialElements/Video"]
+visible = false
+z_index = 10
+material = SubResource("ShaderMaterial_52ucb")
+layout_mode = 0
+offset_left = 244.0
+offset_top = 80.0
+offset_right = 1388.0
+offset_bottom = 800.0
 
 [connection signal="tutorial" from="Tutorial" to="." method="_on_tutorial_tutorial"]
 [connection signal="sprite_clicked" from="Start" to="." method="_on_start_sprite_clicked"]

@@ -1,6 +1,8 @@
 class_name DialogueManagerExampleBalloon extends CanvasLayer
 ## A basic dialogue balloon for use with Dialogue Manager.
 
+## Hatsune Miku?!?
+@onready var miku: TextureRect = $Balloon/Miku
 
 ## The dialogue resource
 @export var dialogue_resource: DialogueResource
@@ -33,6 +35,12 @@ var will_hide_balloon: bool = false
 var locals: Dictionary = {}
 
 var _locale: String = TranslationServer.get_locale()
+
+## Show HATSUNE MIKU?!?
+var show_miku : bool = false
+
+## Make dialogue skippable or not
+var skippable_dialogue : bool = true
 
 ## The current line
 var dialogue_line: DialogueLine:
@@ -185,8 +193,10 @@ func _on_mutated(_mutation: Dictionary) -> void:
 
 
 func _on_balloon_gui_input(event: InputEvent) -> void:
-	pass
-"""	# See if we need to skip typing of the dialogue
+	if not skippable_dialogue:
+		return
+	
+	# See if we need to skip typing of the dialogue
 	if dialogue_label.is_typing:
 		var mouse_was_clicked: bool = event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()
 		var skip_button_was_pressed: bool = event.is_action_pressed(skip_action)
@@ -204,7 +214,7 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
 		next(dialogue_line.next_id)
 	elif event.is_action_pressed(next_action) and get_viewport().gui_get_focus_owner() == balloon:
-		next(dialogue_line.next_id)"""
+		next(dialogue_line.next_id)
 
 
 func _on_responses_menu_response_selected(response: DialogueResponse) -> void:

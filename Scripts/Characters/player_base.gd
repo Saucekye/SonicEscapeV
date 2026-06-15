@@ -23,6 +23,9 @@ class_name Player extends CharacterBody2D
 @export var stored_layer: int
 @export var stored_mask: int
 
+@export_group("Character Audio")
+@export var audio_files : Array
+
 var in_loop = false  # True while the character is inside a loop section
 
 # Fly meter - even only a few characters use it, the base still always needs reference to one
@@ -1270,126 +1273,19 @@ func switch_direction(_direction):
 # ─────────────────────────────────────────────
 # Special Moves
 # ─────────────────────────────────────────────
-func dash(_direction):
-	# Air dash: brief horizontal burst with a pop upward and no gravity
-	falling = true
-	dashed = true
-	ball = false
-	crouch = false
-	flying = false
-	can_dash = false
-	ap.play("flick")
-	motion.y = -450
-	fall_gravity = 0           # Disable gravity briefly for the dash hang-time
-	smokeemit()
-	sfx.pitch_scale = 2
-	sfx.stream = load("res://Sounds/SonicSFX/SA_113.wav")
-	sfx.play()
-
-	# Only override speed if below dash threshold — respects existing momentum
-	if abs(motion.x) <= 1050:
-		time_elapsed = 60
-		max_speed = 1000
-		acc = 5000
-		motion.x = 1050 * sign(direction) if direction != 0 else 1050 * (1 if sprite.flip_h == false else -1)
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default   # Restore gravity after dash hang
-	dashx = true
-	can_dash = false
-	
-func airdown():
-	# Stomp: slam straight down at high speed, set up for a bounce on landing
-	bounce += 1
-	next_bounce = true
-	falling = true
-	dashed = true
-	can_dash = true
-	time_elapsed = 0
-	motion.y = 1000
-	ap.play("stomp")
-	fall_gravity = 10500     # Very high fall gravity for a fast, snappy slam
-	sfx.pitch_scale = 2
-	sfx.stream = load("res://Sounds/SonicSFX/Spiked.wav")
-	sfx.play()
-	motion.x = 0             # Cancel all horizontal momentum for a clean vertical drop
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-	dashx = true
-	dashed = false
-
-func airspin():
-	# Air horizontal boost — costs meter, launches in current direction with upward arc
-	falling = true
-	dashed = true
-	ball = false
-	if is_player == true:
-		Test.meter -= 50
-	ap.play("airspin")
-	motion.y = -650
-	fall_gravity = 0         # Brief gravity suspension for the spin hang-time
-	spinaudio()
-	smokeemit()
-	max_speed = 1200
-	acc = 5000
-	time_elapsed = 200
-	motion.x = 1200 * sign(direction)
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-
-func airup():
-	# Air vertical boost — costs meter, launches straight up
-	dashed = true
-	ball = false
-	if is_player == true:
-		Test.meter -= 50
-	ap.play("airup")
-	motion.y = -1100
-	spinaudio()
-	smokeemit()
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-	await get_tree().create_timer(0.3).timeout  # Small delay before entering "falling" state
-	falling = true
-	ap.play("falling")
-	
-func perform_trick():
-	# Cycle through trick animations in order; gain meter and count tricks
-	dashed = true
-	falling = true
-	if is_player == true:
-		Test.meter += 1
-		GlobalCanvasLayer.tricks += 1
-		
-	var tricks = ["trick1", "trick2", "trick3", "trick4"]
-	var last_index = tricks.find(last_trick)
-	var next_index = (last_index + 1) % tricks.size()  # Always moves to the next in sequence
-	var new_trick = tricks[next_index]
-	last_trick = new_trick
-	sparkemit()
-	sfx.pitch_scale = 1
-	sfx.stream = load("res://Sounds/SonicSFX/sparklesfx.MP3")
-	sfx.play()
-	ap.play(new_trick)
-	await get_tree().create_timer(0.3).timeout
-	# Only re-enable dash/fall if trick button was released during the animation
-	if not Input.is_action_pressed("trick"):
-		dashed = false
-	
 func spinaudio():
-	# Play a random spin voice line + spin SFX
-	var audio_files = [
-		"res://Sounds/SonicVoiceLines/spin1.MP3",
-		"res://Sounds/SonicVoiceLines/spin2.MP3",
-		"res://Sounds/SonicVoiceLines/spin3.MP3"
-	]
-	var random_index = randi() % audio_files.size()
-	var random_audio = audio_files[random_index]
-	if random_audio:
-		voice.stream = load(random_audio)
+	if audio_files.size() < 1:
 		sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
-		sfx.pitch_scale = 2
-		sfx.play()
-		voice.play()
+	else:
+		# Play a random spin voice line + spin SFX
+		var random_index = randi() % audio_files.size()
+		var random_audio = audio_files[random_index]
+		if random_audio:
+			voice.stream = random_audio
+			sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
+			sfx.pitch_scale = 2
+			sfx.play()
+			voice.play()
 
 # ─────────────────────────────────────────────
 # Signal Handlers

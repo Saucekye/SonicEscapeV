@@ -1072,10 +1072,10 @@ script = ExtResource("4_yyfmi")
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_wlcxu")
-offset_left = -160.0
-offset_top = -453.33328
+offset_left = -406.66666
+offset_top = -556.6666
 offset_right = 1176.0
-offset_bottom = 234.66672
+offset_bottom = 234.66669
 color = Color(1, 1, 1, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/TextureRect"]

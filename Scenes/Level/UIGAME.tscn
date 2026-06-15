@@ -395,6 +395,7 @@ _data = {
 
 [node name="CanvasLayer" type="CanvasLayer"]
 layer = 10
+visible = false
 script = ExtResource("1_c8npb")
 
 [node name="RESTARTFLASH" type="ColorRect" parent="."]

@@ -2,7 +2,7 @@ extends Components_Action
 
 func action() -> void:
 	# Wall-slide and wall-jump logic — only fires when pressing against a wall in the air
-	if (not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding()) or (player.raycast.is_colliding()) or not player.rot == 0:
+	if (not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding()) or (player.raycast.is_colliding() or player.grounded) or not player.rot == 0:
 		return
 		
 	if player.is_player == true:

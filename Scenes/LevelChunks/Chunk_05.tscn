@@ -36,7 +36,7 @@ position = Vector2(24864.002, 3400)
 position = Vector2(24, 24)
 
 [node name="Ring Strand24" parent="Rings" instance=ExtResource("3_1xcm6")]
-position = Vector2(21184, 2536)
+position = Vector2(21234.188, 2537.3618)
 
 [node name="Ring Strand26" parent="Rings" instance=ExtResource("3_1xcm6")]
 position = Vector2(22312, 3024)
@@ -75,9 +75,7 @@ position = Vector2(26151.252, 3103.9792)
 [node name="Spring5" parent="Level" instance=ExtResource("7_08aqx")]
 position = Vector2(32203, 4489)
 rotation = 0.824641
-scale = Vector2(1.5, 1.5)
 spring_velocity = Vector2(1200, -1200)
-show_arc = false
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Level"]
 position = Vector2(4360, 1800)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=4 uid="uid://cpeb1xdxfsfai"]
+[gd_scene load_steps=4 format=4 uid="uid://cjyqccntek0pu"]
 
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="3_vo5rh"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="8_mopei"]
@@ -32,7 +32,7 @@ tile_set = ExtResource("8_mopei")
 script = ExtResource("9_0mtsn")
 
 [node name="Start" type="Marker2D" parent="."]
-position = Vector2(8134.4097, 2438.3845)
+position = Vector2(8134.399, 2438.3855)
 
 [node name="End" type="Marker2D" parent="."]
 position = Vector2(12433.398, 3093.3855)

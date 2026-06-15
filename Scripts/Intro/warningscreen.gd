@@ -1,7 +1,9 @@
 extends Control
 signal cutscene
 
+@onready var example_balloon: DialogueManagerExampleBalloon = $Node2D/ExampleBalloon
 @export var next_scene_path: String = "res://Scenes/Intro/titlescreen.tscn"
+
 var has_started = true
 var fade_rect: ColorRect
 var next_scene: PackedScene
@@ -16,6 +18,9 @@ func _ready() -> void:
 	add_child(fade_rect)  # Add on top
 	Pause.current_scene = ""
 	$start/AnimationPlayer.play("start")
+	# Modify the dialogue system
+	example_balloon.skippable_dialogue = false
+	example_balloon.show_miku = false
 	# Start loading the scene in the background
 	ResourceLoader.load_threaded_request("res://Scenes/Intro/titlescreen.tscn")
 
