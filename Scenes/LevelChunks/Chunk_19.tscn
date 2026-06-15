@@ -58,7 +58,7 @@ script = ExtResource("4_m3kx1")
 position = Vector2(1606.3955, 748.7894)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(6099.2, 288)
+position = Vector2(6099.2, 491.79218)
 
 [node name="Springs" type="Node2D" parent="."]
 
