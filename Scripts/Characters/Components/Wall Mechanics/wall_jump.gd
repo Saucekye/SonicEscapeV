@@ -9,6 +9,7 @@ func action() -> void:
 		player.tricknumber()
 		GlobalCanvasLayer.tricks = 0
 		
+	player.hanging_on_wall = true
 	player.falling = false
 	player.dashed = false
 	player.ball = false

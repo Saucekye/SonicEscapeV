@@ -3043,6 +3043,7 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fda6k")
+trail_position = Vector2(0, 5)
 
 [node name="Glide" parent="." instance=ExtResource("1_xty85")]
 
