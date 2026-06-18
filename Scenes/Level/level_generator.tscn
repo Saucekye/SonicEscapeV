@@ -1,7 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6axjprp04yee"]
+[gd_scene load_steps=23 format=3 uid="uid://b6axjprp04yee"]
 
 [ext_resource type="Script" uid="uid://ddqvnt1n1jnx" path="res://Scripts/Level/level_generator.gd" id="1_q7b6x"]
+[ext_resource type="PackedScene" uid="uid://ce880tm5sbkl6" path="res://Scenes/LevelChunks/Chunk_01.tscn" id="2_pbout"]
+[ext_resource type="PackedScene" uid="uid://bwy756v3ldq7c" path="res://Scenes/LevelChunks/Chunk_02.tscn" id="3_k4qdo"]
+[ext_resource type="PackedScene" uid="uid://cwqrwtqtgigw0" path="res://Scenes/LevelChunks/Chunk_03.tscn" id="4_dhi4p"]
+[ext_resource type="PackedScene" uid="uid://d1fedyq3ps8pl" path="res://Scenes/LevelChunks/Chunk_04.tscn" id="5_6ad4j"]
+[ext_resource type="PackedScene" uid="uid://7l5fead2dlpk" path="res://Scenes/LevelChunks/Chunk_05.tscn" id="6_q3v1r"]
+[ext_resource type="PackedScene" uid="uid://nqlljj7gak2" path="res://Scenes/LevelChunks/Chunk_06.tscn" id="7_pmt2c"]
+[ext_resource type="PackedScene" uid="uid://cinvc76wrmw2j" path="res://Scenes/LevelChunks/Chunk_07.tscn" id="8_q6auv"]
+[ext_resource type="PackedScene" uid="uid://c7e4wjwxy2fto" path="res://Scenes/LevelChunks/Chunk_08.tscn" id="9_8afpk"]
+[ext_resource type="PackedScene" uid="uid://c2c2cm72yy75y" path="res://Scenes/LevelChunks/Chunk_09.tscn" id="10_1jyg1"]
+[ext_resource type="PackedScene" uid="uid://cvcyuygy2qajl" path="res://Scenes/LevelChunks/Chunk_10.tscn" id="11_7qk77"]
+[ext_resource type="PackedScene" uid="uid://vbmfbfhxlkdm" path="res://Scenes/LevelChunks/Chunk_11.tscn" id="12_rgexl"]
+[ext_resource type="PackedScene" uid="uid://creiffdevmes" path="res://Scenes/LevelChunks/Chunk_12.tscn" id="13_gex3i"]
+[ext_resource type="PackedScene" uid="uid://1l2eatap2cu" path="res://Scenes/LevelChunks/Chunk_13.tscn" id="14_pikt7"]
+[ext_resource type="PackedScene" uid="uid://cleqmgr0j00wx" path="res://Scenes/LevelChunks/Chunk_14.tscn" id="15_h3wyy"]
+[ext_resource type="PackedScene" uid="uid://dty2w7yjdg2h7" path="res://Scenes/LevelChunks/Chunk_15.tscn" id="16_7a7ak"]
+[ext_resource type="PackedScene" uid="uid://dw322xjdw7eav" path="res://Scenes/LevelChunks/Chunk_16.tscn" id="17_v2lyd"]
+[ext_resource type="PackedScene" uid="uid://boctkrvhltprk" path="res://Scenes/LevelChunks/Chunk_17.tscn" id="18_q1tf2"]
+[ext_resource type="PackedScene" uid="uid://c0spgqd6xd5up" path="res://Scenes/LevelChunks/Chunk_18.tscn" id="19_03nf7"]
+[ext_resource type="PackedScene" uid="uid://kj2f1mdum4nq" path="res://Scenes/LevelChunks/Chunk_19.tscn" id="20_753jc"]
+[ext_resource type="PackedScene" uid="uid://cs3axtr5emnop" path="res://Scenes/LevelChunks/Chunk_20.tscn" id="21_dsrqq"]
+[ext_resource type="PackedScene" uid="uid://cjyqccntek0pu" path="res://Scenes/LevelChunks/Chunk_21.tscn" id="22_kd54k"]
 
 [node name="LevelGenerator" type="Node2D"]
 script = ExtResource("1_q7b6x")
+level_chunks = Array[PackedScene]([ExtResource("2_pbout"), ExtResource("3_k4qdo"), ExtResource("4_dhi4p"), ExtResource("5_6ad4j"), ExtResource("6_q3v1r"), ExtResource("7_pmt2c"), ExtResource("8_q6auv"), ExtResource("9_8afpk"), ExtResource("10_1jyg1"), ExtResource("11_7qk77"), ExtResource("12_rgexl"), ExtResource("13_gex3i"), ExtResource("14_pikt7"), ExtResource("15_h3wyy"), ExtResource("16_7a7ak"), ExtResource("17_v2lyd"), ExtResource("18_q1tf2"), ExtResource("19_03nf7"), ExtResource("20_753jc"), ExtResource("21_dsrqq"), ExtResource("22_kd54k")])
 max_chunks = 6

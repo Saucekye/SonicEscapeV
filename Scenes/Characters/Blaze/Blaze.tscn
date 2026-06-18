@@ -2278,6 +2278,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fioc4")
+trail_ball_position = Vector2(0, 10)
 
 [node name="Hover" parent="." instance=ExtResource("2_ss304")]
 

@@ -1,7 +1,18 @@
 extends Control
 
+@onready var start: Sprite2D = $Start
+@onready var tutorial_cover: ColorRect = $TutorialElements/TutorialCover
+@onready var game_logo: TextureRect = $TutorialElements/GameLogo
+@onready var characters_texture: TextureRect = $TutorialElements/Characters
+@onready var example_balloon: DialogueManagerExampleBalloon = $ExampleBalloon
+@onready var bosses: Control = $TutorialElements/Bosses
+@onready var video: Control = $TutorialElements/Video
+@onready var video_stream_player: VideoStreamPlayer = $TutorialElements/Video/VideoStreamPlayer
+@onready var character_types: Control = $TutorialElements/CharacterTypes
+
 var wipe_rect: ColorRect
 var fade_rect: ColorRect
+var has_said_start : bool = false
 
 func _ready():
 	Test.characterone = ""
@@ -10,7 +21,7 @@ func _ready():
 	Test.rings = 0
 	Test.meter = 100
 	Pause.current_scene = "Character_Select_Screen"
-	
+	tutorial_cover.visible = false
 	create_flashy_intro()
 	$Openingsfx.play()
 	
@@ -81,12 +92,36 @@ func fade_and_change_scene(scene) -> void:
 # FIXED: Make the click handler properly await the fade
 func _on_start_sprite_clicked(sprite: Sprite2D) -> void:
 	# Prevent multiple clicks during transition
-	set_process_input(false)
+	#set_process_input(false)
 	#$Start/AudioStreamPlayer2.play()
 	# FIXED: Await the fade and scene change
 	await fade_and_change_scene("res://Scenes/Level/test3.tscn")
 
 func _on_tutorial_tutorial() -> void:
-	set_process_input(false)
-	await fade_and_change_scene("res://backup/tutorial.tscn")
-	Test.level = 1
+	var resource = preload("res://dialogue/tutorial-1.dialogue")
+	# Modify and set the dialogue system
+	DialogueManager.show_example_dialogue_balloon(resource)
+		
+	tutorial_cover.visible = true
+	start.visible = false
+	has_said_start = false
+	
+func _end_tutorial() -> void:
+	tutorial_cover.visible = false
+	start.visible = true
+	
+func _show_about_tutorial() -> void:
+	pass
+	
+func _show_movement_tutorial() -> void:
+	pass
+	
+func _show_characters_tutorial() -> void:
+	pass
+	
+func _show_level_tutorial() -> void:
+	pass
+	
+func _show_boss_tutorial() -> void:
+	pass
+	

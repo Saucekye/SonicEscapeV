@@ -1256,6 +1256,9 @@ dialogue_resource = ExtResource("13_io8sk")
 next_action = &""
 skip_action = &""
 
+[node name="Miku" parent="Node2D/ExampleBalloon/Balloon" index="0"]
+visible = false
+
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_6xdp8")
 autoplay = true
@@ -1266,3 +1269,5 @@ autoplay = true
 [connection signal="next" from="Node2D" to="Node2D/ExampleBalloon" method="_on_node_2d_next"]
 [connection signal="animation_finished" from="Node2D/AnimationPlayer" to="Node2D" method="_on_animation_player_animation_finished"]
 [connection signal="animation_started" from="Node2D/AnimationPlayer" to="Node2D" method="_on_animation_player_animation_started"]
+
+[editable path="Node2D/ExampleBalloon"]

@@ -5,10 +5,12 @@
 [node name="Ring Strand" type="Node2D"]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_m5474")]
-position = Vector2(0, -2)
+scale = Vector2(1.5, 1.5)
 
 [node name="CharacterBody2D2" parent="." instance=ExtResource("1_m5474")]
-position = Vector2(-15, -2)
+position = Vector2(-50, 0)
+scale = Vector2(1.5, 1.5)
 
 [node name="CharacterBody2D3" parent="." instance=ExtResource("1_m5474")]
-position = Vector2(15, -2)
+position = Vector2(50, 0)
+scale = Vector2(1.5, 1.5)

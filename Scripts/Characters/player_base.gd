@@ -23,6 +23,9 @@ class_name Player extends CharacterBody2D
 @export var stored_layer: int
 @export var stored_mask: int
 
+@export_group("Character Audio")
+@export var audio_files : Array
+
 var in_loop = false  # True while the character is inside a loop section
 
 # Fly meter - even only a few characters use it, the base still always needs reference to one
@@ -49,7 +52,7 @@ signal amazing
 @export var max_speed = 500             ## Current speed cap — increases with momentum
 @export var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
 @export var skid_min_speed : float = 500	## The minimum speed needed to maintain a skid after letting go of a direction while running
-@export var MIN_ROT_BALL : float = 0.79		## The minimum rotation where crouching will force the player straight into a ball
+@export var MIN_ROT_BALL : float = 0.80		## The minimum rotation where crouching will force the player straight into a ball
 @export var  ABOSLUTE_MAX_SPEED : float = 1400	## Factoring in slopes, this is the absolute max motion.x a player can travel
 @export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
 @export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
@@ -160,6 +163,7 @@ var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0  ##
 var direction = 0               ## Current horizontal input: -1, 0, or 1
 var just_wall_jumped = false    ## Prevents double-triggering wall jump logic
 var has_jumped = false          ## Prevents coyote jump after a real jump
+var hanging_on_wall : bool = false
 
 # ─────────────────────────────────────────────
 # Preloaded Scenes
@@ -194,9 +198,12 @@ var grinding = false                ## True while grinding on a rail
 
 # Misc
 @export_group("Misc")
+@export var player_path: NodePath   ## Path to the player node this AI character should follow
+@export var trail_position : Vector2 = Vector2.ZERO
+@export var trail_ball_position : Vector2 = Vector2(0, 15)
+
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
-@export var player_path: NodePath   ## Path to the player node this AI character should follow
 var player: CharacterBody2D         ## Reference to the followed player, resolved from player_path
 
 # ─────────────────────────────────────────────
@@ -490,12 +497,15 @@ func _physics_process(delta):
 	# Disable directional input during spinning charge (spin dash charges in place)
 	if is_spinning:
 		direction = 0
+	
+	# Set wall hanging to false, verify when handling wall mechanics
+	hanging_on_wall = false
 
 	# ── Per-Frame Sub-Systems ──────────────────────────────────────────
+	handle_wall_mechanics()	# Check wall first to set hanging_on_wall to true if on wall before handling air and ground movement
 	handle_floor_logic(delta)
-	handle_air_logic(delta, is_grounded)	## Abstract Method
+	handle_air_logic(delta, is_grounded)	
 	handle_jump_input(is_grounded)
-	handle_wall_mechanics()		## Abstract Method
 	update_animations()
 	handle_hitbox()
 	handle_item(delta)
@@ -980,10 +990,10 @@ func handle_floor_logic(delta):
 			hangable = false  # Can't initiate a hang while grounded
 		
 		# Shorter snap at low speed; longer snap at high speed to hug slopes better
-		if time_elapsed <= 50:
+		if motion.x <= 300:
 			floor_snap_length = 10
 		else:
-			floor_snap_length = 30
+			floor_snap_length = 35
 
 		falling = false
 		dashed = false
@@ -993,10 +1003,10 @@ func handle_floor_logic(delta):
 		trail.visible = abs(motion.x) > 500
 		
 		if ball:
-			trail.offset.y = 15
+			trail.offset = trail_ball_position
 			apply_friction(delta)
 		else:
-			trail.offset.y = 0
+			trail.offset = trail_position
 			
 		# Reset crouching if now moving forward while not in ball mode
 		if abs(motion.x) > 0 and ball == false:
@@ -1014,12 +1024,11 @@ func handle_floor_logic(delta):
 			crouch = false
 			
 		# Enter ball mode when pressing down while moving or on a slope
-		if (velocity.x != 0 or rot > MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
+		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
-			
 		# Auto-stand from ball when fully stopped on flat ground
-		if motion.x == 0 and abs(slopefactor) <  MIN_ROT_BALL:
+		if motion.x == 0 and abs(slopefactor) < MIN_ROT_BALL:
 			crouch = false
 			ball = false
 			spindash()
@@ -1053,12 +1062,11 @@ func handle_air_logic(delta, is_grounded):
 		
 	# Change trail offset to 0 value
 	if flying:
-		trail.offset.y = 0
+		trail.offset = trail_position
 	elif ball:
-		trail.offset.y = 15
+		trail.offset = trail_ball_position
 	else:
-		trail.offset.y = 0
-		
+		trail.offset = trail_position
 		
 	# Enable attachment only when freely airborne (not grinding or dashing)
 	if not hang and not grinding and not dashed:
@@ -1090,7 +1098,7 @@ func handle_air_logic(delta, is_grounded):
 	
 	# Play jump animation if not in a special air state
 	if dashed == false:
-		if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not flying and not hang and not is_on_wall() and not is_on_floor():
+		if (falling == false or (falling == true and not ball)) and ball == false and grinding == false and not flying and not hang and not is_on_floor() and not hanging_on_wall:
 			if ap.current_animation != "stomp":
 				ap.play("jump")
 		# Clamp horizontal speed at low momentum
@@ -1271,126 +1279,19 @@ func switch_direction(_direction):
 # ─────────────────────────────────────────────
 # Special Moves
 # ─────────────────────────────────────────────
-func dash(_direction):
-	# Air dash: brief horizontal burst with a pop upward and no gravity
-	falling = true
-	dashed = true
-	ball = false
-	crouch = false
-	flying = false
-	can_dash = false
-	ap.play("flick")
-	motion.y = -450
-	fall_gravity = 0           # Disable gravity briefly for the dash hang-time
-	smokeemit()
-	sfx.pitch_scale = 2
-	sfx.stream = load("res://Sounds/SonicSFX/SA_113.wav")
-	sfx.play()
-
-	# Only override speed if below dash threshold — respects existing momentum
-	if abs(motion.x) <= 1050:
-		time_elapsed = 60
-		max_speed = 1000
-		acc = 5000
-		motion.x = 1050 * sign(direction) if direction != 0 else 1050 * (1 if sprite.flip_h == false else -1)
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default   # Restore gravity after dash hang
-	dashx = true
-	can_dash = false
-	
-func airdown():
-	# Stomp: slam straight down at high speed, set up for a bounce on landing
-	bounce += 1
-	next_bounce = true
-	falling = true
-	dashed = true
-	can_dash = true
-	time_elapsed = 0
-	motion.y = 1000
-	ap.play("stomp")
-	fall_gravity = 10500     # Very high fall gravity for a fast, snappy slam
-	sfx.pitch_scale = 2
-	sfx.stream = load("res://Sounds/SonicSFX/Spiked.wav")
-	sfx.play()
-	motion.x = 0             # Cancel all horizontal momentum for a clean vertical drop
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-	dashx = true
-	dashed = false
-
-func airspin():
-	# Air horizontal boost — costs meter, launches in current direction with upward arc
-	falling = true
-	dashed = true
-	ball = false
-	if is_player == true:
-		Test.meter -= 50
-	ap.play("airspin")
-	motion.y = -650
-	fall_gravity = 0         # Brief gravity suspension for the spin hang-time
-	spinaudio()
-	smokeemit()
-	max_speed = 1200
-	acc = 5000
-	time_elapsed = 200
-	motion.x = 1200 * sign(direction)
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-
-func airup():
-	# Air vertical boost — costs meter, launches straight up
-	dashed = true
-	ball = false
-	if is_player == true:
-		Test.meter -= 50
-	ap.play("airup")
-	motion.y = -1100
-	spinaudio()
-	smokeemit()
-	await get_tree().create_timer(0.13).timeout
-	fall_gravity = default
-	await get_tree().create_timer(0.3).timeout  # Small delay before entering "falling" state
-	falling = true
-	ap.play("falling")
-	
-func perform_trick():
-	# Cycle through trick animations in order; gain meter and count tricks
-	dashed = true
-	falling = true
-	if is_player == true:
-		Test.meter += 1
-		GlobalCanvasLayer.tricks += 1
-		
-	var tricks = ["trick1", "trick2", "trick3", "trick4"]
-	var last_index = tricks.find(last_trick)
-	var next_index = (last_index + 1) % tricks.size()  # Always moves to the next in sequence
-	var new_trick = tricks[next_index]
-	last_trick = new_trick
-	sparkemit()
-	sfx.pitch_scale = 1
-	sfx.stream = load("res://Sounds/SonicSFX/sparklesfx.MP3")
-	sfx.play()
-	ap.play(new_trick)
-	await get_tree().create_timer(0.3).timeout
-	# Only re-enable dash/fall if trick button was released during the animation
-	if not Input.is_action_pressed("trick"):
-		dashed = false
-	
 func spinaudio():
-	# Play a random spin voice line + spin SFX
-	var audio_files = [
-		"res://Sounds/SonicVoiceLines/spin1.MP3",
-		"res://Sounds/SonicVoiceLines/spin2.MP3",
-		"res://Sounds/SonicVoiceLines/spin3.MP3"
-	]
-	var random_index = randi() % audio_files.size()
-	var random_audio = audio_files[random_index]
-	if random_audio:
-		voice.stream = load(random_audio)
+	if audio_files.size() < 1:
 		sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
-		sfx.pitch_scale = 2
-		sfx.play()
-		voice.play()
+	else:
+		# Play a random spin voice line + spin SFX
+		var random_index = randi() % audio_files.size()
+		var random_audio = audio_files[random_index]
+		if random_audio:
+			voice.stream = random_audio
+			sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
+			sfx.pitch_scale = 2
+			sfx.play()
+			voice.play()
 
 # ─────────────────────────────────────────────
 # Signal Handlers

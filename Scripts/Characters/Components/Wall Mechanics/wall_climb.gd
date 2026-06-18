@@ -13,13 +13,14 @@ func action() -> void:
 
 	print("ON WALL - Current animation: ", player.ap.current_animation)
 
+	player.hanging_on_wall = true
 	# Cancel all special states when grabbing a wall
 	player.falling = false
 	player.dashed = false
 	player.ball = false
 	player.crouch = false
 	player.flying = false  # Glide ends on wall contact (transitions to climb)
-
+	
 	# ── Wall Climbing ──────────────────────────────────────────────
 	if Input.is_action_pressed("ui_up"):
 		player.motion.y = -climb_up_speed        # Climb upward
@@ -27,13 +28,14 @@ func action() -> void:
 		player.ap.speed_scale = 1.0
 	elif Input.is_action_pressed("ui_down"):
 		player.motion.y = climb_down_speed          # Slide down
-		player.ap.play("climb")
-		player.ap.speed_scale = -1.0   # Reverse animation when sliding down
+		player.ap.play_backwards("climb")		# Reverse animation when sliding down
+		player.ap.speed_scale = 1.0
 	else:
 		player.motion.y = 0            # Hold in place
 		player.ap.play("climb")
 		player.ap.speed_scale = 0.0    # Freeze animation when idle on wall
 
+	print("ON WALL - Current animation: ", player.ap.current_animation)
 	# Face away from the wall
 	if player.wall_cast.is_colliding():
 		player.sprite.flip_h = true
