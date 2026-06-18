@@ -31,6 +31,6 @@ func action() -> void:
 	player.falling = true
 	# The awaits can interrupt the death animation,
 	# Only enter falling animation if last animation was airup
-	if player.last_animation == "airup":
-		player.ap.play("falling")
+	#if player.last_animation == "airup":
+	player.ap.play("falling")
 	

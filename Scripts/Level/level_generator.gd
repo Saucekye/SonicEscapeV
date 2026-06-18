@@ -14,6 +14,7 @@ extends Node2D
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
 @export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
+@export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
 
@@ -43,19 +44,13 @@ var rng := RandomNumberGenerator.new()
 # ─────────────────────────────
 func _ready():
 	rng.randomize()
+	if Test.boss_rotation_order.is_empty():
+		Test.build_boss_rotation()
 
 	if Test.level == 0:
 		_spawn_rest_level()
 	elif Test.level % 4 == 0:
-		var roll = rng.randi_range(0, 3)
-		if roll == 0:
-			_spawn_boss_level()
-		elif roll == 1:
-			_spawn_boss1_level()
-		elif roll == 2:
-			_spawn_boss2_level()
-		else:
-			_spawn_rest_level()
+		_spawn_next_boss_level()
 	else:
 		_spawn_start_chunk()
 		_spawn_middle_chunks()
@@ -66,37 +61,38 @@ func _ready():
 		get_node(minimap_path).build_map(chunks)
 
 # ─────────────────────────────
+# Boss Rotation
+# ─────────────────────────────
+func _spawn_next_boss_level():
+	if Test.level == 20:
+		var chunk := chunk_boss_final.instantiate()
+		add_child(chunk)
+		var start = chunk.get_node("Start").global_position
+		chunk.global_position = first_chunk_offset - start
+		last_end_position = chunk.get_node("End").global_position
+		chunks.append(chunk)
+		end_spawned = true
+		return
+
+	if Test.boss_rotation_order.is_empty():
+		Test.build_boss_rotation()
+
+	var index: int = Test.boss_rotation_order.pop_front()
+	var scene_map := [chunk_boss, chunk_boss1, chunk_boss2, chunk_rest]
+	var scene: PackedScene = scene_map[index]
+	var chunk := scene.instantiate()
+	add_child(chunk)
+	var start = chunk.get_node("Start").global_position
+	chunk.global_position = first_chunk_offset - start
+	last_end_position = chunk.get_node("End").global_position
+	chunks.append(chunk)
+	end_spawned = true
+
+# ─────────────────────────────
 # Chunk Spawning Functions
 # ─────────────────────────────
 func _spawn_rest_level():
 	var chunk := chunk_rest.instantiate()
-	add_child(chunk)
-	var start = chunk.get_node("Start").global_position
-	chunk.global_position = first_chunk_offset - start
-	last_end_position = chunk.get_node("End").global_position
-	chunks.append(chunk)
-	end_spawned = true
-
-func _spawn_boss_level():
-	var chunk := chunk_boss.instantiate()
-	add_child(chunk)
-	var start = chunk.get_node("Start").global_position
-	chunk.global_position = first_chunk_offset - start
-	last_end_position = chunk.get_node("End").global_position
-	chunks.append(chunk)
-	end_spawned = true
-
-func _spawn_boss1_level():
-	var chunk := chunk_boss1.instantiate()
-	add_child(chunk)
-	var start = chunk.get_node("Start").global_position
-	chunk.global_position = first_chunk_offset - start
-	last_end_position = chunk.get_node("End").global_position
-	chunks.append(chunk)
-	end_spawned = true
-	
-func _spawn_boss2_level():
-	var chunk := chunk_boss2.instantiate()
 	add_child(chunk)
 	var start = chunk.get_node("Start").global_position
 	chunk.global_position = first_chunk_offset - start
@@ -151,10 +147,8 @@ func _spawn_miku_on_ground():
 	var miku = miku_scene.instantiate()
 	add_child(miku)
 
-	# Set scale to 125x125
 	miku.scale = Vector2(125, 125)
 
-	# Only middle chunks (between start and end)
 	var valid_chunks := []
 	if chunks.size() <= 2:
 		print("Not enough chunks to spawn Miku")
@@ -163,7 +157,6 @@ func _spawn_miku_on_ground():
 	for i in range(1, chunks.size() - 1):
 		valid_chunks.append(chunks[i])
 
-	# Player start position
 	var player_start_pos = chunks[0].get_node("Start").global_position
 	var min_distance := 100
 
