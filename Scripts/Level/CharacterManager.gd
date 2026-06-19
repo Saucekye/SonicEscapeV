@@ -117,6 +117,8 @@ func update_highlight_for_node(highlight_node: Node, character: SelectableCharac
 			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Cream/creamhighlight.png")
 		"MetalSonic":
 			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Metal Sonic/metalhighlight1.png")
+		"Silver2":
+			highlight_node.get_node("Texture").texture = load("res://Sprites/Characters/Silver/highlight.png")
 		_:
 			highlight_node.get_node("Texture").texture = null
 

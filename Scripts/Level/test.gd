@@ -4,7 +4,7 @@ var bestTimeFloat := INF
 var bestTimeText := ""
 var music = false
 var musicplaying = false
-var mobile = true
+var mobile = false
 var end = false
 var rings = 0
 var meter = 100
@@ -21,6 +21,9 @@ var current_background_name : String = ""
 var characterone: String = ""
 var charactertwo: String = ""
 var characterthree: String = ""
+
+var boss_rotation_order: Array = []
+var rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	print(mobile)
@@ -45,6 +48,17 @@ func _ready() -> void:
 	
 	# Call any initialization that should happen after loading
 	initialize_scene()
+	
+
+
+func build_boss_rotation():
+	rng.randomize()
+	boss_rotation_order = [0, 1, 2, 3]  # 0=boss, 1=boss1, 2=boss2, 3=rest
+	for i in range(boss_rotation_order.size() - 1, 0, -1):
+		var j = rng.randi_range(0, i)
+		var tmp = boss_rotation_order[i]
+		boss_rotation_order[i] = boss_rotation_order[j]
+		boss_rotation_order[j] = tmp
 
 # Ensure all nodes and resources are fully loaded
 func ensure_scene_loaded() -> void:

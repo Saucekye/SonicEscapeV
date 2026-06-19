@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bmuul5b8h0ode"]
+[gd_scene load_steps=48 format=3 uid="uid://b0s1wfy77ahv"]
 
 [ext_resource type="Script" uid="uid://chuuwjpt4uofb" path="res://Scripts/Characters/Sonic/CharacterBody2D.gd" id="1_ge8jj"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_vvofc"]
