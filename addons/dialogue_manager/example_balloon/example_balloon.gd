@@ -37,10 +37,10 @@ var locals: Dictionary = {}
 var _locale: String = TranslationServer.get_locale()
 
 ## Show HATSUNE MIKU?!?
-var show_miku : bool = false
+@export var show_miku : bool = false
 
 ## Make dialogue skippable or not
-var skippable_dialogue : bool = true
+@export var skippable_dialogue : bool = true
 
 ## The current line
 var dialogue_line: DialogueLine:

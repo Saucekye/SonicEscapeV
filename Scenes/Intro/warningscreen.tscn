@@ -1255,6 +1255,7 @@ libraries = {
 dialogue_resource = ExtResource("13_io8sk")
 next_action = &""
 skip_action = &""
+skippable_dialogue = false
 
 [node name="Miku" parent="Node2D/ExampleBalloon/Balloon" index="0"]
 visible = false

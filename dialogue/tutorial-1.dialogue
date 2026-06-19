@@ -3,54 +3,59 @@ if !has_said_start
 	set has_said_start = true
 	Miku: Welcome to the tutorials! Select any of the options above to learn more about the game!	
 else
-	Miku: Need anymore help?
+	Miku: Can I help you with anything else?
 - About this game
 	set game_logo.visible = true
 	Miku: Welcome to [color=red]SONIC ESCAPE![/color]
-	Miku: This is a Sonic fan game presented by the likes of SauceK and their many collaborators.
+	Miku: This is a Sonic fan game presented by the likes of SauceK and their collaborators.
+	Miku: This game is all about its fast and action-packed gameplay, its variety of characters to play as, randomizes level layouts, epic boss battles, and of course, a whole lot of style!!
 	set game_logo.visible = false
 	set characters_texture.visible = true
-	Miku: In this game, Sonic and co must traverse the many floors, fight unsual bosses, and figure out the mystery!
+	Miku: As for the story, Sonic and co must traverse the many floors, figure out the mystery, and get out of there! Along the way, you'll fight many unusual foes seeking the power of the emeralds, and learn about what Sage and Metal Sonic are up to, and the disappearance of Doctor Eggman...
 	Miku: If you ever run out of rings and get hit, it's game over. But don't worry, you, the player, can always come back here to get help and try again!
 	Miku: Now, feel free to get in the game if you feel ready, or consult me if you ever need more advice!
 	set characters_texture.visible = false
-- Movement Basics and Controls
+- Movement and Controls
+
 	Miku: Movement here works like most traditional Sonic games! Across all characters, you have your run, jump, roll, spindash, and stomp!
+	Miku: Running works a bit differently in this game. Here, you first start in a jog before entering this game's boost mode. This state is indicated by a trail, and you can move much faster. And, at top speed, you can run through enemies!
+	Miku: Jumping, rolling, and spindash all work more or less as you would expect from a 2D Sonic game.
+	Miku: Additionally, each character has a stomp! If you hold the action to stomp, you will land on the ground at a full stop. But if you release the action before landing, you can get a bounce out of it!
+	Miku: Here's some important advice for movement: the top speed while rolling is exponentially higher than running, so make sure to roll down slopes. And speaking of slopes, you can get a lot of height if you're moving fast and jump off upward slopes! Combining this with your character's abilities will give you some serious air time!
 	
-	Miku: Running works a bit differently in this game. Here, you first start in a jog before entering this game's boost mode. This state is indicated by a trail and you can move much faster. And, at top speed, you can run through enemies!
-	Miku: Jumping, rolling, and spindash all work as you would expect from a 2D Sonic game.
-	Miku: Additionally, each character has a stomp! If you hold the action for stomp, you will land on the ground at a full stop. But, if you release the action before landing, you can get a bounce out of it!
+	Miku: As for the control layout, keyboard and controllers are fully supported! And, if you're not feeling the default button layout, you can edit it in the game's settings to fit your needs!
 - Playable Characters
 	set characters_texture.visible = true
-	Miku: In this adventure, you can select from a large variety of familiar characters! Feel free to choose who you like or want to experiment with because you can bring up to three party members this time around!
-	Miku: The floors and bosses will challenge you in a variety of ways, so it's recommended to bring a full party of characters with varying abilities. Even if it makes the games easier, you won't be punished for bringing more friends along!
+	Miku: In this adventure, you can select from a large variety of familiar characters! Feel free to choose who you like or want to experiment with, because you can bring up to three party members!
+	Miku: The floors and bosses will challenge you in a variety of ways, so it's recommended to bring a full party of characters with varying abilities. While it might make the game a bit easier, you won't be punished for bringing more friends along!
 	set characters_texture.visible = false
-	Miku: Spekaing of varying abilities... Each character has a set of different abilities to help them traverse the floors!
+	Miku: Speaking of varying abilities... Each character has a set of different abilities to help them traverse the floors!
 	set character_types.visible = true
 	Miku: Most character fall under [color=light_blue]SPEED[/color], [color=yellow]FLIGHT[/color], and [color=red]POWER[/color] categories!
-	Miku: The [color=light_blue]SPEED[/color] are some of the most versatile, and have the most tools in their moveset. Their grounded speed is the fastest, and they have lots of tricks to get a burst of speed while airborn. And while their horizontal speed from these tricks are strong, there's nothing outside of that to keep them in the air. So while they have the largest skill expression, they have to deal with all the challenges presented to them.
-	Miku: On the other hand, [color=yellow]FLIGHT[/color] characters prefer the air! These characters are able to fly for a limited amount of time based on remaining meter. These characters are slower since they don't have any tricks to get a burst of speed in the air. But, by conquering the air, platforming challenges are no longer a threat to them!
-	Miku: Finally, we have [color=red]POWER[/color] characters! Their moveset presents a middle ground. They have good burst options in the air, and they can overcome obstacles by climbing over them. While their air tricks don't have the strongest bursts of speed, they're still very good options making them strong all around characters. 
+	Miku: The [color=light_blue]SPEED[/color] are some of the most versatile, and have the most tools in their moveset. Their grounded speed is the fastest, and they have lots of tricks to get a burst of speed while airborne. While their horizontal speed from these tricks is strong, there's not much else to keep them in the air. So while they have the largest skill expression, they have to deal with all the challenges presented to them.
+	Miku: On the other hand, [color=yellow]FLIGHT[/color] characters prefer the air! These characters are able to fly for a limited amount of time based on their remaining flight meter. These characters are slower since they don't have any tricks to get a burst of speed in the air. But by conquering the air, platforming challenges are no longer a threat to them!
+	Miku: Finally, we have [color=red]POWER[/color] characters! Their moveset presents a middle ground between the other types. They have good burst options in the air, and they can overcome obstacles by climbing over them. While their air tricks don't have the most powerful bursts of speed, they're still good options, making them strong all-around characters. 
 	set character_types.visible = false
-	Miku: However, not every character falls under these categories. Metal Sonic, for examples, is able to fly and has a trick in the air that gives a burst of horizontal speed, unlike other [color=yellow]FLIGHT[/color] characters.
-	Miku: And characters like Sonic also have unique abilities such as the Super Peelout and Drop Dash. 
-	Miku: So, it's in your best interest to try out a bunch of character and find what fits your playstyle best!
-- Levels and Goal
+	Miku: However, not every character falls under these categories. Metal Sonic, for example, can fly and has a trick in the air that gives a burst of horizontal speed, unlike other [color=yellow]FLIGHT[/color] characters.
+	Miku: And Sonic has unique abilities such as the Super Peelout and Drop Dash. 
+	Miku: So, it's in your best interest to try out a bunch of characters and find what fits your playstyle best!
+- Floors and Goal
 	set video.visible = true
 	do video_stream_player.play()
-	Miku: During your playthrough, you'll find that no two levels are unique! That's right! Levels in this game are procedurally generated! 
-	Miku: Each floor in this game has a procedurally generated layout based on different chunks of levels. The start and end are always the same, but everything in-between will be different!
-	Miku: Even if this is the case, the more you play, the more familiar you will become with the different layout, and you will find ways to go fast with different types of layouts! The spirit of the classic games still resonate here, even with the procedurally generated level design!
+	Miku: During your playthrough, you'll find that no two floors are unique! That's right! Floors in this game are procedurally generated! 
+	Miku: Each floor in this game has a procedurally generated layout based on different smaller chunks of levels. The start and end are always the same, but everything in between will be different!
+	Miku: As you would expect in most 2D games, the bottom paths are slower and present more challenges, while the top paths are more open and quicker. Top paths generally take some extra effort to reach though, while the bottom path is a small punishment for not platforming correctly. Also, the top paths will not only reward you with a faster route, but sometimes with some extra height above the next chunk of level as well!
+	Miku: Even if this is the case, the more you play, the more familiar you will become with the different layouts, and you will find ways to go fast, even with randomized layouts! The spirit of the classic games still resonates here, even with the procedurally generated level design!
 	Miku: Regardless, the goal is always the same: reach the end of the level located on the other side to proceed to the next floor!
 	set video.visible = false
 	do video_stream_player.stop()
 - Bosses and Tips
 	set bosses.visible = true
 	Miku: Oh wow! Those are some unique faces that Sonic and co must fight!
-	Miku: Every fourth floor of your playthrough will present you with either a resting room of a boss fight! So make sure to keep the floor number in mind and bring as many rings as possible because you won't be able won't be able to get many inside the boss arena!
-	Miku: Make sure to learn their pattern because, while they are usually vulnerable to taking damage, some of their attacks will hurt you regardless! These are generally indicated so keep an eye before going in to attack!
-	Miku: These bosses all seem to come from worlds of their and have gone through journies we might never able to understand, so it's easy to say that these guys are tough and won't go down without a fight! 
-	Miku: So, if I had some advice to beating up these baddies, I would say that giving them a good "stomping" will take them out quickly!
+	Miku: Every fourth floor of your playthrough will present you with either a resting room of a boss fight! So make sure to keep the floor number in mind and bring as many rings as possible because you won't be able to get many rings inside the boss arena!
+	Miku: Make sure to learn their pattern because, while they are usually vulnerable to taking damage, some of their attacks will hurt you regardless! These are generally telegraphed, so keep an eye out before going in for the attack!
+	Miku: These bosses all seem to come from worlds of their own and have gone through journeys we might never be able to understand, so it's easy to say that these guys are tough and won't go down without a fight! 
+	Miku: So, if I had some advice for beating up these baddies, I would say that giving them a good "stomping" will take them out quickly!
 	set bosses.visible = false
 - Exit Tutorial
 	Miku: If you ever need more help, you can always come back to me! And good luck with your [color=red]ESCAPE![/color]

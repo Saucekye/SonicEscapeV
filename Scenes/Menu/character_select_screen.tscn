@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://2ru4380gp75j" path="res://Sprites/Intro/456.png" id="28_7g24f"]
 [ext_resource type="Texture2D" uid="uid://qggvt4ph46qu" path="res://Sprites/Characters/Tails/tailssheet.png" id="28_640u5"]
 [ext_resource type="VideoStream" uid="uid://c8gm04gu6p4bk" path="res://Videos/Tutorial-level-video.ogv" id="29_7g24f"]
-[ext_resource type="Shader" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
+[ext_resource type="Shader" uid="uid://rjapj8dx7ufb" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
 [ext_resource type="Texture2D" uid="uid://dkmnifpu1kn4k" path="res://Sprites/Intro/789.png" id="29_udxrr"]
 [ext_resource type="Texture2D" uid="uid://cjr4dukic68mv" path="res://Sprites/Characters/Knuckles/knucklesheet.png" id="29_xlc5t"]
 
@@ -757,6 +757,7 @@ shader_parameter/vinnette_outer_radius = 1.0
 [node name="CharacterSelectScreen" type="Control"]
 process_mode = 3
 layout_mode = 3
+anchors_preset = 0
 offset_top = -56.0
 offset_bottom = -56.0
 script = ExtResource("1_nlrn3")
@@ -918,7 +919,6 @@ hover_color = Color(0.64, 0.68799996, 1, 1)
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = -211.0
 offset_top = -847.0
 offset_right = -171.0
@@ -939,7 +939,6 @@ texture = ExtResource("9_cgfmd")
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 168.0
 offset_top = -868.0
 offset_right = 208.0
@@ -959,7 +958,6 @@ skew = 0.958781
 clip_children = 2
 z_index = -2
 clip_contents = true
-anchors_preset = -1
 offset_left = 563.0
 offset_top = -915.0
 offset_right = 603.0
@@ -1020,7 +1018,7 @@ hover_color = Color(1, 1, 1, 1)
 
 [node name="Start" type="Label" parent="Start"]
 z_index = 2
-anchors_preset = -1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1211,6 +1209,7 @@ stretch_mode = 4
 visible = false
 z_index = 4
 layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
