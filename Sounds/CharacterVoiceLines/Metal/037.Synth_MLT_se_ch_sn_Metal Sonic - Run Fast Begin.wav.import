@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://comywgkm7jrfg"
+path="res://.godot/imported/037.Synth_MLT_se_ch_sn_Metal Sonic - Run Fast Begin.wav-3aeabd79039587797ff2f9b826524a1a.sample"
+
+[deps]
+
+source_file="res://Sounds/CharacterVoiceLines/Metal/037.Synth_MLT_se_ch_sn_Metal Sonic - Run Fast Begin.wav"
+dest_files=["res://.godot/imported/037.Synth_MLT_se_ch_sn_Metal Sonic - Run Fast Begin.wav-3aeabd79039587797ff2f9b826524a1a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

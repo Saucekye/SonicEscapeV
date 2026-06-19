@@ -56,4 +56,4 @@ script = ExtResource("6_2hwdg")
 position = Vector2(18847.996, 2822.4077)
 
 [node name="End" type="Marker2D" parent="."]
-position = Vector2(22330.979, 2669.4077)
+position = Vector2(22342.4, 2668.8)
