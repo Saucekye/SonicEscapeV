@@ -30,7 +30,7 @@ func _execute_drop_dash() -> void:
 		player.acc = 5000
 	
 	player.smokeemit()
-	player.sfx.pitch_scale = 1.8
+	player.sfx.pitch_scale = 1.5
 	player.sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
 	player.sfx.play()
 	player.ap.play("ball")

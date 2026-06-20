@@ -1,13 +1,17 @@
-[gd_scene load_steps=60 format=3 uid="uid://deluxsuyw8dyd"]
+[gd_scene load_steps=64 format=3 uid="uid://deluxsuyw8dyd"]
 
 [ext_resource type="Script" uid="uid://uhvmshiwaoy4" path="res://Scripts/Characters/Blaze/blaze.gd" id="1_fioc4"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_itywx"]
 [ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="2_m0yi4"]
+[ext_resource type="AudioStream" uid="uid://71ttow02ebiu" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V01_BZ.aif.wav" id="2_nl3ds"]
 [ext_resource type="PackedScene" uid="uid://b0shm35wgl3so" path="res://Scenes/Characters/Components/Air Actions/hover.tscn" id="2_ss304"]
+[ext_resource type="AudioStream" uid="uid://3s7x2i3ym6lt" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V03_BZ.aif.wav" id="3_64slw"]
 [ext_resource type="Texture2D" uid="uid://w744lsvt15wv" path="res://Scenes/Characters/Blaze/blaze.png" id="3_fioc4"]
 [ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="3_ss304"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_1dccu"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_305ry"]
+[ext_resource type="AudioStream" uid="uid://c515744idd8me" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V05_BZ.aif.wav" id="4_g3a3j"]
+[ext_resource type="AudioStream" uid="uid://b2kut6bcyl4o1" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V07_BZ.aif.wav" id="5_4fuia"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_ed1cx"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_nnxwy"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_fwb28"]
@@ -2278,6 +2282,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fioc4")
+audio_files = [ExtResource("2_nl3ds"), ExtResource("3_64slw"), ExtResource("4_g3a3j"), ExtResource("5_4fuia")]
 trail_ball_position = Vector2(0, 10)
 
 [node name="Hover" parent="." instance=ExtResource("2_ss304")]

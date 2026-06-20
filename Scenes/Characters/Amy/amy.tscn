@@ -1,10 +1,13 @@
-[gd_scene load_steps=59 format=3 uid="uid://coplphurnieop"]
+[gd_scene load_steps=62 format=3 uid="uid://coplphurnieop"]
 
 [ext_resource type="Script" uid="uid://hyh5d2v8has2" path="res://Scripts/Characters/Amy/amy.gd" id="1_whybq"]
+[ext_resource type="AudioStream" uid="uid://dee4hmkebngud" path="res://Sounds/CharacterVoiceLines/Amy/ALL01_V05_AM.aif.wav" id="2_27prs"]
 [ext_resource type="PackedScene" uid="uid://bl17rh8kbubo" path="res://Scenes/Characters/Components/Air Actions/swipe_attack.tscn" id="2_oejq8"]
+[ext_resource type="AudioStream" uid="uid://6lhmg0dn7b4q" path="res://Sounds/CharacterVoiceLines/Amy/ALL01_V06_AM.aif.wav" id="3_7sq37"]
 [ext_resource type="PackedScene" uid="uid://cqpabthyx2bvr" path="res://Scenes/Characters/Components/Air Actions/flick.tscn" id="3_ysoxq"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="4_jjvf4"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_ocgdo"]
+[ext_resource type="AudioStream" uid="uid://bjuai3u2vqmk" path="res://Sounds/CharacterVoiceLines/Amy/ALL01_V11_AM.aif.wav" id="4_omiba"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_dj5vv"]
 [ext_resource type="Texture2D" uid="uid://dyri5qcxv2plu" path="res://Sprites/Characters/Amy/amy.png" id="5_whybq"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="6_f7cq1"]
@@ -2991,6 +2994,7 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_whybq")
+audio_files = [ExtResource("2_27prs"), ExtResource("3_7sq37"), ExtResource("4_omiba")]
 
 [node name="SwipeAttack" parent="." instance=ExtResource("2_oejq8")]
 

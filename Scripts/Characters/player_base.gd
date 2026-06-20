@@ -16,6 +16,7 @@ class_name Player extends CharacterBody2D
 @onready var trail = $Trail2D
 @onready var sfx = $Sfx
 @onready var voice = $Voice
+@onready var invincibity: Timer = $invincibity
 
 @export_group("Node References")
 @export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
@@ -199,8 +200,9 @@ var grinding = false                ## True while grinding on a rail
 # Misc
 @export_group("Misc")
 @export var player_path: NodePath   ## Path to the player node this AI character should follow
-@export var trail_position : Vector2 = Vector2.ZERO
-@export var trail_ball_position : Vector2 = Vector2(0, 15)
+@export var trail_position : Vector2 = Vector2.ZERO		## Default trail  position when running
+@export var trail_ball_position : Vector2 = Vector2(0, 15)	## Trail position for rolling
+@export var trail_dash_max_position : Vector2 = trail_position	## Trail position when running with top speed animation (If you want this and trail_positoin to be the same, keep it as the zero vector)
 
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
@@ -218,6 +220,8 @@ func _ready():
 	timer.wait_time = 12        # Wall-exit speed reset delay
 	$Sprite2D.visible = true
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
+	if trail_dash_max_position == Vector2.ZERO:
+		trail_dash_max_position = trail_position
 	
 func _process(_delta):
 	# Handle virtual joystick on mobile — converts stick input into action events
@@ -369,9 +373,9 @@ func _physics_process(delta):
 			if max_speed == MAX_LOW_SPEED && is_on_floor():
 				# Just crossed the momentum threshold — play break-speed effects
 				$Trail2D.visible = true
-				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
-				$Sfx.play()
+				sfx.pitch_scale = 2
+				sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
+				sfx.play()
 				smokeemit()
 			if abs(slopefactor) > 0:
 				# On a slope — adjust max speed by direction (downhill vs uphill)
@@ -449,6 +453,8 @@ func _physics_process(delta):
 	if is_grounded and (abs(time_elapsed) > 60 or abs(motion.x) > 500):
 		# At high speed or high momentum, and whlie grounded, rotate the velocity vector to stick to slopes
 		up_direction = get_floor_normal()
+		#if is_player:
+			#print(motion.x)
 		velocity = Vector2(motion.x, motion.y).rotated(rot)
 	else:
 		# At low speed, or  ariborn, use flat velocity (avoids sliding on gentle slopes)
@@ -472,7 +478,7 @@ func _physics_process(delta):
 		rot = 0
 		time_elapsed = 0
 		
-	if direction != 0:
+	if direction != 0 and not grinding:
 		switch_direction(direction)
 		if direction > 0:
 			reverse_to_left = true	
@@ -487,12 +493,12 @@ func _physics_process(delta):
 	if (not is_on_floor() and rot == 0):
 		motion.y += get_gravityy() * delta  # Apply variable gravity (lighter rising, heavier falling)
 	else:
-		if abs(slopefactor) == 1:
-			# On a perfectly vertical wall — zero out vertical to avoid drifting
-			motion.y = 0
-		else:
-			# Small constant downward force keeps the character pressed to the floor
-			motion.y = 50
+		#if abs(slopefactor) == 1:
+			## On a perfectly vertical wall — zero out vertical to avoid drifting
+			#motion.y = 0
+		#else:
+		# Small constant downward force keeps the character pressed to the floor
+		motion.y = 50
 	
 	# Disable directional input during spinning charge (spin dash charges in place)
 	if is_spinning:
@@ -611,7 +617,7 @@ func handle_item(delta):
 		var item = find_item_nearby()
 		if item and not hang:  # Can't pick up while hanging on a flying player
 			pick_up_item(item)
-
+		
 func update_held_item_position():
 	# Called every frame after move_and_slide to snap the held item to the carry position
 	if held_item and is_instance_valid(held_item):
@@ -856,7 +862,7 @@ func handle_movement_input(delta):
 		if is_on_floor():
 			# Extra friction when turning — only when not in ball mode
 			if sign(motion.x) != sign(max_speed * direction) and motion.x != 0 and ball == false:
-				motion.x = move_toward(motion.x, 0, fric/3)
+				motion.x = move_toward(motion.x, 0, fric/2 * delta)
 			
 			if dashx == true:
 				# Brief pause before re-applying dash friction
@@ -936,9 +942,9 @@ func calculate_dynamic_speed():
 		if time_elapsed > 50:
 			if max_speed == 500 && is_on_floor():
 				$Trail2D.visible = true
-				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
-				$Sfx.play()
+				sfx.pitch_scale = 2
+				sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
+				sfx.play()
 				smokeemit()
 
 			if abs(slopefactor) > 0:
@@ -990,10 +996,12 @@ func handle_floor_logic(delta):
 			hangable = false  # Can't initiate a hang while grounded
 		
 		# Shorter snap at low speed; longer snap at high speed to hug slopes better
-		if motion.x <= 300:
+		if abs(motion.x) <= 300:
 			floor_snap_length = 10
+		elif abs(motion.x) <= BASE_MAX_SPEDD:
+			floor_snap_length = 30
 		else:
-			floor_snap_length = 35
+			floor_snap_length = 40
 
 		falling = false
 		dashed = false
@@ -1005,6 +1013,8 @@ func handle_floor_logic(delta):
 		if ball:
 			trail.offset = trail_ball_position
 			apply_friction(delta)
+		elif ap.current_animation == "Dash max":
+			trail.offset = trail_dash_max_position
 		else:
 			trail.offset = trail_position
 			
@@ -1027,14 +1037,12 @@ func handle_floor_logic(delta):
 		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
+			
 		# Auto-stand from ball when fully stopped on flat ground
-		if motion.x == 0 and abs(slopefactor) < MIN_ROT_BALL:
+		if motion.x == 0 and abs(rot) < MIN_ROT_BALL:
 			crouch = false
 			ball = false
 			spindash()
-			
-		if motion.x == 0:
-			peelout()
 			
 		# Ground attack/action — only triggers if not already mid-aciton
 		handle_ground_action()	## Abstract method
@@ -1315,7 +1323,8 @@ func _on_wait_timer_timeout():
 
 func _on_animation_player_current_animation_changed(anim_name: String):
 	# Keep track of the last animation chnaged
-	last_animation = anim_name
+	if anim_name != "":
+		last_animation = anim_name
 	# Reset the wait timer any time a non-wait animation starts playing
 	if anim_name == "stance":
 		$WaitTimer.start()
@@ -1341,15 +1350,15 @@ func spindash():
 			crouch = true
 			ap.speed_scale = 1
 			ap.play("revup")
-			$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 1, 2)
-			$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
-			$Sfx.play()
+			sfx.pitch_scale = clamp((float)(spin_charge)/2, 1, 2)
+			sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
+			sfx.play()
 
 	elif is_on_floor() and Input.is_action_just_released("ui_down") and is_spinning and is_spinningdash:
 		# Release: calculate and apply burst speed based on charge level
-		$Sfx.pitch_scale = 1.5
-		$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = 1.5
+		sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
+		sfx.play()
 		is_spinning = false
 		is_spinningdash = false
 		crouch = true
@@ -1375,47 +1384,6 @@ func spindash():
 		ap.play("revdown")
 		spin_charge = 1
 		
-func revpeelout():
-	# Start the rev peel-out animation
-	Input.is_action_pressed("ui_up")  # Note: this line has no effect — likely a leftover check
-	ap.play("Revpeelout")
-	is_ready = true
-		
-func peelout():
-	# Guard: don't process peelout if spindash is active
-	if is_spinningdash or Input.is_action_pressed("ui_down"):
-		return
-		
-	if is_on_floor() and Input.is_action_pressed("ui_up") and ball == false and next_bounce == false and motion.x == 0 and direction == 0: 
-		control_lock = true
-		crouch = true
-		if is_spinning == false and is_ready == false:
-			$AnimationPlayer.play("ready")
-		
-		if Input.is_action_pressed("ui_accept") and is_spinning == false and is_ready == false:
-			revpeelout()
-
-	elif is_on_floor() and Input.is_action_just_released("ui_up") and is_spinning and is_ready:
-		# Release: launch forward at full peel-out speed
-		control_lock = false
-		crouch = false
-		$Sfx.pitch_scale = 1.5
-		$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
-		$Sfx.play()
-		time_elapsed = 300
-		is_spinning = false
-		is_ready = false
-		spin_dash_speed = clamp(spin_charge * spin_dash_acceleration, 0, 1600)
-		motion.x = spin_dash_speed * sign(motion.x) if motion.x != 0 else spin_dash_speed * (1 if sprite.flip_h == false else -1)
-		max_speed = 1800
-		acc = 5000
-		ap.play("Dash max")
-		smokeemit()
-		
-	elif not is_spinningdash:
-		# Not in any special state — ensure flags are clean
-		is_ready = false
-		is_spinning = false
 
 func _on_control_lock_timer_timeout() -> void:
 	control_lock = false  # Restore player control after a timed lock (e.g. from a launch)
@@ -1425,9 +1393,9 @@ func _on_coyote_timer_timeout() -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Rings") and ouch == false:
-		$Sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
-		$Sfx.pitch_scale = 1
-		$Sfx.play()
+		sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
+		sfx.pitch_scale = 1
+		sfx.play()
 			
 	if area.is_in_group("Spring") and is_player:
 		tricknumber()
@@ -1492,12 +1460,13 @@ func pick_upward_angle() -> float:
 func player_death():
 	if not is_player:
 		return
+	trail.visible = false
 	ap.speed_scale = 1
 	ap.play("death")
-	$Sfx.volume_db = 10
-	$Sfx.pitch_scale = 1
-	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
-	$Sfx.play()
+	sfx.volume_db = 10
+	sfx.pitch_scale = 1
+	sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
+	sfx.play()
 	is_player_dead = true
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
@@ -1510,9 +1479,9 @@ func emit_rings():
 	else:
 		# Play damage sound while emitting rings
 		# Only play ring loss sound when you have rings
-		$Sfx.pitch_scale = 1
-		$Sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = 1
+		sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
+		sfx.play()
 	
 	var loss : int
 	var spawn_count : int
@@ -1619,9 +1588,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		is_spinning = true
 		ap.speed_scale = 0.8
 		ap.play("peel out")
-		$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
-		$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
+		sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
+		sfx.play()
 	if anim_name == "death":
 		GlobalSignals.emit_signal("game_over")
 		

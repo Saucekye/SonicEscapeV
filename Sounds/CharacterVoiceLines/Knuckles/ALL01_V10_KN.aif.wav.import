@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://w4n4ja0yf126"
-path="res://.godot/imported/ALL01_V10_KN.aif.wav-ff63d2ec8e1423385d0cf845d8db27ba.sample"
+path="res://.godot/imported/ALL01_V10_KN.aif.wav-da71b686c297b371a00df45bdf48d555.sample"
 
 [deps]
 
-source_file="res://Sounds/CharacterVoiceLines/Cream/ALL01_V10_KN.aif.wav"
-dest_files=["res://.godot/imported/ALL01_V10_KN.aif.wav-ff63d2ec8e1423385d0cf845d8db27ba.sample"]
+source_file="res://Sounds/CharacterVoiceLines/Knuckles/ALL01_V10_KN.aif.wav"
+dest_files=["res://.godot/imported/ALL01_V10_KN.aif.wav-da71b686c297b371a00df45bdf48d555.sample"]
 
 [params]
 
