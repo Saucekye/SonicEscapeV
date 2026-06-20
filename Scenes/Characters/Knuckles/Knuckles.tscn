@@ -1,13 +1,17 @@
-[gd_scene load_steps=61 format=3 uid="uid://cqii2a60sj5ox"]
+[gd_scene load_steps=65 format=3 uid="uid://cqii2a60sj5ox"]
 
 [ext_resource type="Script" uid="uid://7wxui6ffl844" path="res://Scripts/Characters/Knuckles/knuckles.gd" id="1_fda6k"]
 [ext_resource type="PackedScene" uid="uid://hj332s057asw" path="res://Scenes/Characters/Components/Air Actions/glide.tscn" id="1_xty85"]
 [ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="2_1fgxt"]
+[ext_resource type="AudioStream" uid="uid://cn3dw2d3msvp" path="res://Sounds/CharacterVoiceLines/Knuckles/ALL01_V02_KN.aif.wav" id="2_fcoey"]
+[ext_resource type="AudioStream" uid="uid://bjyx2n5bbl8sq" path="res://Sounds/CharacterVoiceLines/Knuckles/ALL01_V05_KN.aif.wav" id="3_exjjj"]
 [ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="3_xnyr7"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_fhniu"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="4_ful3v"]
+[ext_resource type="AudioStream" uid="uid://dg2bsmmy2hjfx" path="res://Sounds/CharacterVoiceLines/Knuckles/ALL01_V07_KN.aif.wav" id="4_ldrna"]
 [ext_resource type="Texture2D" uid="uid://cjr4dukic68mv" path="res://Sprites/Characters/Knuckles/knucklesheet.png" id="5_s8g72"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_s31ke"]
+[ext_resource type="AudioStream" uid="uid://w4n4ja0yf126" path="res://Sounds/CharacterVoiceLines/Knuckles/ALL01_V10_KN.aif.wav" id="5_uhyks"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="6_8xdvg"]
 [ext_resource type="PackedScene" uid="uid://bnyfi3disj12u" path="res://Scenes/Characters/Components/Wall Mechanics/wall_climb.tscn" id="6_egr3s"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="7_41fhi"]
@@ -3043,6 +3047,7 @@ collision_mask = 4
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_fda6k")
+audio_files = [ExtResource("2_fcoey"), ExtResource("3_exjjj"), ExtResource("4_ldrna"), ExtResource("5_uhyks")]
 trail_position = Vector2(0, 5)
 
 [node name="Glide" parent="." instance=ExtResource("1_xty85")]

@@ -11,7 +11,7 @@ func action() -> void:
 		player.tricknumber()
 		GlobalCanvasLayer.tricks = 0
 
-	print("ON WALL - Current animation: ", player.ap.current_animation)
+	# print("ON WALL - Current animation: ", player.ap.current_animation)
 
 	player.hanging_on_wall = true
 	# Cancel all special states when grabbing a wall
