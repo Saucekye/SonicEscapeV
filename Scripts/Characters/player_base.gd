@@ -1027,8 +1027,9 @@ func handle_floor_logic(delta):
 		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
+			
 		# Auto-stand from ball when fully stopped on flat ground
-		if motion.x == 0 and abs(slopefactor) < MIN_ROT_BALL:
+		if motion.x == 0 and abs(rot) < MIN_ROT_BALL:
 			crouch = false
 			ball = false
 			spindash()
@@ -1315,7 +1316,8 @@ func _on_wait_timer_timeout():
 
 func _on_animation_player_current_animation_changed(anim_name: String):
 	# Keep track of the last animation chnaged
-	last_animation = anim_name
+	if anim_name != "":
+		last_animation = anim_name
 	# Reset the wait timer any time a non-wait animation starts playing
 	if anim_name == "stance":
 		$WaitTimer.start()

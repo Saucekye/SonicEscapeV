@@ -11,7 +11,7 @@ func action() -> void:
 		player.falling = true
 
 	# Initial jump press in air starts the glide
-	if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and not player.is_coyote_time_active():
+	if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and not player.hanging_on_wall and not player.is_coyote_time_active():
 		_dash(player.direction if player.direction != 0 else (1 if not player.sprite.flip_h else -1))
 
 # ─────────────────────────────────────────────

@@ -81,8 +81,8 @@ func start_grind(player):
 	grinding_players[player] = true
 	var player_base_speed = 350
 	
-	if player.time_elapsed >= 50:
-		player_base_speed = abs(player.motion.x) * 1.05
+	#if player.time_elapsed >= 50:
+	player_base_speed = abs(player.motion.x) * 1.05
 	
 	var sprite = player.get_node_or_null("Sprite2D")
 	var direction_sign = 1
