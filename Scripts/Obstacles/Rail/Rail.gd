@@ -28,11 +28,16 @@ func _physics_process(delta):
 	# Process each grinding player
 	var players_to_remove = []
 	
-	for player in grinding_players.keys():
+	for player : Player in grinding_players.keys():
 		if grinding_players[player] and player and player.grinding:
 			var follower = player_followers[player]
 			var player_grind_speed = player_speeds[player]
 			
+			# Lazy coding, but check if the player is damaged based on invul timer
+			# and if so, put them back in grinding animation state
+			if !player.invincibity.is_stopped() and !player.is_player_dead:
+				player.ap.play("skid")
+				
 			player.direction = 0
 			
 			# Check if we're about to go past the ends BEFORE updating progress
@@ -82,7 +87,8 @@ func start_grind(player):
 	var player_base_speed = 350
 	
 	#if player.time_elapsed >= 50:
-	player_base_speed = abs(player.motion.x) * 1.05
+	if abs(player.motion.x) > 0:
+		player_base_speed = abs(player.motion.x) * 1.05
 	
 	var sprite = player.get_node_or_null("Sprite2D")
 	var direction_sign = 1
