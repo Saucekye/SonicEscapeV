@@ -83,13 +83,13 @@ position = Vector2(13417.398, 2296.3855)
 position = Vector2(12604.398, 1296.3855)
 
 [node name="Ring Strand19" parent="Rings" instance=ExtResource("3_gxnwj")]
-position = Vector2(14136, 2504)
+position = Vector2(14400.398, -283.6145)
 
 [node name="Ring Strand21" parent="Rings" instance=ExtResource("3_gxnwj")]
 position = Vector2(16677.398, 1692.3855)
 
 [node name="Ring Strand22" parent="Rings" instance=ExtResource("3_gxnwj")]
-position = Vector2(14350.198, 2834.355)
+position = Vector2(14783.398, -34.614502)
 
 [node name="Ring Strand" parent="Rings" instance=ExtResource("3_gxnwj")]
 position = Vector2(12538.398, 1185.3855)
@@ -98,7 +98,7 @@ position = Vector2(12538.398, 1185.3855)
 position = Vector2(11608.398, 1704.3855)
 
 [node name="Ring Strand23" parent="Rings" instance=ExtResource("3_gxnwj")]
-position = Vector2(14248.398, 2663.3855)
+position = Vector2(14582.398, -185.6145)
 
 [node name="CharacterBody2D" parent="Rings" instance=ExtResource("4_4ri5y")]
 position = Vector2(13800.398, 1881.3853)

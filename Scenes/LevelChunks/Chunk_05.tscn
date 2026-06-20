@@ -70,7 +70,7 @@ z_index = -2
 scale = Vector2(0.8, 0.8)
 
 [node name="Loop" parent="Level" instance=ExtResource("4_hrasq")]
-position = Vector2(26151.252, 3103.9792)
+position = Vector2(26152, 3104)
 
 [node name="Spring5" parent="Level" instance=ExtResource("7_08aqx")]
 position = Vector2(32203, 4489)
