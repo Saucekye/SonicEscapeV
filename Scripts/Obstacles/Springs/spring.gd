@@ -39,7 +39,7 @@ func _on_area_entered(area: Area2D) -> void:
 		$Sprite2D/AnimationPlayer.play("play")
 
 		var player_body = area.get_parent()
-		player_body.apply_spring_boost(spring_velocity)
+		player_body.apply_spring_boost(spring_velocity.rotated(rotation))
 
 
 
