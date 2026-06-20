@@ -369,9 +369,9 @@ func _physics_process(delta):
 			if max_speed == MAX_LOW_SPEED && is_on_floor():
 				# Just crossed the momentum threshold — play break-speed effects
 				$Trail2D.visible = true
-				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
-				$Sfx.play()
+				sfx.pitch_scale = 2
+				sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
+				sfx.play()
 				smokeemit()
 			if abs(slopefactor) > 0:
 				# On a slope — adjust max speed by direction (downhill vs uphill)
@@ -936,9 +936,9 @@ func calculate_dynamic_speed():
 		if time_elapsed > 50:
 			if max_speed == 500 && is_on_floor():
 				$Trail2D.visible = true
-				$Sfx.pitch_scale = 2
-				$Sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
-				$Sfx.play()
+				sfx.pitch_scale = 2
+				sfx.stream = load("res://Sounds/SonicSFX/Break Speed.wav")
+				sfx.play()
 				smokeemit()
 
 			if abs(slopefactor) > 0:
@@ -1343,15 +1343,15 @@ func spindash():
 			crouch = true
 			ap.speed_scale = 1
 			ap.play("revup")
-			$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 1, 2)
-			$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
-			$Sfx.play()
+			sfx.pitch_scale = clamp((float)(spin_charge)/2, 1, 2)
+			sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
+			sfx.play()
 
 	elif is_on_floor() and Input.is_action_just_released("ui_down") and is_spinning and is_spinningdash:
 		# Release: calculate and apply burst speed based on charge level
-		$Sfx.pitch_scale = 1.5
-		$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = 1.5
+		sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
+		sfx.play()
 		is_spinning = false
 		is_spinningdash = false
 		crouch = true
@@ -1401,9 +1401,9 @@ func peelout():
 		# Release: launch forward at full peel-out speed
 		control_lock = false
 		crouch = false
-		$Sfx.pitch_scale = 1.5
-		$Sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = 1.5
+		sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
+		sfx.play()
 		time_elapsed = 300
 		is_spinning = false
 		is_ready = false
@@ -1427,9 +1427,9 @@ func _on_coyote_timer_timeout() -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Rings") and ouch == false:
-		$Sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
-		$Sfx.pitch_scale = 1
-		$Sfx.play()
+		sfx.stream = load("res://Sounds/Obstacles/Rings/ringsfx.MP3")
+		sfx.pitch_scale = 1
+		sfx.play()
 			
 	if area.is_in_group("Spring") and is_player:
 		tricknumber()
@@ -1496,10 +1496,10 @@ func player_death():
 		return
 	ap.speed_scale = 1
 	ap.play("death")
-	$Sfx.volume_db = 10
-	$Sfx.pitch_scale = 1
-	$Sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
-	$Sfx.play()
+	sfx.volume_db = 10
+	sfx.pitch_scale = 1
+	sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
+	sfx.play()
 	is_player_dead = true
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
@@ -1512,9 +1512,9 @@ func emit_rings():
 	else:
 		# Play damage sound while emitting rings
 		# Only play ring loss sound when you have rings
-		$Sfx.pitch_scale = 1
-		$Sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = 1
+		sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
+		sfx.play()
 	
 	var loss : int
 	var spawn_count : int
@@ -1621,9 +1621,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		is_spinning = true
 		ap.speed_scale = 0.8
 		ap.play("peel out")
-		$Sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
-		$Sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
-		$Sfx.play()
+		sfx.pitch_scale = clamp((float)(spin_charge)/2, 0, 2)
+		sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
+		sfx.play()
 	if anim_name == "death":
 		GlobalSignals.emit_signal("game_over")
 		

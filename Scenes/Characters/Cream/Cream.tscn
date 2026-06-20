@@ -1,12 +1,16 @@
-[gd_scene load_steps=58 format=3 uid="uid://by161kvq5b43r"]
+[gd_scene load_steps=62 format=3 uid="uid://by161kvq5b43r"]
 
 [ext_resource type="Script" uid="uid://bt72s4dk8esif" path="res://Scripts/Characters/Tails/tails.gd" id="1_thhbk"]
+[ext_resource type="AudioStream" uid="uid://dpwlbhcg8a78u" path="res://Sounds/CharacterVoiceLines/Cream/act07_p17_cr.ahx_001.wav" id="2_ap6oh"]
 [ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="2_ctjls"]
 [ext_resource type="PackedScene" uid="uid://c2ipguhs5a8nb" path="res://Scenes/Characters/Components/Air Actions/fly.tscn" id="2_q2ouv"]
 [ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="3_66uhm"]
+[ext_resource type="AudioStream" uid="uid://1jal6ex5yyxv" path="res://Sounds/CharacterVoiceLines/Cream/act07_p20_cr.ahx_001.wav" id="3_l05xa"]
 [ext_resource type="PackedScene" uid="uid://bl17rh8kbubo" path="res://Scenes/Characters/Components/Air Actions/swipe_attack.tscn" id="3_q3xbi"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="4_02bp8"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_k6j0d"]
+[ext_resource type="AudioStream" uid="uid://df6em23aebxh3" path="res://Sounds/CharacterVoiceLines/Cream/act07_p21_cr.ahx_001.wav" id="4_ljq8j"]
+[ext_resource type="AudioStream" uid="uid://dqcvcgj0l500u" path="res://Sounds/CharacterVoiceLines/Cream/act07_p25_cr.ahx_001.wav" id="5_2h6b6"]
 [ext_resource type="Texture2D" uid="uid://bxp783p02ogur" path="res://Sprites/Characters/Cream/cream.png" id="5_pw4ml"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_q2ouv"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="6_g56pi"]
@@ -2973,6 +2977,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_thhbk")
+audio_files = [ExtResource("2_ap6oh"), ExtResource("3_l05xa"), ExtResource("4_ljq8j"), ExtResource("5_2h6b6")]
 skid_min_speed = 0.0
 
 [node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_q2ouv")]

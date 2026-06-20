@@ -1,5 +1,6 @@
 extends Components_Action
 
+@export var can_when_flying : bool = false
 @export var meter_cost : int = 50
 @export var await_time : float = 0.13
 @export var time_elapsed : int = 200
@@ -9,7 +10,7 @@ extends Components_Action
 @export var x_speed : int = 1200
 
 func action() -> void:
-	if not (player.is_player == true and Test.meter >= meter_cost and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and not player.flying):
+	if not (player.is_player == true and Test.meter >= meter_cost and not Input.is_action_pressed("ui_down") and (not Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) and Input.is_action_just_pressed("airspin") and player.direction != 0 and ((can_when_flying and not Input.is_action_pressed("dash")) or not player.flying)):
 		return
 	
 	# Prevent from doing action while on wall
