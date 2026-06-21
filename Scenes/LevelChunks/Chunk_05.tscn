@@ -73,9 +73,12 @@ scale = Vector2(0.8, 0.8)
 position = Vector2(26152, 3104)
 
 [node name="Spring5" parent="Level" instance=ExtResource("7_08aqx")]
-position = Vector2(32203, 4489)
-rotation = 0.824641
+z_index = 1
+position = Vector2(32200.234, 4485.453)
+rotation = 0.710349
 spring_velocity = Vector2(1200, -1200)
+ignore_rotation = true
+independent_rotation = 15.0
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Level"]
 position = Vector2(4360, 1800)

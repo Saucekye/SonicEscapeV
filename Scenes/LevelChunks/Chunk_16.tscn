@@ -23,7 +23,7 @@ position = Vector2(20916.996, 1950.4077)
 position = Vector2(20787.996, 1525.4077)
 
 [node name="Enemy" parent="Enemies" instance=ExtResource("2_2cgfd")]
-position = Vector2(21271.996, 1137.4077)
+position = Vector2(21283.996, 1176.4077)
 
 [node name="Rings" type="Node2D" parent="."]
 position = Vector2(24, 24)
@@ -70,7 +70,6 @@ script = ExtResource("6_66ab7")
 
 [node name="Spring5" parent="Level" instance=ExtResource("4_ugp18")]
 position = Vector2(24328.744, 2124.2595)
-spring_velocity = Vector2(0, -1000)
 
 [node name="Node2D" type="Node2D" parent="."]
 

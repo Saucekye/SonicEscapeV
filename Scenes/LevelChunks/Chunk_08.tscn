@@ -113,13 +113,13 @@ position = Vector2(9129.4, 1733.7922)
 position = Vector2(9581.4, 1075.7922)
 
 [node name="Ring Strand5" parent="Rings" instance=ExtResource("1_ggb02")]
-position = Vector2(9202.4, 262.79218)
+position = Vector2(9186.4, 243.79218)
 
 [node name="Ring Strand6" parent="Rings" instance=ExtResource("1_ggb02")]
-position = Vector2(9289.4, 156.79218)
+position = Vector2(9273.4, 137.79218)
 
 [node name="Ring Strand7" parent="Rings" instance=ExtResource("1_ggb02")]
-position = Vector2(9375.4, 49.792175)
+position = Vector2(9359.4, 30.792175)
 
 [node name="Ring Strand8" parent="Rings" instance=ExtResource("1_ggb02")]
 position = Vector2(8206.4, 1744.7922)
