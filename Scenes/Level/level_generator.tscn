@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b6axjprp04yee"]
+[gd_scene load_steps=27 format=3 uid="uid://b6axjprp04yee"]
 
 [ext_resource type="Script" uid="uid://ddqvnt1n1jnx" path="res://Scripts/Level/level_generator.gd" id="1_q7b6x"]
 [ext_resource type="PackedScene" uid="uid://ce880tm5sbkl6" path="res://Scenes/LevelChunks/Chunk_01.tscn" id="2_pbout"]
@@ -11,7 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://c7e4wjwxy2fto" path="res://Scenes/LevelChunks/Chunk_08.tscn" id="9_8afpk"]
 [ext_resource type="PackedScene" uid="uid://c2c2cm72yy75y" path="res://Scenes/LevelChunks/Chunk_09.tscn" id="10_1jyg1"]
 [ext_resource type="PackedScene" uid="uid://cvcyuygy2qajl" path="res://Scenes/LevelChunks/Chunk_10.tscn" id="11_7qk77"]
-[ext_resource type="PackedScene" uid="uid://vbmfbfhxlkdm" path="res://Scenes/LevelChunks/Chunk_11.tscn" id="12_rgexl"]
+[ext_resource type="PackedScene" uid="uid://clndkcjc0deh3" path="res://Scenes/LevelChunks/Chunk_11.tscn" id="12_k4qdo"]
+[ext_resource type="PackedScene" uid="uid://vbmfbfhxlkdm" path="res://Scenes/LevelChunks/Chunk_23.tscn" id="12_rgexl"]
 [ext_resource type="PackedScene" uid="uid://creiffdevmes" path="res://Scenes/LevelChunks/Chunk_12.tscn" id="13_gex3i"]
 [ext_resource type="PackedScene" uid="uid://1l2eatap2cu" path="res://Scenes/LevelChunks/Chunk_13.tscn" id="14_pikt7"]
 [ext_resource type="PackedScene" uid="uid://cleqmgr0j00wx" path="res://Scenes/LevelChunks/Chunk_14.tscn" id="15_h3wyy"]
@@ -22,8 +23,11 @@
 [ext_resource type="PackedScene" uid="uid://kj2f1mdum4nq" path="res://Scenes/LevelChunks/Chunk_19.tscn" id="20_753jc"]
 [ext_resource type="PackedScene" uid="uid://cs3axtr5emnop" path="res://Scenes/LevelChunks/Chunk_20.tscn" id="21_dsrqq"]
 [ext_resource type="PackedScene" uid="uid://cjyqccntek0pu" path="res://Scenes/LevelChunks/Chunk_21.tscn" id="22_kd54k"]
+[ext_resource type="PackedScene" uid="uid://bhj2ce3suo10k" path="res://Scenes/LevelChunks/Chunk_22.tscn" id="23_dhi4p"]
+[ext_resource type="PackedScene" uid="uid://dkd08el7nuorl" path="res://Scenes/LevelChunks/Chunk_24.tscn" id="25_dhi4p"]
+[ext_resource type="PackedScene" uid="uid://qj6ch5gye376" path="res://Scenes/LevelChunks/Chunk_25.tscn" id="26_6ad4j"]
 
 [node name="LevelGenerator" type="Node2D"]
 script = ExtResource("1_q7b6x")
-level_chunks = Array[PackedScene]([ExtResource("2_pbout"), ExtResource("3_k4qdo"), ExtResource("4_dhi4p"), ExtResource("5_6ad4j"), ExtResource("6_q3v1r"), ExtResource("7_pmt2c"), ExtResource("8_q6auv"), ExtResource("9_8afpk"), ExtResource("10_1jyg1"), ExtResource("11_7qk77"), ExtResource("12_rgexl"), ExtResource("13_gex3i"), ExtResource("14_pikt7"), ExtResource("15_h3wyy"), ExtResource("16_7a7ak"), ExtResource("17_v2lyd"), ExtResource("18_q1tf2"), ExtResource("19_03nf7"), ExtResource("20_753jc"), ExtResource("21_dsrqq"), ExtResource("22_kd54k")])
+level_chunks = Array[PackedScene]([ExtResource("2_pbout"), ExtResource("3_k4qdo"), ExtResource("4_dhi4p"), ExtResource("5_6ad4j"), ExtResource("6_q3v1r"), ExtResource("7_pmt2c"), ExtResource("8_q6auv"), ExtResource("9_8afpk"), ExtResource("10_1jyg1"), ExtResource("11_7qk77"), ExtResource("12_k4qdo"), ExtResource("13_gex3i"), ExtResource("14_pikt7"), ExtResource("15_h3wyy"), ExtResource("16_7a7ak"), ExtResource("17_v2lyd"), ExtResource("18_q1tf2"), ExtResource("19_03nf7"), ExtResource("20_753jc"), ExtResource("21_dsrqq"), ExtResource("22_kd54k"), ExtResource("23_dhi4p"), ExtResource("12_rgexl"), ExtResource("25_dhi4p"), ExtResource("26_6ad4j")])
 max_chunks = 6
