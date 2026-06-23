@@ -8,7 +8,8 @@ var offset : = Vector2.ZERO
 
 
 func _ready() -> void:
-	offset = position
+	position = offset
+	offset = Vector2.ZERO
 	top_level = true
 
 func _physics_process(_delta: float) -> void:
