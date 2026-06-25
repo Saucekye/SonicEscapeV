@@ -1164,6 +1164,7 @@ func handle_jump_input(is_grounded):
 				motion.y += jump_velocity * 1.3
 			else:
 				motion.y += jump_velocity
+			motion.rotated(rotation)
 			
 			has_jumped = true
 			is_jumping = true
