@@ -884,7 +884,7 @@ position = Vector2(-512, 448)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_thrnm")
 autoplay = "default"
-frame_progress = 0.745169
+frame_progress = 0.2057189
 
 [node name="Silvericon" type="Sprite2D" parent="Charborder/Silver"]
 position = Vector2(-8.000002, -10.666671)
