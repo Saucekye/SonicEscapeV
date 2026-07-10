@@ -1,12 +1,10 @@
-[gd_scene load_steps=8 format=4 uid="uid://c2c2cm72yy75y"]
+[gd_scene load_steps=6 format=4 uid="uid://c2c2cm72yy75y"]
 
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="1_i2tjv"]
 [ext_resource type="PackedScene" uid="uid://budhiifw7reft" path="res://Scenes/Obstacles/Rings/Rings.tscn" id="2_jmuh0"]
-[ext_resource type="PackedScene" uid="uid://6hegb4jp74ty" path="res://Scenes/Obstacles/Enemies/enemy.tscn" id="3_f275a"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="3_r2n3t"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_kfsu4"]
 [ext_resource type="PackedScene" uid="uid://v3wtxibbx6v2" path="res://Scenes/Obstacles/Spring/Spring.tscn" id="5_tdf4x"]
-[ext_resource type="PackedScene" uid="uid://krepg5q57tkh" path="res://Scenes/Obstacles/Enemies/enemyfly.tscn" id="6_hl64p"]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(-1606.4003, -748.7922)
@@ -29,12 +27,6 @@ position = Vector2(1606.3955, 748.7894)
 position = Vector2(4486.4004, 748.7922)
 
 [node name="Enemies" type="Node2D" parent="."]
-
-[node name="Enemy" parent="Enemies" instance=ExtResource("3_f275a")]
-position = Vector2(3614.4004, 1277.7922)
-
-[node name="Enemy2" parent="Enemies" instance=ExtResource("6_hl64p")]
-position = Vector2(3614.4004, 1172.7922)
 
 [node name="Springs" type="Node2D" parent="."]
 
