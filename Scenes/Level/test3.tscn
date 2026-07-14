@@ -80,13 +80,16 @@ anchors_preset = -1
 
 [node name="Button2" parent="CanvasLayer/Sprite2D" index="1"]
 anchors_preset = -1
+offset_left = 182.00003
+offset_top = -15.333332
+offset_right = 256.00003
+offset_bottom = 6.6666985
 
 [node name="Button3" type="Button" parent="CanvasLayer/Sprite2D" index="2"]
-anchors_preset = -1
-offset_left = 439.1266
-offset_top = -20.399876
-offset_right = 502.1266
-offset_bottom = 1.6001263
+offset_left = 245.99998
+offset_top = -15.333332
+offset_right = 309.0
+offset_bottom = 6.66667
 scale = Vector2(0.75, 0.75)
 focus_mode = 0
 action_mode = 0
@@ -94,7 +97,7 @@ text = "Pause
 "
 
 [node name="Node2D" parent="CanvasLayer/Sprite2D" index="3" instance=ExtResource("5_pecnm")]
-position = Vector2(450.6667, 13.333334)
+position = Vector2(450.6667, 22.000004)
 scale = Vector2(0.4, 0.4)
 
 [node name="TextureProgressBar" parent="CanvasLayer/Sprite2D" index="4"]
@@ -118,7 +121,6 @@ anchors_preset = -1
 offset_bottom = -39.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
-anchors_preset = -1
 offset_left = -648.0
 offset_top = -440.0
 offset_right = 2320.0
@@ -133,7 +135,6 @@ map_offset = Vector2(0, 0)
 
 [node name="DarkOverlay" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_tgfrd")
-anchors_preset = -1
 offset_left = -648.0
 offset_top = -440.0
 offset_right = 2320.0
@@ -142,6 +143,7 @@ color = Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 0.34901962)
 
 [node name="TouchScreenButton" type="Control" parent="CanvasLayer"]
 layout_mode = 3
+anchors_preset = 0
 offset_left = 296.0
 offset_top = 48.000004
 offset_right = 336.0

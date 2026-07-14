@@ -491,6 +491,7 @@ texture = ExtResource("9_00ikh")
 hframes = 40
 
 [node name="Button" type="Button" parent="Sprite2D"]
+visible = false
 offset_left = 283.333
 offset_top = -20.6667
 offset_right = 346.333
@@ -522,10 +523,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Timer" type="Label" parent="Sprite2D"]
 modulate = Color(1, 1, 1, 0.682353)
-offset_left = 126.0
-offset_top = -18.0
-offset_right = 203.0
-offset_bottom = -4.0
+offset_left = 96.33333
+offset_top = -11.333333
+offset_right = 173.33333
+offset_bottom = 2.666667
 scale = Vector2(0.8, 0.8)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "0'00\"00"

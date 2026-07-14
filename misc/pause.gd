@@ -125,3 +125,14 @@ func _on_button_pressed() -> void:
 	# Return focus to back button or first settings element
 	if has_node("Panel/Settings/Back"):
 		$Panel/Settings/Back.grab_focus()
+
+
+func _on_restart_pressed() -> void:
+	#if $TouchScreenButton.visible == true:
+		#Test.mobile = true
+	#else:
+		#Test.mobile = false
+	visible = false
+	Test.meter = 100
+	Test.rings = 0
+	get_tree().reload_current_scene()

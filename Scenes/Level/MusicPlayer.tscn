@@ -1,7 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://03q1kvmsipj5"]
+[gd_scene load_steps=16 format=3 uid="uid://03q1kvmsipj5"]
 
-[ext_resource type="Texture2D" uid="uid://banqho451ovfh" path="res://Sprites/Obstacles/Miku/tebo.png" id="1_1a72i"]
 [ext_resource type="Script" uid="uid://dsgyysnfo3yrg" path="res://Scripts/Music/music_player.gd" id="1_6cpxb"]
+[ext_resource type="Texture2D" uid="uid://cvas3lgf8rrvy" path="res://Sprites/Obstacles/Miku/teto.png" id="2_a0vpg"]
+[ext_resource type="Texture2D" uid="uid://daw3j6jbxqto2" path="res://Sprites/Obstacles/Miku/teto - pause.png" id="3_8vtfq"]
+[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="3_mswaq"]
+[ext_resource type="Texture2D" uid="uid://b3wq5da5s1ppc" path="res://Sprites/Obstacles/Miku/teto - video bar.png" id="4_mswaq"]
+[ext_resource type="Texture2D" uid="uid://d0dh8dat41ere" path="res://Sprites/Obstacles/Miku/teto - play.png" id="5_xbbg2"]
 
 [sub_resource type="Animation" id="Animation_eape1"]
 length = 0.001
@@ -21,7 +25,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_g53qo"]
 resource_name = "Run"
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -93,16 +96,27 @@ _data = {
 &"taunt": SubResource("Animation_w1h2o")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ybdc"]
+shader = ExtResource("3_mswaq")
+shader_parameter/brightnessMult = 2.500000037253
+shader_parameter/wiggleMult = 0.005
+shader_parameter/chromaticAberrationOffset = 0.0014999999625
+
+[sub_resource type="Gradient" id="Gradient_xbbg2"]
+colors = PackedColorArray(0.8627451, 0, 0, 1, 0.86343604, 5.318448e-06, 7.70092e-07, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4ybdc"]
+gradient = SubResource("Gradient_xbbg2")
+
 [node name="Node2D" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_6cpxb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
 z_index = -1
 position = Vector2(8, -8)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("1_1a72i")
+texture = ExtResource("2_a0vpg")
 hframes = 24
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
@@ -111,12 +125,62 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4ybdc")
+offset_left = -88.0
+offset_top = -93.0
+offset_right = 103.0
+offset_bottom = 48.0
+
+[node name="ColorRect2" type="ColorRect" parent="ColorRect"]
+z_index = -2
+layout_mode = 0
+offset_right = 191.0
+offset_bottom = 141.0
+color = Color(0, 0, 0, 1)
+
 [node name="OptionButton" type="OptionButton" parent="."]
-anchors_preset = -1
-offset_left = -80.0
-offset_top = -88.0
-offset_right = -48.0
-offset_bottom = -68.0
+offset_left = -202.0
+offset_top = -93.0
+offset_right = -96.0
+offset_bottom = -73.0
+text_overrun_behavior = 1
+fit_to_longest_item = false
+
+[node name="PauseButton" type="TextureRect" parent="."]
+offset_left = -92.0
+offset_top = 48.0
+offset_right = -58.0
+offset_bottom = 80.0
+texture = ExtResource("3_8vtfq")
+expand_mode = 1
+
+[node name="PlayButton" type="TextureRect" parent="."]
+visible = false
+offset_left = -92.0
+offset_top = 48.0
+offset_right = -58.0
+offset_bottom = 80.0
+texture = ExtResource("5_xbbg2")
+expand_mode = 1
+
+[node name="ProgressBar" type="TextureProgressBar" parent="."]
+offset_left = -58.0
+offset_top = 55.0
+offset_right = 100.0
+offset_bottom = 75.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_mswaq")
+texture_progress = SubResource("GradientTexture1D_4ybdc")
+
+[node name="MusicPauseButton" type="Button" parent="."]
+offset_left = -88.0
+offset_top = -93.0
+offset_right = 103.0
+offset_bottom = 80.0
+focus_mode = 0
+flat = true
 
 [connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="MusicPauseButton" to="." method="_on_music_pause_button_pressed"]

@@ -4,6 +4,11 @@ var playinganim = false
 
 # Audio and dropdown
 @onready var dropdown = $OptionButton
+@onready var pause_button: TextureRect = $PauseButton
+@onready var play_button: TextureRect = $PlayButton
+@onready var music_pause_button: Button = $MusicPauseButton
+
+var music_paused
 
 var music_options = {
 	"V0.1": {"stream": preload("res://Music/Level/Tee Lopes - Stream Zone Act 1 (Live Stream Result).mp3"), "volume": -8},
@@ -26,6 +31,9 @@ func _ready() -> void:
 		dropdown.add_item(option_name)
 	dropdown.connect("item_selected", Callable(self, "_on_dropdown_selected"))
 
+	# Music player
+	pause_button.visible = true
+	play_button.visible = false
 """
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("trick"):
@@ -65,3 +73,18 @@ func _on_option_button_item_selected(index: int) -> void:
 		
 		# Remove focus from OptionButton
 		dropdown.release_focus()
+
+		# Indicate that music is playing again
+		pause_button.visible = true
+		play_button.visible = false
+
+
+func _on_music_pause_button_pressed() -> void:
+	music_pause_button.focus_mode = Control.FOCUS_NONE
+	pause_button.visible = !pause_button.visible
+	play_button.visible = !play_button.visible
+	if MusicManager.playing:
+		MusicManager.stream_paused = true
+	else:
+		MusicManager.stream_paused = false
+	

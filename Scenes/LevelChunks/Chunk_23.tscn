@@ -24,7 +24,7 @@ tile_set = ExtResource("1_wamex")
 script = ExtResource("2_hyyty")
 
 [node name="Start" type="Marker2D" parent="."]
-position = Vector2(915.1, 748.792)
+position = Vector2(915.2, 748.792)
 
 [node name="End" type="Marker2D" parent="."]
 position = Vector2(3872, -150)
