@@ -71,7 +71,7 @@ func _ready():
 		_spawn_start_chunk()
 		_spawn_middle_chunks()
 		_spawn_end_chunk()
-		_spawn_miku_on_ground()
+		_spawn_miku_on_ground.call_deferred()
 
 	if minimap_path != NodePath() and has_node(minimap_path):
 		get_node(minimap_path).build_map(chunks)
@@ -159,9 +159,9 @@ func _spawn_end_chunk():
 # Miku Spawn Function
 # ─────────────────────────────
 func _spawn_miku_on_ground():
+	var spawned = false
 	var miku = miku_scene.instantiate()
 	add_child(miku)
-
 	miku.scale = Vector2(125, 125)
 
 	var valid_chunks := []
@@ -179,21 +179,44 @@ func _spawn_miku_on_ground():
 	while attempts > 0:
 		attempts -= 1
 		var chunk = valid_chunks[rng.randi_range(0, valid_chunks.size() - 1)]
-		for child in chunk.get_children():
-			if child is TileMap:
-				var tilemap := child as TileMap
-				var used = tilemap.get_used_cells(0)
+		var layers = chunk.find_children("*", "TileMapLayer", true, false)
+		var target_layers: Array[Node] = []
+		var roll = rng.randi_range(1, 100)
+
+		if roll <= 99:
+			if layers.size() > 3:
+				target_layers = [layers[3]]
+		else:
+			if layers.size() > 0:
+				target_layers.append(layers[0])
+			if layers.size() > 1:
+				target_layers.append(layers[1])
+			target_layers.shuffle()
+		if target_layers.is_empty() or target_layers[0].get_used_cells().is_empty():
+			target_layers = layers
+
+		for layer in target_layers:
+			if layer is TileMapLayer:
+				var tilemap := layer as TileMapLayer
+				var used = tilemap.get_used_cells()
 				if used.is_empty():
+					print("used var is empty")
 					continue
 				var cell = used[rng.randi_range(0, used.size() - 1)]
 				var above = cell + Vector2i(0, -1)
-				if tilemap.get_cell_source_id(0, above) == -1:
-					var world_pos = tilemap.map_to_world(cell)
-					world_pos += tilemap.global_position
-					world_pos += Vector2(0, -32)
+				if tilemap.get_cell_source_id(above) == -1:
+					var world_pos = tilemap.to_global(tilemap.map_to_local(cell))
+					world_pos += Vector2(0, -32 * miku.scale.y)
 					if world_pos.distance_to(player_start_pos) >= min_distance:
 						miku.global_position = world_pos
+						spawned = true
 						return
+					else:
+						print("miku was too close to the player")
+				else:
+					print("tile was too low for miku to spawn")
 
-	print("Failed to spawn Miku in middle chunks far from player")
-	miku.global_position = first_chunk_offset
+	if(spawned == false):
+		print("Failed to spawn Miku in middle chunks far from player")
+		miku.global_position = first_chunk_offset
+	
