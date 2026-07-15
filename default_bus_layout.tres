@@ -1,4 +1,7 @@
-[gd_resource type="AudioBusLayout" format=3 uid="uid://hphctar8232o"]
+[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://hphctar8232o"]
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_j3pel"]
+resource_name = "SpectrumAnalyzer"
 
 [resource]
 bus/0/volume_db = -0.13049698
@@ -8,6 +11,8 @@ bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = -0.9681902
 bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_j3pel")
+bus/1/effect/0/enabled = true
 bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false

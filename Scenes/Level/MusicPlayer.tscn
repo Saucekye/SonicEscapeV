@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://03q1kvmsipj5"]
+[gd_scene load_steps=18 format=3 uid="uid://03q1kvmsipj5"]
 
 [ext_resource type="Script" uid="uid://dsgyysnfo3yrg" path="res://Scripts/Music/music_player.gd" id="1_6cpxb"]
 [ext_resource type="Texture2D" uid="uid://cvas3lgf8rrvy" path="res://Sprites/Obstacles/Miku/teto.png" id="2_a0vpg"]
@@ -6,6 +6,8 @@
 [ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="3_mswaq"]
 [ext_resource type="Texture2D" uid="uid://b3wq5da5s1ppc" path="res://Sprites/Obstacles/Miku/teto - video bar.png" id="4_mswaq"]
 [ext_resource type="Texture2D" uid="uid://d0dh8dat41ere" path="res://Sprites/Obstacles/Miku/teto - play.png" id="5_xbbg2"]
+[ext_resource type="PackedScene" uid="uid://lluaedswtqak" path="res://Scenes/Level/AudioVisualizer.tscn" id="6_xbbg2"]
+[ext_resource type="Script" uid="uid://dupimta7ppbro" path="res://Scenes/Level/scroll_container.gd" id="8_xo6v2"]
 
 [sub_resource type="Animation" id="Animation_eape1"]
 length = 0.001
@@ -164,7 +166,11 @@ offset_bottom = 80.0
 texture = ExtResource("5_xbbg2")
 expand_mode = 1
 
+[node name="AudioVisualizer" parent="." instance=ExtResource("6_xbbg2")]
+position = Vector2(-55, 65)
+
 [node name="ProgressBar" type="TextureProgressBar" parent="."]
+visible = false
 offset_left = -58.0
 offset_top = 55.0
 offset_right = 100.0
@@ -180,6 +186,17 @@ offset_right = 103.0
 offset_bottom = 80.0
 focus_mode = 0
 flat = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = -86.99999
+offset_top = -91.0
+offset_right = 104.00001
+offset_bottom = -60.0
+script = ExtResource("8_xo6v2")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer"]
+texture_filter = 1
+layout_mode = 2
 
 [connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

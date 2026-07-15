@@ -1,4 +1,4 @@
-extends Node2D
+extends Node2D 
 
 var playinganim = false
 
@@ -68,6 +68,9 @@ func _on_option_button_item_selected(index: int) -> void:
 		tween.tween_callback(func():
 			MusicManager.stream = new_stream
 			MusicManager.play()
+			
+			var clean_name = new_stream.resource_path.get_basename().get_file()
+			MusicManager.song_started.emit(clean_name)
 		)
 			# Optional: fade in to target volume
 		
@@ -83,8 +86,12 @@ func _on_music_pause_button_pressed() -> void:
 	music_pause_button.focus_mode = Control.FOCUS_NONE
 	pause_button.visible = !pause_button.visible
 	play_button.visible = !play_button.visible
-	if MusicManager.playing:
+	if not MusicManager.stream_paused:
 		MusicManager.stream_paused = true
+		MusicManager.song_stopped.emit()
 	else:
 		MusicManager.stream_paused = false
+		if MusicManager.stream:
+			var clean_name = MusicManager.stream.resource_path.get_basename().get_file()
+			MusicManager.song_started.emit(clean_name)
 	

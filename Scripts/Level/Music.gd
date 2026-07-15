@@ -1,5 +1,8 @@
 extends AudioStreamPlayer
 
+signal song_started(song_name: String)
+signal song_stopped
+
 var level = 0
 var current_scene_name := ""
 var new_scene_name := ""
