@@ -112,6 +112,7 @@ gradient = SubResource("Gradient_xbbg2")
 
 [node name="Node2D" type="Node2D"]
 process_mode = 3
+visible = false
 script = ExtResource("1_6cpxb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

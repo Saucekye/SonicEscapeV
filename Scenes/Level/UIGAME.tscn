@@ -422,6 +422,7 @@ script = ExtResource("5_yi08g")
 [node name="TextureRect" type="TextureRect" parent="Sprite2D3"]
 modulate = Color(0, 0, 0, 1)
 z_index = -1
+anchors_preset = -1
 offset_left = -1520.0
 offset_top = 426.667
 offset_right = -1480.0
@@ -434,6 +435,7 @@ texture = SubResource("CanvasTexture_klco8")
 layer = -100
 
 [node name="Label2" type="Label" parent="Sprite2D3/CanvasLayer"]
+anchors_preset = -1
 offset_left = 536.0
 offset_top = 280.0
 offset_right = 576.0
@@ -450,6 +452,7 @@ vertical_alignment = 1
 [node name="TextureRect2" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
 modulate = Color(0, 0, 0, 1)
 z_index = -12
+anchors_preset = -1
 offset_left = -312.10828
 offset_top = -698.0067
 offset_right = 1687.8917
@@ -458,6 +461,7 @@ texture = SubResource("CanvasTexture_dlxpk")
 
 [node name="TextureRect" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
 z_index = -12
+anchors_preset = -1
 offset_left = -18.44043
 offset_top = -706.99664
 offset_right = 1981.5596
@@ -470,6 +474,7 @@ libraries = {
 }
 
 [node name="Label" type="Label" parent="Sprite2D3"]
+anchors_preset = -1
 offset_left = -906.667
 offset_top = 133.333
 offset_right = -851.667
@@ -500,6 +505,7 @@ text = "Reset"
 metadata/_edit_use_anchors_ = true
 
 [node name="Button2" type="Button" parent="Sprite2D"]
+anchors_preset = -1
 offset_left = 220.667
 offset_top = -20.0
 offset_right = 294.667
@@ -511,6 +517,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Sprite2D"]
 z_index = -1
+anchors_preset = -1
 offset_left = -28.6667
 offset_top = 8.66667
 offset_right = 33.3333
@@ -534,6 +541,7 @@ script = ExtResource("14_o2333")
 
 [node name="BestTime" type="Label" parent="Sprite2D"]
 modulate = Color(1, 1, 1, 0.682353)
+anchors_preset = -1
 offset_left = 115.333
 offset_top = -4.66667
 offset_right = 236.333
@@ -554,6 +562,7 @@ scale = Vector2(0.163, 0.163)
 texture = ExtResource("17_que0t")
 
 [node name="Label" type="Label" parent="."]
+anchors_preset = -1
 offset_left = 46.0
 offset_top = -62.0
 offset_right = 79.0
