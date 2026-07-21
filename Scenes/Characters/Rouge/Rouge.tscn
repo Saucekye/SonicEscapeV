@@ -3047,6 +3047,7 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_j7v3w")
 audio_files = [ExtResource("2_e3pgy"), ExtResource("3_5gpwu"), ExtResource("4_ehiok")]
+music_color = Color(0.3137255, 0.3137255, 0.3137255, 1)
 
 [node name="Glide" parent="." instance=ExtResource("2_3q2es")]
 

@@ -2978,6 +2978,7 @@ script = ExtResource("1_56hwh")
 audio_files = [ExtResource("2_r1sf7"), ExtResource("3_3u1la"), ExtResource("4_idr0s")]
 skid_min_speed = 0.0
 trail_position = Vector2(0, 5)
+music_color = Color(1, 1, 0.32156864, 1)
 
 [node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_dmr0s")]
 flymeter = NodePath("../Flymeter")

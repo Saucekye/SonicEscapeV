@@ -2284,6 +2284,7 @@ floor_max_angle = 1.55334
 script = ExtResource("1_fioc4")
 audio_files = [ExtResource("2_nl3ds"), ExtResource("3_64slw"), ExtResource("4_g3a3j"), ExtResource("5_4fuia")]
 trail_ball_position = Vector2(0, 10)
+music_color = Color(0.5019608, 0.23137255, 0.7294118, 1)
 
 [node name="Hover" parent="." instance=ExtResource("2_ss304")]
 

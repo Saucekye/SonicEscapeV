@@ -2223,6 +2223,7 @@ floor_max_angle = 1.55334
 script = ExtResource("1_xon7e")
 audio_files = [ExtResource("2_hopts")]
 trail_ball_position = Vector2(0, 5)
+music_color = Color(0, 0, 0.44313726, 1)
 
 [node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")

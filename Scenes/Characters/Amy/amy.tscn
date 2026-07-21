@@ -2995,6 +2995,7 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_whybq")
 audio_files = [ExtResource("2_27prs"), ExtResource("3_7sq37"), ExtResource("4_omiba")]
+music_color = Color(1, 0.3764706, 0.5921569, 1)
 
 [node name="SwipeAttack" parent="." instance=ExtResource("2_oejq8")]
 

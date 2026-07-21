@@ -61,25 +61,39 @@ position = Vector2(838.3867, 676.9116)
 [node name="CanvasLayer" parent="." instance=ExtResource("4_ver2b")]
 
 [node name="TextureRect" parent="CanvasLayer/Sprite2D3" index="0"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Label2" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="0"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 31.0
 
 [node name="TextureRect2" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="1"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 2000.0
+offset_bottom = 2000.0
 
 [node name="TextureRect" parent="CanvasLayer/Sprite2D3/CanvasLayer" index="2"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 2000.0
+offset_bottom = 2000.0
 
 [node name="Label" parent="CanvasLayer/Sprite2D3" index="3"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 55.0
+offset_bottom = 14.0
 
 [node name="Button" parent="CanvasLayer/Sprite2D" index="0"]
 anchors_preset = -1
 
 [node name="Button2" parent="CanvasLayer/Sprite2D" index="1"]
-anchors_preset = 0
 offset_left = 182.00003
 offset_top = -15.333332
 offset_right = 256.00003
@@ -102,13 +116,21 @@ position = Vector2(450.6667, 22.000004)
 scale = Vector2(0.4, 0.4)
 
 [node name="TextureProgressBar" parent="CanvasLayer/Sprite2D" index="4"]
-anchors_preset = 0
+anchor_left = -0.104
+anchor_right = 1.187
+anchor_bottom = 1.3520001
+offset_left = -24.008003
+offset_right = -23.976002
+offset_bottom = -13.504002
 
 [node name="Timer" parent="CanvasLayer/Sprite2D" index="5"]
 anchors_preset = -1
 
 [node name="BestTime" parent="CanvasLayer/Sprite2D" index="6"]
-anchors_preset = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 120.99999
+offset_bottom = 14.0
 
 [node name="TextureButton" type="TouchScreenButton" parent="CanvasLayer/Sprite2D" index="7"]
 modulate = Color(1, 1, 1, 0)
@@ -118,8 +140,7 @@ texture_normal = SubResource("CompressedTexture2D_jhuxi")
 texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
 [node name="Label" parent="CanvasLayer" index="6"]
-anchors_preset = 0
-offset_bottom = -39.0
+offset_bottom = -48.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
 offset_left = -648.0

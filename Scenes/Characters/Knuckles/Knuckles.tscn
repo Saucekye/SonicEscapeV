@@ -3049,6 +3049,7 @@ floor_max_angle = 1.55334
 script = ExtResource("1_fda6k")
 audio_files = [ExtResource("2_fcoey"), ExtResource("3_exjjj"), ExtResource("4_ldrna"), ExtResource("5_uhyks")]
 trail_position = Vector2(0, 5)
+music_color = Color(1, 0, 0.1882353, 1)
 
 [node name="Glide" parent="." instance=ExtResource("1_xty85")]
 

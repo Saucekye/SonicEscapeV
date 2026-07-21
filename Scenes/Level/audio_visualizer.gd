@@ -12,21 +12,7 @@ var color_gradient := Gradient.new()
 enum TargetSlot { CHARACTER_ONE, CHARACTER_TWO, CHARACTER_THREE }
 @export var target_character_slot: TargetSlot = TargetSlot.CHARACTER_ONE
 
-# Colors for the characters
-var character_colors = {
-	"Sonic": Color(0.0, 0.478, 1.0, 1.0),
-	"Tails": Color(1.0, 1.0, 0.322, 1.0),
-	"Knuckles": Color(1.0, 0.0, 0.188, 1.0),
-	"Amy": Color(1.0, 0.376, 0.592, 1.0),
-	"Blaze": Color(0.502, 0.231, 0.729, 1.0),
-	"Rouge": Color(0.314, 0.314, 0.314, 1.0),
-	"Silver2": Color(1.0, 1.0, 1.0, 1.0),
-	"Cream": Color(1.0, 0.992, 0.816, 1.0),
-	"Shadow": Color(0.278, 0.0, 0.0, 1.0),
-	"MetalSonic": Color(0.0, 0.0, 0.443, 1.0)
-}
-
-var ChosenColor = Color(1, 1, 1, 1)
+var chosen_color = Color(1, 1, 1, 1)
 
 func _ready():
 	scale = Vector2(1.5, 1.5)
@@ -41,7 +27,7 @@ func create_bars():
 	for i in range(NUM_BARS):
 		var bar = ColorRect.new()
 		bar.pivot_offset.y = 25
-		bar.color = ChosenColor
+		bar.color = chosen_color
 		bar.size = Vector2(1, 50)  # Adjust bar size
 		bar.position = Vector2(i*1.5, -25)  # Space bars apart
 		add_child(bar)
@@ -51,23 +37,9 @@ func _process(_delta):
 	var active_player = get_tree().get_first_node_in_group("active_player")
 	
 	if active_player and active_player.get_script():
-		var script_path = active_player.get_script().resource_path.to_lower()
-		var identified_char = ""
-		
-		if "sonic" in script_path:
-			if "metal" in script_path: identified_char = "MetalSonic"
-			else: identified_char = "Sonic"
-		elif "tails" in script_path: identified_char = "Tails"
-		elif "knuckles" in script_path: identified_char = "Knuckles"
-		elif "amy" in script_path: identified_char = "Amy"
-		elif "blaze" in script_path: identified_char = "Blaze"
-		elif "rouge" in script_path: identified_char = "Rouge"
-		elif "silver" in script_path: identified_char = "Silver2"
-		elif "cream" in script_path: identified_char = "Cream"
-		elif "shadow" in script_path: identified_char = "Shadow"
-
-		if character_colors.has(identified_char):
-			ChosenColor = character_colors[identified_char]
+		# Get the character's infividual music visualizer color
+		# Try to switch this to a signal later.
+		chosen_color = active_player.music_color
 
 	var max_freq_amp = bars.reduce(func(m, b): return b if b.scale.y > m.scale.y else m).scale.y 
 	var is_audio_playing = MusicManager and MusicManager.playing and not MusicManager.stream_paused
@@ -86,7 +58,7 @@ func _process(_delta):
 		
 		var intensity = bars[i].scale.y / max_freq_amp if max_freq_amp > 0 else 0.0
 		intensity = clamp(intensity, 0.0, 1.0)
-		bars[i].color = ChosenColor
+		bars[i].color = chosen_color
 
 	if shuffle_freq:
 		bars.shuffle()
