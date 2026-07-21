@@ -90,16 +90,21 @@ offset_top = 0.0
 offset_right = 55.0
 offset_bottom = 14.0
 
-[node name="Button" parent="CanvasLayer/Sprite2D" index="0"]
-anchors_preset = -1
-
-[node name="Button2" parent="CanvasLayer/Sprite2D" index="1"]
+[node name="Button2" parent="CanvasLayer/Sprite2D" index="0"]
 offset_left = 182.00003
 offset_top = -15.333332
 offset_right = 256.00003
 offset_bottom = 6.6666985
 
-[node name="Button3" type="Button" parent="CanvasLayer/Sprite2D" index="2"]
+[node name="TextureProgressBar" parent="CanvasLayer/Sprite2D" index="1"]
+anchor_left = -0.104
+anchor_right = 1.187
+anchor_bottom = 1.3520001
+offset_left = -24.008003
+offset_right = -23.976002
+offset_bottom = -13.504002
+
+[node name="Button4" type="Button" parent="CanvasLayer/Sprite2D" index="2"]
 offset_left = 245.99998
 offset_top = -15.333332
 offset_right = 309.0
@@ -115,31 +120,23 @@ visible = true
 position = Vector2(450.6667, 22.000004)
 scale = Vector2(0.4, 0.4)
 
-[node name="TextureProgressBar" parent="CanvasLayer/Sprite2D" index="4"]
-anchor_left = -0.104
-anchor_right = 1.187
-anchor_bottom = 1.3520001
-offset_left = -24.008003
-offset_right = -23.976002
-offset_bottom = -13.504002
-
-[node name="Timer" parent="CanvasLayer/Sprite2D" index="5"]
+[node name="Timer" parent="CanvasLayer/Sprite2D" index="4"]
 anchors_preset = -1
 
-[node name="BestTime" parent="CanvasLayer/Sprite2D" index="6"]
+[node name="BestTime" parent="CanvasLayer/Sprite2D" index="5"]
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 120.99999
 offset_bottom = 14.0
 
-[node name="TextureButton" type="TouchScreenButton" parent="CanvasLayer/Sprite2D" index="7"]
+[node name="TextureButton" type="TouchScreenButton" parent="CanvasLayer/Sprite2D" index="6"]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(-29.3333, -24)
 scale = Vector2(0.52, 0.475718)
 texture_normal = SubResource("CompressedTexture2D_jhuxi")
 texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
-[node name="Label" parent="CanvasLayer" index="6"]
+[node name="Label" parent="CanvasLayer" index="5"]
 offset_bottom = -48.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
@@ -275,7 +272,7 @@ zoom = Vector2(2, 2)
 [connection signal="fast" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_fast"]
 [connection signal="hurt" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_hurt"]
 [connection signal="slow" from="PlayerController" to="CanvasLayer/Sprite2D/Node2D" method="_on_player_controller_slow"]
-[connection signal="pressed" from="CanvasLayer/Sprite2D/Button3" to="CanvasLayer" method="_on_button_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Sprite2D/Button4" to="CanvasLayer" method="_on_button_3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Sprite2D/TextureButton" to="PlayerController" method="_on_texture_button_pressed"]
 
 [editable path="CanvasLayer"]

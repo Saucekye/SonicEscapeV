@@ -173,6 +173,9 @@ func on_player_change():
 	# Update current character reference
 	current_character = new_character
 	
+	# Send a signal to update UI elements accordingly to the new character
+	GlobalSignals.switch_new_active_player.emit(current_character)
+	
 	# Update all character states
 	update_character_states()
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://i57ed86f5x36"]
+[gd_scene load_steps=61 format=3 uid="uid://i57ed86f5x36"]
 
 [ext_resource type="Script" uid="uid://bt72s4dk8esif" path="res://Scripts/Characters/Tails/tails.gd" id="1_56hwh"]
 [ext_resource type="PackedScene" uid="uid://bl17rh8kbubo" path="res://Scenes/Characters/Components/Air Actions/swipe_attack.tscn" id="1_iek5w"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://qggvt4ph46qu" path="res://Sprites/Characters/Tails/tailssheet.png" id="3_570r3"]
 [ext_resource type="AudioStream" uid="uid://0da7x5t7kjk6" path="res://Sounds/CharacterVoiceLines/Tails/ALL01_V11_TL.aif.wav" id="4_idr0s"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="4_r82b0"]
+[ext_resource type="Texture2D" uid="uid://10m122r0757x" path="res://Sprites/UI/Icon/UI Icon Yellow.png" id="5_3u1la"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="5_hev88"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="6_02t37"]
 [ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="6_3c8l4"]
@@ -2977,8 +2978,9 @@ floor_max_angle = 1.55334
 script = ExtResource("1_56hwh")
 audio_files = [ExtResource("2_r1sf7"), ExtResource("3_3u1la"), ExtResource("4_idr0s")]
 skid_min_speed = 0.0
-trail_position = Vector2(0, 5)
 music_color = Color(1, 1, 0.32156864, 1)
+icon_background = ExtResource("5_3u1la")
+trail_position = Vector2(0, 5)
 
 [node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_dmr0s")]
 flymeter = NodePath("../Flymeter")

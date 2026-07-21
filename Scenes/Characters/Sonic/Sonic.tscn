@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://cnc5piy6378ni"]
+[gd_scene load_steps=66 format=3 uid="uid://cnc5piy6378ni"]
 
 [ext_resource type="Script" uid="uid://c6h8863cerwy4" path="res://Scripts/Characters/Sonic/sonic.gd" id="1_vuqnu"]
 [ext_resource type="AudioStream" uid="uid://bggamthtohfiw" path="res://Sounds/SonicVoiceLines/spin1.MP3" id="2_sex4o"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="3_yxy1h"]
 [ext_resource type="AudioStream" uid="uid://bulul2iutnsau" path="res://Sounds/SonicVoiceLines/spin3.MP3" id="4_n0mdj"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_xqug3"]
+[ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="5_bxdx6"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_levbm"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_k0gmh"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_6xb3l"]
@@ -2286,6 +2287,7 @@ floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
 debug_prevent_death = true
 audio_files = [ExtResource("2_sex4o"), ExtResource("3_bxdx6"), ExtResource("4_n0mdj")]
+icon_background = ExtResource("5_bxdx6")
 trail_position = Vector2(0, 3)
 trail_ball_position = Vector2(-10, 15)
 trail_dash_max_position = Vector2(0, 8)

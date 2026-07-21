@@ -20,7 +20,8 @@ func _ready():
 	color_gradient.add_point(0.5, Color(0.6, 0.2, 1.0))  # Purple
 	color_gradient.add_point(1.0, Color(1.0, 0.2, 0.2))  # Red
 	spectrum_instance = AudioServer.get_bus_effect_instance(1, 0) 
-	
+	swap_visualizer_color(get_tree().get_first_node_in_group("active_player"))
+	GlobalSignals.switch_new_active_player.connect(swap_visualizer_color)
 	create_bars() 
 
 func create_bars():
@@ -34,13 +35,6 @@ func create_bars():
 		bars.append(bar)
 
 func _process(_delta):
-	var active_player = get_tree().get_first_node_in_group("active_player")
-	
-	if active_player and active_player.get_script():
-		# Get the character's infividual music visualizer color
-		# Try to switch this to a signal later.
-		chosen_color = active_player.music_color
-
 	var max_freq_amp = bars.reduce(func(m, b): return b if b.scale.y > m.scale.y else m).scale.y 
 	var is_audio_playing = MusicManager and MusicManager.playing and not MusicManager.stream_paused
 	
@@ -62,3 +56,10 @@ func _process(_delta):
 
 	if shuffle_freq:
 		bars.shuffle()
+
+func swap_visualizer_color(active_player : Player) -> void:
+	# var active_player = get_tree().get_first_node_in_group("active_player")
+	if active_player and active_player.get_script():
+		# Get the character's infividual music visualizer color
+		# Try to switch this to a signal later.
+		chosen_color = active_player.music_color

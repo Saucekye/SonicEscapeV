@@ -196,6 +196,9 @@ var grinding = false                ## True while grinding on a rail
 # Player Signals
 # ─────────────────────────────────────────────
 
+@export_group("UI Elements")
+@export var music_color : Color = Color(0.0, 0.478, 1.0, 1.0)
+@export var icon_background : Texture = preload("uid://dquf4877dk8p6")
 
 # Misc
 @export_group("Misc")
@@ -203,7 +206,6 @@ var grinding = false                ## True while grinding on a rail
 @export var trail_position : Vector2 = Vector2.ZERO		## Default trail  position when running
 @export var trail_ball_position : Vector2 = Vector2(0, 15)	## Trail position for rolling
 @export var trail_dash_max_position : Vector2 = trail_position	## Trail position when running with top speed animation (If you want this and trail_positoin to be the same, keep it as the zero vector)
-@export var music_color : Color = Color(0.0, 0.478, 1.0, 1.0)
 
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)

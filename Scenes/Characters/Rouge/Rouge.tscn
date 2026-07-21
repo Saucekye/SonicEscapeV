@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://84nvlp6r1vdx"]
+[gd_scene load_steps=65 format=3 uid="uid://84nvlp6r1vdx"]
 
 [ext_resource type="Script" uid="uid://7wxui6ffl844" path="res://Scripts/Characters/Knuckles/knuckles.gd" id="1_j7v3w"]
 [ext_resource type="PackedScene" uid="uid://hj332s057asw" path="res://Scenes/Characters/Components/Air Actions/glide.tscn" id="2_3q2es"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dp5fevjvyl74l" path="res://Sounds/CharacterVoiceLines/Rouge/ALL01_V11_RG.aif.wav" id="4_ehiok"]
 [ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="4_nm4xs"]
 [ext_resource type="Texture2D" uid="uid://b030iqwggxsvd" path="res://Scenes/Characters/Tails/spineffect.png" id="4_wip3k"]
+[ext_resource type="Texture2D" uid="uid://cp34mgs8rprwn" path="res://Sprites/UI/Icon/UI Icon Black.png" id="5_5gpwu"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="5_e3pgy"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_hktpw"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="6_5gpwu"]
@@ -3048,6 +3049,7 @@ floor_max_angle = 1.55334
 script = ExtResource("1_j7v3w")
 audio_files = [ExtResource("2_e3pgy"), ExtResource("3_5gpwu"), ExtResource("4_ehiok")]
 music_color = Color(0.3137255, 0.3137255, 0.3137255, 1)
+icon_background = ExtResource("5_5gpwu")
 
 [node name="Glide" parent="." instance=ExtResource("2_3q2es")]
 

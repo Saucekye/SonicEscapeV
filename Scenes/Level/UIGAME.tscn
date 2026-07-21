@@ -8,12 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://ci36npswg4o57" path="res://Sprites/Background/Eggman/Sprite-0006.png" id="7_6ifx3"]
 [ext_resource type="Script" uid="uid://dcxkdbweqcwk7" path="res://Scripts/UI/RESET.gd" id="8_joifu"]
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="9_00ikh"]
+[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/icon.gd" id="9_v4th5"]
 [ext_resource type="Texture2D" uid="uid://datae7ltsp7g8" path="res://Sprites/UI/Meter/meter2.png" id="11_pwosg"]
 [ext_resource type="Texture2D" uid="uid://bvejnrjotp5yg" path="res://Sprites/UI/Meter/meter1.png" id="12_o2wvk"]
 [ext_resource type="Script" uid="uid://ciaud5ka2cyuf" path="res://Scripts/UI/texture_progress_bar.gd" id="13_wd7d4"]
 [ext_resource type="Script" uid="uid://dk4a3sa48hs0h" path="res://Scripts/UI/timer.gd" id="14_o2333"]
 [ext_resource type="Script" uid="uid://d4ifnkas6j7gl" path="res://Scripts/UI/best_time.gd" id="15_ckufi"]
-[ext_resource type="Script" uid="uid://byln6fy1ipjbm" path="res://Scripts/UI/Icon.gd" id="16_71pfw"]
 [ext_resource type="Texture2D" uid="uid://b4e0hgth6wlej" path="res://Sprites/UI/Icon/sonicicon-Recovered.png" id="17_que0t"]
 [ext_resource type="Script" uid="uid://b6h6xirfugrmt" path="res://Scripts/UI/Ring Count.gd" id="18_x2jr0"]
 
@@ -413,6 +413,7 @@ libraries = {
 }
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(1008, 2000)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_eogyh")
@@ -489,15 +490,7 @@ position = Vector2(86, -66)
 scale = Vector2(3, 3)
 texture = ExtResource("9_00ikh")
 hframes = 40
-
-[node name="Button" type="Button" parent="Sprite2D"]
-visible = false
-offset_left = 283.333
-offset_top = -20.6667
-offset_right = 346.333
-offset_bottom = 1.33333
-text = "Reset"
-metadata/_edit_use_anchors_ = true
+script = ExtResource("9_v4th5")
 
 [node name="Button2" type="Button" parent="Sprite2D"]
 offset_left = 220.667
@@ -548,11 +541,21 @@ scale = Vector2(0.4, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 script = ExtResource("15_ckufi")
 
+[node name="Button3" type="Button" parent="Sprite2D"]
+offset_left = 283.3333
+offset_top = -20.0
+offset_right = 346.3333
+offset_bottom = 2.000002
+scale = Vector2(0.75, 0.75)
+focus_mode = 0
+action_mode = 0
+text = "Pause
+"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_yhiut")
 }
-script = ExtResource("16_71pfw")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(78, -88)
@@ -580,5 +583,4 @@ libraries = {
 
 [connection signal="animation_finished" from="RESTARTFLASH/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Sprite2D3/AnimationPlayer" to="Sprite2D3" method="_on_animation_player_animation_finished"]
-[connection signal="pressed" from="Sprite2D/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Sprite2D/Button2" to="." method="_on_button_2_pressed"]
