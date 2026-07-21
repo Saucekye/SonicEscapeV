@@ -1287,6 +1287,7 @@ script = ExtResource("6_i4wqq")
 
 [node name="TextureRect2" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_rabum")
+anchors_preset = -1
 offset_left = -688.0001
 offset_top = 248.0
 offset_right = -648.0001
@@ -1351,6 +1352,7 @@ stream = ExtResource("9_0iqyq")
 volume_db = -15.0
 
 [node name="TextureRect" type="ColorRect" parent="Node2D"]
+anchors_preset = -1
 offset_left = -1536.0
 offset_top = -1000.0
 offset_right = 1344.0

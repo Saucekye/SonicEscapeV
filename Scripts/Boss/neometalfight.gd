@@ -7,8 +7,8 @@ var phase2_voice_played = false
 var state = BossState.IDLE
 var dash_direction = 0
 var attackstaken = 0
-var health = 70
-var max_health = 70
+var health = 50
+var max_health = 50
 var start = false
 var begin = false
 

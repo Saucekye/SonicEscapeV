@@ -40,8 +40,6 @@ var current_player: Node2D = null
 # --------------------------------------------------
 
 func _ready():
-
-	# RANDOM SPRITE (and matching label text)
 	if textures.size() > 0:
 		var idx = randi() % textures.size()
 		$Sprite2D.texture = textures[idx]

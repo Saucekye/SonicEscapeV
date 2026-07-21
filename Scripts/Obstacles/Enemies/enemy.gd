@@ -70,6 +70,7 @@ func dead():
 		]
 		$AudioStreamPlayer2D.stream = sounds[randi() % sounds.size()]
 		$AudioStreamPlayer2D.play()
+		GlobalCanvasLayer.tricks += 1
 		start_death_check()
 
 func start_death_check() -> void:

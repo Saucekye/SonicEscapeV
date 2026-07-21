@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://p2ybublbkfdp"]
+[gd_scene load_steps=19 format=3 uid="uid://p2ybublbkfdp"]
 
 [ext_resource type="Script" uid="uid://kiay27di5xa2" path="res://Scripts/Obstacles/Miku/miku.gd" id="1_10iud"]
 [ext_resource type="Texture2D" uid="uid://dfpngk75wdo5u" path="res://Sprites/Obstacles/Miku/miku1.png" id="2_c3to5"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://b43ncnbj172hw" path="res://Sprites/Obstacles/Miku/freeorm1.png" id="3_kvapj"]
 [ext_resource type="Texture2D" uid="uid://bct1b4hpuo2oh" path="res://Sprites/Obstacles/Miku/freeorm2.png" id="4_7bsax"]
 [ext_resource type="Texture2D" uid="uid://cb4y11cvj4uy4" path="res://Sprites/Obstacles/Miku/brailku.png" id="5_7bsax"]
+[ext_resource type="Texture2D" uid="uid://d3shgbefcsa2o" path="res://Sprites/Obstacles/Miku/teto2.png" id="6_s1ety"]
+[ext_resource type="Texture2D" uid="uid://cjo127d5lhmjv" path="res://Sprites/Obstacles/Miku/kagamine.png" id="7_ao8vg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vk4aa"]
 atlas = ExtResource("3_hwr23")
@@ -130,14 +132,14 @@ size = Vector2(0.6, 0.76)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk4aa"]
 size = Vector2(0.6, 0.76)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["item"]]
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Miku", "item"]]
 scale = Vector2(25, 25)
 collision_layer = 16
 collision_mask = 16
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_10iud")
-textures = Array[Texture2D]([ExtResource("2_c3to5"), ExtResource("3_kvapj"), ExtResource("4_7bsax"), ExtResource("5_7bsax")])
+textures = Array[Texture2D]([ExtResource("2_c3to5"), ExtResource("3_kvapj"), ExtResource("4_7bsax"), ExtResource("5_7bsax"), ExtResource("6_s1ety"), ExtResource("7_ao8vg")])
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, -0.03999996)
@@ -189,7 +191,7 @@ target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="Area2D" type="Area2D" parent="." groups=["item"]]
+[node name="Area2D" type="Area2D" parent="." groups=["Miku", "item"]]
 collision_layer = 255
 collision_mask = 255
 
@@ -197,7 +199,7 @@ collision_mask = 255
 position = Vector2(-0.02, -0.06)
 shape = SubResource("RectangleShape2D_hwr23")
 
-[node name="Attackbox" type="Area2D" parent="." groups=["Playerattack"]]
+[node name="Attackbox" type="Area2D" parent="." groups=["Miku", "Playerattack"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox"]
 position = Vector2(-0.020000005, -0.059999995)

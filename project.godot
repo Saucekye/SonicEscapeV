@@ -57,6 +57,7 @@ active_player=""
 item=""
 AttractCam=""
 enemyattack=""
+Miku=""
 
 [gui]
 

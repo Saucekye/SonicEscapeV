@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=4 uid="uid://cnud6pf5aurei"]
+[gd_scene load_steps=9 format=4 uid="uid://cnud6pf5aurei"]
 
+[ext_resource type="Script" uid="uid://cb2scagxmrs8c" path="res://Scripts/Level/chunk_rest.gd" id="1_2clii"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="1_th0bb"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="2_rcdb3"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="3_wn42b"]
@@ -9,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://clrh7fv4tqj05" path="res://Scenes/Obstacles/Ocs/ocs.tscn" id="7_s4lje"]
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_2clii")
 
 [node name="Enemies" type="Node2D" parent="."]
 position = Vector2(-1168, -128)
@@ -52,5 +54,5 @@ position = Vector2(912, 600)
 scale = Vector2(125, 125)
 
 [node name="CharacterBody2D2" parent="." instance=ExtResource("7_s4lje")]
-position = Vector2(1808, 616)
+position = Vector2(1544.0001, 648.00006)
 scale = Vector2(125, 125)

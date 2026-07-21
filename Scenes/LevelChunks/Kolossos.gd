@@ -3,7 +3,7 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var health = 30
+var health = 20
 var active_player: Node2D
 var dying = false
 var attacking = false

@@ -311,7 +311,7 @@ func _physics_process(delta):
 			
 	# ── Slope Calculation ──────────────────────────────────────────────
 	if is_on_floor():
-		if is_player == true:	
+		if is_player == true and held_item == null:	
 			tricknumber()                   # Check if trick count warrants a rating label
 			GlobalCanvasLayer.tricks = 0   # Reset trick counter on landing
 			
