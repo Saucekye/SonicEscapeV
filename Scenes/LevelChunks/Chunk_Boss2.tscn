@@ -556,7 +556,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0iqyq"]
-size = Vector2(51.200054, 83.199974)
+size = Vector2(76.00003, 95.999985)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q0tdp"]
 size = Vector2(173.33331, 126.66669)
@@ -1778,7 +1778,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/Hitbox"]
-position = Vector2(7.803406, 4.3560486)
+position = Vector2(1.4545288, 6)
 shape = SubResource("RectangleShape2D_0iqyq")
 
 [node name="Attackbox" type="Area2D" parent="Node2D/Sprite2D" groups=["enemyattack"]]

@@ -105,6 +105,7 @@ offset_right = -23.976002
 offset_bottom = -13.504002
 
 [node name="Button4" type="Button" parent="CanvasLayer/Sprite2D" index="2"]
+anchors_preset = -1
 offset_left = 245.99998
 offset_top = -15.333332
 offset_right = 309.0
@@ -120,9 +121,6 @@ visible = true
 position = Vector2(450.6667, 22.000004)
 scale = Vector2(0.4, 0.4)
 
-[node name="Timer" parent="CanvasLayer/Sprite2D" index="4"]
-anchors_preset = -1
-
 [node name="BestTime" parent="CanvasLayer/Sprite2D" index="5"]
 offset_left = 0.0
 offset_top = 0.0
@@ -136,10 +134,11 @@ scale = Vector2(0.52, 0.475718)
 texture_normal = SubResource("CompressedTexture2D_jhuxi")
 texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
-[node name="Label" parent="CanvasLayer" index="5"]
+[node name="Label" parent="CanvasLayer" index="6"]
 offset_bottom = -48.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = -1
 offset_left = -648.0
 offset_top = -440.0
 offset_right = 2320.0
@@ -154,6 +153,7 @@ map_offset = Vector2(0, 0)
 
 [node name="DarkOverlay" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_tgfrd")
+anchors_preset = -1
 offset_left = -648.0
 offset_top = -440.0
 offset_right = 2320.0
@@ -162,7 +162,6 @@ color = Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 0.34901962)
 
 [node name="TouchScreenButton" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
 offset_left = 296.0
 offset_top = 48.000004
 offset_right = 336.0

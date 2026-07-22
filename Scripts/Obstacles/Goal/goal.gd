@@ -1,9 +1,18 @@
 extends Area2D
 
 var levelover = false
+
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		if body.is_player:
+			$Sprite2D.play("default")
+	if body.is_in_group("Miku"):
+		GlobalCanvasLayer.tricks += 10
+
+
+func _on_sprite_2d_animation_finished() -> void:
 			GlobalCanvasLayer.tricks += 1
 			Test.end = true
 			if levelover == false:
@@ -21,5 +30,3 @@ func _on_body_entered(body: Node2D) -> void:
 					if Test.musicplaying == false:
 						Test.musicplaying = false
 						MusicManager.play()
-	if body.is_in_group("Miku"):
-		GlobalCanvasLayer.tricks += 10

@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ci36npswg4o57" path="res://Sprites/Background/Eggman/Sprite-0006.png" id="7_6ifx3"]
 [ext_resource type="Script" uid="uid://dcxkdbweqcwk7" path="res://Scripts/UI/RESET.gd" id="8_joifu"]
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="9_00ikh"]
-[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/icon.gd" id="9_v4th5"]
+[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/Icon.gd" id="9_v4th5"]
 [ext_resource type="Texture2D" uid="uid://datae7ltsp7g8" path="res://Sprites/UI/Meter/meter2.png" id="11_pwosg"]
 [ext_resource type="Texture2D" uid="uid://bvejnrjotp5yg" path="res://Sprites/UI/Meter/meter1.png" id="12_o2wvk"]
 [ext_resource type="Script" uid="uid://ciaud5ka2cyuf" path="res://Scripts/UI/texture_progress_bar.gd" id="13_wd7d4"]
@@ -423,6 +423,7 @@ script = ExtResource("5_yi08g")
 [node name="TextureRect" type="TextureRect" parent="Sprite2D3"]
 modulate = Color(0, 0, 0, 1)
 z_index = -1
+anchors_preset = -1
 offset_left = -1520.0
 offset_top = 426.667
 offset_right = -1480.0
@@ -435,6 +436,7 @@ texture = SubResource("CanvasTexture_klco8")
 layer = -100
 
 [node name="Label2" type="Label" parent="Sprite2D3/CanvasLayer"]
+anchors_preset = -1
 offset_left = 536.0
 offset_top = 280.0
 offset_right = 576.0
@@ -451,6 +453,7 @@ vertical_alignment = 1
 [node name="TextureRect2" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
 modulate = Color(0, 0, 0, 1)
 z_index = -12
+anchors_preset = -1
 offset_left = -312.10828
 offset_top = -698.0067
 offset_right = 1687.8917
@@ -459,6 +462,7 @@ texture = SubResource("CanvasTexture_dlxpk")
 
 [node name="TextureRect" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
 z_index = -12
+anchors_preset = -1
 offset_left = -18.44043
 offset_top = -706.99664
 offset_right = 1981.5596
@@ -471,6 +475,7 @@ libraries = {
 }
 
 [node name="Label" type="Label" parent="Sprite2D3"]
+anchors_preset = -1
 offset_left = -906.667
 offset_top = 133.333
 offset_right = -851.667
@@ -493,6 +498,7 @@ hframes = 40
 script = ExtResource("9_v4th5")
 
 [node name="Button2" type="Button" parent="Sprite2D"]
+anchors_preset = -1
 offset_left = 220.667
 offset_top = -20.0
 offset_right = 294.667
@@ -522,6 +528,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Timer" type="Label" parent="Sprite2D"]
 modulate = Color(1, 1, 1, 0.682353)
+anchors_preset = -1
 offset_left = 96.33333
 offset_top = -11.333333
 offset_right = 173.33333
@@ -533,6 +540,7 @@ script = ExtResource("14_o2333")
 
 [node name="BestTime" type="Label" parent="Sprite2D"]
 modulate = Color(1, 1, 1, 0.682353)
+anchors_preset = -1
 offset_left = 115.333
 offset_top = -4.66667
 offset_right = 236.333
@@ -540,17 +548,6 @@ offset_bottom = 9.33333
 scale = Vector2(0.4, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 script = ExtResource("15_ckufi")
-
-[node name="Button3" type="Button" parent="Sprite2D"]
-offset_left = 283.3333
-offset_top = -20.0
-offset_right = 346.3333
-offset_bottom = 2.000002
-scale = Vector2(0.75, 0.75)
-focus_mode = 0
-action_mode = 0
-text = "Pause
-"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -563,6 +560,7 @@ scale = Vector2(0.163, 0.163)
 texture = ExtResource("17_que0t")
 
 [node name="Label" type="Label" parent="."]
+anchors_preset = -1
 offset_left = 46.0
 offset_top = -62.0
 offset_right = 79.0

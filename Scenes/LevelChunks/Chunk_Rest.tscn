@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=4 uid="uid://cnud6pf5aurei"]
 
-[ext_resource type="Script" uid="uid://cb2scagxmrs8c" path="res://Scripts/Level/chunk_rest.gd" id="1_2clii"]
+[ext_resource type="Script" path="res://Scripts/Level/chunk_rest.gd" id="1_2clii"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="1_th0bb"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="2_rcdb3"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="3_wn42b"]
