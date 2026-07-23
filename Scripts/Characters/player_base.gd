@@ -198,6 +198,8 @@ var grinding = false                ## True while grinding on a rail
 
 @export_group("UI Elements")
 @export var music_color : Color = Color(0.0, 0.478, 1.0, 1.0)
+@export var icon_character : Texture = preload("uid://c8po8bidqr685")
+@export var icon_character_position_adjust : Vector2 = Vector2.ZERO
 @export var icon_background : Texture = preload("uid://dquf4877dk8p6")
 
 # Misc

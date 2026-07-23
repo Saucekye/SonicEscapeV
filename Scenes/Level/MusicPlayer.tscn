@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://03q1kvmsipj5"]
+[gd_scene format=3 uid="uid://03q1kvmsipj5"]
 
 [ext_resource type="Script" uid="uid://dsgyysnfo3yrg" path="res://Scripts/Music/music_player.gd" id="1_6cpxb"]
 [ext_resource type="Texture2D" uid="uid://cvas3lgf8rrvy" path="res://Sprites/Obstacles/Miku/teto.png" id="2_a0vpg"]
@@ -110,39 +110,36 @@ colors = PackedColorArray(0.8627451, 0, 0, 1, 0.86343604, 5.318448e-06, 7.70092e
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_4ybdc"]
 gradient = SubResource("Gradient_xbbg2")
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" unique_id=1095428041]
 process_mode = 3
-visible = false
 script = ExtResource("1_6cpxb")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1116478701]
 z_index = -1
 position = Vector2(8, -8)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_a0vpg")
 hframes = 24
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_5qbu2")
-}
-autoplay = "idle"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=1777677002]
+libraries/ = SubResource("AnimationLibrary_5qbu2")
+autoplay = &"idle"
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1169725103]
 material = SubResource("ShaderMaterial_4ybdc")
 offset_left = -88.0
 offset_top = -93.0
 offset_right = 103.0
 offset_bottom = 48.0
 
-[node name="ColorRect2" type="ColorRect" parent="ColorRect"]
+[node name="ColorRect2" type="ColorRect" parent="ColorRect" unique_id=1712037948]
 z_index = -2
 layout_mode = 0
 offset_right = 191.0
 offset_bottom = 141.0
 color = Color(0, 0, 0, 1)
 
-[node name="OptionButton" type="OptionButton" parent="."]
+[node name="OptionButton" type="OptionButton" parent="." unique_id=2021367250]
 offset_left = -202.0
 offset_top = -93.0
 offset_right = -96.0
@@ -150,7 +147,7 @@ offset_bottom = -73.0
 text_overrun_behavior = 1
 fit_to_longest_item = false
 
-[node name="PauseButton" type="TextureRect" parent="."]
+[node name="PauseButton" type="TextureRect" parent="." unique_id=428930254]
 offset_left = -92.0
 offset_top = 48.0
 offset_right = -58.0
@@ -158,7 +155,7 @@ offset_bottom = 80.0
 texture = ExtResource("3_8vtfq")
 expand_mode = 1
 
-[node name="PlayButton" type="TextureRect" parent="."]
+[node name="PlayButton" type="TextureRect" parent="." unique_id=1723173204]
 visible = false
 offset_left = -92.0
 offset_top = 48.0
@@ -167,10 +164,10 @@ offset_bottom = 80.0
 texture = ExtResource("5_xbbg2")
 expand_mode = 1
 
-[node name="AudioVisualizer" parent="." instance=ExtResource("6_xbbg2")]
+[node name="AudioVisualizer" parent="." unique_id=812295051 instance=ExtResource("6_xbbg2")]
 position = Vector2(-55, 65)
 
-[node name="ProgressBar" type="TextureProgressBar" parent="."]
+[node name="ProgressBar" type="TextureProgressBar" parent="." unique_id=1424618681]
 visible = false
 offset_left = -58.0
 offset_top = 55.0
@@ -180,7 +177,7 @@ nine_patch_stretch = true
 texture_under = ExtResource("4_mswaq")
 texture_progress = SubResource("GradientTexture1D_4ybdc")
 
-[node name="MusicPauseButton" type="Button" parent="."]
+[node name="MusicPauseButton" type="Button" parent="." unique_id=1699669373]
 offset_left = -88.0
 offset_top = -93.0
 offset_right = 103.0
@@ -188,14 +185,14 @@ offset_bottom = 80.0
 focus_mode = 0
 flat = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=188518393]
 offset_left = -86.99999
 offset_top = -91.0
 offset_right = 104.00001
 offset_bottom = -60.0
 script = ExtResource("8_xo6v2")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer" unique_id=548537017]
 texture_filter = 1
 layout_mode = 2
 

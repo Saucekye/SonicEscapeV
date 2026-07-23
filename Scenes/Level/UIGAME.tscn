@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://mr56r75yd12u"]
+[gd_scene format=3 uid="uid://mr56r75yd12u"]
 
 [ext_resource type="Script" uid="uid://dycm4fq2tdlb8" path="res://Scripts/UI/CanvasLayer.gd" id="1_c8npb"]
 [ext_resource type="Script" uid="uid://dud4g6skjmx8w" path="res://Scripts/Obstacles/Goal/results.gd" id="3_kie6c"]
@@ -8,13 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://ci36npswg4o57" path="res://Sprites/Background/Eggman/Sprite-0006.png" id="7_6ifx3"]
 [ext_resource type="Script" uid="uid://dcxkdbweqcwk7" path="res://Scripts/UI/RESET.gd" id="8_joifu"]
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="9_00ikh"]
-[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/Icon.gd" id="9_v4th5"]
+[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/icon.gd" id="9_v4th5"]
 [ext_resource type="Texture2D" uid="uid://datae7ltsp7g8" path="res://Sprites/UI/Meter/meter2.png" id="11_pwosg"]
 [ext_resource type="Texture2D" uid="uid://bvejnrjotp5yg" path="res://Sprites/UI/Meter/meter1.png" id="12_o2wvk"]
 [ext_resource type="Script" uid="uid://ciaud5ka2cyuf" path="res://Scripts/UI/texture_progress_bar.gd" id="13_wd7d4"]
 [ext_resource type="Script" uid="uid://dk4a3sa48hs0h" path="res://Scripts/UI/timer.gd" id="14_o2333"]
+[ext_resource type="Texture2D" uid="uid://c8po8bidqr685" path="res://Scenes/Characters/Sonic/icon2.png" id="15_02dvw"]
 [ext_resource type="Script" uid="uid://d4ifnkas6j7gl" path="res://Scripts/UI/best_time.gd" id="15_ckufi"]
-[ext_resource type="Texture2D" uid="uid://b4e0hgth6wlej" path="res://Sprites/UI/Icon/sonicicon-Recovered.png" id="17_que0t"]
 [ext_resource type="Script" uid="uid://b6h6xirfugrmt" path="res://Scripts/UI/Ring Count.gd" id="18_x2jr0"]
 
 [sub_resource type="Animation" id="Animation_02dvw"]
@@ -59,7 +59,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Sprite2D2:modulate")
+tracks/3/path = NodePath("../Sprite2Dicon:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -122,7 +122,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Sprite2D2:modulate")
+tracks/3/path = NodePath("../Sprite2Dicon:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -249,7 +249,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D2:position")
+tracks/1/path = NodePath("Sprite2Dicon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -289,14 +289,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D2:position")
+tracks/1/path = NodePath("Sprite2Dicon:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(80, -74), Vector2(91.6965, 62.7485), Vector2(91.697, 53.629), Vector2(91.6965, 62.7485)]
+"values": [Vector2(60, -74), Vector2(80, 45), Vector2(80, 30), Vector2(80, 45)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -393,11 +393,11 @@ _data = {
 &"RESET": SubResource("Animation_2pvyk")
 }
 
-[node name="CanvasLayer" type="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1047015023]
 layer = 10
 script = ExtResource("1_c8npb")
 
-[node name="RESTARTFLASH" type="ColorRect" parent="."]
+[node name="RESTARTFLASH" type="ColorRect" parent="." unique_id=1191739391]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -407,12 +407,10 @@ grow_vertical = 2
 scale = Vector2(2, 2)
 script = ExtResource("3_kie6c")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RESTARTFLASH"]
-libraries = {
-&"": SubResource("AnimationLibrary_jobe5")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RESTARTFLASH" unique_id=1791456673]
+libraries/ = SubResource("AnimationLibrary_jobe5")
 
-[node name="Sprite2D3" type="Sprite2D" parent="."]
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=880597888]
 visible = false
 position = Vector2(1008, 2000)
 scale = Vector2(0.3, 0.3)
@@ -420,7 +418,7 @@ texture = ExtResource("4_eogyh")
 hframes = 6
 script = ExtResource("5_yi08g")
 
-[node name="TextureRect" type="TextureRect" parent="Sprite2D3"]
+[node name="TextureRect" type="TextureRect" parent="Sprite2D3" unique_id=2069448168]
 modulate = Color(0, 0, 0, 1)
 z_index = -1
 anchors_preset = -1
@@ -432,10 +430,10 @@ rotation = -0.227351
 scale = Vector2(187.688, 93.4941)
 texture = SubResource("CanvasTexture_klco8")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Sprite2D3"]
+[node name="CanvasLayer" type="CanvasLayer" parent="Sprite2D3" unique_id=2121691642]
 layer = -100
 
-[node name="Label2" type="Label" parent="Sprite2D3/CanvasLayer"]
+[node name="Label2" type="Label" parent="Sprite2D3/CanvasLayer" unique_id=1100194125]
 anchors_preset = -1
 offset_left = 536.0
 offset_top = 280.0
@@ -450,7 +448,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect2" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
+[node name="TextureRect2" type="TextureRect" parent="Sprite2D3/CanvasLayer" unique_id=2116066525]
 modulate = Color(0, 0, 0, 1)
 z_index = -12
 anchors_preset = -1
@@ -460,7 +458,7 @@ offset_right = 1687.8917
 offset_bottom = 1301.9933
 texture = SubResource("CanvasTexture_dlxpk")
 
-[node name="TextureRect" type="TextureRect" parent="Sprite2D3/CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="Sprite2D3/CanvasLayer" unique_id=1726313678]
 z_index = -12
 anchors_preset = -1
 offset_left = -18.44043
@@ -469,12 +467,10 @@ offset_right = 1981.5596
 offset_bottom = 1293.0034
 texture = ExtResource("7_6ifx3")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D3"]
-libraries = {
-&"": SubResource("AnimationLibrary_1tbbl")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D3" unique_id=1785423008]
+libraries/ = SubResource("AnimationLibrary_1tbbl")
 
-[node name="Label" type="Label" parent="Sprite2D3"]
+[node name="Label" type="Label" parent="Sprite2D3" unique_id=1159310442]
 anchors_preset = -1
 offset_left = -906.667
 offset_top = 133.333
@@ -484,20 +480,18 @@ scale = Vector2(10, 10)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 text = "GOOD!"
 
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_43vrf")
-}
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." unique_id=926891692]
+libraries/ = SubResource("AnimationLibrary_43vrf")
 script = ExtResource("8_joifu")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=178614397]
 position = Vector2(86, -66)
 scale = Vector2(3, 3)
 texture = ExtResource("9_00ikh")
 hframes = 40
 script = ExtResource("9_v4th5")
 
-[node name="Button2" type="Button" parent="Sprite2D"]
+[node name="Button2" type="Button" parent="Sprite2D" unique_id=1978373899]
 anchors_preset = -1
 offset_left = 220.667
 offset_top = -20.0
@@ -508,7 +502,7 @@ focus_mode = 0
 text = "Mobile"
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Sprite2D"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Sprite2D" unique_id=2117419677]
 z_index = -1
 anchors_preset = -1
 anchor_left = -0.097
@@ -526,7 +520,7 @@ texture_progress = ExtResource("12_o2wvk")
 script = ExtResource("13_wd7d4")
 metadata/_edit_use_anchors_ = true
 
-[node name="Timer" type="Label" parent="Sprite2D"]
+[node name="Timer" type="Label" parent="Sprite2D" unique_id=1546398646]
 modulate = Color(1, 1, 1, 0.682353)
 anchors_preset = -1
 offset_left = 96.33333
@@ -538,7 +532,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "0'00\"00"
 script = ExtResource("14_o2333")
 
-[node name="BestTime" type="Label" parent="Sprite2D"]
+[node name="BestTime" type="Label" parent="Sprite2D" unique_id=176452644]
 modulate = Color(1, 1, 1, 0.682353)
 anchors_preset = -1
 offset_left = 115.333
@@ -549,21 +543,19 @@ scale = Vector2(0.4, 0.4)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 script = ExtResource("15_ckufi")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_yhiut")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=220078427]
+libraries/ = SubResource("AnimationLibrary_yhiut")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2Dicon" type="Sprite2D" parent="." unique_id=132587915]
 position = Vector2(78, -88)
-scale = Vector2(0.163, 0.163)
-texture = ExtResource("17_que0t")
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("15_02dvw")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=86961369]
 anchors_preset = -1
 offset_left = 46.0
 offset_top = -62.0
-offset_right = 79.0
+offset_right = 79.00142
 offset_bottom = -45.0
 scale = Vector2(2.5, 2.5)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -574,10 +566,8 @@ text = "000"
 script = ExtResource("18_x2jr0")
 metadata/_edit_use_anchors_ = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
-libraries = {
-&"": SubResource("AnimationLibrary_4edof")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label" unique_id=524884316]
+libraries/ = SubResource("AnimationLibrary_4edof")
 
 [connection signal="animation_finished" from="RESTARTFLASH/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Sprite2D3/AnimationPlayer" to="Sprite2D3" method="_on_animation_player_animation_finished"]

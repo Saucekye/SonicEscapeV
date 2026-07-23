@@ -1,10 +1,11 @@
-[gd_scene load_steps=58 format=3 uid="uid://bf2bqamx68rb2"]
+[gd_scene format=3 uid="uid://bf2bqamx68rb2"]
 
 [ext_resource type="Script" uid="uid://cn8fdth1pf7um" path="res://Scripts/Characters/MetalSonic/metalsonic.gd" id="1_xon7e"]
 [ext_resource type="AudioStream" uid="uid://caglcbtpgx114" path="res://Sounds/CharacterVoiceLines/Metal/035.Synth_MLT_se_ch_sn_Metal Sonic - Jump.wav" id="2_hopts"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_ya1xr"]
 [ext_resource type="PackedScene" uid="uid://c2ipguhs5a8nb" path="res://Scenes/Characters/Components/Air Actions/fly.tscn" id="2_yk428"]
 [ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="3_hopts"]
+[ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="3_lhsoh"]
 [ext_resource type="Texture2D" uid="uid://bm3a5bk4unx1p" path="res://Sprites/Characters/MetalSonic/metalsonic.png" id="3_m1qu7"]
 [ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_cht55"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_lhsoh"]
@@ -2172,7 +2173,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0rx4k")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -2214,7 +2215,7 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Player"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=809778583 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
 collision_mask = 2
@@ -2223,19 +2224,20 @@ floor_max_angle = 1.55334
 script = ExtResource("1_xon7e")
 audio_files = [ExtResource("2_hopts")]
 music_color = Color(0, 0, 0.44313726, 1)
+icon_character = ExtResource("3_lhsoh")
 trail_ball_position = Vector2(0, 5)
 
-[node name="Fly" parent="." node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
+[node name="Fly" parent="." unique_id=1081368087 node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")
 
-[node name="Airspin" parent="." instance=ExtResource("3_hopts")]
+[node name="Airspin" parent="." unique_id=1041590892 instance=ExtResource("3_hopts")]
 can_when_flying = true
 
-[node name="Stomp" parent="." instance=ExtResource("4_lhsoh")]
+[node name="Stomp" parent="." unique_id=764063026 instance=ExtResource("4_lhsoh")]
 
-[node name="Trick" parent="." instance=ExtResource("5_hvbcv")]
+[node name="Trick" parent="." unique_id=209616621 instance=ExtResource("5_hvbcv")]
 
-[node name="Flymeter" type="TextureProgressBar" parent="."]
+[node name="Flymeter" type="TextureProgressBar" parent="." unique_id=541754800]
 offset_left = -0.393367
 offset_top = 0.33132696
 offset_right = 63.606632
@@ -2246,7 +2248,7 @@ max_value = 85.0
 texture_under = ExtResource("9_x4wmt")
 texture_progress = ExtResource("10_li3im")
 
-[node name="Trail2D" type="Line2D" parent="."]
+[node name="Trail2D" type="Line2D" parent="." unique_id=448908369]
 z_index = 1
 width = 30.0
 width_curve = SubResource("Curve_7xxox")
@@ -2254,7 +2256,7 @@ default_color = Color(1, 0, 0.5499997, 0.36078432)
 script = ExtResource("2_ya1xr")
 length = 20
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=863087763]
 z_index = 1
 position = Vector2(0, 0.02)
 scale = Vector2(0.009, 0.009)
@@ -2263,33 +2265,31 @@ hframes = 10
 vframes = 9
 frame = 13
 
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D" unique_id=1207618836]
 visible = false
 texture = ExtResource("4_cht55")
 hframes = 3
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_1831k")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=748009019]
+libraries/ = SubResource("AnimationLibrary_1831k")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2126654326 groups=["Player"]]
 position = Vector2(0, 0.0799999)
 shape = SubResource("RectangleShape2D_hls4d")
 
-[node name="Raycast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="Raycast" type="RayCast2D" parent="CollisionShape2D" unique_id=1632024952]
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(0, 24)
 collision_mask = 4
 
-[node name="WallCast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast" type="RayCast2D" parent="CollisionShape2D" unique_id=255151857]
 position = Vector2(7.45058e-09, 0)
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D" unique_id=73054962]
 position = Vector2(-7.45058e-09, 0)
 rotation = 3.14159
 scale = Vector2(0.0163969, 0.01)
@@ -2297,68 +2297,68 @@ target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2146406768]
 visible = false
 position = Vector2(0, 0.0400391)
 scale = Vector2(0.01, 0.01)
 texture = SubResource("CompressedTexture2D_5ncpa")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1908575033]
 wait_time = 2.0
 
-[node name="Voice" type="AudioStreamPlayer2D" parent="."]
+[node name="Voice" type="AudioStreamPlayer2D" parent="." unique_id=1703861408]
 volume_db = -15.0
 bus = &"SFX"
 
-[node name="Sfx" type="AudioStreamPlayer2D" parent="."]
+[node name="Sfx" type="AudioStreamPlayer2D" parent="." unique_id=1338005460]
 volume_db = -15.0
 bus = &"SFX"
 
-[node name="Step" type="AudioStreamPlayer2D" parent="."]
+[node name="Step" type="AudioStreamPlayer2D" parent="." unique_id=989543769]
 stream = ExtResource("5_t7fmt")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="SpinTimer" type="Timer" parent="."]
+[node name="SpinTimer" type="Timer" parent="." unique_id=2072949068]
 
-[node name="WaitTimer" type="Timer" parent="."]
+[node name="WaitTimer" type="Timer" parent="." unique_id=1480743256]
 wait_time = 6.0
 
-[node name="CoyoteTimer" type="Timer" parent="."]
+[node name="CoyoteTimer" type="Timer" parent="." unique_id=1038535740]
 one_shot = true
 
-[node name="ControlLockTimer" type="Timer" parent="."]
+[node name="ControlLockTimer" type="Timer" parent="." unique_id=1491239534]
 wait_time = 0.5
 one_shot = true
 
-[node name="invincibity" type="Timer" parent="."]
+[node name="invincibity" type="Timer" parent="." unique_id=576289090]
 
-[node name="Hitbox" type="Area2D" parent="." groups=["Player"]]
+[node name="Hitbox" type="Area2D" parent="." unique_id=241454606 groups=["Player"]]
 position = Vector2(-2.98023e-08, 0.08)
 scale = Vector2(0.00799688, 0.0159968)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1093714258]
 position = Vector2(0.00195313, 0)
 shape = SubResource("RectangleShape2D_ajy0d")
 debug_color = Color(0.847059, 0.423529, 0, 0.419608)
 
-[node name="Attackbox" type="Area2D" parent="." groups=["Playerattack"]]
+[node name="Attackbox" type="Area2D" parent="." unique_id=1573232279 groups=["Playerattack"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=1003254384]
 position = Vector2(0, 0.04)
 shape = SubResource("RectangleShape2D_0qscb")
 debug_color = Color(1, 0.00689957, 0.0521525, 0.42)
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1675312084]
 position = Vector2(8.68, 8.84)
 rect = Rect2(-10, -10, 2.5, 2.5)
 
-[node name="onscreentimer" type="Timer" parent="."]
+[node name="onscreentimer" type="Timer" parent="." unique_id=1990877279]
 
-[node name="Marker2D" type="Marker2D" parent="."]
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1966969030]
 position = Vector2(0.0799999, 0.280001)
 
-[node name="Arrow" type="AnimatedSprite2D" parent="."]
+[node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=1234275953]
 visible = false
 z_index = 1
 position = Vector2(-0.0005471043, -0.30784926)
@@ -2367,16 +2367,14 @@ sprite_frames = SubResource("SpriteFrames_crhyl")
 autoplay = "default"
 speed_scale = 0.8
 
-[node name="Parry" type="Sprite2D" parent="."]
+[node name="Parry" type="Sprite2D" parent="." unique_id=1931822235]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(0, 0.039999995)
 scale = Vector2(0.009, 0.009)
 texture = ExtResource("9_2tq67")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Parry"]
-libraries = {
-&"": SubResource("AnimationLibrary_l6ohk")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=1582272907]
+libraries/ = SubResource("AnimationLibrary_l6ohk")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

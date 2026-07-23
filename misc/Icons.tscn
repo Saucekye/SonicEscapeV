@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://die03v6a7cw0k"]
+[gd_scene format=3 uid="uid://die03v6a7cw0k"]
 
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="1_n5irw"]
 [ext_resource type="Texture2D" uid="uid://c71r4ru1eqxpt" path="res://Scenes/Characters/Sonic/icon.png" id="2_cbjba"]
@@ -45,28 +45,26 @@ _data = {
 &"play": SubResource("Animation_q7muk")
 }
 
-[node name="Sprite2D" type="Sprite2D"]
+[node name="Sprite2D" type="Sprite2D" unique_id=334176494]
 scale = Vector2(3, 3)
 texture = ExtResource("1_n5irw")
 hframes = 40
 script = ExtResource("2_d587e")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_yhiut")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1532168250]
+libraries/ = SubResource("AnimationLibrary_yhiut")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2031905728]
 position = Vector2(-9, -10.6667)
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("2_cbjba")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1075750837]
 stream = ExtResource("4_b63j3")
 volume_db = -8.0
 bus = &"SFX"
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=1221610773]
 stream = ExtResource("5_ou0ib")
 volume_db = -8.0
 bus = &"SFX"

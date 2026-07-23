@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://budhiifw7reft"]
+[gd_scene format=3 uid="uid://budhiifw7reft"]
 
 [ext_resource type="Script" uid="uid://bpqf7y80cd0va" path="res://Scripts/Obstacles/Rings/rings.gd" id="1_kvns2"]
 [ext_resource type="Texture2D" uid="uid://c75064u5hdbuw" path="res://Sprites/Obstacles/Rings/ringsheet-sheet.png" id="2_21lut"]
-[ext_resource type="AudioStream" uid="uid://bxpw87oj3chwf" path="res://Sounds/Obstacles/Rings/ringsfx.MP3" id="3_irvnr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5pyt"]
 size = Vector2(9, 11)
@@ -137,7 +136,7 @@ _data = {
 &"play": SubResource("Animation_qusbv")
 }
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1149495202]
 scale = Vector2(1.5, 1.5)
 collision_layer = 256
 collision_mask = 256
@@ -146,38 +145,31 @@ floor_stop_on_slope = false
 platform_floor_layers = 4294901760
 script = ExtResource("1_kvns2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1436876130]
 position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_v5pyt")
 
-[node name="Node2D" type="Area2D" parent="." groups=["Rings"]]
+[node name="Node2D" type="Area2D" parent="." unique_id=1941628335 groups=["Rings"]]
 collision_layer = 15
 collision_mask = 15
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D" unique_id=382974657]
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_51rdt")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=1594118406]
 texture = ExtResource("2_21lut")
 hframes = 7
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/Sprite2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_ayyd5")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/Sprite2D" unique_id=637091388]
+libraries/ = SubResource("AnimationLibrary_ayyd5")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D"]
-stream = ExtResource("3_irvnr")
-volume_db = -10.0
-bus = &"SFX"
-
-[node name="BlinkTimer" type="Timer" parent="."]
+[node name="BlinkTimer" type="Timer" parent="." unique_id=354560757]
 wait_time = 0.1
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1392980316]
 wait_time = 1.5
 
 [connection signal="area_entered" from="Node2D" to="." method="_on_node_2d_area_entered"]
