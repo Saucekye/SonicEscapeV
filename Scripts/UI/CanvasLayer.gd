@@ -24,7 +24,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		Test.meter = 100
 		get_tree().reload_current_scene()
 	elif anim_name == "Game_Over":
-		get_tree().change_scene_to_file("res://Scenes/Intro/titlescreen.tscn")
+		Test.quit = true
 	
 func _on_button_2_pressed() -> void:
 	$TouchScreenButton.visible = !$TouchScreenButton.visible

@@ -59,7 +59,8 @@ func _on_quit_pressed():
 
 # Toggle pause menu with Esc or controller Start button
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
+	print(current_scene)
+	if event.is_action_pressed("ui_cancel") and current_scene == "Node2D":
 		if visible:
 			_on_resume_pressed()
 		else:
@@ -125,7 +126,6 @@ func _on_button_pressed() -> void:
 	# Return focus to back button or first settings element
 	if has_node("Panel/Settings/Back"):
 		$Panel/Settings/Back.grab_focus()
-
 
 func _on_restart_pressed() -> void:
 	#if $TouchScreenButton.visible == true:

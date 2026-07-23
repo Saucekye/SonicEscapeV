@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cap4asy61pcru"]
+[gd_scene format=3 uid="uid://cap4asy61pcru"]
 
 [ext_resource type="Script" uid="uid://c76ra01ahod6e" path="res://Scripts/Menu/titlescreen.gd" id="1_vhbaf"]
 [ext_resource type="Texture2D" uid="uid://c337cskgfx7ul" path="res://Sprites/Intro/Title.png" id="2_v6ms7"]
@@ -214,29 +214,27 @@ _data = {
 &"start": SubResource("Animation_huev7")
 }
 
-[node name="Titlescreen" type="Control"]
+[node name="Titlescreen" type="Control" unique_id=515326337]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -32.0
-offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 0
 script = ExtResource("1_vhbaf")
 
-[node name="Title3" type="Sprite2D" parent="."]
-position = Vector2(982, 364)
+[node name="Title3" type="Sprite2D" parent="." unique_id=860915088]
+position = Vector2(954, 365.00003)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_v6ms7")
 hframes = 3
 vframes = 3
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Title3"]
-libraries = {
-&"": SubResource("AnimationLibrary_1qj82")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Title3" unique_id=1447782]
+libraries/ = SubResource("AnimationLibrary_1qj82")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1300262101]
 material = SubResource("ShaderMaterial_x5m1l")
 layout_mode = 0
 offset_left = -25.0
@@ -245,42 +243,43 @@ offset_right = 15.0
 offset_bottom = -43.0
 scale = Vector2(45.2, 28.6)
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=1063393487]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -448.0
-offset_top = 16.0
-offset_right = -272.0
-offset_bottom = 30.0
+offset_left = -314.99997
+offset_top = -22.99997
+offset_right = -139.0
+offset_bottom = -8.9999695
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.5, 3.5)
 horizontal_alignment = 1
 
-[node name="Title2" type="Label" parent="Title"]
+[node name="Title2" type="Label" parent="Title" unique_id=1757468459]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 165.71428
-offset_top = -121.28573
-offset_right = 539.7143
-offset_bottom = 853.7143
+offset_left = 116.285706
+offset_top = -119.28572
+offset_right = 584.2857
+offset_bottom = 895.7143
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.225, 0.225)
+theme_override_font_sizes/font_size = 20
 text = "CREDITS
 Pixel Art
 Saucekye
 
 Programming
-Ag
+Ag2350
 April
 Delta
 
@@ -325,39 +324,37 @@ My Mom & Dad
 (yes like SauceK's actual parents)"
 horizontal_alignment = 1
 
-[node name="start" type="Label" parent="."]
+[node name="start" type="Label" parent="." unique_id=1423001255]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -456.0
-offset_top = 128.0
-offset_right = -280.0
-offset_bottom = 142.0
+offset_left = -500.0
+offset_top = 136.0
+offset_right = -324.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 text = "Press To Start"
 horizontal_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="start"]
-libraries = {
-&"": SubResource("AnimationLibrary_myao4")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="start" unique_id=1870508965]
+libraries/ = SubResource("AnimationLibrary_myao4")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="start"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="start" unique_id=1057639471]
 stream = ExtResource("4_84han")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1182609785]
 
-[node name="SonicEscape5" type="Sprite2D" parent="."]
-position = Vector2(520, 224)
+[node name="SonicEscape5" type="Sprite2D" parent="." unique_id=26017847]
+position = Vector2(496, 227)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("5_6ejck")
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1582852673]
 layout_mode = 0
 offset_left = -319.0
 offset_top = -252.0

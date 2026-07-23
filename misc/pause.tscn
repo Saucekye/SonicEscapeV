@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://buqmljuwcf7tp"]
+[gd_scene format=3 uid="uid://buqmljuwcf7tp"]
 
 [ext_resource type="Script" uid="uid://cfai4fud6456t" path="res://misc/pause.gd" id="1_epbul"]
 [ext_resource type="Script" uid="uid://dkyt573s514rg" path="res://misc/keybind.gd" id="2_hmt0q"]
 
-[node name="Pause" type="CanvasLayer"]
+[node name="Pause" type="CanvasLayer" unique_id=252242124]
 process_mode = 3
 layer = 100
 follow_viewport_enabled = true
 script = ExtResource("1_epbul")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=94222972]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -21,7 +21,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="Menu" type="VBoxContainer" parent="Panel"]
+[node name="Menu" type="VBoxContainer" parent="Panel" unique_id=1058940658]
 layout_mode = 0
 offset_left = -232.0
 offset_top = -472.0
@@ -29,26 +29,26 @@ offset_right = 268.0
 offset_bottom = 528.0
 alignment = 1
 
-[node name="Resume" type="Button" parent="Panel/Menu"]
+[node name="Resume" type="Button" parent="Panel/Menu" unique_id=987181197]
 layout_mode = 2
 text = "Resume
 "
 
-[node name="Restart" type="Button" parent="Panel/Menu"]
+[node name="Restart" type="Button" parent="Panel/Menu" unique_id=1089564273]
 layout_mode = 2
 text = "Restart Level"
 
-[node name="Settings" type="Button" parent="Panel/Menu"]
+[node name="Settings" type="Button" parent="Panel/Menu" unique_id=1241344565]
 layout_mode = 2
 text = "Settings
 "
 
-[node name="Quit" type="Button" parent="Panel/Menu"]
+[node name="Quit" type="Button" parent="Panel/Menu" unique_id=414240578]
 layout_mode = 2
 text = "Quit
 "
 
-[node name="Settings" type="VBoxContainer" parent="Panel"]
+[node name="Settings" type="VBoxContainer" parent="Panel" unique_id=357936218]
 visible = false
 layout_mode = 0
 offset_left = -232.0
@@ -57,43 +57,43 @@ offset_right = 268.0
 offset_bottom = 528.0
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Settings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Settings" unique_id=733568224]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer"]
+[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer" unique_id=268391739]
 layout_mode = 2
 text = "Music"
 
-[node name="Music" type="HSlider" parent="Panel/Settings/HBoxContainer"]
+[node name="Music" type="HSlider" parent="Panel/Settings/HBoxContainer" unique_id=1379994137]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01000000000931322
 value = 0.50000000046566
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/Settings"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/Settings" unique_id=792891429]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer2"]
+[node name="Label" type="Label" parent="Panel/Settings/HBoxContainer2" unique_id=628238227]
 layout_mode = 2
 text = "SFX"
 
-[node name="SFX" type="HSlider" parent="Panel/Settings/HBoxContainer2"]
+[node name="SFX" type="HSlider" parent="Panel/Settings/HBoxContainer2" unique_id=1261366125]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01000000000931322
 value = 0.50000000046566
 
-[node name="Keybind" type="Button" parent="Panel/Settings"]
+[node name="Keybind" type="Button" parent="Panel/Settings" unique_id=114665943]
 layout_mode = 2
 text = "Keybind"
 
-[node name="Back" type="Button" parent="Panel/Settings"]
+[node name="Back" type="Button" parent="Panel/Settings" unique_id=139980225]
 layout_mode = 2
 text = "Back"
 
-[node name="Keybind" type="VBoxContainer" parent="Panel"]
+[node name="Keybind" type="VBoxContainer" parent="Panel" unique_id=1932162844]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -110,102 +110,102 @@ grow_vertical = 2
 alignment = 1
 script = ExtResource("2_hmt0q")
 
-[node name="Label" type="Label" parent="Panel/Keybind"]
+[node name="Label" type="Label" parent="Panel/Keybind" unique_id=1755565999]
 layout_mode = 2
 
-[node name="ForJump" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="ForJump" type="HBoxContainer" parent="Panel/Keybind" unique_id=434432281]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/ForJump"]
+[node name="Label" type="Label" parent="Panel/Keybind/ForJump" unique_id=1020502071]
 layout_mode = 2
 text = "Jump"
 
-[node name="Button" type="Button" parent="Panel/Keybind/ForJump" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/ForJump" unique_id=1468412831 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="forDash" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="forDash" type="HBoxContainer" parent="Panel/Keybind" unique_id=1737864996]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/forDash"]
+[node name="Label" type="Label" parent="Panel/Keybind/forDash" unique_id=660165649]
 layout_mode = 2
 text = "Dash 1"
 
-[node name="Button" type="Button" parent="Panel/Keybind/forDash" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/forDash" unique_id=850066442 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="forDash2" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="forDash2" type="HBoxContainer" parent="Panel/Keybind" unique_id=930883614]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/forDash2"]
+[node name="Label" type="Label" parent="Panel/Keybind/forDash2" unique_id=990871718]
 layout_mode = 2
 text = "Dash 2"
 
-[node name="Button" type="Button" parent="Panel/Keybind/forDash2" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/forDash2" unique_id=1664687872 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="forTricks" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="forTricks" type="HBoxContainer" parent="Panel/Keybind" unique_id=1539512873]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/forTricks"]
+[node name="Label" type="Label" parent="Panel/Keybind/forTricks" unique_id=1692650084]
 layout_mode = 2
 text = "Tricks"
 
-[node name="Button" type="Button" parent="Panel/Keybind/forTricks" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/forTricks" unique_id=1962377228 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="Left" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="Left" type="HBoxContainer" parent="Panel/Keybind" unique_id=112028923]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/Left"]
+[node name="Label" type="Label" parent="Panel/Keybind/Left" unique_id=1954317549]
 layout_mode = 2
 text = "Left"
 
-[node name="Button" type="Button" parent="Panel/Keybind/Left" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/Left" unique_id=590680154 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="Right" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="Right" type="HBoxContainer" parent="Panel/Keybind" unique_id=1827451399]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/Right"]
+[node name="Label" type="Label" parent="Panel/Keybind/Right" unique_id=1623196604]
 layout_mode = 2
 text = "Right"
 
-[node name="Button" type="Button" parent="Panel/Keybind/Right" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/Right" unique_id=1473641266 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="Up" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="Up" type="HBoxContainer" parent="Panel/Keybind" unique_id=1299627828]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/Up"]
+[node name="Label" type="Label" parent="Panel/Keybind/Up" unique_id=1980870862]
 layout_mode = 2
 text = "Up"
 
-[node name="Button" type="Button" parent="Panel/Keybind/Up" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/Up" unique_id=643532586 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="Down" type="HBoxContainer" parent="Panel/Keybind"]
+[node name="Down" type="HBoxContainer" parent="Panel/Keybind" unique_id=340467160]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Keybind/Down"]
+[node name="Label" type="Label" parent="Panel/Keybind/Down" unique_id=1131331647]
 layout_mode = 2
 text = "Down"
 
-[node name="Button" type="Button" parent="Panel/Keybind/Down" groups=["bind"]]
+[node name="Button" type="Button" parent="Panel/Keybind/Down" unique_id=1790726417 groups=["bind"]]
 layout_mode = 2
 text = "Bind"
 
-[node name="Button2" type="Button" parent="Panel/Keybind"]
+[node name="Button2" type="Button" parent="Panel/Keybind" unique_id=1722438405]
 layout_mode = 2
 text = "RESET"
 
-[node name="Button" type="Button" parent="Panel/Keybind"]
+[node name="Button" type="Button" parent="Panel/Keybind" unique_id=1259329342]
 layout_mode = 2
 text = "Back"
 
