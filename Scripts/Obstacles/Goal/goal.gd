@@ -2,7 +2,8 @@ extends Area2D
 
 var levelover = false
 
-
+func _ready() -> void:
+	$Sprite2D.frame = 0
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -10,7 +11,6 @@ func _on_body_entered(body: Node2D) -> void:
 			$Sprite2D.play("default")
 	if body.is_in_group("Miku"):
 		GlobalCanvasLayer.tricks += 10
-
 
 func _on_sprite_2d_animation_finished() -> void:
 			GlobalCanvasLayer.tricks += 1

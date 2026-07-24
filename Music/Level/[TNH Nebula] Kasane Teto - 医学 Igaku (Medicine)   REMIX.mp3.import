@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cxbtp1oukm6w6"
+path="res://.godot/imported/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3-5354fd6166b5c773cf8a4a10c6cf66a3.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3"
+dest_files=["res://.godot/imported/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3-5354fd6166b5c773cf8a4a10c6cf66a3.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

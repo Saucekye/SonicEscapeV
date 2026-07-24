@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://d3s7dd3hyko78"]
+[gd_scene format=3 uid="uid://d3s7dd3hyko78"]
 
 [ext_resource type="Script" uid="uid://dmtjto4h2d67y" path="res://Scenes/LevelChunks/tree.gd" id="1_gsb32"]
 [ext_resource type="Script" uid="uid://cx3j27u24ghmt" path="res://Scenes/LevelChunks/leaf fall.gd" id="2_p3we6"]
@@ -57,7 +57,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_b0j0l")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -119,7 +119,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_a4qar")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -155,7 +155,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0ejxw")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -268,7 +268,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pkx8t")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -416,19 +416,19 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vd8ge")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" unique_id=923355231]
 script = ExtResource("1_gsb32")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Node2D" type="Node2D" parent="." unique_id=1779841485]
 position = Vector2(-40, -16)
 script = ExtResource("2_p3we6")
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D"]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D" unique_id=1190278040]
 z_index = -3
 position = Vector2(2520, 448)
 scale = Vector2(1.25, 1.25)
@@ -436,16 +436,14 @@ sprite_frames = SubResource("SpriteFrames_oluko")
 autoplay = "default"
 frame_progress = 0.4652896
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/AnimatedSprite2D2"]
-libraries = {
-&"": SubResource("AnimationLibrary_qllo3")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/AnimatedSprite2D2" unique_id=496401951]
+libraries/ = SubResource("AnimationLibrary_qllo3")
 
-[node name="Node2D4" type="Node2D" parent="."]
+[node name="Node2D4" type="Node2D" parent="." unique_id=921810664]
 position = Vector2(184, 8)
 script = ExtResource("2_p3we6")
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D4"]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D4" unique_id=1045495985]
 z_index = -3
 position = Vector2(2520, 448)
 scale = Vector2(1.25, 1.25)
@@ -453,21 +451,19 @@ sprite_frames = SubResource("SpriteFrames_oluko")
 autoplay = "default"
 frame_progress = 0.4652896
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D4/AnimatedSprite2D2"]
-libraries = {
-&"": SubResource("AnimationLibrary_qllo3")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D4/AnimatedSprite2D2" unique_id=1583669080]
+libraries/ = SubResource("AnimationLibrary_qllo3")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1653307311]
 position = Vector2(2648.0002, 512.00006)
 scale = Vector2(1.25, 1.25)
 texture = ExtResource("4_70a00")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=909167130]
 position = Vector2(2672, 609.88696)
 shape = SubResource("RectangleShape2D_th0bb")
 
-[node name="Arrow" type="AnimatedSprite2D" parent="."]
+[node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=2033288175]
 position = Vector2(2673, 588)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_3c6oy")
@@ -475,9 +471,9 @@ autoplay = "default"
 frame_progress = 0.6626423
 speed_scale = 0.5
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2079281192]
 
-[node name="TextSprite" type="AnimatedSprite2D" parent="CanvasLayer"]
+[node name="TextSprite" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=1484345449]
 modulate = Color(1, 1, 1, 0.6627451)
 position = Vector2(800, 440)
 scale = Vector2(1.25, 1.25)
@@ -485,7 +481,7 @@ sprite_frames = SubResource("SpriteFrames_fgpd8")
 autoplay = "default"
 frame_progress = 0.68229836
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextSprite"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextSprite" unique_id=1875997877]
 anchors_preset = -1
 offset_left = -806.4
 offset_top = -384.0
@@ -494,7 +490,7 @@ offset_bottom = -344.0
 scale = Vector2(43.44, 21.052)
 color = Color(0, 0, 0, 1)
 
-[node name="TextSprite2" type="AnimatedSprite2D" parent="CanvasLayer"]
+[node name="TextSprite2" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=430436127]
 modulate = Color(1, 1, 1, 0.6627451)
 position = Vector2(800, 440)
 scale = Vector2(1.25, 1.25)
@@ -503,7 +499,7 @@ autoplay = "default"
 frame_progress = 0.15402934
 speed_scale = 5.0
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextSprite2"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextSprite2" unique_id=1721102164]
 anchors_preset = -1
 offset_left = -806.4
 offset_top = -384.0
@@ -512,7 +508,7 @@ offset_bottom = -344.0
 scale = Vector2(43.44, 21.052)
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="RichTextLabel" parent="CanvasLayer"]
+[node name="Label" type="RichTextLabel" parent="CanvasLayer" unique_id=808864217]
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
@@ -538,23 +534,23 @@ scroll_following = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PageSfx" type="AudioStreamPlayer2D" parent="CanvasLayer"]
+[node name="PageSfx" type="AudioStreamPlayer2D" parent="CanvasLayer" unique_id=1312510668]
 position = Vector2(1272.0002, 512.00006)
 scale = Vector2(1.25, 1.25)
 stream = ExtResource("7_wgruj")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1443363725]
 position = Vector2(2680, 640)
 stream = ExtResource("8_sopqj")
 max_distance = 900.0
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1611412778]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1058361732]
 stream = ExtResource("9_1p2b4")
 volume_db = -5.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=185124586]
 position = Vector2(2672, 659)
 scale = Vector2(0.18, 0.18)
 sprite_frames = SubResource("SpriteFrames_wmmba")
