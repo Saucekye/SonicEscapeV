@@ -49,7 +49,8 @@ func _ready() -> void:
 	# Call any initialization that should happen after loading
 	initialize_scene()
 	
-
+	# Set display of Teto
+	GlobalSignals.set_teto_display.emit(MusicManager.display_teto)
 
 func build_boss_rotation():
 	rng.randomize()

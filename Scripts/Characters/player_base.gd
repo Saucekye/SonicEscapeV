@@ -1474,6 +1474,7 @@ func player_death():
 	sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
 	sfx.play()
 	is_player_dead = true
+	GlobalSignals.set_teto_animation.emit("hurt_loop")
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	
@@ -1541,6 +1542,12 @@ func hurt():
 		Test.meter -= 50
 		if Test.meter <= 0:
 			Test.meter = 0
+		var rand : float = randf()
+		if !is_player_dead:
+			if rand >= 1.0/2.0:
+				GlobalSignals.set_teto_animation.emit("taunt")
+			else:
+				GlobalSignals.set_teto_animation.emit("hurt")
 	ouch = true
 	motion = Vector2(0, 0)
 	time_elapsed = 0

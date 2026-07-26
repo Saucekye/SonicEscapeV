@@ -136,3 +136,7 @@ func _on_restart_pressed() -> void:
 	Test.meter = 100
 	Test.rings = 0
 	get_tree().reload_current_scene()
+
+func _on_teto_check_button_toggled(toggled_on: bool) -> void:
+	GlobalSignals.set_teto_display.emit(toggled_on)
+	MusicManager.display_teto = toggled_on

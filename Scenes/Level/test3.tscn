@@ -137,7 +137,10 @@ texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 scale = Vector2(0.06819895, 0.07281002)
 
 [node name="Label" parent="CanvasLayer" index="6" unique_id=86961369]
-offset_bottom = -48.0
+offset_left = 37.0
+offset_top = -53.0
+offset_right = 70.00137
+offset_bottom = -39.0
 
 [node name="DarkOverlay2" type="ColorRect" parent="CanvasLayer" unique_id=621879204]
 anchors_preset = -1
