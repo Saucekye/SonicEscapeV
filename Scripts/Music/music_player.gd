@@ -15,7 +15,7 @@ var music_options = {
 
 func _ready() -> void:
 	# --- Sprite fade in ---
-	var sprite = $Sprite2D
+	var sprite = $TetoSprite
 	sprite.modulate.a = 0.0  # start fully transparent
 
 	var tween = create_tween()

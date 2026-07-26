@@ -12,6 +12,7 @@ var is_muted = false
 # ─────────────────────────────
 # Fixed music per scene
 # ─────────────────────────────
+
 var scene_music := {
 	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
 	"warningscreen": preload("res://Music/Intro/sos(3).MP3"),
@@ -28,7 +29,7 @@ var node2d_music_pool := [
 	preload("res://Music/Level/Another Life.MP3"),
 	preload("res://Music/Level/Luxury.MP3"),
 	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
-	preload("res://Music/Level/Don't Get In My Way.mp3"),
+	preload("res://Music/Level/Don't Get In My Way.MP3"),
 	preload("res://Music/Level/Heaven Knows.mp3"),
 	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
 	preload("res://Music/Level/Stellar Blade OST - Eidos 7 Silent Street Combat.mp3"),
@@ -50,9 +51,6 @@ func _ready() -> void:
 	volume_db = volume
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GlobalSignals.game_over.connect(_on_game_over)
-
-	# Persistent across scenes
-	#get_tree().root.add_child(self)
 	set_owner(null)
 
 	current_scene_name = get_tree().current_scene.name
@@ -93,7 +91,6 @@ func _process(delta: float) -> void:
 			volume_db = volume
 			play()
 			
-
 
 	if volume_db != volume:
 		volume_db = volume

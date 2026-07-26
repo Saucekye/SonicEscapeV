@@ -308,7 +308,7 @@ position = Vector2(12, -8)
 scale = Vector2(0.3, 0.31)
 sprite_frames = SubResource("SpriteFrames_mvuam")
 autoplay = "default"
-frame_progress = 0.68227583
+frame_progress = 0.7170643
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1116478701]
 visible = false
