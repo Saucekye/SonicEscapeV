@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cbaa3rnhw42cx"
+path="res://.godot/imported/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3-1448f9983126c20afdeece38e0ee6975.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3"
+dest_files=["res://.godot/imported/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3-1448f9983126c20afdeece38e0ee6975.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

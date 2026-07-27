@@ -22,6 +22,10 @@ boot_splash/image="uid://bofykrf10kutc"
 config/icon="res://exeicon.png"
 config/windows_native_icon="res://1-8dac9c05.ico"
 
+[audio]
+
+buses/default_bus_layout="uid://hphctar8232o"
+
 [autoload]
 
 Test="*res://Scripts/Level/test.gd"

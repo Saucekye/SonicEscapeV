@@ -36,12 +36,14 @@ func _notification(what):
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		$AudioStreamPlayer2D.play()
-		$Sprite2D/AnimationPlayer.play("play")
+		
 		var spring_rotation : float = self.rotation
 		if ignore_rotation:
 			spring_rotation = deg_to_rad(independent_rotation)
 		var player_body = area.get_parent()
 		player_body.apply_spring_boost(spring_velocity.rotated(spring_rotation))
+		
+		#$Sprite2D/AnimationPlayer.play("play")
 
 
 

@@ -13,6 +13,7 @@ var display_teto : bool = true
 # ─────────────────────────────
 # Fixed music per scene
 # ─────────────────────────────
+
 var scene_music := {
 	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
 	"warningscreen": preload("res://Music/Intro/sos(3).MP3"),
@@ -27,7 +28,19 @@ var node2d_music_pool := [
 	preload("res://Music/Level/Great Desert (Reboot Type A).mp3"),
 	preload("res://Music/Level/Scent Of Love.mp3"),
 	preload("res://Music/Level/Another Life.MP3"),
-	preload("res://Music/Level/Luxury.MP3")
+	preload("res://Music/Level/Luxury.MP3"),
+	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
+	preload("res://Music/Level/Don't Get In My Way.MP3"),
+	preload("res://Music/Level/Heaven Knows.mp3"),
+	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
+	preload("res://Music/Level/Stellar Blade OST - Eidos 7 Silent Street Combat.mp3"),
+	preload("res://Music/Level/The Vanished People - DANCE ALONE (feat. Hashimero).mp3"),
+	preload("res://Music/Level/The Vanished People - IT'S GOING DOWN (feat. WaMi).mp3"),
+	preload("res://Music/Level/[Sonic Rush_ ReRun OST] Ska Cha Real Smooth - BLAZY REMIX  TNH Nebula.mp3"),
+	preload("res://Music/Level/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3"),
+	preload("res://Music/Level/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3"),
+	preload("res://Music/Level/[TNH Nebula] Sonic Rush Remix What U Need is Super.MP3"),
+	preload("res://Music/Level/[TNH Nebula] Work It Out Ft. JanettPlanett.MP3")
 ]
 
 var node2d_track_index := 0
@@ -39,9 +52,6 @@ func _ready() -> void:
 	volume_db = volume
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GlobalSignals.game_over.connect(_on_game_over)
-
-	# Persistent across scenes
-	#get_tree().root.add_child(self)
 	set_owner(null)
 
 	current_scene_name = get_tree().current_scene.name
@@ -82,7 +92,6 @@ func _process(delta: float) -> void:
 			volume_db = volume
 			play()
 			
-
 
 	if volume_db != volume:
 		volume_db = volume

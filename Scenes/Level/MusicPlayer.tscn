@@ -331,6 +331,19 @@ animation = &"hurt"
 autoplay = "default"
 frame = 12
 frame_progress = 1.0
+frame_progress = 0.7170643
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1116478701]
+visible = false
+z_index = -1
+position = Vector2(8, -8)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_a0vpg")
+hframes = 24
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=1777677002]
+libraries/ = SubResource("AnimationLibrary_5qbu2")
+autoplay = &"idle"
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1169725103]
 material = SubResource("ShaderMaterial_4ybdc")

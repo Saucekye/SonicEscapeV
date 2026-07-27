@@ -17,7 +17,7 @@ func _ready():
 	$CanvasLayer/Label.modulate.a = 0
 		
 	randomize()
-	if randf() < 0.25:
+	if randf() < 0.5:
 		use_alt = true
 		$Node2D.visible = false
 		$Node2D4.visible = false
