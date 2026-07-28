@@ -23,6 +23,9 @@ func _ready() -> void:
 	GlobalSignals.set_teto_display.connect(_enable_teto)
 	GlobalSignals.set_teto_animation.connect(_change_teto_animation)
 	
+	# Check for Teto if enabled
+	_enable_teto(MusicManager.display_teto)
+	
 	# --- Sprite fade in ---
 	teto_sprite_2d.modulate.a = 0.0  # start fully transparent
 	audio_visualizer.modulate.a = 0.0
