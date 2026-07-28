@@ -22,6 +22,15 @@ var characterone: String = ""
 var charactertwo: String = ""
 var characterthree: String = ""
 
+const FORMATION_OFFSETS := [
+	Vector2(-70, 0),
+	Vector2(-130, 20),
+]
+
+const FORMATION_STOP_RANGE := 40.0          ## Distance from target slot where AI stops closing in
+const FORMATION_SEPARATION_DISTANCE := 60.0  ## Min distance AI followers keep from each other
+const FORMATION_SEPARATION_STRENGTH := 1.5   ## How hard followers push apart when too close
+
 var boss_rotation_order: Array = []
 var rng := RandomNumberGenerator.new()
 
