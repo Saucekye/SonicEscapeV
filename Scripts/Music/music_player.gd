@@ -48,7 +48,7 @@ func _ready() -> void:
 		var clean_name = str(song_name).get_basename().get_file()
 		dropdown.add_item(clean_name)
 		
-	dropdown.select(-1)
+	dropdown.select(MusicManager.node2d_track_index)
 		
 """
 func _process(delta: float) -> void:
@@ -102,6 +102,9 @@ func _on_option_button_item_selected(music_idx: int) -> void:
 		#MusicManager.song_started.emit(clean_name)
 	#)
 		# Optional: fade in to target volume
+		
+	# Keep track of music index	
+	MusicManager.node2d_track_index = music_idx
 
 	# Indicate that music is playing again
 	_reset_teto_animation()
