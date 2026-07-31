@@ -12,16 +12,15 @@ var playinganim = false
 @onready var color_rect: ColorRect = $ColorRect
 @onready var audio_visualizer: Node2D = $AudioVisualizer
 @onready var music_buttons: Control = $MusicButtons
+@onready var music_player: Node2D = $"."
 
 var music_paused
-
-var music_options = {
-}
 
 func _ready() -> void:
 	# Connect the signals
 	GlobalSignals.set_teto_display.connect(_enable_teto)
 	GlobalSignals.set_teto_animation.connect(_change_teto_animation)
+	GlobalSignals.disable_music_player.connect(_disable_scene)
 	
 	# Check for Teto if enabled
 	_enable_teto(MusicManager.display_teto)
@@ -45,10 +44,12 @@ func _ready() -> void:
 	_reset_teto_animation()
 	
 	# --- Dropdown setup ---
-	for option_name in music_options.keys():
-		dropdown.add_item(option_name)
-	dropdown.connect("item_selected", Callable(self, "_on_dropdown_selected"))
-	
+	for song_name in MusicManager.node2d_music_pool:
+		var clean_name = str(song_name).get_basename().get_file()
+		dropdown.add_item(clean_name)
+		
+	dropdown.select(-1)
+		
 """
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("trick"):
@@ -72,29 +73,38 @@ func _on_player_controller_hurt() -> void:
 	playinganim = true
 """
 
-func _on_option_button_item_selected(index: int) -> void:
-	var selected_name = dropdown.get_item_text(index)
-	if music_options.has(selected_name):
-		var song_data = music_options[selected_name]
-		var new_stream = song_data["stream"]
-		var tween = create_tween()
-		# Optional: fade out current music
-		#tween.tween_property(MusicManager, "volume", 0.0, 1.0).as_sequence()
-		tween.tween_callback(func():
-			MusicManager.stream = new_stream
-			MusicManager.play()
-			
-			var clean_name = new_stream.resource_path.get_basename().get_file()
-			MusicManager.song_started.emit(clean_name)
-		)
-			# Optional: fade in to target volume
-		
-		# Remove focus from OptionButton
-		dropdown.release_focus()
+func _on_option_button_item_selected(music_idx: int) -> void:
+	# Remove focus from OptionButton
+	dropdown.release_focus()
+	
+	# Only allow the music to be changed while in a level
+	if !MusicManager.can_play:
+		return
+	
+	# Ensure the index is within range
+	if music_idx < 0 or music_idx >= MusicManager.node2d_music_pool.size():
+		music_idx = 0
+	
+	var song_data = MusicManager.node2d_music_pool[music_idx]
+	
+	MusicManager.stream = song_data
+	MusicManager.play()
+	
+	#var new_stream = song_data["stream"]
+	#var tween = create_tween()
+	## Optional: fade out current music
+	##tween.tween_property(MusicManager, "volume", 0.0, 1.0).as_sequence()
+	#tween.tween_callback(func():
+		#MusicManager.stream = new_stream
+		#MusicManager.play()
+		#
+		#var clean_name = new_stream.resource_path.get_basename().get_file()
+		#MusicManager.song_started.emit(clean_name)
+	#)
+		# Optional: fade in to target volume
 
-		# Indicate that music is playing again
-		pause_button.visible = true
-		play_button.visible = false
+	# Indicate that music is playing again
+	_reset_teto_animation()
 
 func _on_music_pause_button_pressed() -> void:
 	music_pause_button.focus_mode = Control.FOCUS_NONE
@@ -141,3 +151,6 @@ func _change_teto_animation(animation_name : String):
 	if !teto_sprite_2d.sprite_frames.has_animation(animation_name):
 		teto_sprite_2d.play("default")
 	teto_sprite_2d.play(animation_name)
+	
+func _disable_scene(disabled : bool):
+	music_player.visible = !disabled
