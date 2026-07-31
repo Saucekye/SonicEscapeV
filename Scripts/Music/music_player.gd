@@ -12,6 +12,7 @@ var playinganim = false
 @onready var color_rect: ColorRect = $ColorRect
 @onready var audio_visualizer: Node2D = $AudioVisualizer
 @onready var music_buttons: Control = $MusicButtons
+@onready var music_player: Node2D = $"."
 
 var music_paused
 
@@ -19,6 +20,7 @@ func _ready() -> void:
 	# Connect the signals
 	GlobalSignals.set_teto_display.connect(_enable_teto)
 	GlobalSignals.set_teto_animation.connect(_change_teto_animation)
+	GlobalSignals.disable_music_player.connect(_disable_scene)
 	
 	# Check for Teto if enabled
 	_enable_teto(MusicManager.display_teto)
@@ -149,3 +151,6 @@ func _change_teto_animation(animation_name : String):
 	if !teto_sprite_2d.sprite_frames.has_animation(animation_name):
 		teto_sprite_2d.play("default")
 	teto_sprite_2d.play(animation_name)
+	
+func _disable_scene(disabled : bool):
+	music_player.visible = !disabled
