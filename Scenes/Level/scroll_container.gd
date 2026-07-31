@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 		scroll_horizontal = 0
 		return
 		
-	scroll_horizontal += 2
+	scroll_horizontal += 1
 	if scroll_horizontal >= rich_text_label.size.x - size.x:
 		scroll_horizontal = 0
 
