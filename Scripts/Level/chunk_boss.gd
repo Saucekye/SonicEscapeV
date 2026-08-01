@@ -2,8 +2,14 @@ extends Node2D
 
 var levelover = false
 
+func _ready() -> void:
+	# DIsable ability to change music
+	GlobalSignals.disable_music_player.emit(true)
+
 func _on_node_2d_end() -> void:
 	Test.end = true
+	# Reenable ability to choose music
+	GlobalSignals.disable_music_player.emit(false)
 	if levelover == false:
 		Test.level += 1
 		levelover = true
