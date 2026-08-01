@@ -20,7 +20,6 @@ class_name Player extends CharacterBody2D
 
 @export_group("Node References")
 @export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
-@export var character_id: String = "" 
 # Collision layers stored before entering special zones (e.g. loops), restored on exit
 @export var stored_layer: int
 @export var stored_mask: int
@@ -37,7 +36,6 @@ var in_loop = false  # True while the character is inside a loop section
 @onready var wall_cast: RayCast2D = $CollisionShape2D/WallCast
 @onready var wall_cast_2: RayCast2D = $CollisionShape2D/WallCast2
 @onready var raycast: RayCast2D = $CollisionShape2D/Raycast
-
 
 # ─────────────────────────────────────────────
 # Signals (used to report trick rating to UI/score system)
@@ -207,14 +205,13 @@ var grinding = false                ## True while grinding on a rail
 # Misc
 @export_group("Misc")
 @export var player_path: NodePath   ## Path to the player node this AI character should follow
-@export var follow_offset: Vector2 = Vector2.ZERO   ## Formation offset behind the leader; assigned at spawn from Test.FORMATION_OFFSETS, x auto-flips with leader facing
 @export var trail_position : Vector2 = Vector2.ZERO		## Default trail  position when running
 @export var trail_ball_position : Vector2 = Vector2(0, 15)	## Trail position for rolling
 @export var trail_dash_max_position : Vector2 = trail_position	## Trail position when running with top speed animation (If you want this and trail_positoin to be the same, keep it as the zero vector)
 
 var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png"  ## Unused texture path
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
-var player: Player         ## Reference to the followed player, resolved from player_path
+var player: CharacterBody2D         ## Reference to the followed player, resolved from player_path
 
 # ─────────────────────────────────────────────
 # Hanging / Rail State
@@ -230,16 +227,6 @@ func _ready():
 	$Sprite2D2.visible = false  # Secondary sprite hidden by default (alternate costume/state)
 	if trail_dash_max_position == Vector2.ZERO:
 		trail_dash_max_position = trail_position
-	if not is_player:
-		add_to_group("AICharacters")
-		assign_formation_slot()
-
-func assign_formation_slot():
-	# Determine which formation slot this character occupies based on selection order
-	if character_id == Test.charactertwo:
-		follow_offset = Test.FORMATION_OFFSETS[0]
-	elif character_id == Test.characterthree:
-		follow_offset = Test.FORMATION_OFFSETS[1]
 	
 func _process(_delta):
 	# Handle virtual joystick on mobile — converts stick input into action events
@@ -420,39 +407,26 @@ func _physics_process(delta):
 			
 	# ── AI Follow Logic ────────────────────────────────────────────────
 	if not is_player and not flying:
-		player = get_node(player_path) as Player
+		player = get_node(player_path) as CharacterBody2D
 		
 		if in_loop:
 			# Inside a loop: keep current heading, don't recalculate from player position
 			pass
 		elif player and ((not is_on_floor() and ball == true) or ball == false):
-			# Formation slot behind the leader; x flips with leader facing so followers trail correctly
-			var facing_sign := -1.0 if player.sprite.flip_h else 1.0
-			var desired_position = player.global_position + Vector2(follow_offset.x * facing_sign, follow_offset.y)
-			
-			# Push apart from other AI followers so they don't stack on top of each other
-			for other in get_tree().get_nodes_in_group("AICharacters"):
-				if other == self:
-					continue
-				var away = global_position - other.global_position
-				var dist = away.length()
-				if dist > 0.001 and dist < Test.FORMATION_SEPARATION_DISTANCE:
-					var push_amount = (Test.FORMATION_SEPARATION_DISTANCE - dist) * Test.FORMATION_SEPARATION_STRENGTH
-					desired_position.x += sign(away.x) * push_amount
-			
-			var to_target = desired_position - global_position
-			var actual_distance = to_target.length()
+			var to_player = player.global_position - global_position
+			var actual_distance = to_player.length()
+			var stop_range = 60           # Within this distance, the AI stops
 			var max_possible_speed = 2000
 			var speed_ramp_distance = 200 # Distance over which speed ramps up
 			var speed_change_rate = 10500
 			
-			if actual_distance > Test.FORMATION_STOP_RANGE:
-				direction = sign(to_target.x)  # Chase the formation slot horizontally
-				var distance_factor = clamp((actual_distance - Test.FORMATION_STOP_RANGE) / speed_ramp_distance, 0.0, 1.0)
+			if actual_distance > stop_range:
+				direction = sign(to_player.x)  # Chase player horizontally
+				var distance_factor = clamp((actual_distance - stop_range) / speed_ramp_distance, 0.0, 1.0)
 				var target_speed = max_possible_speed * distance_factor
 				max_speed = move_toward(max_speed, target_speed, speed_change_rate * delta)
 			else:
-				# Close enough to formation slot — decelerate to stop
+				# Close enough — decelerate to stop
 				direction = 0
 				max_speed = move_toward(max_speed, 0, speed_change_rate * delta)
 	else:

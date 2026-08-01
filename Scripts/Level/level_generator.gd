@@ -103,7 +103,6 @@ func _spawn_next_boss_level():
 	last_end_position = chunk.get_node("End").global_position
 	chunks.append(chunk)
 	end_spawned = true
-	Pause.current_scene = "Boss"
 
 # ─────────────────────────────
 # Chunk Spawning Functions

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dwkxx7a6fwjqv"]
+[gd_scene load_steps=139 format=3 uid="uid://dwkxx7a6fwjqv"]
 
 [ext_resource type="Script" uid="uid://ilgl2nqnrs7" path="res://Scripts/Menu/character_select_screen.gd" id="1_nlrn3"]
 [ext_resource type="PackedScene" uid="uid://die03v6a7cw0k" path="res://misc/Icons.tscn" id="2_d8uyd"]
@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://2ru4380gp75j" path="res://Sprites/Intro/456.png" id="28_7g24f"]
 [ext_resource type="Texture2D" uid="uid://qggvt4ph46qu" path="res://Sprites/Characters/Tails/tailssheet.png" id="28_640u5"]
 [ext_resource type="VideoStream" uid="uid://c8gm04gu6p4bk" path="res://Videos/Tutorial-level-video.ogv" id="29_7g24f"]
-[ext_resource type="Shader" uid="uid://rjapj8dx7ufb" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
+[ext_resource type="Shader" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
 [ext_resource type="Texture2D" uid="uid://dkmnifpu1kn4k" path="res://Sprites/Intro/789.png" id="29_udxrr"]
 [ext_resource type="Texture2D" uid="uid://cjr4dukic68mv" path="res://Sprites/Characters/Knuckles/knucklesheet.png" id="29_xlc5t"]
 
@@ -325,7 +325,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nlvv0")
 }],
-"loop": 1,
+"loop": true,
 "name": &"default",
 "speed": 5.0
 }]
@@ -613,7 +613,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ilwkn")
 }],
-"loop": 1,
+"loop": true,
 "name": &"default",
 "speed": 5.0
 }]
@@ -681,7 +681,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xa6t5")
 }],
-"loop": 1,
+"loop": true,
 "name": &"default",
 "speed": 20.0
 }]
@@ -710,7 +710,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1sqfr")
 }],
-"loop": 1,
+"loop": true,
 "name": &"default",
 "speed": 10.0
 }]
@@ -732,7 +732,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t6dg0")
 }],
-"loop": 1,
+"loop": true,
 "name": &"default",
 "speed": 10.0
 }]
@@ -754,15 +754,14 @@ shader_parameter/vinnette_alpla = 1.0
 shader_parameter/vinnette_inner_radius = 0.0
 shader_parameter/vinnette_outer_radius = 1.0
 
-[node name="CharacterSelectScreen" type="Control" unique_id=802153288]
+[node name="CharacterSelectScreen" type="Control"]
 process_mode = 3
 layout_mode = 3
-anchors_preset = 0
 offset_top = -56.0
 offset_bottom = -56.0
 script = ExtResource("1_nlrn3")
 
-[node name="ColorRect5" type="ColorRect" parent="." unique_id=2072743194]
+[node name="ColorRect5" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_cmxlk")
 layout_mode = 0
@@ -773,7 +772,7 @@ offset_bottom = -336.0416
 scale = Vector2(46.12, 27.88)
 mouse_filter = 2
 
-[node name="ColorRect3" type="ColorRect" parent="." unique_id=244961501]
+[node name="ColorRect3" type="ColorRect" parent="."]
 clip_children = 2
 z_index = 1
 clip_contents = true
@@ -787,7 +786,7 @@ scale = Vector2(48.1798, 8.03256)
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=2060062463]
+[node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color(1, 0, 0, 1)
 clip_children = 2
 clip_contents = true
@@ -800,7 +799,7 @@ rotation = -0.152767
 scale = Vector2(47.0933, 4.09697)
 mouse_filter = 2
 
-[node name="Title2" type="Label" parent="." unique_id=1801252846]
+[node name="Title2" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -819,7 +818,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "Select Up to 3"
 horizontal_alignment = 1
 
-[node name="Title" type="Label" parent="." unique_id=51437787]
+[node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -838,47 +837,47 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "CHARACTER SELECT"
 horizontal_alignment = 1
 
-[node name="Charborder" type="Node2D" parent="." unique_id=1896373599]
+[node name="Charborder" type="Node2D" parent="."]
 z_index = 1
 position = Vector2(664, 248)
 script = ExtResource("5_8mv32")
 
-[node name="Sonic" parent="Charborder" unique_id=2077217235 instance=ExtResource("2_d8uyd")]
+[node name="Sonic" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-507, -139)
 sprite2_texture = ExtResource("9_cgfmd")
 hover_color = Color(0.38, 1, 1, 1)
 
-[node name="Tails" parent="Charborder" unique_id=1308870552 instance=ExtResource("2_d8uyd")]
+[node name="Tails" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-331, -140)
 texture = ExtResource("4_0van7")
 sprite2_texture = ExtResource("7_a5rpx")
 hover_color = Color(1, 0.931, 0.31, 1)
 
-[node name="Knuckles" parent="Charborder" unique_id=145722423 instance=ExtResource("2_d8uyd")]
+[node name="Knuckles" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-503, 9)
 texture = ExtResource("3_vwxb7")
 sprite2_texture = ExtResource("8_2i687")
 hover_color = Color(1, 0.45, 0.45, 1)
 
-[node name="Amy" parent="Charborder" unique_id=1846651028 instance=ExtResource("2_d8uyd")]
+[node name="Amy" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-334, 4)
 texture = ExtResource("12_up6kj")
 sprite2_texture = ExtResource("13_v4rvu")
 hover_color = Color(1, 0.25, 0.77499986, 1)
 
-[node name="Shadow" type="AnimatedSprite2D" parent="Charborder" unique_id=559292765]
+[node name="Shadow" type="AnimatedSprite2D" parent="Charborder"]
 modulate = Color(0.41568628, 0.41568628, 0.41568628, 1)
 position = Vector2(-496, 144)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_sml2w")
 autoplay = "default"
 
-[node name="Shadowicon" type="Sprite2D" parent="Charborder/Shadow" unique_id=2134162072]
+[node name="Shadowicon" type="Sprite2D" parent="Charborder/Shadow"]
 position = Vector2(-8.000002, -10.666671)
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("11_2kwsm")
 
-[node name="Silver" type="AnimatedSprite2D" parent="Charborder" unique_id=1752855487]
+[node name="Silver" type="AnimatedSprite2D" parent="Charborder"]
 modulate = Color(0.41568628, 0.41568628, 0.41568628, 1)
 position = Vector2(-512, 448)
 scale = Vector2(3, 3)
@@ -886,36 +885,36 @@ sprite_frames = SubResource("SpriteFrames_thrnm")
 autoplay = "default"
 frame_progress = 0.2057189
 
-[node name="Silvericon" type="Sprite2D" parent="Charborder/Silver" unique_id=1855748548]
+[node name="Silvericon" type="Sprite2D" parent="Charborder/Silver"]
 position = Vector2(-8.000002, -10.666671)
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("13_dhxux")
 
-[node name="Rouge" parent="Charborder" unique_id=606043377 instance=ExtResource("2_d8uyd")]
+[node name="Rouge" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 150)
 texture = ExtResource("13_g0mmr")
 sprite2_texture = ExtResource("14_8453p")
 hover_color = Color(0.74558026, 0.7455802, 0.74558014, 1)
 
-[node name="Blaze" parent="Charborder" unique_id=1902859214 instance=ExtResource("2_d8uyd")]
+[node name="Blaze" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-512, 302)
 texture = ExtResource("13_up6kj")
 sprite2_texture = ExtResource("14_v4rvu")
 hover_color = Color(0.47605157, 0.4804187, 1, 1)
 
-[node name="Cream" parent="Charborder" unique_id=684417750 instance=ExtResource("2_d8uyd")]
+[node name="Cream" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 302)
 texture = ExtResource("17_8453p")
 sprite2_texture = ExtResource("18_6j3rh")
 hover_color = Color(1, 0.70533335, 0.48000005, 1)
 
-[node name="MetalSonic" parent="Charborder" unique_id=74534221 instance=ExtResource("2_d8uyd")]
+[node name="MetalSonic" parent="Charborder" instance=ExtResource("2_d8uyd")]
 position = Vector2(-344, 454)
 texture = ExtResource("19_y1kjk")
 sprite2_texture = ExtResource("19_phoin")
 hover_color = Color(0.64, 0.68799996, 1, 1)
 
-[node name="Highlight1" type="ColorRect" parent="Charborder" unique_id=1063026518]
+[node name="Highlight1" type="ColorRect" parent="Charborder"]
 clip_children = 2
 z_index = -2
 clip_contents = true
@@ -929,14 +928,14 @@ scale = Vector2(48.1798, 7.23526)
 mouse_filter = 2
 color = Color(1, 0, 0, 1)
 
-[node name="Texture" type="Sprite2D" parent="Charborder/Highlight1" unique_id=49371218]
+[node name="Texture" type="Sprite2D" parent="Charborder/Highlight1"]
 position = Vector2(20.1746, 20.0506)
 rotation = -0.993383
 scale = Vector2(0.00913439, 0.0333845)
 skew = 0.958781
 texture = ExtResource("9_cgfmd")
 
-[node name="Highlight2" type="ColorRect" parent="Charborder" unique_id=954717892]
+[node name="Highlight2" type="ColorRect" parent="Charborder"]
 clip_children = 2
 z_index = -2
 clip_contents = true
@@ -950,13 +949,13 @@ scale = Vector2(48.1798, 7.23526)
 mouse_filter = 2
 color = Color(1, 0, 0, 1)
 
-[node name="Texture" type="Sprite2D" parent="Charborder/Highlight2" unique_id=1272724558]
+[node name="Texture" type="Sprite2D" parent="Charborder/Highlight2"]
 position = Vector2(20.175, 20.051)
 rotation = -0.993383
 scale = Vector2(0.00913439, 0.0333845)
 skew = 0.958781
 
-[node name="Highlight3" type="ColorRect" parent="Charborder" unique_id=407185626]
+[node name="Highlight3" type="ColorRect" parent="Charborder"]
 clip_children = 2
 z_index = -2
 clip_contents = true
@@ -970,13 +969,13 @@ scale = Vector2(48.1798, 7.23526)
 mouse_filter = 2
 color = Color(1, 0, 0, 1)
 
-[node name="Texture" type="Sprite2D" parent="Charborder/Highlight3" unique_id=1969912267]
+[node name="Texture" type="Sprite2D" parent="Charborder/Highlight3"]
 position = Vector2(20.175, 20.051)
 rotation = -0.993383
 scale = Vector2(0.00913439, 0.0333845)
 skew = 0.958781
 
-[node name="ColorRect4" type="ColorRect" parent="." unique_id=899511136]
+[node name="ColorRect4" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_cmxlk")
 layout_mode = 0
 offset_left = -355.0
@@ -986,7 +985,7 @@ offset_bottom = -319.0416
 scale = Vector2(46.12, 27.88)
 mouse_filter = 2
 
-[node name="Tutorial" type="Label" parent="." unique_id=1670523644]
+[node name="Tutorial" type="Label" parent="."]
 z_index = 2
 layout_mode = 1
 anchors_preset = -1
@@ -1010,7 +1009,7 @@ script = ExtResource("21_phoin")
 hover_scale = 1.1000000000058208
 hover_color = Color(1, 1, 1, 1)
 
-[node name="Start" type="Sprite2D" parent="." unique_id=58856099]
+[node name="Start" type="Sprite2D" parent="."]
 self_modulate = Color(0, 0, 0, 1)
 z_index = 1
 position = Vector2(1376, 584)
@@ -1019,7 +1018,7 @@ texture = ExtResource("9_eh470")
 script = ExtResource("9_73vdo")
 hover_color = Color(1, 1, 1, 1)
 
-[node name="Start" type="Label" parent="Start" unique_id=1513963085]
+[node name="Start" type="Label" parent="Start"]
 z_index = 2
 anchors_preset = -1
 anchor_left = 0.5
@@ -1039,24 +1038,24 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "START"
 horizontal_alignment = 1
 
-[node name="Openingsfx" type="AudioStreamPlayer2D" parent="." unique_id=218912357]
+[node name="Openingsfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("17_xoff6")
 bus = &"SFX"
 
-[node name="TutorialElements" type="Control" parent="." unique_id=1582244841]
+[node name="TutorialElements" type="Control" parent="."]
 z_index = 5
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TutorialCover" type="ColorRect" parent="TutorialElements" unique_id=236333007]
+[node name="TutorialCover" type="ColorRect" parent="TutorialElements"]
 visible = false
 layout_mode = 0
 offset_right = 1713.0
 offset_bottom = 1095.0
 color = Color(0, 0, 0, 0.78431374)
 
-[node name="GameLogo" type="TextureRect" parent="TutorialElements" unique_id=1780259476]
+[node name="GameLogo" type="TextureRect" parent="TutorialElements"]
 visible = false
 layout_mode = 0
 offset_left = 355.0
@@ -1067,7 +1066,7 @@ texture = ExtResource("4_m2jvv")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Characters" type="TextureRect" parent="TutorialElements" unique_id=829984987]
+[node name="Characters" type="TextureRect" parent="TutorialElements"]
 visible = false
 layout_mode = 0
 offset_left = 224.0
@@ -1078,7 +1077,7 @@ texture = SubResource("AtlasTexture_sml2w")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="CharacterTypes" type="Control" parent="TutorialElements" unique_id=1485219719]
+[node name="CharacterTypes" type="Control" parent="TutorialElements"]
 visible = false
 anchors_preset = 0
 offset_left = -74.0
@@ -1086,7 +1085,7 @@ offset_top = 12.0
 offset_right = -34.0
 offset_bottom = 52.0
 
-[node name="SpeedLabel" type="Label" parent="TutorialElements/CharacterTypes" unique_id=1019620139]
+[node name="SpeedLabel" type="Label" parent="TutorialElements/CharacterTypes"]
 z_index = 2
 layout_mode = 1
 anchors_preset = -1
@@ -1110,7 +1109,7 @@ script = ExtResource("21_phoin")
 hover_scale = 1.1000000000058208
 hover_color = Color(1, 1, 1, 1)
 
-[node name="FlightLabel" type="Label" parent="TutorialElements/CharacterTypes" unique_id=1835022313]
+[node name="FlightLabel" type="Label" parent="TutorialElements/CharacterTypes"]
 z_index = 2
 layout_mode = 1
 anchors_preset = -1
@@ -1134,7 +1133,7 @@ script = ExtResource("21_phoin")
 hover_scale = 1.1000000000058208
 hover_color = Color(1, 1, 1, 1)
 
-[node name="PowerLabel" type="Label" parent="TutorialElements/CharacterTypes" unique_id=1830999371]
+[node name="PowerLabel" type="Label" parent="TutorialElements/CharacterTypes"]
 z_index = 2
 layout_mode = 1
 anchors_preset = -1
@@ -1158,28 +1157,28 @@ script = ExtResource("21_phoin")
 hover_scale = 1.1000000000058208
 hover_color = Color(1, 1, 1, 1)
 
-[node name="Speed" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes" unique_id=1969505573]
+[node name="Speed" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
 position = Vector2(1083, 156)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_0qdhy")
 autoplay = "default"
 frame_progress = 0.7488655
 
-[node name="Flight" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes" unique_id=1843768933]
+[node name="Flight" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
 position = Vector2(1080, 334)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_7g0qs")
 autoplay = "default"
 frame_progress = 0.32786795
 
-[node name="Power" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes" unique_id=1777466196]
+[node name="Power" type="AnimatedSprite2D" parent="TutorialElements/CharacterTypes"]
 position = Vector2(1084, 486)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_1a0r8")
 autoplay = "default"
 frame_progress = 0.44211745
 
-[node name="Bosses" type="Control" parent="TutorialElements" unique_id=517512312]
+[node name="Bosses" type="Control" parent="TutorialElements"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -1188,7 +1187,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Group" type="TextureRect" parent="TutorialElements/Bosses" unique_id=1123609382]
+[node name="Group" type="TextureRect" parent="TutorialElements/Bosses"]
 layout_mode = 0
 offset_left = 678.0
 offset_top = 68.0
@@ -1198,7 +1197,7 @@ texture = SubResource("AtlasTexture_h6fn6")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Metal" type="TextureRect" parent="TutorialElements/Bosses" unique_id=74809769]
+[node name="Metal" type="TextureRect" parent="TutorialElements/Bosses"]
 layout_mode = 0
 offset_left = 261.0
 offset_top = 96.0
@@ -1208,11 +1207,10 @@ texture = SubResource("AtlasTexture_clwaf")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Video" type="Control" parent="TutorialElements" unique_id=669573098]
+[node name="Video" type="Control" parent="TutorialElements"]
 visible = false
 z_index = 4
 layout_mode = 1
-anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1224,7 +1222,7 @@ offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="TutorialElements/Video" unique_id=925244638]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="TutorialElements/Video"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -1241,7 +1239,7 @@ stream = ExtResource("29_7g24f")
 loop = true
 buffering_msec = 1000
 
-[node name="ColorRect" type="ColorRect" parent="TutorialElements/Video" unique_id=1504712530]
+[node name="ColorRect" type="ColorRect" parent="TutorialElements/Video"]
 visible = false
 z_index = 10
 material = SubResource("ShaderMaterial_52ucb")

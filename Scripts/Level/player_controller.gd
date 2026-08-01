@@ -123,7 +123,6 @@ func update_character_states():
 		current_character.z_index = 10
 	
 	# Third pass: Update visibility and physics
-	var follower_slot := 0
 	for i in range(characters.size()):
 		var character = characters[i]
 		
@@ -138,8 +137,6 @@ func update_character_states():
 			
 			# Set up following behavior
 			character.player_path = current_character.get_path()
-			character.follow_offset = Test.FORMATION_OFFSETS[follower_slot]
-			follower_slot += 1
 
 func _input(event):
 	if characters.size() <= 1:

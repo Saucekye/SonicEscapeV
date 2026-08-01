@@ -9,7 +9,6 @@ var new_scene_name := ""
 var volume := -15
 var is_muted = false
 var display_teto : bool = true
-var can_play : bool = true
 
 # ─────────────────────────────
 # Fixed music per scene

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bf005udbg2cyc"]
+[gd_scene load_steps=9 format=3 uid="uid://bf005udbg2cyc"]
 
 [ext_resource type="Script" uid="uid://cy04sel5lg2mj" path="res://Scripts/Level/levelintro.gd" id="1_auv3b"]
 [ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="2_vdc2p"]
@@ -438,13 +438,13 @@ _data = {
 &"start": SubResource("Animation_j4rho")
 }
 
-[node name="CanvasLayer2" type="CanvasLayer" unique_id=363476666]
+[node name="CanvasLayer2" type="CanvasLayer"]
 script = ExtResource("1_auv3b")
 
-[node name="Node2D" type="Node2D" parent="." unique_id=1133470789]
+[node name="Node2D" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_lnota")
 
-[node name="ColorRect" type="ColorRect" parent="Node2D" unique_id=2100614153]
+[node name="ColorRect" type="ColorRect" parent="Node2D"]
 offset_left = -51.0
 offset_top = -51.0
 offset_right = -11.0
@@ -453,7 +453,7 @@ scale = Vector2(42.6064, 26.8568)
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="Node2D" unique_id=1986532529]
+[node name="ColorRect2" type="ColorRect" parent="Node2D"]
 material = SubResource("ShaderMaterial_5rb4n")
 offset_left = -51.0
 offset_top = -54.0
@@ -463,7 +463,7 @@ scale = Vector2(42.8064, 21.7768)
 mouse_filter = 2
 color = Color(0.98, 0, 0.0163331, 1)
 
-[node name="Label" type="Label" parent="Node2D" unique_id=749500032]
+[node name="Label" type="Label" parent="Node2D"]
 offset_left = 544.0
 offset_top = 344.0
 offset_right = 643.0
@@ -473,11 +473,13 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.321569)
 text = "TEST DEMO"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D" unique_id=1390730223]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
 root_node = NodePath("../..")
-libraries/ = SubResource("AnimationLibrary_x1ph2")
+libraries = {
+&"": SubResource("AnimationLibrary_x1ph2")
+}
 
-[node name="ColorRect3" type="ColorRect" parent="Node2D" unique_id=976241927]
+[node name="ColorRect3" type="ColorRect" parent="Node2D"]
 use_parent_material = true
 offset_left = -376.0
 offset_top = -88.0
