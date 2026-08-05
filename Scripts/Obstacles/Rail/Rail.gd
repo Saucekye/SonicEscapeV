@@ -9,7 +9,7 @@ extends Path2D
 var grinding_players: Dictionary = {}
 var player_followers: Dictionary = {}
 var player_speeds: Dictionary = {}  # Each player has their own grind speed
-const RAIL_SPEED_MODIFIER : int = 18
+const RAIL_SPEED_MODIFIER : int = 19
 
 func _ready():
 	var path_points: PackedVector2Array = curve.get_baked_points()
@@ -45,16 +45,15 @@ func _physics_process(delta):
 			var dir = sign(player_grind_speed)
 			var speed_increase = dir * follower.rotation
 			var player_base_speed = 350
+			
 			if sign(follower.rotation) * sign(dir) > 0 and abs(player_grind_speed) < player.ABOSLUTE_MAX_SPEED:
 				player_grind_speed += speed_increase * RAIL_SPEED_MODIFIER
-			elif sign(follower.rotation) * sign(dir) < 0 and abs(player_grind_speed) < player_base_speed:
-				player_grind_speed += speed_increase * (RAIL_SPEED_MODIFIER / 2.0)
+				
 			if abs(player_grind_speed) < player_base_speed:
 				player_grind_speed = player_base_speed * dir
+				
 			# Set the player's speed so it applies when they jump or exit the rail
 			# And store player grind speed
-			print(player_speeds[player])
-			# Store the new speed for the player
 			player_speeds[player] = player_grind_speed
 			player.motion.x = player_grind_speed
 			
