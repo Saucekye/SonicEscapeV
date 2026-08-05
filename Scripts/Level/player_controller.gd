@@ -107,7 +107,7 @@ func setup_characters():
 		# Set up partner following for non-active characters
 		if i != current_character_index:
 			character.player_path = current_character.get_path() if current_character else NodePath()
-
+		
 func update_character_states():
 	"""Update all character states based on current active character"""
 	# First pass: Set all to non-player
@@ -125,7 +125,7 @@ func update_character_states():
 	# Third pass: Update visibility and physics
 	var follower_slot := 0
 	for i in range(characters.size()):
-		var character = characters[i]
+		var character : Player = characters[i]
 		
 		if i == current_character_index:
 			# Current player character
@@ -139,6 +139,7 @@ func update_character_states():
 			# Set up following behavior
 			character.player_path = current_character.get_path()
 			character.follow_offset = Test.FORMATION_OFFSETS[follower_slot]
+			
 			follower_slot += 1
 
 func _input(event):

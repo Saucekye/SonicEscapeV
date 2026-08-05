@@ -23,8 +23,8 @@ var charactertwo: String = ""
 var characterthree: String = ""
 
 const FORMATION_OFFSETS := [
-	Vector2(-70, 0),
-	Vector2(-130, 20),
+	Vector2(-50, 0),
+	Vector2(-65, 0),
 ]
 
 const FORMATION_STOP_RANGE := 40.0          ## Distance from target slot where AI stops closing in
