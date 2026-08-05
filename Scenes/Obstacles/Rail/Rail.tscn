@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3senyyvaehpt"]
+[gd_scene format=3 uid="uid://c3senyyvaehpt"]
 
 [ext_resource type="Script" uid="uid://bt46seggoehi2" path="res://Scripts/Obstacles/Rail/Rail.gd" id="1_t4j17"]
 
@@ -8,21 +8,21 @@ _data = {
 }
 point_count = 11
 
-[node name="Path2D" type="Path2D" groups=["Rail"]]
+[node name="Path2D" type="Path2D" unique_id=386877770 groups=["Rail"]]
 curve = SubResource("Curve2D_goavd")
 script = ExtResource("1_t4j17")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="."]
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=520402057]
 position = Vector2(-2.66675, 10.6667)
 rotation = -0.011110807
 loop = false
 
-[node name="Start" type="Area2D" parent="." groups=["Rail"]]
+[node name="Start" type="Area2D" parent="." unique_id=1681795202 groups=["Rail"]]
 position = Vector2(0, 8)
 collision_layer = 15
 collision_mask = 15
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Start"]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Start" unique_id=2008616344]
 position = Vector2(33, 1)
 build_mode = 1
 

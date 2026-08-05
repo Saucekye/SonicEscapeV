@@ -1,14 +1,15 @@
 extends Path2D
 
-@export var grind_speed := 400.0
 @onready var collision_polygon := $Start/CollisionShape2D # Use CollisionPolygon2D for collision shape
+
+@export var path_width: float = 2.5
+@export var grind_speed := 400.0
 
 # Dictionary to track multiple players and their grinding states
 var grinding_players: Dictionary = {}
 var player_followers: Dictionary = {}
 var player_speeds: Dictionary = {}  # Each player has their own grind speed
-var base_speed = 250
-@export var path_width: float = 2.5
+const RAIL_SPEED_MODIFIER : int = 18
 
 func _ready():
 	var path_points: PackedVector2Array = curve.get_baked_points()
@@ -39,6 +40,23 @@ func _physics_process(delta):
 				player.ap.play("skid")
 				
 			player.direction = 0
+			
+			# Increase player grind speed based on direction / motion
+			var dir = sign(player_grind_speed)
+			var speed_increase = dir * follower.rotation
+			var player_base_speed = 350
+			if sign(follower.rotation) * sign(dir) > 0 and abs(player_grind_speed) < player.ABOSLUTE_MAX_SPEED:
+				player_grind_speed += speed_increase * RAIL_SPEED_MODIFIER
+			elif sign(follower.rotation) * sign(dir) < 0 and abs(player_grind_speed) < player_base_speed:
+				player_grind_speed += speed_increase * (RAIL_SPEED_MODIFIER / 2.0)
+			if abs(player_grind_speed) < player_base_speed:
+				player_grind_speed = player_base_speed * dir
+			# Set the player's speed so it applies when they jump or exit the rail
+			# And store player grind speed
+			print(player_speeds[player])
+			# Store the new speed for the player
+			player_speeds[player] = player_grind_speed
+			player.motion.x = player_grind_speed
 			
 			# Check if we're about to go past the ends BEFORE updating progress
 			var new_progress = follower.progress + player_grind_speed * delta
@@ -89,7 +107,7 @@ func start_grind(player):
 	#if player.time_elapsed >= 50:
 	if abs(player.motion.x) > 0:
 		player_base_speed = abs(player.motion.x) * 1.05
-	
+		
 	var sprite = player.get_node_or_null("Sprite2D")
 	var direction_sign = 1
 	if sprite and sprite.flip_h:
@@ -124,8 +142,6 @@ func stop_grind(player):
 	
 	var upward_boost = -500
 	var launch_speed = 800 * direction_sign
-	if abs(player.motion.x) > 800:
-		launch_speed = abs(player.motion.x) * direction_sign
 	
 	# Check grinding state BEFORE setting to false
 	if player.grinding:
