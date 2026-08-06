@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://p2ybublbkfdp"]
+[gd_scene format=3 uid="uid://p2ybublbkfdp"]
 
 [ext_resource type="Script" uid="uid://kiay27di5xa2" path="res://Scripts/Obstacles/Miku/miku.gd" id="1_10iud"]
 [ext_resource type="Texture2D" uid="uid://dfpngk75wdo5u" path="res://Sprites/Obstacles/Miku/miku1.png" id="2_c3to5"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cb4y11cvj4uy4" path="res://Sprites/Obstacles/Miku/brailku.png" id="5_7bsax"]
 [ext_resource type="Texture2D" uid="uid://d3shgbefcsa2o" path="res://Sprites/Obstacles/Miku/teto2.png" id="6_s1ety"]
 [ext_resource type="Texture2D" uid="uid://cjo127d5lhmjv" path="res://Sprites/Obstacles/Miku/kagamine.png" id="7_ao8vg"]
+[ext_resource type="Texture2D" uid="uid://cwr3xdb4l5tki" path="res://Sprites/Obstacles/Miku/gundum.png" id="8_rxp3m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vk4aa"]
 atlas = ExtResource("3_hwr23")
@@ -26,7 +27,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0rx4k")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -132,26 +133,26 @@ size = Vector2(0.6, 0.76)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk4aa"]
 size = Vector2(0.6, 0.76)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Miku", "item"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=405560084 groups=["Miku", "item"]]
 scale = Vector2(25, 25)
 collision_layer = 16
 collision_mask = 16
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_10iud")
-textures = Array[Texture2D]([ExtResource("2_c3to5"), ExtResource("3_kvapj"), ExtResource("4_7bsax"), ExtResource("5_7bsax"), ExtResource("6_s1ety"), ExtResource("7_ao8vg")])
+textures = Array[Texture2D]([ExtResource("2_c3to5"), ExtResource("3_kvapj"), ExtResource("4_7bsax"), ExtResource("5_7bsax"), ExtResource("6_s1ety"), ExtResource("7_ao8vg"), ExtResource("8_rxp3m")])
 
-[node name="Marker2D" type="Marker2D" parent="."]
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1563180568]
 position = Vector2(0, -0.03999996)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=622231516]
 z_index = 1
 position = Vector2(-0.039999995, 0.11999999)
 scale = Vector2(0.009, 0.009)
 texture = ExtResource("2_c3to5")
 hframes = 13
 
-[node name="Arrow" type="AnimatedSprite2D" parent="."]
+[node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=737587748]
 visible = false
 z_index = 1
 position = Vector2(-0.04, -0.56000006)
@@ -161,29 +162,27 @@ autoplay = "default"
 frame_progress = 0.79875785
 speed_scale = 0.8
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_axxh4")
-}
-autoplay = "wave"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1381251825]
+libraries/ = SubResource("AnimationLibrary_axxh4")
+autoplay = &"wave"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=181501554 groups=["Player"]]
 position = Vector2(-0.019999992, -0.020000005)
 shape = SubResource("RectangleShape2D_hls4d")
 
-[node name="Raycast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="Raycast" type="RayCast2D" parent="CollisionShape2D" unique_id=1769932812]
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(0, 24)
 collision_mask = 4
 
-[node name="WallCast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast" type="RayCast2D" parent="CollisionShape2D" unique_id=2124457736]
 position = Vector2(7.45058e-09, 0)
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D" unique_id=1391831394]
 position = Vector2(-7.45058e-09, 0)
 rotation = 3.14159
 scale = Vector2(0.0163969, 0.01)
@@ -191,17 +190,17 @@ target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="Area2D" type="Area2D" parent="." groups=["Miku", "item"]]
+[node name="Area2D" type="Area2D" parent="." unique_id=1729836874 groups=["Miku", "item"]]
 collision_layer = 255
 collision_mask = 255
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=469849234]
 position = Vector2(-0.02, -0.06)
 shape = SubResource("RectangleShape2D_hwr23")
 
-[node name="Attackbox" type="Area2D" parent="." groups=["Miku", "Playerattack"]]
+[node name="Attackbox" type="Area2D" parent="." unique_id=1729968529 groups=["Miku", "Playerattack"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=1544503015]
 position = Vector2(-0.020000005, -0.059999995)
 shape = SubResource("RectangleShape2D_vk4aa")
 debug_color = Color(1, 0.00689957, 0.0521525, 0.42)

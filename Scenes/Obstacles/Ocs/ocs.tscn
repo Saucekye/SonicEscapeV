@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://clrh7fv4tqj05"]
+[gd_scene format=3 uid="uid://clrh7fv4tqj05"]
 
 [ext_resource type="Script" uid="uid://cuf5ue7t0sx1l" path="res://Scripts/Obstacles/Oc/ocs.gd" id="1_tykoy"]
 [ext_resource type="Texture2D" uid="uid://uvo02iqvvjmw" path="res://Sprites/Obstacles/Ocs/aario.png" id="2_gltql"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://wevo0miam5ne" path="res://Sprites/Obstacles/Ocs/tnh.png" id="13_3bwvm"]
 [ext_resource type="Texture2D" uid="uid://babhlra7avvpy" path="res://Sprites/Obstacles/Ocs/web.png" id="14_5bli4"]
 [ext_resource type="Texture2D" uid="uid://wml2oh37gndy" path="res://Sprites/Obstacles/Ocs/jacket.png" id="15_oknut"]
+[ext_resource type="Texture2D" uid="uid://nk8y7vwc4ls2" path="res://Sprites/Obstacles/Ocs/mnky.png" id="16_tykoy"]
 
 [sub_resource type="Animation" id="Animation_0rx4k"]
 length = 0.001
@@ -90,20 +91,20 @@ size = Vector2(1.04, 1.3599998)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk4aa"]
 size = Vector2(0.6, 0.76)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["item"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=698243087 groups=["item"]]
 scale = Vector2(25, 25)
 collision_layer = 16
 collision_mask = 16
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_tykoy")
-textures = Array[Texture2D]([ExtResource("2_gltql"), ExtResource("3_vt5iy"), ExtResource("4_x6xcm"), ExtResource("5_lxwdd"), ExtResource("6_ijsm5"), ExtResource("7_7x24r"), ExtResource("8_b7gya"), ExtResource("9_rx1k2"), ExtResource("10_y04ek"), ExtResource("11_w8tt0"), ExtResource("12_jlvv3"), ExtResource("13_3bwvm"), ExtResource("14_5bli4"), ExtResource("15_oknut")])
+textures = Array[Texture2D]([ExtResource("2_gltql"), ExtResource("3_vt5iy"), ExtResource("4_x6xcm"), ExtResource("5_lxwdd"), ExtResource("6_ijsm5"), ExtResource("7_7x24r"), ExtResource("8_b7gya"), ExtResource("9_rx1k2"), ExtResource("10_y04ek"), ExtResource("11_w8tt0"), ExtResource("12_jlvv3"), ExtResource("13_3bwvm"), ExtResource("14_5bli4"), ExtResource("15_oknut"), ExtResource("16_tykoy")])
 item_labels = Array[String](["@Aario", "@Gamescage", "@Rainy", "@Daeream", "@StupidFred", "", "@HeatDragon", "@KornArt", "@Nezuyaki", "@OctyDrawz", "@IronicnotSavage", "@TNH Nebula", "@Saredd99", "@TrizzieFrizzie", "@Funnymnky"])
 
-[node name="Marker2D" type="Marker2D" parent="."]
+[node name="Marker2D" type="Marker2D" parent="." unique_id=235954254]
 position = Vector2(0, -0.03999996)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=348365569]
 z_index = 1
 position = Vector2(-0.12, -0.52)
 scale = Vector2(0.011, 0.011)
@@ -111,7 +112,7 @@ texture = ExtResource("5_lxwdd")
 flip_h = true
 hframes = 7
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=2083294361]
 z_index = 1
 anchors_preset = -1
 offset_left = -0.32
@@ -126,29 +127,27 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 20
 text = "NAME"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_axxh4")
-}
-autoplay = "wave"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=112239211]
+libraries/ = SubResource("AnimationLibrary_axxh4")
+autoplay = &"wave"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1920565956 groups=["Player"]]
 position = Vector2(-0.019999992, -0.020000005)
 shape = SubResource("RectangleShape2D_hls4d")
 
-[node name="Raycast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="Raycast" type="RayCast2D" parent="CollisionShape2D" unique_id=1121976125]
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(0, 24)
 collision_mask = 4
 
-[node name="WallCast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast" type="RayCast2D" parent="CollisionShape2D" unique_id=2079684486]
 position = Vector2(7.45058e-09, 0)
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D" unique_id=65354017]
 position = Vector2(-7.45058e-09, 0)
 rotation = 3.14159
 scale = Vector2(0.0163969, 0.01)
@@ -156,25 +155,25 @@ target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="Area2DFacePlayer" type="Area2D" parent="." groups=["item"]]
+[node name="Area2DFacePlayer" type="Area2D" parent="." unique_id=1473394919 groups=["item"]]
 collision_layer = 255
 collision_mask = 255
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DFacePlayer"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DFacePlayer" unique_id=1193184516]
 position = Vector2(0, -2.5599997)
 shape = SubResource("RectangleShape2D_hwr23")
 
-[node name="Area2D2Pickup" type="Area2D" parent="." groups=["item"]]
+[node name="Area2D2Pickup" type="Area2D" parent="." unique_id=1232093480 groups=["item"]]
 collision_layer = 255
 collision_mask = 255
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2Pickup"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2Pickup" unique_id=1018461718]
 position = Vector2(-0.04000001, -0.36000007)
 shape = SubResource("RectangleShape2D_m7idx")
 
-[node name="Attackbox" type="Area2D" parent="." groups=["Playerattack"]]
+[node name="Attackbox" type="Area2D" parent="." unique_id=1777283513 groups=["Playerattack"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=804472854]
 position = Vector2(-0.020000005, -0.059999995)
 shape = SubResource("RectangleShape2D_vk4aa")
 debug_color = Color(1, 0.00689957, 0.0521525, 0.42)
