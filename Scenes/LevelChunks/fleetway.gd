@@ -3,7 +3,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, FLY, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var health = 20
+var health : int = 20
+var max_health : int = 20
 
 var dying = false
 var attacking = false
@@ -15,6 +16,12 @@ var phase2 = false
 var can_fly = true
 
 signal end
+
+# Signal to change the boss for the HP bar
+signal set_new_boss(boss : Node2D, name : String)
+
+# Signal to emit to the boss hp bar UI element
+signal update_health_bar(boss_health : int, boss_max_health : int)
 
 @onready var anim = $Sprite2D/AnimationPlayer
 @onready var sprite = $Sprite2D
@@ -314,6 +321,9 @@ func _on_node_2d_phase_2() -> void:
 	$AudioStreamPlayer2.play()
 	state = BossState.FLY
 	
+	# Set the Boss HP bar to now reflect Fleetway
+	set_new_boss.emit(self, "Fleetway")
+	
 	# --------------------------------------------------
 # FLASH / HIT
 # --------------------------------------------------
@@ -340,6 +350,7 @@ func _on_hitbox_area_entered(area: Area2D):
 
 	if area.is_in_group("item"):
 
+		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 
 		if area.get_parent():
@@ -347,6 +358,7 @@ func _on_hitbox_area_entered(area: Area2D):
 
 	if area.is_in_group("Playerattack"):
 
+		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 
 		if area.get_parent():

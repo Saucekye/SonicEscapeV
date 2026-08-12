@@ -324,6 +324,7 @@ func flash_sprite(duration: float = 0.1) -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("item"):
+		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 		area.get_parent().queue_free()
 

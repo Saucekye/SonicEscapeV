@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_1ll1x"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="2_dhlae"]
+[ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_ga1r6"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="3_ga1r6"]
 [ext_resource type="Script" uid="uid://glejuhslgi3" path="res://Scenes/LevelChunks/Kolossos.gd" id="4_5rcax"]
 [ext_resource type="Texture2D" uid="uid://dskfpwy6ewmi5" path="res://Sprites/Boss/Kolossos & Fleetway/Kolossos.png" id="6_brel2"]
@@ -1716,6 +1717,9 @@ _data = {
 [node name="Node2D" type="Node2D" unique_id=1981591543]
 script = ExtResource("1_1ll1x")
 
+[node name="BossHPDisplay" parent="." unique_id=551385776 instance=ExtResource("2_ga1r6")]
+boss_name = "Kolossos"
+
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1238340910]
 z_index = -20
 anchors_preset = -1
@@ -1756,115 +1760,115 @@ collision_mask = 4294967295
 position = Vector2(457.96375, 372.90115)
 shape = SubResource("RectangleShape2D_yyfmi")
 
-[node name="Node2D" type="Node2D" parent="." unique_id=1951100559]
+[node name="Kolossos" type="Node2D" parent="." unique_id=1951100559]
 position = Vector2(840, 512)
 script = ExtResource("4_5rcax")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=909743632]
+[node name="Sprite2D" type="Sprite2D" parent="Kolossos" unique_id=909743632]
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(-2, 57)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("6_brel2")
 hframes = 42
 
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="Node2D/Sprite2D" unique_id=1061364250]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Kolossos/Sprite2D" unique_id=1061364250]
 libraries/ = SubResource("AnimationLibrary_1vx6f")
 
-[node name="Hitbox" type="Area2D" parent="Node2D/Sprite2D" unique_id=2044672313 groups=["Enemy"]]
+[node name="Hitbox" type="Area2D" parent="Kolossos/Sprite2D" unique_id=2044672313 groups=["Enemy"]]
 position = Vector2(-25.454523, 10)
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/Hitbox" unique_id=514260977]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Kolossos/Sprite2D/Hitbox" unique_id=514260977]
 position = Vector2(1.4545288, 6)
 shape = SubResource("RectangleShape2D_0iqyq")
 
-[node name="Attackbox" type="Area2D" parent="Node2D/Sprite2D" unique_id=854829055 groups=["enemyattack"]]
+[node name="Attackbox" type="Area2D" parent="Kolossos/Sprite2D" unique_id=854829055 groups=["enemyattack"]]
 position = Vector2(11.818181, -70)
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/Attackbox" unique_id=293122356]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Kolossos/Sprite2D/Attackbox" unique_id=293122356]
 position = Vector2(13.181763, 70.83334)
 shape = SubResource("RectangleShape2D_q0tdp")
 debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Node2D/Sprite2D" unique_id=2088979211]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Kolossos/Sprite2D" unique_id=2088979211]
 stream = ExtResource("7_6q2fq")
 volume_db = -15.0
 bus = &"Music"
 
-[node name="hitsfx" type="AudioStreamPlayer" parent="Node2D" unique_id=1424339212]
+[node name="hitsfx" type="AudioStreamPlayer" parent="Kolossos" unique_id=1424339212]
 stream = ExtResource("15_4dsv2")
 volume_db = -20.0
 bus = &"SFX"
 
-[node name="Node2D2" type="Node2D" parent="." unique_id=316071091]
+[node name="Fleetway" type="Node2D" parent="." unique_id=316071091]
 position = Vector2(1280, 208)
 script = ExtResource("10_brel2")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D2" unique_id=1222090258]
+[node name="Sprite2D" type="Sprite2D" parent="Fleetway" unique_id=1222090258]
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(-1.1920929e-07, 3.8146973e-06)
 scale = Vector2(1.25, 1.25)
 texture = ExtResource("11_6q2fq")
 hframes = 44
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D2/Sprite2D" unique_id=1299676545]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fleetway/Sprite2D" unique_id=1299676545]
 libraries/ = SubResource("AnimationLibrary_ov2gg")
 
-[node name="Hitbox" type="Area2D" parent="Node2D2/Sprite2D" unique_id=1552113825 groups=["Enemy"]]
+[node name="Hitbox" type="Area2D" parent="Fleetway/Sprite2D" unique_id=1552113825 groups=["Enemy"]]
 position = Vector2(-4.8000317, 5.6000004)
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D2/Sprite2D/Hitbox" unique_id=1360231185 groups=["Enemy"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fleetway/Sprite2D/Hitbox" unique_id=1360231185 groups=["Enemy"]]
 position = Vector2(4.799988, -5.6)
 scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_0iqyq")
 
-[node name="Attackbox" type="Area2D" parent="Node2D2/Sprite2D" unique_id=1527629588 groups=["enemyattack"]]
+[node name="Attackbox" type="Area2D" parent="Fleetway/Sprite2D" unique_id=1527629588 groups=["enemyattack"]]
 position = Vector2(-4.8000317, 5.6000004)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D2/Sprite2D/Attackbox" unique_id=1638295579 groups=["Enemy"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fleetway/Sprite2D/Attackbox" unique_id=1638295579 groups=["Enemy"]]
 position = Vector2(4.799988, -5.599991)
 scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_0iqyq")
 debug_color = Color(0.9945012, 0, 0.22841299, 0.41960785)
 
-[node name="beam" type="Node2D" parent="Node2D2/Sprite2D" unique_id=1218873943 groups=["enemyattack"]]
+[node name="beam" type="Node2D" parent="Fleetway/Sprite2D" unique_id=1218873943 groups=["enemyattack"]]
 position = Vector2(27.199963, 18.399988)
 rotation = -0.94945914
 scale = Vector2(0.79999995, 0.79999995)
 
-[node name="AnimatedSprite2D" type="Sprite2D" parent="Node2D2/Sprite2D/beam" unique_id=779309038]
+[node name="AnimatedSprite2D" type="Sprite2D" parent="Fleetway/Sprite2D/beam" unique_id=779309038]
 visible = false
 position = Vector2(-5.373558, 296.55377)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("12_6q2fq")
 hframes = 6
 
-[node name="Area2D" type="Area2D" parent="Node2D2/Sprite2D/beam" unique_id=1788007950 groups=["enemyattack"]]
+[node name="Area2D" type="Area2D" parent="Fleetway/Sprite2D/beam" unique_id=1788007950 groups=["enemyattack"]]
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D2/Sprite2D/beam/Area2D" unique_id=138879065 groups=["enemyattack"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fleetway/Sprite2D/beam/Area2D" unique_id=138879065 groups=["enemyattack"]]
 position = Vector2(-7.391243, 44.6472)
 scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_4hqd4")
 debug_color = Color(0.7058824, 0.09411765, 0, 0.41960785)
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D2" unique_id=1462599171]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Fleetway" unique_id=1462599171]
 stream = ExtResource("13_1ll1x")
 volume_db = -8.0
 bus = &"SFX"
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D2" unique_id=1476371508]
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Fleetway" unique_id=1476371508]
 stream = ExtResource("12_4hqd4")
 volume_db = -12.0
 bus = &"Music"
 
-[node name="hitsfx" type="AudioStreamPlayer" parent="Node2D2" unique_id=366578931]
+[node name="hitsfx" type="AudioStreamPlayer" parent="Fleetway" unique_id=366578931]
 stream = ExtResource("15_4dsv2")
 volume_db = -20.0
 bus = &"SFX"
@@ -1895,10 +1899,13 @@ modulate = Color(0.15294118, 1, 1, 1)
 position = Vector2(1728, 568)
 scale = Vector2(5, 5)
 
-[connection signal="area_entered" from="Area2D" to="Node2D" method="_on_area_2d_area_entered"]
-[connection signal="area_entered" from="Area2D" to="Node2D2" method="_on_area_2d_area_entered"]
-[connection signal="phase2" from="Node2D" to="Node2D2" method="_on_node_2d_phase_2"]
-[connection signal="area_entered" from="Node2D/Sprite2D/Hitbox" to="Node2D" method="_on_hitbox_area_entered"]
-[connection signal="end" from="Node2D2" to="." method="_on_node_2d_end"]
-[connection signal="area_entered" from="Node2D2/Sprite2D/Hitbox" to="Node2D2" method="_on_hitbox_area_entered"]
-[connection signal="area_entered" from="Node2D2/Sprite2D/Attackbox" to="Node2D2" method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Area2D" to="Kolossos" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Area2D" to="Fleetway" method="_on_area_2d_area_entered"]
+[connection signal="phase2" from="Kolossos" to="Fleetway" method="_on_node_2d_phase_2"]
+[connection signal="update_health_bar" from="Kolossos" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="Kolossos/Sprite2D/Hitbox" to="Kolossos" method="_on_hitbox_area_entered"]
+[connection signal="end" from="Fleetway" to="." method="_on_node_2d_end"]
+[connection signal="set_new_boss" from="Fleetway" to="BossHPDisplay" method="_set_new_boss"]
+[connection signal="update_health_bar" from="Fleetway" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="Fleetway/Sprite2D/Hitbox" to="Fleetway" method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Fleetway/Sprite2D/Attackbox" to="Fleetway" method="_on_hitbox_area_entered"]
