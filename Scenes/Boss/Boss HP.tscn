@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cnlvwymtvcnxr"]
+
+[ext_resource type="Script" uid="uid://darxeo4l1qdlf" path="res://Scripts/Boss/boss_hp_bar.gd" id="1_bvqmj"]
+[ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="2_mypp5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mypp5"]
+shader = ExtResource("2_mypp5")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="Gradient" id="Gradient_v1oiq"]
+offsets = PackedFloat32Array(0.99740934)
+colors = PackedColorArray(1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dm012"]
+gradient = SubResource("Gradient_v1oiq")
+width = 320
+height = 24
+
+[node name="BossHPDisplay" type="CanvasLayer" unique_id=551385776]
+script = ExtResource("1_bvqmj")
+
+[node name="BossUIContainer" type="HBoxContainer" parent="." unique_id=381932463]
+anchors_preset = -1
+anchor_left = 0.572
+anchor_right = 1.0
+anchor_bottom = 0.112
+offset_left = 73.79993
+offset_top = 12.0
+offset_right = -33.0
+offset_bottom = -4.6399994
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="BossUIContainer" unique_id=1904508376]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Boss Name"
+horizontal_alignment = 2
+
+[node name="ProgressBar" type="TextureProgressBar" parent="BossUIContainer" unique_id=1360166864]
+material = SubResource("ShaderMaterial_mypp5")
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+value = 100.0
+texture_progress = SubResource("GradientTexture2D_dm012")

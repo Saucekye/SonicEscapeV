@@ -22,6 +22,9 @@ var dying = false
 # Count how many times Attack2 happens
 var attack2_count = 0
 
+# Signal to emit to the boss hp bar UI element
+signal update_health_bar(boss_health : int, boss_max_health : int)
+
 @onready var sprite = $Sprite2D
 @onready var anim = $Sprite2D/AnimationPlayer
 @onready var lightning_anim = $Node/LightningEffect/AnimationTree
@@ -50,6 +53,7 @@ func _start():
 	anim.play("intro")
 	lightning_anim.play("Left")
 	await anim.animation_finished
+	GlobalSignals.disable_boss_ui.emit(false)
 	
 	timer.start()
 	begin = true
@@ -291,10 +295,12 @@ func flash_sprite(duration: float = 0.1) -> void:
 	$hitsfx.play()
 	health -= 1
 
+
 # ---------------- HITBOX ----------------
 func _on_hit_box_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("Playerattack") and begin == true:
+		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 		if area.is_in_group("Player"):
 			area.get_parent().can_stomp = true

@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://4fx1ywk7nj3i"]
 
 [ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_qdjoc"]
+[ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_1bfwp"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="3_tx716"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_wbbos"]
 [ext_resource type="Texture2D" uid="uid://bw1flg41fowo" path="res://Sprites/Boss/Thragg/anissa.png" id="5_0iqyq"]
@@ -1236,6 +1237,10 @@ _data = {
 [node name="Node2DBoss" type="Node2D" unique_id=133088642]
 script = ExtResource("1_qdjoc")
 
+[node name="BossHPDisplay" parent="." unique_id=551385776 node_paths=PackedStringArray("boss") instance=ExtResource("2_1bfwp")]
+boss = NodePath("../Thragg")
+boss_name = "Thragg"
+
 [node name="Level" type="Node2D" parent="." unique_id=1985077997]
 z_index = -2
 scale = Vector2(0.8, 0.8)
@@ -1281,11 +1286,11 @@ collision_mask = 4294967295
 position = Vector2(457.96375, 372.90115)
 shape = SubResource("RectangleShape2D_yyfmi")
 
-[node name="Node2D" type="Node2D" parent="." unique_id=1231851669]
+[node name="Thragg" type="Node2D" parent="." unique_id=1231851669]
 position = Vector2(1272, 544)
 script = ExtResource("6_i4wqq")
 
-[node name="TextureRect2" type="ColorRect" parent="Node2D" unique_id=1281057716]
+[node name="TextureRect2" type="ColorRect" parent="Thragg" unique_id=1281057716]
 material = SubResource("ShaderMaterial_rabum")
 anchors_preset = -1
 offset_left = -688.0001
@@ -1296,58 +1301,58 @@ rotation = 4.712389
 scale = Vector2(21.272728, 61.69091)
 color = Color(1, 1, 1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/TextureRect2" unique_id=1404215391]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Thragg/TextureRect2" unique_id=1404215391]
 libraries/ = SubResource("AnimationLibrary_1bfwp")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=2067032553]
+[node name="Sprite2D" type="Sprite2D" parent="Thragg" unique_id=2067032553]
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(0, -8)
 scale = Vector2(1.1, 1.1)
 texture = ExtResource("5_x8w0r")
 hframes = 64
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/Sprite2D" unique_id=309070927]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Thragg/Sprite2D" unique_id=309070927]
 libraries/ = SubResource("AnimationLibrary_qkeek")
 
-[node name="Hitbox" type="Area2D" parent="Node2D/Sprite2D" unique_id=1511451866 groups=["Enemy"]]
+[node name="Hitbox" type="Area2D" parent="Thragg/Sprite2D" unique_id=1511451866 groups=["Enemy"]]
 position = Vector2(-24, 60)
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/Hitbox" unique_id=1707598548]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Thragg/Sprite2D/Hitbox" unique_id=1707598548]
 position = Vector2(8, -11)
 shape = SubResource("RectangleShape2D_0iqyq")
 
-[node name="Attackbox" type="Area2D" parent="Node2D/Sprite2D" unique_id=2052121172 groups=["enemyattack"]]
+[node name="Attackbox" type="Area2D" parent="Thragg/Sprite2D" unique_id=2052121172 groups=["enemyattack"]]
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/Attackbox" unique_id=1520918383]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Thragg/Sprite2D/Attackbox" unique_id=1520918383]
 position = Vector2(-14, 38)
 shape = SubResource("RectangleShape2D_q0tdp")
 debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
 
-[node name="WinAttack" type="Area2D" parent="Node2D/Sprite2D" unique_id=848679633 groups=["enemyattack"]]
+[node name="WinAttack" type="Area2D" parent="Thragg/Sprite2D" unique_id=848679633 groups=["enemyattack"]]
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/WinAttack" unique_id=1560459570 groups=["enemyattack"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Thragg/Sprite2D/WinAttack" unique_id=1560459570 groups=["enemyattack"]]
 position = Vector2(-13.818359, -132)
 shape = SubResource("RectangleShape2D_u47si")
 debug_color = Color(0.9928401, 0, 0.25287512, 0.41960785)
 
-[node name="Upattackef" type="Sprite2D" parent="Node2D/Sprite2D" unique_id=753276088]
+[node name="Upattackef" type="Sprite2D" parent="Thragg/Sprite2D" unique_id=753276088]
 position = Vector2(8, -304)
 scale = Vector2(2, 2)
 texture = ExtResource("8_bv314")
 hframes = 5
 frame = 4
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Node2D/Sprite2D" unique_id=1150088773]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Thragg/Sprite2D" unique_id=1150088773]
 stream = ExtResource("9_0iqyq")
 volume_db = -15.0
 
-[node name="TextureRect" type="ColorRect" parent="Node2D" unique_id=1095439892]
+[node name="TextureRect" type="ColorRect" parent="Thragg" unique_id=1095439892]
 anchors_preset = -1
 offset_left = -1536.0
 offset_top = -1000.0
@@ -1355,14 +1360,14 @@ offset_right = 1344.0
 offset_bottom = 952.0
 color = Color(1, 1, 1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/TextureRect" unique_id=1527263550]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Thragg/TextureRect" unique_id=1527263550]
 libraries/ = SubResource("AnimationLibrary_qmkhx")
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D" unique_id=288545065]
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Thragg" unique_id=288545065]
 stream = ExtResource("8_u47si")
 volume_db = -20.0
 
-[node name="hitsfx" type="AudioStreamPlayer" parent="Node2D" unique_id=1167191596]
+[node name="hitsfx" type="AudioStreamPlayer" parent="Thragg" unique_id=1167191596]
 stream = ExtResource("10_yxo0d")
 volume_db = -20.0
 
@@ -1378,6 +1383,7 @@ position = Vector2(1664, 568)
 [node name="Ring Strand" parent="." unique_id=481890185 instance=ExtResource("16_qdjoc")]
 position = Vector2(1266, 639)
 
-[connection signal="area_entered" from="Area2D" to="Node2D" method="_on_area_2d_area_entered"]
-[connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
-[connection signal="area_entered" from="Node2D/Sprite2D/Hitbox" to="Node2D" method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Area2D" to="Thragg" method="_on_area_2d_area_entered"]
+[connection signal="end" from="Thragg" to="." method="_on_node_2d_end"]
+[connection signal="update_health_bar" from="Thragg" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="Thragg/Sprite2D/Hitbox" to="Thragg" method="_on_hitbox_area_entered"]

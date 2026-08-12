@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ci36npswg4o57" path="res://Sprites/Background/Eggman/Sprite-0006.png" id="7_6ifx3"]
 [ext_resource type="Script" uid="uid://dcxkdbweqcwk7" path="res://Scripts/UI/RESET.gd" id="8_joifu"]
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="9_00ikh"]
-[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/icon.gd" id="9_v4th5"]
+[ext_resource type="Script" uid="uid://dapgxv03hxkxc" path="res://Scripts/UI/Icon.gd" id="9_v4th5"]
 [ext_resource type="Texture2D" uid="uid://datae7ltsp7g8" path="res://Sprites/UI/Meter/meter2.png" id="11_pwosg"]
 [ext_resource type="Texture2D" uid="uid://bvejnrjotp5yg" path="res://Sprites/UI/Meter/meter1.png" id="12_o2wvk"]
 [ext_resource type="Script" uid="uid://ciaud5ka2cyuf" path="res://Scripts/UI/texture_progress_bar.gd" id="13_wd7d4"]
@@ -555,7 +555,7 @@ texture = ExtResource("15_02dvw")
 anchors_preset = -1
 offset_left = 46.0
 offset_top = -62.0
-offset_right = 79.00142
+offset_right = 79.00141
 offset_bottom = -45.0
 scale = Vector2(2.5, 2.5)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)

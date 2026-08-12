@@ -9,3 +9,5 @@ signal set_teto_display(enabled : bool)
 signal set_teto_animation(animation_name : String)
 
 signal disable_music_player(disabled : bool)
+
+signal disable_boss_ui(disabled : bool)

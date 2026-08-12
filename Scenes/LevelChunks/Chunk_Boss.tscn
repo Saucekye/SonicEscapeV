@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_2eccu"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="1_yyfmi"]
+[ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_3cjkc"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="2_pb8k7"]
 [ext_resource type="Script" uid="uid://euovds2xf1xo" path="res://Scripts/Boss/neometalfight.gd" id="4_yyfmi"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="5_h04th"]
@@ -1039,6 +1040,10 @@ size = Vector2(128.0239, 765.8023)
 [node name="Node2D" type="Node2D" unique_id=139127787]
 script = ExtResource("1_2eccu")
 
+[node name="BossHPDisplay" parent="." unique_id=2083186901 node_paths=PackedStringArray("boss") instance=ExtResource("2_3cjkc")]
+boss = NodePath("../NeoMetalSonic")
+boss_name = "Neo Metal Sonic"
+
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=96847940]
 stream = ExtResource("8_58vct")
 volume_db = -20.0
@@ -1065,12 +1070,12 @@ position = Vector2(1828.7343, 668.7998)
 position = Vector2(1264, 392)
 zoom = Vector2(1.1, 1.1)
 
-[node name="Node2D" type="Node2D" parent="." unique_id=1751528063]
+[node name="NeoMetalSonic" type="Node2D" parent="." unique_id=1751528063]
 position = Vector2(808, 599.99994)
 scale = Vector2(1.2, 1.2)
 script = ExtResource("4_yyfmi")
 
-[node name="TextureRect" type="ColorRect" parent="Node2D" unique_id=367223705]
+[node name="TextureRect" type="ColorRect" parent="NeoMetalSonic" unique_id=367223705]
 material = SubResource("ShaderMaterial_wlcxu")
 offset_left = -406.66666
 offset_top = -556.6666
@@ -1078,39 +1083,39 @@ offset_right = 1176.0
 offset_bottom = 234.66669
 color = Color(1, 1, 1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/TextureRect" unique_id=1614641069]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NeoMetalSonic/TextureRect" unique_id=1614641069]
 libraries/ = SubResource("AnimationLibrary_qmkhx")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=100052535]
+[node name="Sprite2D" type="Sprite2D" parent="NeoMetalSonic" unique_id=100052535]
 material = SubResource("ShaderMaterial_58vct")
 position = Vector2(780, 20)
 texture = ExtResource("5_pb8k7")
 hframes = 56
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/Sprite2D" unique_id=98659632]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NeoMetalSonic/Sprite2D" unique_id=98659632]
 libraries/ = SubResource("AnimationLibrary_58vct")
 autoplay = &"RESET"
 
-[node name="HitBox" type="Area2D" parent="Node2D/Sprite2D" unique_id=915210644 groups=["Enemy"]]
+[node name="HitBox" type="Area2D" parent="NeoMetalSonic/Sprite2D" unique_id=915210644 groups=["Enemy"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/HitBox" unique_id=77842350]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NeoMetalSonic/Sprite2D/HitBox" unique_id=77842350]
 position = Vector2(-7.3327637, 14.679016)
 shape = SubResource("RectangleShape2D_al1vl")
 
-[node name="AttackBox" type="Area2D" parent="Node2D/Sprite2D" unique_id=753929112 groups=["Enemy", "enemyattack"]]
+[node name="AttackBox" type="Area2D" parent="NeoMetalSonic/Sprite2D" unique_id=753929112 groups=["Enemy", "enemyattack"]]
 position = Vector2(53.333332, 0)
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Sprite2D/AttackBox" unique_id=118436067]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NeoMetalSonic/Sprite2D/AttackBox" unique_id=118436067]
 position = Vector2(-10.300171, -3.2697144)
 shape = SubResource("RectangleShape2D_e3iy0")
 debug_color = Color(0.97221905, 0.13375625, 0.26391807, 0.41960785)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Node2D/Sprite2D" unique_id=2104926705]
+[node name="CanvasLayer" type="CanvasLayer" parent="NeoMetalSonic/Sprite2D" unique_id=2104926705]
 layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=936029113]
+[node name="ColorRect" type="ColorRect" parent="NeoMetalSonic/Sprite2D/CanvasLayer" unique_id=936029113]
 offset_left = -472.0
 offset_top = -512.00006
 offset_right = -432.0
@@ -1118,61 +1123,61 @@ offset_bottom = -472.00006
 scale = Vector2(93.18001, 45.59333)
 color = Color(1, 1, 1, 0)
 
-[node name="CanvasModulate" type="CanvasModulate" parent="Node2D/Sprite2D" unique_id=1839890074]
+[node name="CanvasModulate" type="CanvasModulate" parent="NeoMetalSonic/Sprite2D" unique_id=1839890074]
 
-[node name="Timer" type="Timer" parent="Node2D" unique_id=504654802]
+[node name="Timer" type="Timer" parent="NeoMetalSonic" unique_id=504654802]
 wait_time = 5.0
 
-[node name="Marker2D1" type="Marker2D" parent="Node2D" unique_id=2146783859]
+[node name="Marker2D1" type="Marker2D" parent="NeoMetalSonic" unique_id=2146783859]
 position = Vector2(73.33333, 5.086263e-05)
 
-[node name="Marker2D2" type="Marker2D" parent="Node2D" unique_id=1002339982]
+[node name="Marker2D2" type="Marker2D" parent="NeoMetalSonic" unique_id=1002339982]
 position = Vector2(699.99994, 5.086263e-05)
 
-[node name="Marker2D3" type="Marker2D" parent="Node2D" unique_id=979756882]
+[node name="Marker2D3" type="Marker2D" parent="NeoMetalSonic" unique_id=979756882]
 position = Vector2(393.333, -4.7683716e-06)
 
-[node name="Marker2D6" type="Marker2D" parent="Node2D" unique_id=127319150]
+[node name="Marker2D6" type="Marker2D" parent="NeoMetalSonic" unique_id=127319150]
 position = Vector2(379.9997, -300)
 
-[node name="Node" type="Node2D" parent="Node2D" unique_id=657445595]
+[node name="Node" type="Node2D" parent="NeoMetalSonic" unique_id=657445595]
 position = Vector2(-620, -486.6667)
 scale = Vector2(0.8, 0.8)
 
-[node name="LightningEffect" type="Node2D" parent="Node2D/Node" unique_id=1457459922]
+[node name="LightningEffect" type="Node2D" parent="NeoMetalSonic/Node" unique_id=1457459922]
 position = Vector2(-1058.3333, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Node/LightningEffect" unique_id=699837097]
+[node name="Sprite2D" type="Sprite2D" parent="NeoMetalSonic/Node/LightningEffect" unique_id=699837097]
 position = Vector2(808.0001, 384.00006)
 scale = Vector2(2, 2)
 texture = ExtResource("7_58vct")
 hframes = 9
 
-[node name="AnimationTree" type="AnimationPlayer" parent="Node2D/Node/LightningEffect" unique_id=1564822056]
+[node name="AnimationTree" type="AnimationPlayer" parent="NeoMetalSonic/Node/LightningEffect" unique_id=1564822056]
 libraries/ = SubResource("AnimationLibrary_l6fyr")
 autoplay = &"RESET"
 
-[node name="Area2D" type="Area2D" parent="Node2D/Node/LightningEffect" unique_id=23389815 groups=["enemyattack"]]
+[node name="Area2D" type="Area2D" parent="NeoMetalSonic/Node/LightningEffect" unique_id=23389815 groups=["enemyattack"]]
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Node/LightningEffect/Area2D" unique_id=387813264]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NeoMetalSonic/Node/LightningEffect/Area2D" unique_id=387813264]
 position = Vector2(808.29065, 383.2163)
 shape = SubResource("RectangleShape2D_2eccu")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Node2D/Node/LightningEffect" unique_id=2056439079]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="NeoMetalSonic/Node/LightningEffect" unique_id=2056439079]
 stream = ExtResource("8_lutin")
 volume_db = -10.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D" unique_id=405849146]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="NeoMetalSonic" unique_id=405849146]
 stream = ExtResource("12_l6fyr")
 volume_db = -20.0
 
-[node name="hitsfx" type="AudioStreamPlayer" parent="Node2D" unique_id=455035181]
+[node name="hitsfx" type="AudioStreamPlayer" parent="NeoMetalSonic" unique_id=455035181]
 stream = ExtResource("11_45dcn")
 volume_db = -20.0
 
-[node name="hitsfx2" type="AudioStreamPlayer" parent="Node2D" unique_id=1436433031]
+[node name="hitsfx2" type="AudioStreamPlayer" parent="NeoMetalSonic" unique_id=1436433031]
 stream = ExtResource("11_45dcn")
 volume_db = -20.0
 
@@ -1188,9 +1193,10 @@ shape = SubResource("RectangleShape2D_yyfmi")
 [node name="Ring Strand" parent="." unique_id=1527507089 instance=ExtResource("17_3cjkc")]
 position = Vector2(1274, 637)
 
-[connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
-[connection signal="area_entered" from="Node2D/Sprite2D/HitBox" to="Node2D" method="_on_hit_box_area_entered"]
-[connection signal="area_entered" from="Node2D/Sprite2D/AttackBox" to="Node2D" method="_on_attack_box_area_entered"]
-[connection signal="timeout" from="Node2D/Timer" to="Node2D" method="_on_timer_timeout"]
-[connection signal="animation_finished" from="Node2D/Node/LightningEffect/AnimationTree" to="Node2D/Node/LightningEffect" method="_on_animation_tree_animation_finished"]
-[connection signal="area_entered" from="Area2D" to="Node2D" method="_on_area_2d_area_entered"]
+[connection signal="end" from="NeoMetalSonic" to="." method="_on_node_2d_end"]
+[connection signal="update_health_bar" from="NeoMetalSonic" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="NeoMetalSonic/Sprite2D/HitBox" to="NeoMetalSonic" method="_on_hit_box_area_entered"]
+[connection signal="area_entered" from="NeoMetalSonic/Sprite2D/AttackBox" to="NeoMetalSonic" method="_on_attack_box_area_entered"]
+[connection signal="timeout" from="NeoMetalSonic/Timer" to="NeoMetalSonic" method="_on_timer_timeout"]
+[connection signal="animation_finished" from="NeoMetalSonic/Node/LightningEffect/AnimationTree" to="NeoMetalSonic/Node/LightningEffect" method="_on_animation_tree_animation_finished"]
+[connection signal="area_entered" from="Area2D" to="NeoMetalSonic" method="_on_area_2d_area_entered"]

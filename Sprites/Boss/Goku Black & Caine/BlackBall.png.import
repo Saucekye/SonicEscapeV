@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chhcirj0vo1fg"
-path="res://.godot/imported/caine.png-35b29f75e80e790a986bc438f5a551fb.ctex"
+uid="uid://dso6l6dfr1iho"
+path="res://.godot/imported/BlackBall.png-079b60580a405fb01b74feb6dbd84351.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Boss/Goku Black & Caine/caine.png"
-dest_files=["res://.godot/imported/caine.png-35b29f75e80e790a986bc438f5a551fb.ctex"]
+source_file="res://Sprites/Boss/Goku Black & Caine/BlackBall.png"
+dest_files=["res://.godot/imported/BlackBall.png-079b60580a405fb01b74feb6dbd84351.ctex"]
 
 [params]
 

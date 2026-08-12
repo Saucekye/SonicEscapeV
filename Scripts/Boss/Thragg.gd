@@ -3,6 +3,7 @@ extends Node2D
 enum BossState {INTRO, FLY, ATTACK_PUNCH, ATTACK_FOLLOW, DEAD}
 
 var state = BossState.INTRO
+var max_health = 30
 var health = 30
 
 var active_player: Node2D
@@ -17,6 +18,8 @@ var gravity = 900
 var dying = false
 
 signal end
+# Signal to emit to the boss hp bar UI element
+signal update_health_bar(boss_health : int, boss_max_health : int)
 
 @onready var anim = $Sprite2D/AnimationPlayer
 @onready var sprite = $Sprite2D
@@ -83,6 +86,7 @@ func start_intro():
 	anim.play("idle")
 
 	state = BossState.FLY
+	GlobalSignals.disable_boss_ui.emit(false)
 
 	start_attack_loop()
 
@@ -324,6 +328,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		area.get_parent().queue_free()
 
 	if area.is_in_group("Playerattack"):
+		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 		if area.is_in_group("Player"):
 			area.get_parent().can_stomp = true
