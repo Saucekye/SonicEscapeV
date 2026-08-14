@@ -20,6 +20,7 @@ func _display_boss_hp(display_hp : bool):
 	boss_ui_container.visible = !display_hp
 
 func _on_node_2d_update_health_bar(boss_health: int, boss_max_health: int) -> void:
+	print(boss_health)
 	var duration : float = 0.1
 	health_bar.material.set_shader_parameter("flash_amount", 1.0)
 	health_bar.value = HEALTH_BAR_MAX * float(boss_health) / boss_max_health

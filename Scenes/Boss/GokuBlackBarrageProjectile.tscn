@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://pkgu0rai06d7"]
+[gd_scene format=3 uid="uid://dh0grosyl6bba"]
 
-[ext_resource type="Script" uid="uid://dqi6vsm3smfhx" path="res://Scripts/Boss/goku_black_projectile.gd" id="1_7reu5"]
-[ext_resource type="Texture2D" uid="uid://dso6l6dfr1iho" path="res://Sprites/Boss/Goku Black & Caine/BlackBall.png" id="1_vmoi4"]
+[ext_resource type="Script" uid="uid://g5m5o81boyn0" path="res://Scripts/Boss/goku_black_barrage_projectile.gd" id="1_gdwga"]
+[ext_resource type="Texture2D" uid="uid://dso6l6dfr1iho" path="res://Sprites/Boss/Goku Black & Caine/BlackBall.png" id="2_t4hll"]
 
 [sub_resource type="Gradient" id="Gradient_ob1fb"]
 offsets = PackedFloat32Array(0.27941176, 1)
@@ -17,12 +17,12 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_mvuam"]
 radius = 12.0
 
-[node name="GokuBlackProjectile" type="Node2D" unique_id=1972911035 groups=["EnemyProjectile"]]
-scale = Vector2(3, 3)
-script = ExtResource("1_7reu5")
+[node name="GokuBlackBarrageProjectile" type="Node2D" unique_id=1972911035]
+scale = Vector2(2, 2)
+script = ExtResource("1_gdwga")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1607093127]
-texture = ExtResource("1_vmoi4")
+texture = ExtResource("2_t4hll")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=425801748]
 visible = false
@@ -34,8 +34,8 @@ texture = SubResource("GradientTexture2D_r1jr2")
 shape = SubResource("CircleShape2D_mvuam")
 debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
 
-[node name="Timer" type="Timer" parent="." unique_id=355483283]
-wait_time = 20.0
+[node name="Timer" type="Timer" parent="." unique_id=355483283 groups=["EnemyProjectile"]]
+wait_time = 10.0
 one_shot = true
 autostart = true
 

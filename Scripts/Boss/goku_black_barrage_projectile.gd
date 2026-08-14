@@ -8,21 +8,18 @@ extends Node2D
 const PROJECTILE_SCALE : float = 3.0
 
 var current_player
-var start_speed : int = 600
-var decelerration : int = 500
-var base_speed : int = 200
-var speed : int = start_speed
+var speed : int = 300
+var to_player : Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	timer.start(lifetime)
+	current_player = _get_current_player()
+	to_player = (current_player.global_position- global_position).normalized()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	current_player = _get_current_player()
-	var to_player = (current_player.global_position- global_position).normalized()
-	global_position += to_player * speed * delta
-	if speed > base_speed:
-		speed -= int(decelerration * delta)
+	global_position.x += to_player.x * speed * delta
+	global_position.y += sin((to_player - current_player) / PI)
 
 func _get_current_player() -> Node2D:
 	var players = get_tree().get_nodes_in_group("Player")

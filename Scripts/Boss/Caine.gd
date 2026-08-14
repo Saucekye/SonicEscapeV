@@ -4,10 +4,11 @@ extends Node2D
 @onready var hitsfx: AudioStreamPlayer = $hitsfx
 @onready var after_death_timer: Timer = $AfterDeathTimer
 @onready var hurtbox: Area2D = $Hurtbox
+@onready var flash_animation_player: AnimationPlayer = $DefeatFlash/FlashAnimationPlayer
 
 @export var boss_position : Marker2D
+@export var projectile : Node2D
 
-@onready var boss_hp_display: CanvasLayer = $"../CaineHPDisplay2"
 var max_health : int = 100
 
 var death : bool = false
@@ -41,9 +42,11 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	update_health_bar.emit(0, max_health)
 	#GlobalSignals.disable_boss_ui.emit(true)
 	#boss_hp_display.visible = false
+	flash_animation_player.play("end")
+	GlobalCanvasLayer.tricks += 10
 	death = true
 	animated_sprite.play("death")
-	death_velocity.x = randf_range(-700, 700)
+	death_velocity.x = randf_range(-500, 500)
 	after_death_timer.start()
 
 func _on_after_death_timer_timeout() -> void:
@@ -60,3 +63,5 @@ func _move_to_boss_position() -> void:
 	animated_sprite.play("background")
 	var position_tween = get_tree().create_tween()
 	position_tween.tween_property(self, "global_position", boss_position.global_position, tween_time)
+	await position_tween.finished
+	projectile.timer.start()

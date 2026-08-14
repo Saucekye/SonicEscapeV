@@ -7,7 +7,9 @@
 [ext_resource type="Script" uid="uid://drl8osj5htuxc" path="res://Scripts/Boss/Caine.gd" id="5_h5euk"]
 [ext_resource type="Texture2D" uid="uid://chhcirj0vo1fg" path="res://Sprites/Boss/Goku Black & Caine/caine.png" id="6_eew8j"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="7_5ys5f"]
+[ext_resource type="Script" uid="uid://0vp1lt1fy8m4" path="res://Scripts/Boss/chain_chomp.gd" id="8_2hhn8"]
 [ext_resource type="Script" uid="uid://c2stgvvyy8fsp" path="res://Scripts/Boss/goku_black.gd" id="8_5ys5f"]
+[ext_resource type="Texture2D" uid="uid://b8br2i8ma72rc" path="res://Sprites/Boss/Goku Black & Caine/bubble.png" id="8_7pw7r"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="8_xt2ol"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="9_eew8j"]
 [ext_resource type="AudioStream" uid="uid://cmepllxv1pfol" path="res://Sounds/Environmental/strongwin.MP3" id="10_5ys5f"]
@@ -201,6 +203,109 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1emkl"]
 size = Vector2(96, 112)
 
+[sub_resource type="Animation" id="Animation_v8pan"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2pjcc"]
+resource_name = "end"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aamsd"]
+_data = {
+&"RESET": SubResource("Animation_v8pan"),
+&"end": SubResource("Animation_2pjcc")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hhn8"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(0, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grv3d"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(96, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6dkc"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(192, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xf5c3"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(288, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ij73c"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(384, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aamsd"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(480, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqti7"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(576, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2yl7v"]
+atlas = ExtResource("8_7pw7r")
+region = Rect2(672, 0, 96, 108)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mvuam"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hhn8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grv3d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x6dkc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xf5c3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ij73c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aamsd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqti7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2yl7v")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 14.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5mmxi"]
+radius = 27.018513
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_grv3d"]
 shader = ExtResource("9_eew8j")
 shader_parameter/flash_amount = 0.0
@@ -273,7 +378,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_bv314"]
 resource_name = "attack1"
-length = 2.0
+length = 1.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -399,9 +504,9 @@ tracks/4/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_rabum"]
-resource_name = "attack1to"
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_7pw7r"]
+resource_name = "attack2"
+length = 1.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -409,10 +514,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06666667),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.13333333, 0.26666668, 0.40000004, 0.46666667, 0.53333336, 0.76666665, 0.99359095, 1.2190133, 1.4, 1.5333333, 1.6666667, 1.8, 1.9333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [34, 35]
+"values": [35, 36, 37, 38, 39, 40, 45, 46, 45, 46, 47, 48, 49, 50]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -457,15 +562,15 @@ tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(-0.03333333),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_nv865"]
-resource_name = "attack2"
-length = 1.2
+[sub_resource type="Animation" id="Animation_2hhn8"]
+resource_name = "attack2_2"
+length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -473,10 +578,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.36666667, 0.5, 0.6333333, 0.76666665, 0.8666667, 0.93333334, 1, 1.1, 1.1666666),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(-1.1920929e-07, 0.13333334, 0.26666668, 0.4, 0.53333336, 0.6666667, 0.8, 1.8, 1.9333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 51]
+"values": [45, 46, 45, 46, 47, 48, 49, 49, 50]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -488,7 +593,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -500,28 +605,28 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.8),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("12_7pw7r")]
+"values": [ExtResource("10_5ys5f")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
-tracks/4/enabled = true
+tracks/4/enabled = false
 tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0.8),
+"times": PackedFloat32Array(-0.03333333),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -635,56 +740,150 @@ tracks/3/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_rabum"]
+resource_name = "move"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.06666667, 0.23333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [34, 35]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_5ys5f")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_5ys5f"]
+resource_name = "move_end"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [35, 34]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_5ys5f")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xf5c3"]
 _data = {
 &"RESET": SubResource("Animation_ul6mg"),
 &"attack1": SubResource("Animation_bv314"),
 &"attack1end": SubResource("Animation_isfwg"),
-&"attack1to": SubResource("Animation_rabum"),
-&"attack2": SubResource("Animation_nv865"),
+&"attack2": SubResource("Animation_7pw7r"),
+&"attack2_2": SubResource("Animation_2hhn8"),
 &"death": SubResource("Animation_qkeek"),
 &"idle": SubResource("Animation_i4wqq"),
-&"intro": SubResource("Animation_u47si")
+&"intro": SubResource("Animation_u47si"),
+&"move": SubResource("Animation_rabum"),
+&"move_end": SubResource("Animation_5ys5f")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ij73c"]
-size = Vector2(101.81775, 154.54547)
-
-[sub_resource type="Animation" id="Animation_v8pan"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_2pjcc"]
-resource_name = "end"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.96666664),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_aamsd"]
-_data = {
-&"RESET": SubResource("Animation_v8pan"),
-&"end": SubResource("Animation_2pjcc")
-}
+size = Vector2(80, 132.72723)
 
 [node name="Node2D" type="Node2D" unique_id=1086668370]
 script = ExtResource("1_tsd7l")
@@ -745,10 +944,11 @@ zoom = Vector2(1.1, 1.1)
 position = Vector2(1265.9999, 202)
 scale = Vector2(0.99999994, 1)
 
-[node name="Caine" type="Node2D" parent="." unique_id=1581126704 node_paths=PackedStringArray("boss_position")]
+[node name="Caine" type="Node2D" parent="." unique_id=1581126704 node_paths=PackedStringArray("boss_position", "projectile")]
 position = Vector2(1266, 436)
 script = ExtResource("5_h5euk")
 boss_position = NodePath("../CaineBossMarker")
+projectile = NodePath("../ChainChomp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Caine" unique_id=683366815]
 sprite_frames = SubResource("SpriteFrames_m5pao")
@@ -770,14 +970,47 @@ volume_db = -20.0
 wait_time = 5.0
 one_shot = true
 
-[node name="GoatBlack" type="Node2D" parent="." unique_id=321604711]
+[node name="DefeatFlash" type="ColorRect" parent="Caine" unique_id=2022942073]
+anchors_preset = -1
+offset_left = -1537.0
+offset_top = -1005.0
+offset_right = 1986.0
+offset_bottom = 947.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="FlashAnimationPlayer" type="AnimationPlayer" parent="Caine/DefeatFlash" unique_id=1255399862]
+libraries/ = SubResource("AnimationLibrary_aamsd")
+
+[node name="ChainChomp" type="Node2D" parent="." unique_id=1454075544 node_paths=PackedStringArray("positions")]
+script = ExtResource("8_2hhn8")
+positions = [NodePath("../ChainChompMarker"), NodePath("../ChainChompMarker3"), NodePath("../ChainChompMarker2"), NodePath("../ChainChompMarker4")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ChainChomp" unique_id=2121647631]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_mvuam")
+autoplay = "default"
+frame_progress = 0.14601439
+
+[node name="Timer" type="Timer" parent="ChainChomp" unique_id=1411261367]
+wait_time = 7.0
+
+[node name="Attackbox" type="Area2D" parent="ChainChomp" unique_id=1939291740 groups=["enemyattack"]]
+scale = Vector2(1.5, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChainChomp/Attackbox" unique_id=1671961886]
+shape = SubResource("CircleShape2D_5mmxi")
+debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
+
+[node name="GoatBlack" type="Node2D" parent="." unique_id=321604711 node_paths=PackedStringArray("positions")]
 position = Vector2(815, 454)
 script = ExtResource("8_5ys5f")
+positions = [NodePath("../GokuBlackPosition"), NodePath("../GokuBlackPosition2"), NodePath("../GokuBlackPosition3"), NodePath("../GokuBlackPosition4"), NodePath("../GokuBlackPosition5")]
 
 [node name="Sprite2D" type="Sprite2D" parent="GoatBlack" unique_id=2070445339]
 material = SubResource("ShaderMaterial_grv3d")
 position = Vector2(0, -8)
-scale = Vector2(1.1, 1.1)
 texture = SubResource("CompressedTexture2D_x6dkc")
 hframes = 17
 vframes = 4
@@ -793,22 +1026,24 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GoatBlack/Hitbox" unique_id=361393245]
-position = Vector2(17.636597, -59.09091)
+position = Vector2(17.63623, -59.09091)
 shape = SubResource("RectangleShape2D_ij73c")
 
-[node name="DefeatFlash" type="ColorRect" parent="GoatBlack" unique_id=2068942008]
+[node name="DefeatFlashScreen" type="ColorRect" parent="GoatBlack" unique_id=2068942008]
 anchors_preset = -1
 offset_left = -1537.0
 offset_top = -1005.0
 offset_right = 1986.0
 offset_bottom = 947.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
-[node name="FlashAnimationPlayer" type="AnimationPlayer" parent="GoatBlack/DefeatFlash" unique_id=1132648310]
+[node name="FlashAnimationPlayer" type="AnimationPlayer" parent="GoatBlack/DefeatFlashScreen" unique_id=1132648310]
 libraries/ = SubResource("AnimationLibrary_aamsd")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="GoatBlack" unique_id=729615692]
-stream = ExtResource("11_xt2ol")
+stream = ExtResource("12_7pw7r")
 volume_db = -15.0
 
 [node name="Music" type="AudioStreamPlayer" parent="GoatBlack" unique_id=261395330]
@@ -819,16 +1054,55 @@ volume_db = -20.0
 stream = ExtResource("7_5ys5f")
 volume_db = -20.0
 
+[node name="ActionTimer" type="Timer" parent="GoatBlack" unique_id=703056682]
+wait_time = 5.0
+
+[node name="AttackSpawnMarker" type="Marker2D" parent="GoatBlack" unique_id=1717434669]
+position = Vector2(71, -7)
+
+[node name="GokuBlackPosition" type="Marker2D" parent="GoatBlack" unique_id=1234689971]
+
 [node name="Ring Strand" parent="." unique_id=1684411672 instance=ExtResource("8_xt2ol")]
 position = Vector2(1266, 639)
+
+[node name="GokuBlackPosition" type="Marker2D" parent="." unique_id=2585807]
+position = Vector2(808, 360)
+
+[node name="GokuBlackPosition2" type="Marker2D" parent="." unique_id=228739807]
+position = Vector2(808, 532)
+
+[node name="GokuBlackPosition3" type="Marker2D" parent="." unique_id=2280756]
+position = Vector2(1699, 360)
+
+[node name="GokuBlackPosition4" type="Marker2D" parent="." unique_id=1027860242]
+position = Vector2(1699, 532)
+
+[node name="GokuBlackPosition5" type="Marker2D" parent="." unique_id=1078828508]
+position = Vector2(1266, 411)
+
+[node name="ChainChompMarker" type="Marker2D" parent="." unique_id=2027745501]
+position = Vector2(425, 360)
+
+[node name="ChainChompMarker2" type="Marker2D" parent="." unique_id=2073121154]
+position = Vector2(2112, 360)
+
+[node name="ChainChompMarker3" type="Marker2D" parent="." unique_id=1667041588]
+position = Vector2(761, -23)
+
+[node name="ChainChompMarker4" type="Marker2D" parent="." unique_id=1168196170]
+position = Vector2(1699, -23)
 
 [connection signal="set_new_boss" from="Caine" to="BossHPDisplay" method="_set_new_boss"]
 [connection signal="start_goku_black" from="Caine" to="GoatBlack" method="_on_caine_start_goku_black"]
 [connection signal="update_health_bar" from="Caine" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
 [connection signal="area_entered" from="Caine/Hurtbox" to="Caine" method="_on_hurtbox_area_entered"]
 [connection signal="timeout" from="Caine/AfterDeathTimer" to="Caine" method="_on_after_death_timer_timeout"]
+[connection signal="timeout" from="ChainChomp/Timer" to="ChainChomp" method="_on_timer_timeout"]
+[connection signal="boss_defeated" from="GoatBlack" to="ChainChomp" method="_on_goat_black_boss_defeated"]
 [connection signal="end" from="GoatBlack" to="." method="_on_node_2d_end"]
 [connection signal="update_health_bar" from="GoatBlack" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="animation_finished" from="GoatBlack/AnimationPlayer" to="GoatBlack" method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="GoatBlack/Hitbox" to="GoatBlack" method="_on_hitbox_area_entered"]
+[connection signal="timeout" from="GoatBlack/ActionTimer" to="GoatBlack" method="_on_action_timer_timeout"]
 
 [editable path="BossHPDisplay"]

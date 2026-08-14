@@ -66,6 +66,7 @@ item=""
 AttractCam=""
 enemyattack=""
 Miku=""
+EnemyProjectile=""
 
 [gui]
 
@@ -199,4 +200,5 @@ renderer/rendering_method.web="mobile"
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 environment/bg_color=Color(0, 0, 0, 1)
