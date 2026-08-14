@@ -25,7 +25,7 @@ extends Node2D
 #@export var chunk_18 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_18.tscn")
 #@export var chunk_19 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_19.tscn")
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
-@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
+@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_Caine.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
 @export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")

@@ -60,7 +60,10 @@ position = Vector2(838.3867, 676.9116)
 
 [node name="CanvasLayer" parent="." unique_id=100622930 instance=ExtResource("4_ver2b")]
 
-[node name="TextureRect" parent="CanvasLayer/Sprite2D3" parent_id_path=PackedInt32Array(100622930, 880597888) index="0" unique_id=2069448168]
+[node name="Sprite2D3" parent="CanvasLayer" index="1" unique_id=880597888]
+visible = true
+
+[node name="TextureRect" parent="CanvasLayer/Sprite2D3" index="0" unique_id=2069448168]
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 40.0
@@ -84,7 +87,7 @@ offset_top = 0.0
 offset_right = 2000.0
 offset_bottom = 2000.0
 
-[node name="Label" parent="CanvasLayer/Sprite2D3" parent_id_path=PackedInt32Array(100622930, 880597888) index="3" unique_id=1159310442]
+[node name="Label" parent="CanvasLayer/Sprite2D3" index="3" unique_id=1159310442]
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 55.0

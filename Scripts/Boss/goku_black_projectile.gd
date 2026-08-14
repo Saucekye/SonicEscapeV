@@ -1,0 +1,40 @@
+extends Node2D
+
+@onready var timer: Timer = $Timer
+@onready var attackbox: Area2D = $Attackbox
+
+@export var lifetime : int = 10
+
+const PROJECTILE_SCALE : float = 3.0
+
+var current_player
+var speed : int = 225
+
+func _ready() -> void:
+	timer.start(lifetime)
+	# tween projectile from 1 to 3x scale
+	var tween_size = get_tree().create_tween()
+	tween_size.tween_property(self, "scale", 3, 0.3)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	current_player = _get_current_player()
+	var to_player = (current_player.global_position- global_position).normalized()
+	global_position += to_player * speed * delta
+
+func _get_current_player() -> Node2D:
+	var players = get_tree().get_nodes_in_group("Player")
+
+	for player in players:
+		if is_instance_valid(player) and player.get("is_player") == true:
+			return player
+
+	return null
+
+func _on_timer_timeout() -> void:
+	attackbox.monitoring = false
+	attackbox.monitorable = false
+	# tween until it disappears
+	var tween_size = get_tree().create_tween()
+	tween_size.tween_property(self, "modulate:a", 0, 0.2)
+	queue_free()

@@ -1,0 +1,834 @@
+[gd_scene format=4 uid="uid://d1bdxrt0n5bd1"]
+
+[ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_tsd7l"]
+[ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_m5pao"]
+[ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="3_1emkl"]
+[ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_1g1ho"]
+[ext_resource type="Script" uid="uid://drl8osj5htuxc" path="res://Scripts/Boss/Caine.gd" id="5_h5euk"]
+[ext_resource type="Texture2D" uid="uid://chhcirj0vo1fg" path="res://Sprites/Boss/Goku Black & Caine/caine.png" id="6_eew8j"]
+[ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="7_5ys5f"]
+[ext_resource type="Script" uid="uid://c2stgvvyy8fsp" path="res://Scripts/Boss/goku_black.gd" id="8_5ys5f"]
+[ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="8_xt2ol"]
+[ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="9_eew8j"]
+[ext_resource type="AudioStream" uid="uid://cmepllxv1pfol" path="res://Sounds/Environmental/strongwin.MP3" id="10_5ys5f"]
+[ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="11_xt2ol"]
+[ext_resource type="AudioStream" uid="uid://c5ne14aaqqheu" path="res://misc/startup2(1).MP3" id="12_7pw7r"]
+[ext_resource type="AudioStream" uid="uid://dgx0buwape3xw" path="res://misc/aron.MP3" id="13_2hhn8"]
+
+[sub_resource type="Animation" id="Animation_q0tdp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-688.0001, 248)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [4.712389]
+}
+
+[sub_resource type="Animation" id="Animation_qdjoc"]
+resource_name = "left"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1176, -600)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5707964]
+}
+
+[sub_resource type="Animation" id="Animation_0iqyq"]
+resource_name = "right"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1232, 256)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [4.712389]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tsd7l"]
+_data = {
+&"RESET": SubResource("Animation_q0tdp"),
+&"left": SubResource("Animation_qdjoc"),
+&"right": SubResource("Animation_0iqyq")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2c7h"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(672, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7jsw"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(768, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tej2w"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(864, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ep5bn"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(960, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hv01p"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(576, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrbyu"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(0, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwnmd"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(96, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xq2hi"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(192, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xctae"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(288, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqxfx"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(384, 0, 96, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqfbj"]
+atlas = ExtResource("6_eew8j")
+region = Rect2(480, 0, 96, 108)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m5pao"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2c7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i7jsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tej2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ep5bn")
+}],
+"loop": 1,
+"name": &"background",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hv01p")
+}],
+"loop": 1,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrbyu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwnmd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xq2hi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xctae")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqxfx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqfbj")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1emkl"]
+size = Vector2(96, 112)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grv3d"]
+shader = ExtResource("9_eew8j")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x6dkc"]
+load_path = "res://.godot/imported/goatblack - reordered.png-b7303d976f22aebe4abffe5db100b366.ctex"
+
+[sub_resource type="Animation" id="Animation_ul6mg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../Music:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_bv314"]
+resource_name = "attack1"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333333, 0.26666668, 0.40000004, 0.46666667, 0.53333336, 0.6, 0.6666667, 0.9, 0.9666667, 1.2666667, 1.4, 1.5333333, 1.6666667, 1.8, 1.9333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_5ys5f")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(-0.03333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_isfwg"]
+resource_name = "attack1end"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.3, 0.8666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [51, 52, 53, 54, 55]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.23333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_xt2ol")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.23333335),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_rabum"]
+resource_name = "attack1to"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [34, 35]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_5ys5f")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_nv865"]
+resource_name = "attack2"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.36666667, 0.5, 0.6333333, 0.76666665, 0.8666667, 0.93333334, 1, 1.1, 1.1666666),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 51]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer2D:stream")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_7pw7r")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../AudioStreamPlayer2D:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_qkeek"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [56]
+}
+
+[sub_resource type="Animation" id="Animation_i4wqq"]
+resource_name = "idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.4, 0.53333336, 0.6333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [19, 20, 21, 22, 23, 24]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_u47si"]
+resource_name = "intro"
+length = 2.3000000000000003
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03333334, 0.16666667, 0.26666668, 0.33333334, 0.4, 0.46666667, 0.53333336, 0.6, 0.6666667, 0.73333335, 0.8, 0.8666667, 0.93333334, 1, 1.0666667, 1.1333333, 1.2, 1.2666667, 1.3333334, 1.4, 1.4666667, 1.5333333, 1.6, 1.6666666, 1.7333333, 1.8, 1.8666667, 1.9333333, 2, 2.0666666, 2.1333334, 2.2, 2.2666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hitbox:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../Music:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xf5c3"]
+_data = {
+&"RESET": SubResource("Animation_ul6mg"),
+&"attack1": SubResource("Animation_bv314"),
+&"attack1end": SubResource("Animation_isfwg"),
+&"attack1to": SubResource("Animation_rabum"),
+&"attack2": SubResource("Animation_nv865"),
+&"death": SubResource("Animation_qkeek"),
+&"idle": SubResource("Animation_i4wqq"),
+&"intro": SubResource("Animation_u47si")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ij73c"]
+size = Vector2(101.81775, 154.54547)
+
+[sub_resource type="Animation" id="Animation_v8pan"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2pjcc"]
+resource_name = "end"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aamsd"]
+_data = {
+&"RESET": SubResource("Animation_v8pan"),
+&"end": SubResource("Animation_2pjcc")
+}
+
+[node name="Node2D" type="Node2D" unique_id=1086668370]
+script = ExtResource("1_tsd7l")
+
+[node name="BossHPDisplay" parent="." unique_id=551385776 node_paths=PackedStringArray("boss") instance=ExtResource("2_m5pao")]
+boss = NodePath("../Caine")
+boss_name = "Caine"
+
+[node name="ColorRect" type="ColorRect" parent="BossHPDisplay/BossUIContainer/ProgressBar" parent_id_path=PackedInt32Array(551385776, 1360166864) index="0" unique_id=834235706]
+visible = false
+z_index = -1
+layout_mode = 0
+offset_left = -193.0
+offset_top = -9.0
+offset_right = 326.0
+offset_bottom = 37.0
+color = Color(0, 0, 0, 1)
+
+[node name="PinkFilter" type="ColorRect" parent="." unique_id=1828562301]
+modulate = Color(1, 1, 1, 0)
+z_index = 50
+z_as_relative = false
+offset_left = -688.0001
+offset_top = 248.0
+offset_right = -677.2611
+offset_bottom = 250.62042
+rotation = 4.712389
+scale = Vector2(21.272728, 61.69091)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(1, 0, 1, 0.19607843)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PinkFilter" unique_id=1229611334]
+libraries/ = SubResource("AnimationLibrary_tsd7l")
+
+[node name="Level" type="Node2D" parent="." unique_id=10204899]
+z_index = -2
+scale = Vector2(0.8, 0.8)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Level" unique_id=1026829688]
+position = Vector2(4360, 1800)
+scale = Vector2(3, 3)
+tile_map_data = PackedByteArray("AACx/+//AAACAAEAAACy/+//AAACAAEAAACz/+//AAACAAEAAAC0/+//AAACAAEAAAC4/+//AAACAAEAAAC3/+//AAACAAEAAAC2/+//AAACAAEAAAC1/+//AAACAAEAAAC5/+//AAACAAEAAAC6/+//AAACAAEAAAC7/+//AAACAAEAAAC8/+//AAACAAEAAAC9/+//AAACAAEAAAC+/+//AAACAAEAAACx/+7/AAACAAEAAACy/+7/AAACAAEAAACz/+7/AAACAAEAAAC0/+3/AAACAAEAAAC1/+3/AAACAAEAAAC2/+3/AAACAAEAAAC3/+3/AAACAAEAAAC4/+3/AAACAAEAAAC5/+3/AAACAAEAAAC5/+7/AAACAAEAAAC4/+7/AAACAAEAAAC3/+7/AAACAAEAAAC2/+7/AAACAAEAAAC1/+7/AAACAAEAAAC0/+7/AAACAAEAAACz/+3/AAACAAEAAACy/+3/AAACAAEAAAC6/+3/AAACAAEAAAC7/+3/AAACAAEAAAC8/+3/AAACAAEAAAC9/+3/AAACAAEAAAC+/+3/AAACAAEAAAC+/+7/AAACAAEAAAC9/+7/AAACAAEAAAC8/+7/AAACAAEAAAC7/+7/AAACAAEAAAC6/+7/AAACAAEAAADD/+3/AAACAAEAAADE/+3/AAACAAEAAADF/+3/AAACAAEAAADG/+3/AAACAAEAAAC//+3/AAACAAEAAADA/+3/AAACAAEAAADB/+3/AAACAAEAAADC/+3/AAACAAEAAADK/+3/AAACAAEAAADO/+//AAACAAEAAADP/+//AAACAAEAAADQ/+//AAACAAEAAADR/+//AAACAAEAAADT/+//AAACAAEAAADS/+//AAACAAEAAACs/+3/AAACAAEAAACs/+7/AAACAAEAAACs/+//AAACAAEAAACt/+3/AAACAAEAAACt/+7/AAACAAEAAACt/+//AAACAAEAAACu/+3/AAACAAEAAACu/+7/AAACAAEAAACu/+//AAACAAEAAACv/+3/AAACAAEAAACv/+7/AAACAAEAAACv/+//AAACAAEAAACw/+3/AAACAAEAAACw/+7/AAACAAEAAACw/+//AAACAAEAAACx/+3/AAACAAEAAACs/9r/AAACAAEAAACs/9v/AAACAAEAAACt/9r/AAACAAEAAACt/9v/AAACAAEAAADH/+3/AAACAAEAAADJ/+3/AAACAAEAAADI/+3/AAACAAEAAADL/+3/AAACAAEAAADM/+3/AAACAAEAAADN/+3/AAACAAEAAADO/+3/AAACAAEAAADP/+3/AAACAAEAAADQ/+3/AAACAAEAAADR/+3/AAACAAEAAADS/+3/AAACAAEAAADT/+3/AAACAAEAAADU/+3/AAACAAEAAADV/+3/AAACAAEAAADW/+3/AAACAAEAAADX/+3/AAACAAEAAADY/+3/AAACAAEAAADZ/+3/AAACAAEAAADa/+3/AAACAAEAAADb/+3/AAACAAEAAADc/+3/AAACAAEAAADd/+3/AAACAAEAAADe/+3/AAACAAEAAADf/+3/AAACAAEAAADg/+3/AAACAAEAAADh/+3/AAACAAEAAAC//+7/AAACAAEAAAC//+//AAACAAEAAADA/+7/AAACAAEAAADA/+//AAACAAEAAADB/+7/AAACAAEAAADB/+//AAACAAEAAADC/+7/AAACAAEAAADC/+//AAACAAEAAADD/+7/AAACAAEAAADD/+//AAACAAEAAADE/+7/AAACAAEAAADE/+//AAACAAEAAADF/+7/AAACAAEAAADF/+//AAACAAEAAADG/+7/AAACAAEAAADG/+//AAACAAEAAADH/+7/AAACAAEAAADH/+//AAACAAEAAADI/+7/AAACAAEAAADI/+//AAACAAEAAADJ/+7/AAACAAEAAADJ/+//AAACAAEAAADK/+7/AAACAAEAAADK/+//AAACAAEAAADL/+7/AAACAAEAAADL/+//AAACAAEAAADM/+7/AAACAAEAAADM/+//AAACAAEAAADN/+7/AAACAAEAAADN/+//AAACAAEAAADO/+7/AAACAAEAAADP/+7/AAACAAEAAADQ/+7/AAACAAEAAADR/+7/AAACAAEAAADS/+7/AAACAAEAAADT/+7/AAACAAEAAADU/+7/AAACAAEAAADU/+//AAACAAEAAADV/+7/AAACAAEAAADV/+//AAACAAEAAADW/+7/AAACAAEAAADW/+//AAACAAEAAADX/+7/AAACAAEAAADX/+//AAACAAEAAADY/+7/AAACAAEAAADY/+//AAACAAEAAADZ/+7/AAACAAEAAADZ/+//AAACAAEAAADa/+7/AAACAAEAAADa/+//AAACAAEAAADb/+7/AAACAAEAAADb/+//AAACAAEAAADc/+7/AAACAAEAAADc/+//AAACAAEAAADd/+7/AAACAAEAAADd/+//AAACAAEAAADe/+7/AAACAAEAAADe/+//AAACAAEAAADf/+7/AAACAAEAAADf/+//AAACAAEAAADg/+7/AAACAAEAAADg/+//AAACAAEAAADh/+7/AAACAAEAAADh/+//AAACAAEAAACt/+z/AAACAAEAAADf/+z/AAACAAEAAACu/9v/AAACAAEAAACv/9v/AAACAAEAAACw/9v/AAACAAEAAACx/9v/AAACAAEAAACy/9v/AAACAAEAAACt/9b/AAACAAEAAACt/9f/AAACAAEAAACt/9j/AAACAAEAAACt/9n/AAACAAEAAACu/9b/AAACAAEAAACu/9f/AAACAAEAAACu/9j/AAACAAEAAACu/9n/AAACAAEAAACu/9r/AAACAAEAAACv/9b/AAACAAEAAACv/9f/AAACAAEAAACv/9j/AAACAAEAAACv/9n/AAACAAEAAACv/9r/AAACAAEAAACw/9b/AAACAAEAAACw/9f/AAACAAEAAACw/9j/AAACAAEAAACw/9n/AAACAAEAAACw/9r/AAACAAEAAACx/9b/AAACAAEAAACx/9f/AAACAAEAAACx/9j/AAACAAEAAACx/9n/AAACAAEAAACx/9r/AAACAAEAAACy/9b/AAACAAEAAACy/9f/AAACAAEAAACy/9j/AAACAAEAAACy/9n/AAACAAEAAACy/9r/AAACAAEAAACz/9b/AAACAAEAAACs/9b/AAACAAEAAACs/9f/AAACAAEAAACs/9j/AAACAAEAAACs/9n/AAACAAEAAACs/+z/AAACAAEAAADg/+z/AAACAAEAAADh/+z/AAACAAEAAACx/+z/AAACAAEAAADa/+z/AAACAAEAAADe/+z/AAACAAEAAACy/+z/AAACAAEAAACz/+z/AAACAAEAAAC0/+z/AAACAAEAAAC1/+z/AAACAAEAAADW/+z/AAACAAEAAADX/+z/AAACAAEAAADY/+z/AAACAAEAAADZ/+z/AAACAAEAAADb/+z/AAACAAEAAADc/+z/AAACAAEAAADd/+z/AAACAAEAAACu/+z/AAACAAEAAACv/+z/AAACAAEAAACw/+z/AAACAAEAAAC2/+z/AAACAAEAAAC3/+z/AAACAAAAAAC4/+z/AAACAAAAAAC5/+z/AAACAAAAAAC6/+z/AAACAAAAAAC7/+z/AAACAAAAAAC8/+z/AAACAAAAAAC9/+z/AAACAAAAAAC+/+z/AAACAAAAAAC//+z/AAACAAAAAADA/+z/AAACAAAAAADB/+z/AAACAAAAAADC/+z/AAACAAAAAADD/+z/AAACAAAAAADE/+z/AAACAAAAAADF/+z/AAACAAAAAADG/+z/AAACAAAAAADH/+z/AAACAAAAAADI/+z/AAACAAAAAADJ/+z/AAACAAAAAADK/+z/AAACAAAAAADL/+z/AAACAAAAAADM/+z/AAACAAAAAADN/+z/AAACAAAAAADO/+z/AAACAAAAAADP/+z/AAACAAAAAADQ/+z/AAACAAAAAADR/+z/AAACAAAAAADS/+z/AAACAAAAAADT/+z/AAACAAAAAADU/+z/AAACAAAAAADV/+z/AAACAAEAAACz/9v/AAACAAEAAACz/9r/AAACAAEAAACz/9n/AAACAAEAAACz/9j/AAACAAEAAACz/9f/AAACAAEAAAC0/9b/AAACAAEAAAC0/9f/AAACAAEAAAC0/9j/AAACAAEAAAC0/9n/AAACAAEAAAC0/9r/AAACAAEAAAC0/9v/AAACAAEAAAC1/9b/AAACAAEAAAC1/9f/AAACAAEAAAC1/9j/AAACAAEAAAC1/9n/AAACAAEAAAC1/9r/AAACAAEAAAC1/9v/AAACAAEAAAC2/9b/AAACAAEAAAC2/9f/AAACAAEAAAC2/9j/AAACAAEAAAC2/9n/AAACAAEAAAC2/9r/AAACAAEAAAC2/9v/AAACAAEAAAC3/9b/AAACAAEAAAC3/9f/AAACAAEAAAC3/9j/AAACAAEAAAC3/9n/AAACAAEAAAC3/9r/AAACAAEAAAC3/9v/AAACAAEAAAC4/9b/AAACAAEAAAC4/9f/AAACAAEAAAC4/9j/AAACAAEAAAC4/9n/AAACAAEAAAC4/9r/AAACAAEAAAC4/9v/AAACAAEAAAC5/9b/AAACAAEAAAC5/9f/AAACAAEAAAC5/9j/AAACAAEAAAC5/9n/AAACAAEAAAC5/9r/AAACAAEAAAC5/9v/AAACAAEAAAC6/9b/AAACAAEAAAC6/9f/AAACAAEAAAC6/9j/AAACAAEAAAC6/9n/AAACAAEAAAC6/9r/AAACAAEAAAC6/9v/AAACAAEAAAC7/9b/AAACAAEAAAC7/9f/AAACAAEAAAC7/9j/AAACAAEAAAC7/9n/AAACAAEAAAC7/9r/AAACAAEAAAC7/9v/AAACAAEAAAC8/9b/AAACAAEAAAC8/9f/AAACAAEAAAC8/9j/AAACAAEAAAC8/9n/AAACAAEAAAC8/9r/AAACAAEAAAC8/9v/AAACAAEAAAC9/9b/AAACAAEAAAC9/9f/AAACAAEAAAC9/9j/AAACAAEAAAC9/9n/AAACAAEAAAC9/9r/AAACAAEAAAC9/9v/AAACAAEAAAC+/9b/AAACAAEAAAC+/9f/AAACAAEAAAC+/9j/AAACAAEAAAC+/9n/AAACAAEAAAC+/9r/AAACAAEAAAC+/9v/AAACAAEAAAC//9b/AAACAAEAAAC//9f/AAACAAEAAAC//9j/AAACAAEAAAC//9n/AAACAAEAAAC//9r/AAACAAEAAAC//9v/AAACAAEAAADA/9b/AAACAAEAAADA/9f/AAACAAEAAADA/9j/AAACAAEAAADA/9n/AAACAAEAAADA/9r/AAACAAEAAADA/9v/AAACAAEAAADB/9b/AAACAAEAAADB/9f/AAACAAEAAADB/9j/AAACAAEAAADB/9n/AAACAAEAAADB/9r/AAACAAEAAADB/9v/AAACAAEAAADC/9b/AAACAAEAAADC/9f/AAACAAEAAADC/9j/AAACAAEAAADC/9n/AAACAAEAAADC/9r/AAACAAEAAADC/9v/AAACAAEAAADD/9b/AAACAAEAAADD/9f/AAACAAEAAADD/9j/AAACAAEAAADD/9n/AAACAAEAAADD/9r/AAACAAEAAADD/9v/AAACAAEAAADE/9b/AAACAAEAAADE/9f/AAACAAEAAADE/9j/AAACAAEAAADE/9n/AAACAAEAAADE/9r/AAACAAEAAADE/9v/AAACAAEAAADF/9b/AAACAAEAAADF/9f/AAACAAEAAADF/9j/AAACAAEAAADF/9n/AAACAAEAAADF/9r/AAACAAEAAADF/9v/AAACAAEAAADG/9b/AAACAAEAAADG/9f/AAACAAEAAADG/9j/AAACAAEAAADG/9n/AAACAAEAAADG/9r/AAACAAEAAADG/9v/AAACAAEAAADH/9b/AAACAAEAAADH/9f/AAACAAEAAADH/9j/AAACAAEAAADH/9n/AAACAAEAAADH/9r/AAACAAEAAADH/9v/AAACAAEAAADI/9b/AAACAAEAAADI/9f/AAACAAEAAADI/9j/AAACAAEAAADI/9n/AAACAAEAAADI/9r/AAACAAEAAADI/9v/AAACAAEAAADJ/9b/AAACAAEAAADJ/9f/AAACAAEAAADJ/9j/AAACAAEAAADJ/9n/AAACAAEAAADJ/9r/AAACAAEAAADJ/9v/AAACAAEAAADK/9b/AAACAAEAAADK/9f/AAACAAEAAADK/9j/AAACAAEAAADK/9n/AAACAAEAAADK/9r/AAACAAEAAADK/9v/AAACAAEAAADL/9b/AAACAAEAAADL/9f/AAACAAEAAADL/9j/AAACAAEAAADL/9n/AAACAAEAAADL/9r/AAACAAEAAADL/9v/AAACAAEAAADM/9b/AAACAAEAAADM/9f/AAACAAEAAADM/9j/AAACAAEAAADM/9n/AAACAAEAAADM/9r/AAACAAEAAADM/9v/AAACAAEAAADN/9b/AAACAAEAAADN/9f/AAACAAEAAADN/9j/AAACAAEAAADN/9n/AAACAAEAAADN/9r/AAACAAEAAADN/9v/AAACAAEAAADO/9b/AAACAAEAAADO/9f/AAACAAEAAADO/9j/AAACAAEAAADO/9n/AAACAAEAAADO/9r/AAACAAEAAADO/9v/AAACAAEAAADP/9b/AAACAAEAAADP/9f/AAACAAEAAADP/9j/AAACAAEAAADP/9n/AAACAAEAAADP/9r/AAACAAEAAADP/9v/AAACAAEAAADQ/9b/AAACAAEAAADQ/9f/AAACAAEAAADQ/9j/AAACAAEAAADQ/9n/AAACAAEAAADQ/9r/AAACAAEAAADQ/9v/AAACAAEAAADR/9b/AAACAAEAAADR/9f/AAACAAEAAADR/9j/AAACAAEAAADR/9n/AAACAAEAAADR/9r/AAACAAEAAADR/9v/AAACAAEAAADS/9b/AAACAAEAAADS/9f/AAACAAEAAADS/9j/AAACAAEAAADS/9n/AAACAAEAAADS/9r/AAACAAEAAADS/9v/AAACAAEAAADT/9b/AAACAAEAAADT/9f/AAACAAEAAADT/9j/AAACAAEAAADT/9n/AAACAAEAAADT/9r/AAACAAEAAADT/9v/AAACAAEAAADU/9b/AAACAAEAAADU/9f/AAACAAEAAADU/9j/AAACAAEAAADU/9n/AAACAAEAAADU/9r/AAACAAEAAADU/9v/AAACAAEAAADV/9b/AAACAAEAAADV/9f/AAACAAEAAADV/9j/AAACAAEAAADV/9n/AAACAAEAAADV/9r/AAACAAEAAADV/9v/AAACAAEAAADW/9b/AAACAAEAAADW/9f/AAACAAEAAADW/9j/AAACAAEAAADW/9n/AAACAAEAAADW/9r/AAACAAEAAADW/9v/AAACAAEAAADX/9b/AAACAAEAAADX/9f/AAACAAEAAADX/9j/AAACAAEAAADX/9n/AAACAAEAAADX/9r/AAACAAEAAADX/9v/AAACAAEAAADY/9b/AAACAAEAAADY/9f/AAACAAEAAADY/9j/AAACAAEAAADY/9n/AAACAAEAAADY/9r/AAACAAEAAADY/9v/AAACAAEAAADZ/9b/AAACAAEAAADZ/9f/AAACAAEAAADZ/9j/AAACAAEAAADZ/9n/AAACAAEAAADZ/9r/AAACAAEAAADa/9b/AAACAAEAAADa/9f/AAACAAEAAADa/9j/AAACAAEAAADa/9n/AAACAAEAAADa/9r/AAACAAEAAADb/9b/AAACAAEAAADb/9f/AAACAAEAAADb/9j/AAACAAEAAADb/9n/AAACAAEAAADb/9r/AAACAAEAAADc/9b/AAACAAEAAADc/9f/AAACAAEAAADc/9j/AAACAAEAAADc/9n/AAACAAEAAADc/9r/AAACAAEAAADd/9b/AAACAAEAAADd/9f/AAACAAEAAADd/9j/AAACAAEAAADd/9n/AAACAAEAAADd/9r/AAACAAEAAADe/9b/AAACAAEAAADe/9f/AAACAAEAAADe/9j/AAACAAEAAADe/9n/AAACAAEAAADe/9r/AAACAAEAAADf/9b/AAACAAEAAADf/9f/AAACAAEAAADf/9j/AAACAAEAAADf/9n/AAACAAEAAADg/9b/AAACAAEAAADg/9f/AAACAAEAAADg/9j/AAACAAEAAADg/9n/AAACAAEAAADh/9b/AAACAAEAAADh/9f/AAACAAEAAADh/9j/AAACAAEAAADh/9n/AAACAAEAAAC5/9z/AAACAAIAAAC6/9z/AAACAAIAAAC7/9z/AAACAAIAAAC8/9z/AAACAAIAAAC9/9z/AAACAAIAAAC+/9z/AAACAAIAAAC//9z/AAACAAIAAADA/9z/AAACAAIAAADB/9z/AAACAAIAAADC/9z/AAACAAIAAADD/9z/AAACAAIAAADE/9z/AAACAAIAAADF/9z/AAACAAIAAADG/9z/AAACAAIAAADH/9z/AAACAAIAAADI/9z/AAACAAIAAADJ/9z/AAACAAIAAADK/9z/AAACAAIAAADL/9z/AAACAAIAAADM/9z/AAACAAIAAADN/9z/AAACAAIAAADO/9z/AAACAAIAAADP/9z/AAACAAIAAADQ/9z/AAACAAIAAADR/9z/AAACAAIAAADS/9z/AAACAAIAAADT/9z/AAACAAIAAADU/9z/AAACAAIAAADV/9z/AAACAAEAAADW/9z/AAACAAEAAADX/9z/AAACAAEAAADY/9z/AAACAAEAAADZ/9z/AAACAAEAAADa/9z/AAACAAEAAADb/9z/AAACAAEAAADc/9z/AAACAAEAAADd/9z/AAACAAEAAADf/9z/AAACAAEAAADg/9v/AAACAAEAAADh/9v/AAACAAEAAADh/9r/AAACAAEAAADg/9r/AAACAAEAAADf/9r/AAACAAEAAADe/9v/AAACAAEAAADd/9v/AAACAAEAAADc/9v/AAACAAEAAADb/9v/AAACAAEAAADa/9v/AAACAAEAAADZ/9v/AAACAAEAAADf/9v/AAACAAEAAADh/9z/AAACAAEAAADg/9z/AAACAAEAAADV/93/AAABAAEAAADV/97/AAABAAEAAADV/9//AAABAAEAAADV/+D/AAABAAEAAADV/+H/AAABAAEAAADV/+L/AAABAAEAAADV/+P/AAABAAEAAADV/+T/AAABAAEAAADV/+X/AAABAAEAAADV/+b/AAABAAEAAADV/+f/AAABAAEAAADV/+j/AAABAAEAAADV/+n/AAABAAEAAADV/+r/AAABAAEAAADV/+v/AAABAAEAAADW/93/AAACAAEAAADW/97/AAACAAEAAADW/9//AAACAAEAAADW/+D/AAACAAEAAADW/+H/AAACAAEAAADW/+L/AAACAAEAAADW/+P/AAACAAEAAADW/+T/AAACAAEAAADW/+X/AAACAAEAAADW/+b/AAACAAEAAADW/+f/AAACAAEAAADW/+j/AAACAAEAAADW/+n/AAACAAEAAADW/+r/AAACAAEAAADW/+v/AAACAAEAAADX/93/AAACAAEAAADX/97/AAACAAEAAADX/9//AAACAAEAAADX/+D/AAACAAEAAADX/+H/AAACAAEAAADX/+L/AAACAAEAAADX/+P/AAACAAEAAADX/+T/AAACAAEAAADX/+X/AAACAAEAAADX/+b/AAACAAEAAADX/+f/AAACAAEAAADX/+j/AAACAAEAAADX/+n/AAACAAEAAADX/+r/AAACAAEAAADX/+v/AAACAAEAAADY/93/AAACAAEAAADY/97/AAACAAEAAADY/9//AAACAAEAAADY/+D/AAACAAEAAADY/+H/AAACAAEAAADY/+L/AAACAAEAAADY/+P/AAACAAEAAADY/+T/AAACAAEAAADY/+X/AAACAAEAAADY/+b/AAACAAEAAADY/+f/AAACAAEAAADY/+j/AAACAAEAAADY/+n/AAACAAEAAADY/+r/AAACAAEAAADY/+v/AAACAAEAAADZ/93/AAACAAEAAADZ/97/AAACAAEAAADZ/9//AAACAAEAAADZ/+D/AAACAAEAAADZ/+H/AAACAAEAAADZ/+L/AAACAAEAAADZ/+P/AAACAAEAAADZ/+T/AAACAAEAAADZ/+X/AAACAAEAAADZ/+b/AAACAAEAAADZ/+f/AAACAAEAAADZ/+j/AAACAAEAAADZ/+n/AAACAAEAAADZ/+r/AAACAAEAAADZ/+v/AAACAAEAAADa/93/AAACAAEAAADa/97/AAACAAEAAADa/9//AAACAAEAAADa/+D/AAACAAEAAADa/+H/AAACAAEAAADa/+L/AAACAAEAAADa/+P/AAACAAEAAADa/+T/AAACAAEAAADa/+X/AAACAAEAAADa/+b/AAACAAEAAADa/+f/AAACAAEAAADa/+j/AAACAAEAAADa/+n/AAACAAEAAADa/+r/AAACAAEAAADa/+v/AAACAAEAAADb/93/AAACAAEAAADb/97/AAACAAEAAADb/9//AAACAAEAAADb/+D/AAACAAEAAADb/+H/AAACAAEAAADb/+L/AAACAAEAAADb/+P/AAACAAEAAADb/+T/AAACAAEAAADb/+X/AAACAAEAAADb/+b/AAACAAEAAADb/+f/AAACAAEAAADb/+j/AAACAAEAAADb/+n/AAACAAEAAADb/+r/AAACAAEAAADb/+v/AAACAAEAAADc/93/AAACAAEAAADc/97/AAACAAEAAADc/9//AAACAAEAAADc/+D/AAACAAEAAADc/+H/AAACAAEAAADc/+L/AAACAAEAAADc/+P/AAACAAEAAADc/+T/AAACAAEAAADc/+X/AAACAAEAAADc/+b/AAACAAEAAADc/+f/AAACAAEAAADc/+j/AAACAAEAAADc/+n/AAACAAEAAADc/+r/AAACAAEAAADc/+v/AAACAAEAAADd/93/AAACAAEAAADd/97/AAACAAEAAADd/9//AAACAAEAAADd/+D/AAACAAEAAADd/+H/AAACAAEAAADd/+L/AAACAAEAAADd/+P/AAACAAEAAADd/+T/AAACAAEAAADd/+X/AAACAAEAAADd/+b/AAACAAEAAADd/+f/AAACAAEAAADd/+j/AAACAAEAAADd/+n/AAACAAEAAADd/+r/AAACAAEAAADd/+v/AAACAAEAAADf/93/AAACAAEAAADf/97/AAACAAEAAADf/9//AAACAAEAAADf/+D/AAACAAEAAADf/+H/AAACAAEAAADf/+L/AAACAAEAAADf/+P/AAACAAEAAADf/+T/AAACAAEAAADf/+X/AAACAAEAAADf/+b/AAACAAEAAADf/+f/AAACAAEAAADf/+j/AAACAAEAAADf/+n/AAACAAEAAADf/+r/AAACAAEAAADf/+v/AAACAAEAAADg/93/AAACAAEAAADg/97/AAACAAEAAADg/9//AAACAAEAAADg/+D/AAACAAEAAADg/+H/AAACAAEAAADg/+L/AAACAAEAAADg/+P/AAACAAEAAADg/+T/AAACAAEAAADg/+X/AAACAAEAAADg/+b/AAACAAEAAADg/+f/AAACAAEAAADg/+j/AAACAAEAAADg/+n/AAACAAEAAADg/+r/AAACAAEAAADg/+v/AAACAAEAAADh/93/AAACAAEAAADh/97/AAACAAEAAADh/9//AAACAAEAAADh/+D/AAACAAEAAADh/+H/AAACAAEAAADh/+L/AAACAAEAAADh/+P/AAACAAEAAADh/+T/AAACAAEAAADh/+X/AAACAAEAAADh/+b/AAACAAEAAADh/+f/AAACAAEAAADh/+j/AAACAAEAAADh/+n/AAACAAEAAADh/+r/AAACAAEAAADh/+v/AAACAAEAAACs/9z/AAACAAEAAACs/93/AAACAAEAAACs/97/AAACAAEAAACs/9//AAACAAEAAACs/+D/AAACAAEAAACs/+H/AAACAAEAAACs/+L/AAACAAEAAACs/+P/AAACAAEAAACs/+T/AAACAAEAAACs/+X/AAACAAEAAACs/+b/AAACAAEAAACs/+f/AAACAAEAAACs/+j/AAACAAEAAACs/+n/AAACAAEAAACs/+r/AAACAAEAAACs/+v/AAACAAEAAACt/9z/AAACAAEAAACt/93/AAACAAEAAACt/97/AAACAAEAAACt/9//AAACAAEAAACt/+D/AAACAAEAAACt/+H/AAACAAEAAACt/+L/AAACAAEAAACt/+P/AAACAAEAAACt/+T/AAACAAEAAACt/+X/AAACAAEAAACt/+b/AAACAAEAAACt/+f/AAACAAEAAACt/+j/AAACAAEAAACt/+n/AAACAAEAAACt/+r/AAACAAEAAACt/+v/AAACAAEAAACu/9z/AAACAAEAAACu/93/AAACAAEAAACu/97/AAACAAEAAACu/9//AAACAAEAAACu/+D/AAACAAEAAACu/+H/AAACAAEAAACu/+L/AAACAAEAAACu/+P/AAACAAEAAACu/+T/AAACAAEAAACu/+X/AAACAAEAAACu/+b/AAACAAEAAACu/+f/AAACAAEAAACu/+j/AAACAAEAAACu/+n/AAACAAEAAACu/+r/AAACAAEAAACu/+v/AAACAAEAAACv/9z/AAACAAEAAACv/93/AAACAAEAAACv/97/AAACAAEAAACv/9//AAACAAEAAACv/+D/AAACAAEAAACv/+H/AAACAAEAAACv/+L/AAACAAEAAACv/+P/AAACAAEAAACv/+T/AAACAAEAAACv/+X/AAACAAEAAACv/+b/AAACAAEAAACv/+f/AAACAAEAAACv/+j/AAACAAEAAACv/+n/AAACAAEAAACv/+r/AAACAAEAAACv/+v/AAACAAEAAACw/9z/AAACAAEAAACw/93/AAACAAEAAACw/97/AAACAAEAAACw/9//AAACAAEAAACw/+D/AAACAAEAAACw/+H/AAACAAEAAACw/+L/AAACAAEAAACw/+P/AAACAAEAAACw/+T/AAACAAEAAACw/+X/AAACAAEAAACw/+b/AAACAAEAAACw/+f/AAACAAEAAACw/+j/AAACAAEAAACw/+n/AAACAAEAAACw/+r/AAACAAEAAACw/+v/AAACAAEAAACx/9z/AAACAAEAAACx/93/AAACAAEAAACx/97/AAACAAEAAACx/9//AAACAAEAAACx/+D/AAACAAEAAACx/+H/AAACAAEAAACx/+L/AAACAAEAAACx/+P/AAACAAEAAACx/+T/AAACAAEAAACx/+X/AAACAAEAAACx/+b/AAACAAEAAACx/+f/AAACAAEAAACx/+j/AAACAAEAAACx/+n/AAACAAEAAACx/+r/AAACAAEAAACx/+v/AAACAAEAAACy/9z/AAACAAEAAACy/93/AAACAAEAAACy/97/AAACAAEAAACy/9//AAACAAEAAACy/+D/AAACAAEAAACy/+H/AAACAAEAAACy/+L/AAACAAEAAACy/+P/AAACAAEAAACy/+T/AAACAAEAAACy/+X/AAACAAEAAACy/+b/AAACAAEAAACy/+f/AAACAAEAAACy/+j/AAACAAEAAACy/+n/AAACAAEAAACy/+r/AAACAAEAAACy/+v/AAACAAEAAACz/9z/AAACAAEAAACz/93/AAACAAEAAACz/97/AAACAAEAAACz/9//AAACAAEAAACz/+D/AAACAAEAAACz/+H/AAACAAEAAACz/+L/AAACAAEAAACz/+P/AAACAAEAAACz/+T/AAACAAEAAACz/+X/AAACAAEAAACz/+b/AAACAAEAAACz/+f/AAACAAEAAACz/+j/AAACAAEAAACz/+n/AAACAAEAAACz/+r/AAACAAEAAACz/+v/AAACAAEAAAC0/9z/AAACAAEAAAC0/93/AAACAAEAAAC0/97/AAACAAEAAAC0/9//AAACAAEAAAC0/+D/AAACAAEAAAC0/+H/AAACAAEAAAC0/+L/AAACAAEAAAC0/+P/AAACAAEAAAC0/+T/AAACAAEAAAC0/+X/AAACAAEAAAC0/+b/AAACAAEAAAC0/+f/AAACAAEAAAC0/+j/AAACAAEAAAC0/+n/AAACAAEAAAC0/+r/AAACAAEAAAC0/+v/AAACAAEAAAC1/9z/AAACAAEAAAC1/93/AAACAAEAAAC1/97/AAACAAEAAAC1/9//AAACAAEAAAC1/+D/AAACAAEAAAC1/+H/AAACAAEAAAC1/+L/AAACAAEAAAC1/+P/AAACAAEAAAC1/+T/AAACAAEAAAC1/+X/AAACAAEAAAC1/+b/AAACAAEAAAC1/+f/AAACAAEAAAC1/+j/AAACAAEAAAC1/+n/AAACAAEAAAC1/+r/AAACAAEAAAC1/+v/AAACAAEAAAC2/9z/AAACAAEAAAC2/93/AAADAAEAAAC2/97/AAADAAEAAAC2/9//AAADAAEAAAC2/+D/AAADAAEAAAC2/+H/AAADAAEAAAC2/+L/AAADAAEAAAC2/+P/AAADAAEAAAC2/+T/AAADAAEAAAC2/+X/AAADAAEAAAC2/+b/AAADAAEAAAC2/+f/AAADAAEAAAC2/+j/AAADAAEAAAC2/+n/AAADAAEAAAC2/+r/AAADAAEAAAC2/+v/AAADAAEAAAC3/9z/AAACAAIAAAC4/9z/AAACAAIAAADe/9z/AAACAAEAAADe/93/AAACAAEAAADe/97/AAACAAEAAADe/9//AAACAAEAAADe/+D/AAACAAEAAADe/+H/AAACAAEAAADe/+L/AAACAAEAAADe/+P/AAACAAEAAADe/+T/AAACAAEAAADe/+X/AAACAAEAAADe/+b/AAACAAEAAADe/+f/AAACAAEAAADe/+j/AAACAAEAAADe/+n/AAACAAEAAADe/+r/AAACAAEAAADe/+v/AAACAAEAAAA=")
+tile_set = ExtResource("3_1emkl")
+script = ExtResource("4_1g1ho")
+
+[node name="Start" type="Marker2D" parent="." unique_id=1264672318]
+position = Vector2(686.41614, 670.3584)
+
+[node name="End" type="Marker2D" parent="." unique_id=266718767]
+position = Vector2(1828.7343, 668.7998)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=75397619]
+position = Vector2(1264, 392)
+zoom = Vector2(1.1, 1.1)
+
+[node name="CaineBossMarker" type="Marker2D" parent="." unique_id=251045048]
+position = Vector2(1265.9999, 202)
+scale = Vector2(0.99999994, 1)
+
+[node name="Caine" type="Node2D" parent="." unique_id=1581126704 node_paths=PackedStringArray("boss_position")]
+position = Vector2(1266, 436)
+script = ExtResource("5_h5euk")
+boss_position = NodePath("../CaineBossMarker")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Caine" unique_id=683366815]
+sprite_frames = SubResource("SpriteFrames_m5pao")
+animation = &"background"
+autoplay = "idle"
+
+[node name="Hurtbox" type="Area2D" parent="Caine" unique_id=199173596]
+collision_layer = 4294967040
+collision_mask = 4294967295
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Caine/Hurtbox" unique_id=1265021382]
+shape = SubResource("RectangleShape2D_1emkl")
+
+[node name="hitsfx" type="AudioStreamPlayer" parent="Caine" unique_id=789164396]
+stream = ExtResource("7_5ys5f")
+volume_db = -20.0
+
+[node name="AfterDeathTimer" type="Timer" parent="Caine" unique_id=944925076]
+wait_time = 5.0
+one_shot = true
+
+[node name="GoatBlack" type="Node2D" parent="." unique_id=321604711]
+position = Vector2(815, 454)
+script = ExtResource("8_5ys5f")
+
+[node name="Sprite2D" type="Sprite2D" parent="GoatBlack" unique_id=2070445339]
+material = SubResource("ShaderMaterial_grv3d")
+position = Vector2(0, -8)
+scale = Vector2(1.1, 1.1)
+texture = SubResource("CompressedTexture2D_x6dkc")
+hframes = 17
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GoatBlack" unique_id=1136494373]
+root_node = NodePath("../Sprite2D")
+libraries/ = SubResource("AnimationLibrary_xf5c3")
+
+[node name="Hitbox" type="Area2D" parent="GoatBlack" unique_id=293352282 groups=["Enemy"]]
+position = Vector2(-26.400024, 58)
+scale = Vector2(1.1, 1.1)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoatBlack/Hitbox" unique_id=361393245]
+position = Vector2(17.636597, -59.09091)
+shape = SubResource("RectangleShape2D_ij73c")
+
+[node name="DefeatFlash" type="ColorRect" parent="GoatBlack" unique_id=2068942008]
+anchors_preset = -1
+offset_left = -1537.0
+offset_top = -1005.0
+offset_right = 1986.0
+offset_bottom = 947.0
+color = Color(1, 1, 1, 0)
+
+[node name="FlashAnimationPlayer" type="AnimationPlayer" parent="GoatBlack/DefeatFlash" unique_id=1132648310]
+libraries/ = SubResource("AnimationLibrary_aamsd")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="GoatBlack" unique_id=729615692]
+stream = ExtResource("11_xt2ol")
+volume_db = -15.0
+
+[node name="Music" type="AudioStreamPlayer" parent="GoatBlack" unique_id=261395330]
+stream = ExtResource("13_2hhn8")
+volume_db = -20.0
+
+[node name="hitsfx" type="AudioStreamPlayer" parent="GoatBlack" unique_id=1462031680]
+stream = ExtResource("7_5ys5f")
+volume_db = -20.0
+
+[node name="Ring Strand" parent="." unique_id=1684411672 instance=ExtResource("8_xt2ol")]
+position = Vector2(1266, 639)
+
+[connection signal="set_new_boss" from="Caine" to="BossHPDisplay" method="_set_new_boss"]
+[connection signal="start_goku_black" from="Caine" to="GoatBlack" method="_on_caine_start_goku_black"]
+[connection signal="update_health_bar" from="Caine" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="Caine/Hurtbox" to="Caine" method="_on_hurtbox_area_entered"]
+[connection signal="timeout" from="Caine/AfterDeathTimer" to="Caine" method="_on_after_death_timer_timeout"]
+[connection signal="end" from="GoatBlack" to="." method="_on_node_2d_end"]
+[connection signal="update_health_bar" from="GoatBlack" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
+[connection signal="area_entered" from="GoatBlack/Hitbox" to="GoatBlack" method="_on_hitbox_area_entered"]
+
+[editable path="BossHPDisplay"]
