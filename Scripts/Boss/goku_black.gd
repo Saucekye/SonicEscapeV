@@ -10,25 +10,60 @@ extends Node2D
 
 @export var positions : Array[Marker2D]
 @export var attack1_projectile : PackedScene = preload("uid://pkgu0rai06d7")
-@export var attack2_projectile : PackedScene
+
+# --- Projectile lifetime scaling ---
+# At full health, projectiles live for base_projectile_lifetime seconds.
+# At 0 health, projectiles live for max_projectile_lifetime seconds.
+@export var base_projectile_lifetime : float = 3.0
+@export var max_projectile_lifetime : float = 6.0
 
 enum BossState {INTRO, IDLE, ATTACK_FOLLLOW, ATTACK_BARRAGE, DEAD}
 
 var state = BossState.INTRO
-var max_health = 30
-var health = 30
+var max_health = 25
+var health = 25
 
 var active_player: Node2D
 var start = false
 
 var prev_choice : int = 0
 var new_pos : Vector2
+var current_pos_idx : int = 0
 
 var sprite_mat : ShaderMaterial
 
 var velocity = Vector2.ZERO
 var gravity = 900
 var dying = false
+
+# --- Attack1 cooldown tracking ---
+var attack1_uses : int = 0
+var attack1_locked : bool = false
+var is_attacking : bool = false
+
+# --- Move-lock tracking ---
+# If the boss moves twice in a row, it must land an attack1 before it's
+# allowed to move again. If attack1 is itself on cooldown when the lock
+# kicks in, the boss instead has to sit idle for move_idle_duration seconds
+# before the move lock clears.
+var move_uses : int = 0
+var move_locked : bool = false
+@export var move_idle_duration : float = 1.5
+var default_action_timer_wait : float = 0.0
+
+# --- Movement re-entry guard ---
+# Prevents move_behavior() from being triggered again (e.g. by the action
+# timer firing mid-animation) before the current move has actually resolved
+# via move_end_behavior(). Without this, current_pos_idx / new_pos can be
+# overwritten mid-flight, causing the boss to appear to "teleport" oddly
+# or skip its intended destination.
+var is_moving : bool = false
+
+# --- Idle float ---
+var sprite_base_position : Vector2
+var idle_float_time : float = 0.0
+@export var idle_float_amplitude : float = 45.0
+@export var idle_float_speed : float = 1.5
 
 signal end
 signal update_health_bar(boss_health : int, boss_max_health : int)	## Signal to emit to the boss hp bar UI element
@@ -42,8 +77,12 @@ func _ready():
 	sprite_mat = sprite.material
 	defeat_flash_screen.visible = false
 	global_position = positions[0].global_position
+	current_pos_idx = 0
+	sprite_base_position = sprite.position
+	default_action_timer_wait = action_timer.wait_time
 
 func _on_caine_start_goku_black() -> void:
+	$Music.play()
 	state = BossState.INTRO
 	animation_player.play("intro")
 	await animation_player.animation_finished
@@ -79,6 +118,12 @@ func _process(delta):
 	if _get_current_player():
 		face_player()
 
+	if state == BossState.IDLE:
+		idle_float_time += delta
+		sprite.position.x = sprite_base_position.x + sin(idle_float_time * idle_float_speed) * idle_float_amplitude
+	else:
+		sprite.position.x = sprite_base_position.x
+
 	if health <= 0 and not dying:
 		start_death()
 
@@ -98,9 +143,14 @@ func _get_current_player() -> Node2D:
 
 # Wrapper function for when timer ends
 func _on_action_timer_timeout() -> void:
+	if is_attacking or is_moving:
+		return
 	_attack_choice()
 
 func _attack_choice():
+	if is_attacking or is_moving:
+		return
+
 	var choices = {"stay" : 0, "move" : 1, "attack_follow" : 2, "attack_barrage" : 3}
 	var choice : int = int(randf_range(0, choices.size()))
 	
@@ -108,17 +158,60 @@ func _attack_choice():
 		choice = choices.move
 	if prev_choice == choices.move and choice == prev_choice:
 		choice = choices.attack_barrage
-		
+
+	# If attack1 has been used twice in a row, lock it out and force a move instead
+	if attack1_locked and (choice == choices.attack_follow or choice == choices.attack_barrage):
+		choice = choices.move
+
+	# If the boss has moved twice in a row, it must land an attack1 next.
+	# If attack1 is itself cooling down, force an idle period instead.
+	if move_locked and choice == choices.move:
+		choice = choices.attack_follow if not attack1_locked else choices.stay
+
 	prev_choice = choice
 	
 	if choice == choices.stay:
+		if move_locked:
+			_force_idle_period()
 		return
 	elif choice == choices.move:
+		move_uses += 1
+		if move_uses >= 2 and not move_locked:
+			move_locked = true
 		move_behavior()
 	elif choice == choices.attack_follow:
-		animation_player.play("attack1")
+		move_uses = 0
+		move_locked = false
+		_play_attack1()
 	else:
-		animation_player.play("attack1")
+		move_uses = 0
+		move_locked = false
+		return
+
+func _force_idle_period() -> void:
+	# Hold the boss idle for move_idle_duration seconds, then clear the move lock
+	# and restore the normal action cadence.
+	action_timer.stop()
+	action_timer.wait_time = move_idle_duration
+	action_timer.start()
+	await action_timer.timeout
+	move_uses = 0
+	move_locked = false
+	action_timer.wait_time = default_action_timer_wait
+
+func _play_attack1() -> void:
+	is_attacking = true
+	attack1_uses += 1
+	animation_player.play("attack1")
+
+	if attack1_uses >= 2 and not attack1_locked:
+		attack1_locked = true
+		_start_attack1_cooldown()
+
+func _start_attack1_cooldown() -> void:
+	await get_tree().create_timer(2.0, true).timeout
+	attack1_uses = 0
+	attack1_locked = false
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "attack1":
@@ -129,6 +222,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "attack2":
 		animation_player.play("attack1end")
 	elif anim_name == "attack1end":
+		is_attacking = false
 		move_behavior()
 	elif anim_name == "move":
 		# Set position after move animation is completed
@@ -143,14 +237,31 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 # --------------------------------------------------
 
 func move_behavior():
+	# Guard against re-entry: if we're already mid-move, don't let a second
+	# call (e.g. from the action timer, or from attack1end -> move_behavior)
+	# stomp on the in-flight new_pos/current_pos_idx before move_end_behavior()
+	# has had a chance to apply them.
+	if is_moving:
+		return
+	is_moving = true
+
 	animation_player.play("move")
-	# Get new position and set it after the animation is finished
-	var new_pos_idx = randf_range(0, positions.size() -1)
+	# Get new position (never the same marker we're currently at) and set it after the animation is finished
+	if positions.size() <= 1:
+		new_pos = positions[0].global_position
+		return
+
+	var new_pos_idx : int = current_pos_idx
+	while new_pos_idx == current_pos_idx:
+		new_pos_idx = int(randf_range(0, positions.size()))
+
+	current_pos_idx = new_pos_idx
 	new_pos = positions[new_pos_idx].global_position
 	
 func move_end_behavior():
-	animation_player.play("idle")
+	animation_player.play("move_end")
 	global_position = new_pos
+	is_moving = false
 	
 # --------------------------------------------------
 # FACE PLAYER
@@ -165,10 +276,19 @@ func face_player():
 
 func attack_behavior() -> void:
 	var projecitle = attack1_projectile.instantiate()
+	var health_pct : float = clamp(float(health) / float(max_health), 0.0, 1.0)
+	var missing_pct : float = 1.0 - health_pct
+	var lifetime : float = lerp(base_projectile_lifetime, max_projectile_lifetime, missing_pct)
+
+	if "lifetime" in projecitle:
+		projecitle.lifetime = lifetime
 	self.get_parent().add_child(projecitle)
 	projecitle.global_position = attack_spawn_marker.global_position
 	if sprite.flip_h:
 		projecitle.global_position.x = attack_spawn_marker.global_position.x - attack_spawn_marker.position.x
+
+	# Scale the projectile's lifetime with how low the boss's health is.
+	# Full health -> base_projectile_lifetime, zero health -> max_projectile_lifetime.
 	
 # --------------------------------------------------
 # ATTACK 2
@@ -235,3 +355,11 @@ func start_death():
 	flash_animation_player.play("end")
 	velocity.y = -600
 	velocity.x = randf_range(-200, 200)
+	# Reset attack1 tracking in case the boss instance gets reused
+	attack1_uses = 0
+	attack1_locked = false
+	is_attacking = false
+	is_moving = false
+	action_timer.wait_time = default_action_timer_wait
+	move_uses = 0
+	move_locked = false

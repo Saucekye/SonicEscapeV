@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ywwxiq0i7wuo"
+path="res://.godot/imported/black(1).MP3-81011fa87680e3481c4aceaa873b71fc.mp3str"
+
+[deps]
+
+source_file="res://Music/Boss/Goku Black & Caine/black(1).MP3"
+dest_files=["res://.godot/imported/black(1).MP3-81011fa87680e3481c4aceaa873b71fc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

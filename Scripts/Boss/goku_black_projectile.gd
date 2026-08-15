@@ -10,7 +10,7 @@ const PROJECTILE_SCALE : float = 3.0
 var current_player
 var start_speed : int = 600
 var decelerration : int = 500
-var base_speed : int = 200
+var base_speed : int = 400
 var speed : int = start_speed
 
 func _ready() -> void:

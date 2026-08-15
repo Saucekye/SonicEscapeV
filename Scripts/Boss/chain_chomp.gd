@@ -5,11 +5,12 @@ extends Node2D
 
 @export var positions : Array[Marker2D]
 
-var speed : int = 700
+var speed : int = 250
 var to_player : Vector2 = Vector2.ZERO
 
 func _process(delta: float) -> void:
-	global_position += to_player * speed * delta
+	return 
+	#global_position += to_player * speed * delta
 
 func _on_timer_timeout() -> void:
 	print(" GO GO GO GOG OGO GO GOGO GO")
@@ -18,7 +19,7 @@ func _on_timer_timeout() -> void:
 	print(" GO GO GO GOG OGO GO GOGO GO")
 	print(" GO GO GO GOG OGO GO GOGO GO")
 	print(" GO GO GO GOG OGO GO GOGO GO")
-	_do_attack()
+	#_do_attack()
 
 func _do_attack():
 	# Get a marker position to set to

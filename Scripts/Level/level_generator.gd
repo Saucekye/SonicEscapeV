@@ -25,8 +25,9 @@ extends Node2D
 #@export var chunk_18 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_18.tscn")
 #@export var chunk_19 : PackedScene = preload("res://Scenes/LevelChunks/Chunk_19.tscn")
 @export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
-@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_Caine.tscn")
+@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
+@export var chunk_boss3: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_Caine.tscn")
 @export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
@@ -94,7 +95,7 @@ func _spawn_next_boss_level():
 		Test.build_boss_rotation()
 
 	var index: int = Test.boss_rotation_order.pop_front()
-	var scene_map := [chunk_boss, chunk_boss1, chunk_boss2, chunk_rest]
+	var scene_map := [chunk_boss, chunk_boss1, chunk_boss2, chunk_boss3, chunk_rest]
 	var scene: PackedScene = scene_map[index]
 	var chunk := scene.instantiate()
 	add_child(chunk)

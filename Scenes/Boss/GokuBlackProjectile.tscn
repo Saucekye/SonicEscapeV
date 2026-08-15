@@ -1,7 +1,93 @@
 [gd_scene format=3 uid="uid://pkgu0rai06d7"]
 
 [ext_resource type="Script" uid="uid://dqi6vsm3smfhx" path="res://Scripts/Boss/goku_black_projectile.gd" id="1_7reu5"]
-[ext_resource type="Texture2D" uid="uid://dso6l6dfr1iho" path="res://Sprites/Boss/Goku Black & Caine/BlackBall.png" id="1_vmoi4"]
+[ext_resource type="Texture2D" uid="uid://cddm447n1n1g8" path="res://misc/spritesheet.png" id="2_7reu5"]
+[ext_resource type="AudioStream" uid="uid://dtfnqwh0mgixo" path="res://Sounds/BossSFX/Goku Black & Caine/ballfollow.MP3" id="3_isfcx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isfcx"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(144, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5hr1i"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(216, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcq0f"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(288, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knevh"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(360, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpvc4"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(432, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sp0ak"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(504, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6otw2"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(576, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8g1cg"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(648, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_to6ie"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(720, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov7p3"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(792, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr6vl"]
+atlas = ExtResource("2_7reu5")
+region = Rect2(864, 0, 72, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isfcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5hr1i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcq0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knevh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpvc4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sp0ak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6otw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8g1cg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_to6ie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov7p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cr6vl")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 25.0
+}]
 
 [sub_resource type="Gradient" id="Gradient_ob1fb"]
 offsets = PackedFloat32Array(0.27941176, 1)
@@ -18,11 +104,14 @@ fill_from = Vector2(0.5, 0.5)
 radius = 12.0
 
 [node name="GokuBlackProjectile" type="Node2D" unique_id=1972911035 groups=["EnemyProjectile"]]
-scale = Vector2(3, 3)
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_7reu5")
+lifetime = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1607093127]
-texture = ExtResource("1_vmoi4")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=2094722535]
+sprite_frames = SubResource("SpriteFrames_kofwu")
+autoplay = "default"
+frame_progress = 0.8009217
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=425801748]
 visible = false
@@ -38,5 +127,10 @@ debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
 wait_time = 20.0
 one_shot = true
 autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=40678732]
+stream = ExtResource("3_isfcx")
+volume_db = -5.0
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

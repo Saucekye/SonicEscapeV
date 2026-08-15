@@ -55,8 +55,9 @@ func _on_after_death_timer_timeout() -> void:
 	_move_to_boss_position()
 	set_new_boss.emit(null, "Goku Black")
 	
+	
 func _move_to_boss_position() -> void:
-	var tween_time : float = 3
+	var tween_time : float = 10
 	animated_sprite.rotation = 0
 	global_position.y = -1500
 	global_position.x = boss_position.global_position.x
