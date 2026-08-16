@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_wbbos"]
 [ext_resource type="Texture2D" uid="uid://bw1flg41fowo" path="res://Sprites/Boss/Thragg/anissa.png" id="5_0iqyq"]
 [ext_resource type="Texture2D" uid="uid://5qnbc5q6lylv" path="res://Sprites/Boss/Thragg/quest.png" id="5_qkeek"]
-[ext_resource type="Texture2D" uid="uid://ck0i6mbl842nf" path="res://Sprites/Boss/Thragg/thragg.png" id="5_x8w0r"]
 [ext_resource type="Shader" uid="uid://dxliwfv4rql5a" path="res://Shaders/rain.gdshader" id="6_a3t2o"]
 [ext_resource type="Script" uid="uid://bc52bi3ne3l5f" path="res://Scripts/Boss/Thragg.gd" id="6_i4wqq"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="7_xv7wb"]
@@ -14,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://c5ne14aaqqheu" path="res://misc/startup2(1).MP3" id="8_qkeek"]
 [ext_resource type="AudioStream" uid="uid://dgx0buwape3xw" path="res://misc/aron.MP3" id="8_u47si"]
 [ext_resource type="AudioStream" uid="uid://cmepllxv1pfol" path="res://Sounds/Environmental/strongwin.MP3" id="9_0iqyq"]
+[ext_resource type="Texture2D" uid="uid://borq6qj52hl73" path="res://Sprites/Boss/Thragg/thragg - formatted.png" id="10_1bfwp"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="10_yxo0d"]
 [ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="11_45ap3"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_qdjoc"]
@@ -1308,8 +1308,9 @@ libraries/ = SubResource("AnimationLibrary_1bfwp")
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(0, -8)
 scale = Vector2(1.1, 1.1)
-texture = ExtResource("5_x8w0r")
-hframes = 64
+texture = ExtResource("10_1bfwp")
+hframes = 17
+vframes = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Thragg/Sprite2D" unique_id=309070927]
 libraries/ = SubResource("AnimationLibrary_qkeek")
@@ -1349,7 +1350,7 @@ hframes = 5
 frame = 4
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Thragg/Sprite2D" unique_id=1150088773]
-stream = ExtResource("9_0iqyq")
+stream = ExtResource("11_45ap3")
 volume_db = -15.0
 
 [node name="TextureRect" type="ColorRect" parent="Thragg" unique_id=1095439892]

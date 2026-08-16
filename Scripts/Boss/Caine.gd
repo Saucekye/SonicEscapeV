@@ -15,6 +15,8 @@ var death : bool = false
 var death_velocity : Vector2
 var gravity := 600
 
+var active_player
+
 signal update_health_bar(boss_health : int, boss_max_health : int)	## Signal to emit to the boss hp bar UI element
 signal start_goku_black		## This signal is what will actually start the fight
 signal set_new_boss(new_boss : Node2D, new_boss_name : String)
@@ -31,9 +33,24 @@ func _process(delta: float) -> void:
 		animated_sprite.rotation += 8 * delta
 		hurtbox.monitoring = false
 		hurtbox.monitorable = false
+	elif _get_current_player():
+		face_player()
 
 	if global_position.y > 1500:
 		death_velocity = Vector2.ZERO
+
+func _get_current_player() -> Node2D:
+	var players = get_tree().get_nodes_in_group("Player")
+
+	for player in players:
+		if is_instance_valid(player) and player.get("is_player") == true:
+			active_player = player
+			return player
+
+	return null
+		
+func face_player():
+	animated_sprite.flip_h = active_player.global_position.x < global_position.x
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if !area.is_in_group("Playerattack"):
