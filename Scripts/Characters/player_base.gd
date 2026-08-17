@@ -179,11 +179,14 @@ var ring_scene = preload("res://Scenes/Obstacles/Rings/Rings.tscn")  ## Rings sc
 # ─────────────────────────────────────────────
 # Spin Dash Variables
 # ─────────────────────────────────────────────
-var spin_charge = 0                 ## Number of times the charge button was pressed during spindash
+@export_group("Spin Dash Variables")
+@export var spin_dash_max_charge_speed : int = 1550	## The max x value from releasing the spindash
+@export var spin_dash_charge_amount : int = 600    ## Speed added per charge press
+@export var spin_dash_acc : int = 500		## Acceleration with spindash at max charge
 var spin_dash_speed = 0             ## Calculated release speed for spindash/peelout
+var spin_charge = 0                 ## Number of times the charge button was pressed during spindash
 var is_spinning = false             ## True while any spinning charge is held
 var max_spin_charge = 20            ## Unused cap on spin charge level
-var spin_dash_acceleration = 600    ## Speed added per charge press
 
 # ─────────────────────────────────────────────
 # Coyote Time Variables
@@ -1399,7 +1402,7 @@ func spindash():
 		crouch = true
 		ball = true
 
-		spin_dash_speed = clamp(spin_charge * spin_dash_acceleration, 0, 1550)
+		spin_dash_speed = clamp(spin_charge * spin_dash_charge_amount, 0, spin_dash_max_charge_speed)
 		# Launch in current movement direction; default to sprite facing if stopped
 		motion.x = spin_dash_speed * sign(motion.x) if motion.x != 0 else spin_dash_speed * (1 if sprite.flip_h == false else -1)
 		time_elapsed = abs(motion.x)
@@ -1407,8 +1410,8 @@ func spindash():
 		
 		# Max charge gives a guaranteed speed cap and momentum boost
 		if spin_charge >= 3:
-			max_speed = 1550
-			acc = 5000
+			max_speed = spin_dash_max_charge_speed
+			acc = spin_dash_acc
 			time_elapsed = 200
 		
 		spin_charge = 0
