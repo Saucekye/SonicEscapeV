@@ -2229,9 +2229,14 @@ trail_ball_position = Vector2(0, 5)
 
 [node name="Fly" parent="." unique_id=1081368087 node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")
+fly_meter_drain = 1.4
 
 [node name="Airspin" parent="." unique_id=1041590892 instance=ExtResource("3_hopts")]
 can_when_flying = true
+max_speed_startup = 2000
+max_speed_after_action = 1200
+y_sped = 400
+x_speed = 1600
 
 [node name="Stomp" parent="." unique_id=764063026 instance=ExtResource("4_lhsoh")]
 
