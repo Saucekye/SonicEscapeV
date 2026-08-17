@@ -17,6 +17,7 @@ var fail = false
 var level = 0
 var current_background : int = 0
 var current_background_name : String = ""
+var current_character_index : int = 0
 
 var characterone: String = ""
 var charactertwo: String = ""

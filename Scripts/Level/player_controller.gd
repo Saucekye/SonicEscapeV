@@ -69,7 +69,7 @@ func _ready() -> void:
 		return
 	
 	# Set initial character index and reference
-	current_character_index = 0
+	self.current_character_index = Test.current_character_index
 	current_character = characters[current_character_index]
 	current_character.position = Vector2.ZERO
 
@@ -160,6 +160,7 @@ func on_player_change():
 	
 	# Move to next character (cycle back to 0 after last character)
 	current_character_index = (current_character_index + 1) % characters.size()
+	Test.current_character_index = self.current_character_index
 	
 	# Get new current character
 	var new_character = characters[current_character_index]

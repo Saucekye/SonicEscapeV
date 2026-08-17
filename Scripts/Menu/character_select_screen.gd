@@ -91,6 +91,8 @@ func fade_and_change_scene(scene) -> void:
 
 # FIXED: Make the click handler properly await the fade
 func _on_start_sprite_clicked(sprite: Sprite2D) -> void:
+	# Set current character counter index to 0
+	Test.current_character_index = 0
 	# Prevent multiple clicks during transition
 	#set_process_input(false)
 	#$Start/AudioStreamPlayer2.play()
@@ -109,19 +111,4 @@ func _on_tutorial_tutorial() -> void:
 func _end_tutorial() -> void:
 	tutorial_cover.visible = false
 	start.visible = true
-	
-func _show_about_tutorial() -> void:
-	pass
-	
-func _show_movement_tutorial() -> void:
-	pass
-	
-func _show_characters_tutorial() -> void:
-	pass
-	
-func _show_level_tutorial() -> void:
-	pass
-	
-func _show_boss_tutorial() -> void:
-	pass
 	
