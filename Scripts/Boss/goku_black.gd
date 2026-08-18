@@ -82,7 +82,7 @@ func _ready():
 	default_action_timer_wait = action_timer.wait_time
 
 func _on_caine_start_goku_black() -> void:
-	$Music.play()
+	music.play()
 	state = BossState.INTRO
 	animation_player.play("intro")
 	await animation_player.animation_finished

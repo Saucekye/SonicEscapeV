@@ -3007,6 +3007,10 @@ trail_ball_position = Vector2(0, 10)
 [node name="Flick" parent="." unique_id=2083981428 instance=ExtResource("3_ysoxq")]
 
 [node name="Stomp" parent="." unique_id=1653375046 instance=ExtResource("4_ocgdo")]
+carry_x_speed = true
+bounce_one = 825.0
+bounce_two = 1000.0
+bounce_three = 1350.0
 
 [node name="Trick" parent="." unique_id=1014707547 instance=ExtResource("5_dj5vv")]
 
@@ -3019,7 +3023,7 @@ position = Vector2(0.0799999, 0.280001)
 z_index = 1
 width = 30.0
 width_curve = SubResource("Curve_7xxox")
-default_color = Color(1, 0, 0.5499997, 0.46666667)
+default_color = Color(1, 0.29451185, 0.5971267, 0.46666667)
 script = ExtResource("4_jjvf4")
 length = 20
 

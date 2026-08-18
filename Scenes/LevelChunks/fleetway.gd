@@ -3,11 +3,13 @@ extends Node2D
 enum BossState {INTRO, IDLE, FLY, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var health : int = 20
 var max_health : int = 20
+var health : int = max_health
 
 var dying = false
 var attacking = false
+
+var active_player
 
 # Phase 2
 var phase2 = false
@@ -26,6 +28,7 @@ signal update_health_bar(boss_health : int, boss_max_health : int)
 @onready var anim = $Sprite2D/AnimationPlayer
 @onready var sprite = $Sprite2D
 @onready var sprite_mat = $Sprite2D.material as ShaderMaterial
+@onready var hitbox: Area2D = $Sprite2D/Hitbox
 
 @onready var marker: Node2D = get_parent().get_node("Marker2D3")
 
@@ -57,10 +60,11 @@ func _get_current_player() -> Node2D:
 
 	var players = get_tree().get_nodes_in_group("Player")
 
-	for p in players:
+	for player in players:
 
-		if is_instance_valid(p) and p.get("is_player") == true:
-			return p
+		if is_instance_valid(player) and player.get("is_player") == true:
+			active_player = player
+			return player
 
 	return null
 
@@ -69,6 +73,11 @@ func _get_current_player() -> Node2D:
 # --------------------------------------------------
 
 func _process(delta):
+	
+	# Disable hurtbox, ergo being damaged, while not in phase 1
+	if !phase2:
+		hitbox.monitorable = false
+		hitbox.monitoring = false
 
 	# PHASE 2 FLIGHT (ALWAYS FOLLOWS CURRENT PLAYER)
 	if phase2 and can_fly and state != BossState.DEAD:
@@ -84,6 +93,8 @@ func _process(delta):
 		if global_position.y > 1500:
 			emit_signal("end")
 			queue_free()
+	elif (state == BossState.IDLE or state == BossState.FLY) and _get_current_player() != null:
+		face_player()
 
 # --------------------------------------------------
 # PLAYER DETECTION
@@ -114,6 +125,13 @@ func start_intro():
 	anim.play("idle")
 
 	start_attack_loop()
+	
+# --------------------------------------------------
+# FACE PLAYER
+# --------------------------------------------------
+
+func face_player():
+	sprite.flip_h = active_player.global_position.x < global_position.x
 
 # --------------------------------------------------
 # ATTACK LOOP
@@ -277,8 +295,6 @@ func do_chase_attack():
 
 	while anim.current_animation == "attack2" and anim.is_playing():
 
-		if state == BossState.DEAD:
-			return
 
 		var current_player = _get_current_player()
 
@@ -302,6 +318,10 @@ func do_chase_attack():
 			)
 
 		await get_tree().process_frame
+		
+		if state == BossState.DEAD:
+			attacking = false
+			return
 
 	rotation = 0
 
@@ -318,6 +338,7 @@ func _on_node_2d_phase_2() -> void:
 		return
 
 	phase2 = true
+	
 	$AudioStreamPlayer2.play()
 	state = BossState.FLY
 	

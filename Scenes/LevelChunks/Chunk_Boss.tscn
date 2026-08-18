@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="2_pb8k7"]
 [ext_resource type="Script" uid="uid://euovds2xf1xo" path="res://Scripts/Boss/neometalfight.gd" id="4_yyfmi"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="5_h04th"]
-[ext_resource type="Texture2D" uid="uid://b5an44i8oltk5" path="res://Sprites/Boss/NeoMetal/neometal.png" id="5_pb8k7"]
 [ext_resource type="Texture2D" uid="uid://ccdnnmquwjj5j" path="res://misc/Effect 6.png" id="7_58vct"]
 [ext_resource type="AudioStream" uid="uid://b17rw8pmc72ox" path="res://Sounds/BossSFX/NeoMetal/stormsfx.MP3" id="8_58vct"]
 [ext_resource type="AudioStream" uid="uid://c65me2e8t7ebg" path="res://misc/lightningsfx.MP3" id="8_lutin"]
 [ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="8_vnbwg"]
+[ext_resource type="Texture2D" uid="uid://c8gk0n5ab5wd6" path="res://Sprites/Boss/NeoMetal/neometal - formatted.png" id="9_3cjkc"]
 [ext_resource type="Shader" uid="uid://dxliwfv4rql5a" path="res://Shaders/rain.gdshader" id="9_m05y8"]
 [ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="10_2eccu"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="11_45dcn"]
@@ -1089,8 +1089,9 @@ libraries/ = SubResource("AnimationLibrary_qmkhx")
 [node name="Sprite2D" type="Sprite2D" parent="NeoMetalSonic" unique_id=100052535]
 material = SubResource("ShaderMaterial_58vct")
 position = Vector2(780, 20)
-texture = ExtResource("5_pb8k7")
-hframes = 56
+texture = ExtResource("9_3cjkc")
+hframes = 14
+vframes = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="NeoMetalSonic/Sprite2D" unique_id=98659632]
 libraries/ = SubResource("AnimationLibrary_58vct")

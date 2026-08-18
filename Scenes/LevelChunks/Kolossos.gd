@@ -3,11 +3,15 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var max_health : int = 15
+var max_health : int = 20
 var health : int = max_health
 var active_player: Node2D
 var dying = false
 var attacking = false
+
+# Determine if defeating Kolossos can end the floor
+# Only set to true from Fleetway sending a signal after being defeated first
+var can_end_floor : bool = false
 
 signal phase2
 # Signal to emit to the boss hp bar UI element
@@ -45,6 +49,8 @@ func _process(delta):
 		sprite.rotation += 8 * delta
 
 		if global_position.y > 1500:
+			if can_end_floor:
+				emit_signal("end")
 			queue_free()
 
 # --------------------------------------------------
@@ -226,3 +232,7 @@ func start_death():
 	# Launch body
 	death_velocity.y = -600
 	death_velocity.x = randf_range(-150, 150)
+
+
+func _on_fleetway_early_fleetway_defeat() -> void:
+	can_end_floor = true

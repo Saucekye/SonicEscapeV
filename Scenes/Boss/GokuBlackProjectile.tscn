@@ -101,7 +101,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mvuam"]
-radius = 12.0
+radius = 22.666668
 
 [node name="GokuBlackProjectile" type="Node2D" unique_id=1972911035 groups=["EnemyProjectile"]]
 scale = Vector2(1.5, 1.5)
@@ -109,9 +109,10 @@ script = ExtResource("1_7reu5")
 lifetime = 3
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=2094722535]
+position = Vector2(0, -0.6666667)
 sprite_frames = SubResource("SpriteFrames_kofwu")
 autoplay = "default"
-frame_progress = 0.8009217
+frame_progress = 0.63174176
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=425801748]
 visible = false

@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_ga1r6"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="3_ga1r6"]
 [ext_resource type="Script" uid="uid://glejuhslgi3" path="res://Scenes/LevelChunks/Kolossos.gd" id="4_5rcax"]
-[ext_resource type="Texture2D" uid="uid://dskfpwy6ewmi5" path="res://Sprites/Boss/Kolossos & Fleetway/Kolossos.png" id="6_brel2"]
 [ext_resource type="AudioStream" uid="uid://c6x2nbeuvfl8q" path="res://Music/Boss/Kolossos & Fleetway/p1.MP3" id="7_6q2fq"]
+[ext_resource type="Texture2D" uid="uid://c7lcfcmedby3s" path="res://Sprites/Boss/Kolossos & Fleetway/Kolossos - formatted.png" id="7_dhlae"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="8_hv1gv"]
 [ext_resource type="Script" uid="uid://dy74a05wfrch0" path="res://Scenes/LevelChunks/fleetway.gd" id="10_brel2"]
-[ext_resource type="Texture2D" uid="uid://bbgumqxgg7sxp" path="res://Sprites/Boss/Kolossos & Fleetway/feetway.png" id="11_6q2fq"]
+[ext_resource type="Texture2D" uid="uid://dd6x64261rhcn" path="res://Sprites/Boss/Kolossos & Fleetway/feetway - formatted.png" id="11_ga1r6"]
 [ext_resource type="AudioStream" uid="uid://cqr6xvqcl1k2r" path="res://Sounds/BossSFX/Fleetway & Kolossos/charge up.MP3" id="11_qpfak"]
 [ext_resource type="AudioStream" uid="uid://ds6avk2wwbcw" path="res://Sounds/BossSFX/Fleetway & Kolossos/release.MP3" id="12_1ll1x"]
 [ext_resource type="AudioStream" uid="uid://cfkvrr5e7rkak" path="res://Music/Boss/Kolossos & Fleetway/p2(1).MP3" id="12_4hqd4"]
@@ -730,7 +730,7 @@ tracks/13/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/14/type = "value"
 tracks/14/imported = false
@@ -742,7 +742,7 @@ tracks/14/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_bv314"]
@@ -1768,8 +1768,9 @@ script = ExtResource("4_5rcax")
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(-2, 57)
 scale = Vector2(1.5, 1.5)
-texture = ExtResource("6_brel2")
-hframes = 42
+texture = ExtResource("7_dhlae")
+hframes = 21
+vframes = 2
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="Kolossos/Sprite2D" unique_id=1061364250]
 libraries/ = SubResource("AnimationLibrary_1vx6f")
@@ -1811,8 +1812,9 @@ script = ExtResource("10_brel2")
 material = SubResource("ShaderMaterial_ul6mg")
 position = Vector2(-1.1920929e-07, 3.8146973e-06)
 scale = Vector2(1.25, 1.25)
-texture = ExtResource("11_6q2fq")
-hframes = 44
+texture = ExtResource("11_ga1r6")
+hframes = 22
+vframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Fleetway/Sprite2D" unique_id=1299676545]
 libraries/ = SubResource("AnimationLibrary_ov2gg")
@@ -1829,6 +1831,8 @@ shape = SubResource("RectangleShape2D_0iqyq")
 
 [node name="Attackbox" type="Area2D" parent="Fleetway/Sprite2D" unique_id=1527629588 groups=["enemyattack"]]
 position = Vector2(-4.8000317, 5.6000004)
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fleetway/Sprite2D/Attackbox" unique_id=1638295579 groups=["Enemy"]]
 position = Vector2(4.799988, -5.599991)
@@ -1859,7 +1863,7 @@ shape = SubResource("RectangleShape2D_4hqd4")
 debug_color = Color(0.7058824, 0.09411765, 0, 0.41960785)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Fleetway" unique_id=1462599171]
-stream = ExtResource("13_1ll1x")
+stream = ExtResource("11_qpfak")
 volume_db = -8.0
 bus = &"SFX"
 
