@@ -59,7 +59,7 @@ func _on_area_exited(area: Area2D) -> void:
 		$CanvasLayer/TextSprite.visible = false   
 		$CanvasLayer/TextSprite2.visible = false  
 		$CanvasLayer/Label.visible = false
-		if use_alt:
+		if use_alt and area.get_parent().is_player:
 			$CanvasLayer/PageSfx.play()
 			
 		

@@ -20,8 +20,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK_FOLLLOW, ATTACK_BARRAGE, DEAD}
 
 var state = BossState.INTRO
-var max_health = 25
-var health = 25
+var max_health = 50
+var health = 50
 
 var active_player: Node2D
 var start = false
@@ -201,12 +201,12 @@ func _force_idle_period() -> void:
 
 func _play_attack1() -> void:
 	is_attacking = true
-	attack1_uses += 1
+#	attack1_uses += 1
 	animation_player.play("attack1")
 
-	if attack1_uses >= 2 and not attack1_locked:
-		attack1_locked = true
-		_start_attack1_cooldown()
+#	if attack1_uses >= 2 and not attack1_locked:
+#		attack1_locked = true
+#		_start_attack1_cooldown()
 
 func _start_attack1_cooldown() -> void:
 	await get_tree().create_timer(2.0, true).timeout

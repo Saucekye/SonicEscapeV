@@ -226,3 +226,7 @@ func _on_node_2d_dialogue() -> void:
 
 func _on_node_2d_next() -> void:
 	next(dialogue_line.next_id)
+
+
+func _on_animated_sprite_2d_next() -> void:
+	next(dialogue_line.next_id)

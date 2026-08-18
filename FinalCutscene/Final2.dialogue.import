@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://d04n4086k2gdy"
+path="res://.godot/imported/Final2.dialogue-d4d618c98627c7040d5014bc3f68284c.tres"
+
+[deps]
+
+source_file="res://FinalCutscene/Final2.dialogue"
+dest_files=["res://.godot/imported/Final2.dialogue-d4d618c98627c7040d5014bc3f68284c.tres"]
+
+[params]
+
+defaults=true

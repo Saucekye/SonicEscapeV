@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dtwtf3r7d23cv"]
+[gd_scene format=3 uid="uid://dtwtf3r7d23cv"]
 
 [ext_resource type="Script" uid="uid://drxbgmqm0kvg5" path="res://Scripts/Intro/warningscreen.gd" id="1_lc038"]
 [ext_resource type="Texture2D" uid="uid://c02xktrevo3mm" path="res://Sprites/Intro/warningimage.png" id="2_pf812"]
@@ -123,7 +123,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vvw3j")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }, {
@@ -140,7 +140,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p0v50")
 }],
-"loop": true,
+"loop": 1,
 "name": &"new_animation",
 "speed": 5.0
 }]
@@ -212,7 +212,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pg2rw")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }, {
@@ -244,7 +244,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_v6y0s")
 }],
-"loop": true,
+"loop": 1,
 "name": &"new_animation",
 "speed": 5.0
 }]
@@ -280,7 +280,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_irxv1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -316,7 +316,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_q65ra")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -352,7 +352,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_735fa")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -388,7 +388,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6kla1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -1141,7 +1141,7 @@ _data = {
 &"play4": SubResource("Animation_hbk2v")
 }
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=1229493189]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -1150,11 +1150,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lc038")
 
-[node name="Warningimage" type="Sprite2D" parent="."]
+[node name="Warningimage" type="Sprite2D" parent="." unique_id=679092897]
 position = Vector2(777, 329)
 texture = ExtResource("2_pf812")
 
-[node name="start" type="Label" parent="."]
+[node name="start" type="Label" parent="." unique_id=137774457]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -1174,15 +1174,13 @@ text = "This game may contain disturbing imagery.
 "
 horizontal_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="start"]
-libraries = {
-&"": SubResource("AnimationLibrary_8ekqp")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="start" unique_id=2064696970]
+libraries/ = SubResource("AnimationLibrary_8ekqp")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Node2D" type="Node2D" parent="." unique_id=1944825751]
 script = ExtResource("3_x7gtt")
 
-[node name="1" type="AnimatedSprite2D" parent="Node2D"]
+[node name="1" type="AnimatedSprite2D" parent="Node2D" unique_id=1448404205]
 visible = false
 position = Vector2(824, 352)
 scale = Vector2(1.092, 1)
@@ -1190,7 +1188,7 @@ sprite_frames = SubResource("SpriteFrames_y0rxl")
 autoplay = "default"
 frame_progress = 0.20549214
 
-[node name="2" type="AnimatedSprite2D" parent="Node2D"]
+[node name="2" type="AnimatedSprite2D" parent="Node2D" unique_id=48574693]
 visible = false
 position = Vector2(832, 352)
 sprite_frames = SubResource("SpriteFrames_y0rxl")
@@ -1198,7 +1196,7 @@ animation = &"new_animation"
 autoplay = "new_animation"
 frame_progress = 0.16918415
 
-[node name="457" type="AnimatedSprite2D" parent="Node2D"]
+[node name="457" type="AnimatedSprite2D" parent="Node2D" unique_id=421106424]
 visible = false
 position = Vector2(824, 296)
 scale = Vector2(0.8, 0.8)
@@ -1206,7 +1204,7 @@ sprite_frames = SubResource("SpriteFrames_svs3r")
 autoplay = "default"
 frame_progress = 0.10682273
 
-[node name="456" type="AnimatedSprite2D" parent="Node2D"]
+[node name="456" type="AnimatedSprite2D" parent="Node2D" unique_id=203213307]
 visible = false
 position = Vector2(752, 528)
 sprite_frames = SubResource("SpriteFrames_svs3r")
@@ -1214,7 +1212,7 @@ animation = &"new_animation"
 autoplay = "new_animation"
 frame_progress = 0.41425842
 
-[node name="3" type="AnimatedSprite2D" parent="Node2D"]
+[node name="3" type="AnimatedSprite2D" parent="Node2D" unique_id=684768792]
 visible = false
 position = Vector2(816.00006, 368)
 scale = Vector2(0.6, 0.6)
@@ -1222,7 +1220,7 @@ sprite_frames = SubResource("SpriteFrames_735fa")
 autoplay = "default"
 frame_progress = 0.34385112
 
-[node name="4" type="AnimatedSprite2D" parent="Node2D"]
+[node name="4" type="AnimatedSprite2D" parent="Node2D" unique_id=104378622]
 visible = false
 position = Vector2(832, 376)
 scale = Vector2(0.8, 0.8)
@@ -1230,7 +1228,7 @@ sprite_frames = SubResource("SpriteFrames_1xuqf")
 autoplay = "default"
 frame_progress = 0.22303073
 
-[node name="5" type="AnimatedSprite2D" parent="Node2D"]
+[node name="5" type="AnimatedSprite2D" parent="Node2D" unique_id=825336466]
 visible = false
 position = Vector2(816, 352)
 scale = Vector2(0.7, 0.7)
@@ -1238,7 +1236,7 @@ sprite_frames = SubResource("SpriteFrames_j2mpn")
 autoplay = "default"
 frame_progress = 0.16425276
 
-[node name="6" type="AnimatedSprite2D" parent="Node2D"]
+[node name="6" type="AnimatedSprite2D" parent="Node2D" unique_id=1255902442]
 visible = false
 position = Vector2(816, 352)
 scale = Vector2(0.7, 0.7)
@@ -1246,12 +1244,10 @@ sprite_frames = SubResource("SpriteFrames_urbpr")
 autoplay = "default"
 frame_progress = 0.3197524
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
-libraries = {
-&"": SubResource("AnimationLibrary_hbk2v")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D" unique_id=810966436]
+libraries/ = SubResource("AnimationLibrary_hbk2v")
 
-[node name="ExampleBalloon" parent="Node2D" instance=ExtResource("12_qxkw5")]
+[node name="ExampleBalloon" parent="Node2D" unique_id=2126844853 instance=ExtResource("12_qxkw5")]
 dialogue_resource = ExtResource("13_io8sk")
 next_action = &""
 skip_action = &""
@@ -1260,7 +1256,10 @@ skippable_dialogue = false
 [node name="Miku" parent="Node2D/ExampleBalloon/Balloon" index="0"]
 visible = false
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AnimationPlayer" parent="Node2D/ExampleBalloon/Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/Control" index="0"]
+autoplay = &"progress"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=975344326]
 stream = ExtResource("14_6xdp8")
 autoplay = true
 
