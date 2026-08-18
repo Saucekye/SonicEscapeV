@@ -3008,9 +3008,9 @@ trail_ball_position = Vector2(0, 10)
 
 [node name="Stomp" parent="." unique_id=1653375046 instance=ExtResource("4_ocgdo")]
 carry_x_speed = true
-bounce_one = 825.0
-bounce_two = 1000.0
-bounce_three = 1350.0
+bounce_one = 1350.0
+bounce_two = 1550.0
+bounce_three = 1550.0
 
 [node name="Trick" parent="." unique_id=1014707547 instance=ExtResource("5_dj5vv")]
 
