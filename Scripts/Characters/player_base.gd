@@ -1507,6 +1507,8 @@ func player_death():
 	sfx.play()
 	is_player_dead = true
 	GlobalSignals.set_teto_animation.emit("hurt_loop")
+	# Reset level back to 0
+	Test.level = 0
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	

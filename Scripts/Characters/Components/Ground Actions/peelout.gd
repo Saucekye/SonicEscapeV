@@ -1,5 +1,7 @@
 extends Components_Action
 
+const MAX_PEELOUT_SPEED : int = 1800
+
 func action() -> void:	
 	# Guard: don't process peelout if spindash is active
 	if player.is_spinningdash or Input.is_action_pressed("ui_down") or player.motion.x != 0:
@@ -24,7 +26,7 @@ func action() -> void:
 		player.time_elapsed = 300
 		player.is_spinning = false
 		player.is_ready = false
-		player.spin_dash_speed = clamp(player.spin_charge * player.spin_dash_acceleration, 0, 1600)
+		player.spin_dash_speed = clamp(player.spin_charge * player.spin_dash_acc, 0, MAX_PEELOUT_SPEED)
 		player.motion.x = player.spin_dash_speed * sign(player.motion.x) if player.motion.x != 0 else player.spin_dash_speed * (1 if player.sprite.flip_h == false else -1)
 		player.max_speed = 1800
 		player.acc = 5000

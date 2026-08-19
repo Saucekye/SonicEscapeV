@@ -331,7 +331,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 func take_damage(amount = 1):
 	if state == BossState.DEAD:
 		return
-	flash_animation_player.play("end")
+		
 	$hitsfx.play()
 	health -= amount
 	
@@ -350,7 +350,6 @@ func start_death():
 	boss_defeated.emit()
 	get_tree().call_group("EnemyProjectile", "queue_free")
 	music.stop()
-	defeat_flash_screen.visible = true
 	animation_player.play("death")
 	flash_animation_player.play("end")
 	velocity.y = -600
