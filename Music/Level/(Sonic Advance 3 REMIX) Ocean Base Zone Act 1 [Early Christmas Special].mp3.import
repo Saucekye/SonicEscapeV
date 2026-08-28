@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dk1a2twql3h44"
+path="res://.godot/imported/(Sonic Advance 3 REMIX) Ocean Base Zone Act 1 [Early Christmas Special].mp3-aa341a2a6f7a48d465ebd53335f5c112.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/(Sonic Advance 3 REMIX) Ocean Base Zone Act 1 [Early Christmas Special].mp3"
+dest_files=["res://.godot/imported/(Sonic Advance 3 REMIX) Ocean Base Zone Act 1 [Early Christmas Special].mp3-aa341a2a6f7a48d465ebd53335f5c112.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

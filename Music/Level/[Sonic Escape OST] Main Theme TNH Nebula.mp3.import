@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://rpg22yhru2k3"
+path="res://.godot/imported/[Sonic Escape OST] Main Theme TNH Nebula.mp3-928cbfc664acc010344f097135980196.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/[Sonic Escape OST] Main Theme TNH Nebula.mp3"
+dest_files=["res://.godot/imported/[Sonic Escape OST] Main Theme TNH Nebula.mp3-928cbfc664acc010344f097135980196.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

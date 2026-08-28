@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b611p34fgoggf"
+path="res://.godot/imported/Sonic Smackdown OST 𝐊𝐍𝐈𝐆𝐇𝐓 𝐨𝐟 𝐭𝐡𝐞 𝐖𝐈𝐍𝐃 (From SONIC AND THE BLACK KNIGHT).mp3-fd8854a875db0c8dde41e1f4547cb9c6.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Sonic Smackdown OST 𝐊𝐍𝐈𝐆𝐇𝐓 𝐨𝐟 𝐭𝐡𝐞 𝐖𝐈𝐍𝐃 (From SONIC AND THE BLACK KNIGHT).mp3"
+dest_files=["res://.godot/imported/Sonic Smackdown OST 𝐊𝐍𝐈𝐆𝐇𝐓 𝐨𝐟 𝐭𝐡𝐞 𝐖𝐈𝐍𝐃 (From SONIC AND THE BLACK KNIGHT).mp3-fd8854a875db0c8dde41e1f4547cb9c6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

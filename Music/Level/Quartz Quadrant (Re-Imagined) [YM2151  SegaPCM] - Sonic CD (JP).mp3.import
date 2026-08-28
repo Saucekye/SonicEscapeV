@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ma7vw6v6vwst"
+path="res://.godot/imported/Quartz Quadrant (Re-Imagined) [YM2151  SegaPCM] - Sonic CD (JP).mp3-fc2f01b17d1363f271ef3f1d33b48d36.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Quartz Quadrant (Re-Imagined) [YM2151  SegaPCM] - Sonic CD (JP).mp3"
+dest_files=["res://.godot/imported/Quartz Quadrant (Re-Imagined) [YM2151  SegaPCM] - Sonic CD (JP).mp3-fc2f01b17d1363f271ef3f1d33b48d36.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

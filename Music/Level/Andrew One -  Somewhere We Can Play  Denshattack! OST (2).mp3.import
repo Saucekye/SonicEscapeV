@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://fjmr81xmxydl"
+path="res://.godot/imported/Andrew One -  Somewhere We Can Play  Denshattack! OST (2).mp3-d6faca6609578eef7b2b7e1bd61cda72.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Andrew One -  Somewhere We Can Play  Denshattack! OST (2).mp3"
+dest_files=["res://.godot/imported/Andrew One -  Somewhere We Can Play  Denshattack! OST (2).mp3-d6faca6609578eef7b2b7e1bd61cda72.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

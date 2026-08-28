@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c18n27qjpdi6p"
+path="res://.godot/imported/1575679_Sonic-Escape---Been-Here-B (1).mp3-97bbf23206bcd016f57d959365c48f21.mp3str"
+
+[deps]
+
+source_file="res://Scenes/Results/1575679_Sonic-Escape---Been-Here-B (1).mp3"
+dest_files=["res://.godot/imported/1575679_Sonic-Escape---Been-Here-B (1).mp3-97bbf23206bcd016f57d959365c48f21.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

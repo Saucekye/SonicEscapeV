@@ -26,19 +26,19 @@ func _on_node_2d_playcutscene() -> void:
 	await get_tree().create_timer(8).timeout
 	emit_signal("next")
 	play("4")
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(4).timeout
 	var balloon = get_parent().get_node("ExampleBalloon")
 	var new_dialogue: DialogueResource = load("res://FinalCutscene/Final2.dialogue")
-	play("5")
+	
 	balloon.dialogue_resource = new_dialogue
 	balloon.start(new_dialogue, "start")  # "start" = the title/node to begin at in the new file
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(3).timeout
 	emit_signal("next")
-
+	play("5")
 	emit_signal("music")
 	await get_tree().create_timer(10).timeout
 	emit_signal("next")
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(5.5).timeout
 	emit_signal("next")
 	visible = false
 
@@ -52,12 +52,14 @@ func _on_node_2d_dialogue_2() -> void:
 	var new_dialogue: DialogueResource = load("res://FinalCutscene/Final3.dialogue")
 	balloon.dialogue_resource = new_dialogue
 	balloon.start(new_dialogue, "start")
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(3).timeout
+	emit_signal("next")
+	await get_tree().create_timer(6).timeout
 	emit_signal("next")
 	emit_signal("music2")
 	await get_tree().create_timer(8).timeout
 	emit_signal("next")
 	await get_tree().create_timer(10).timeout
 	emit_signal("next")
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(6).timeout
 	emit_signal("next")

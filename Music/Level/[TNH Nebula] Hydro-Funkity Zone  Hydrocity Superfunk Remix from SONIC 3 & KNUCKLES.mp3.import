@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bjskej14t8d5n"
+path="res://.godot/imported/[TNH Nebula] Hydro-Funkity Zone  Hydrocity Superfunk Remix from SONIC 3 & KNUCKLES.mp3-e8f55c24daf3329cf5254d215f1cc01f.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/[TNH Nebula] Hydro-Funkity Zone  Hydrocity Superfunk Remix from SONIC 3 & KNUCKLES.mp3"
+dest_files=["res://.godot/imported/[TNH Nebula] Hydro-Funkity Zone  Hydrocity Superfunk Remix from SONIC 3 & KNUCKLES.mp3-e8f55c24daf3329cf5254d215f1cc01f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

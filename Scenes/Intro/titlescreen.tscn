@@ -267,16 +267,17 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 116.285706
-offset_top = -119.28572
+offset_top = -121.571434
 offset_right = 584.2857
-offset_bottom = 895.7143
+offset_bottom = 935.4286
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.225, 0.225)
 theme_override_font_sizes/font_size = 20
 text = "CREDITS
-Pixel Art
+Story / Pixel Art
 Saucekye
+Bearanie​
 
 Programming
 Ag2350
@@ -300,15 +301,14 @@ Zeiame
 Music
 TNH Nebula
 Kyraneith
-Pistolman/DJ-MAGAZINE
 ToxicxEternity
+Pealeaf
 
 Logo
 Mikael Cage
 
 Special Thanks
 Lunara Noctis
-Bearanie​
 HeatDragon30
 Maddiethecroc
 Techokami
@@ -317,9 +317,11 @@ Nezuyaki
 Octy'
 SilentDProductions
 killeak
-Inimei
 GamesCage
 Aario
+Inimei
+Pegasus
+PrismDynasty
 My Mom & Dad
 (yes like SauceK's actual parents)"
 horizontal_alignment = 1

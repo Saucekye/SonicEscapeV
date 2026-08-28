@@ -14,7 +14,7 @@ var trick = ""
 var quit = false
 var ridenemies = false
 var fail = false
-var level = 0
+var level = 20
 var current_background : int = 0
 var current_background_name : String = ""
 var current_character_index : int = 0
@@ -63,7 +63,7 @@ func _ready() -> void:
 
 func build_boss_rotation():
 	rng.randomize()
-	boss_rotation_order = [0, 1, 2, 3]  # 0=boss, 1=boss1, 2=boss2, 3=rest
+	boss_rotation_order = [0, 1, 2, 3, 4]  # 0=boss, 1=boss1, 2=boss2, 3=rest
 	for i in range(boss_rotation_order.size() - 1, 0, -1):
 		var j = rng.randi_range(0, i)
 		var tmp = boss_rotation_order[i]

@@ -17,6 +17,7 @@ dest_files=["res://.godot/imported/exeicon.png-8ba4494f00b7b0245770e3dc05cd5902.
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

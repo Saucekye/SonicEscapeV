@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://coq8odclgmstj"
+path="res://.godot/imported/Cruising Together.mp3-f3f00b6683222d057f8864bf768c44d3.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/Cruising Together.mp3"
+dest_files=["res://.godot/imported/Cruising Together.mp3-f3f00b6683222d057f8864bf768c44d3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
