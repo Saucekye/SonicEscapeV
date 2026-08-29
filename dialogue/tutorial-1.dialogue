@@ -36,7 +36,7 @@ else
 	Miku: On the other hand, [color=yellow]FLIGHT[/color] characters prefer the air! These characters are able to fly for a limited amount of time based on their remaining flight meter. These characters are slower since they don't have any tricks to get a burst of speed in the air. But by conquering the air, platforming challenges are no longer a threat to them!
 	Miku: Finally, we have [color=red]POWER[/color] characters! Their moveset presents a middle ground between the other types. They have good burst options in the air, and they can overcome obstacles by climbing over them. While their air tricks don't have the most powerful bursts of speed, they're still good options, making them strong all-around characters. 
 	set character_types.visible = false
-	Miku: However, not every character falls under these categories. Metal Sonic, for example, can fly and has a trick in the air that gives a burst of horizontal speed, unlike other [color=yellow]FLIGHT[/color] characters.
+	Miku: However, not every character falls under these categories. Metal Sonic, for example, can fly and has two tricks in the air depending on whether you're holding up or not, so this gives a burst of horizontal speed, unlike other [color=yellow]FLIGHT[/color] characters.
 	Miku: And Sonic has unique abilities such as the Super Peelout and Drop Dash. 
 	Miku: So, it's in your best interest to try out a bunch of characters and find what fits your playstyle best!
 - Floors and Goal

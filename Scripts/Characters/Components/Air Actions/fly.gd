@@ -3,6 +3,8 @@ extends Components_Action
 @export var flymeter : TextureProgressBar
 @export var fly_meter_drain : float = 1		## Number of units drained while flying
 
+var was_flying : bool = false
+
 func _process(_delta):
 	# Sync the fly meter UI bar every frame
 	flymeter.value = player.flymeter_current_amount  
@@ -12,12 +14,16 @@ func action() -> void:
 	# Two separate conditions: sustained fly while holding, and initial press
 	if player.can_dash and player.flying and player.flymeter_amount >= 1 and Input.is_action_pressed("ui_accept") and (not Input.is_action_pressed("ui_down") or Input.is_action_pressed("ui_down")):
 		_flight()
+		was_flying = true
 		player.flymeter.visible = true  # Show meter only while actively flying
 
 	if Input.is_action_just_pressed("ui_accept") and (not Input.is_action_pressed("ui_down") or Input.is_action_pressed("ui_down")) and player.can_dash and not player.is_coyote_time_active():
 		_flight()
 		player.can_stomp = true
 		player.ap.play("fly")
+		
+	if !player.flying:
+		player.fall_gravity = player.default
 
 func _flight() -> void:
 	# For this character, "dash" is actually the fly flutter —

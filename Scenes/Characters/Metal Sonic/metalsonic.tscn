@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_lhsoh"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_hvbcv"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_t7fmt"]
+[ext_resource type="PackedScene" uid="uid://eu3w12wsdd3j" path="res://Scenes/Characters/Components/Air Actions/airspinup.tscn" id="6_lhsoh"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_2tq67"]
 [ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="9_x4wmt"]
 [ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="10_li3im"]
@@ -2229,14 +2230,20 @@ trail_ball_position = Vector2(0, 5)
 
 [node name="Fly" parent="." unique_id=1081368087 node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")
-fly_meter_drain = 1.35
+fly_meter_drain = 1.5
 
 [node name="Airspin" parent="." unique_id=1041590892 instance=ExtResource("3_hopts")]
 can_when_flying = true
-max_speed_startup = 2000
+max_speed_startup = 1800
 max_speed_after_action = 1200
 y_sped = 400
 x_speed = 1600
+
+[node name="Airspinup" parent="." unique_id=1897473306 instance=ExtResource("6_lhsoh")]
+can_when_flying = true
+max_speed_after_action = 600
+y_sped = 1000
+x_speed = 1000
 
 [node name="Stomp" parent="." unique_id=764063026 instance=ExtResource("4_lhsoh")]
 

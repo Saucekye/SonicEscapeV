@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://eu3w12wsdd3j"]
+
+[ext_resource type="Script" uid="uid://d0thnkqq88kum" path="res://Scripts/Characters/Components/Air Actions/airspinup.gd" id="1_a3qww"]
+
+[node name="Airspinup" type="Node" unique_id=1897473306]
+script = ExtResource("1_a3qww")

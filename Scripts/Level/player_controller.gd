@@ -86,7 +86,7 @@ func _ready() -> void:
 
 func setup_characters():
 	"""Initialize all characters with proper settings"""
-	# Layer mapping: can only be 2, 3, 6
+	# Layer mapping: can only be 2, 3, 1
 	var character_layers = [2, 3, 1]
 	
 	for i in range(characters.size()):
@@ -112,7 +112,7 @@ func update_character_states():
 	"""Update all character states based on current active character"""
 	# First pass: Set all to non-player
 	for character in characters:
-		character.z_index = 0
+		character.z_index = 1
 		character.is_player = false
 		character.remove_from_group("active_player")
 	
