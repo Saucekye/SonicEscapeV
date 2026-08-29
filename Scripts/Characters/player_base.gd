@@ -1557,7 +1557,7 @@ func emit_rings():
 		19: spawn_count = 7
 		_:
 			# For larger ring counts: scatter half of lost rings, capped at 10
-			spawn_count = clamp(int((float)(loss) / 2), 1, 10)
+			spawn_count = clamp(int((float)(loss) / 2), 0, 10)
 	
 	for i in range(spawn_count):
 		var ring = ring_scene.instantiate()

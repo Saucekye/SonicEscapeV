@@ -2,7 +2,8 @@ extends Area2D
 
 var player_inside := false
 var musicplay = false
-var use_alt := false  # true = show the alternate text set on Label
+var use_alt := false
+var nights = false  # true = show the alternate text set on Label
 
 func _ready():
 	$Arrow.visible = false
@@ -17,18 +18,29 @@ func _ready():
 	$CanvasLayer/Label.modulate.a = 0
 		
 	randomize()
-	if randf() < 0.5:
+	if randf() <= 0.25 and Test.level != 0:
 		use_alt = true
+		nights = false
 		$Node2D.visible = false
 		$Node2D4.visible = false
 		$Sprite2D.visible = false
 		$AnimatedSprite2D.visible = true
+		$NiGHTS.visible = false
+	elif randf() > 0.25 and randf() < 0.5 and Test.level != 0:
+		nights = true
+		$Node2D.visible = true
+		$Node2D4.visible = true
+		$Sprite2D.visible = true
+		$AnimatedSprite2D.visible = false
+		$NiGHTS.visible = true
 	else:
+		nights = false
 		use_alt = false
 		$Node2D.visible = true
 		$Node2D4.visible = true
 		$Sprite2D.visible = true
 		$AnimatedSprite2D.visible = false
+		$NiGHTS.visible = false
 
 
 func _process(delta):
@@ -44,8 +56,13 @@ func _process(delta):
 		if $CanvasLayer/Label.visible:
 			update_text()
 			
-		if musicplay == false:
+		if musicplay == false and nights == false:
 			$Timer.start()
+			
+		if nights == true and musicplay == false:
+			musicplay = true
+			$AudioStreamPlayer2D.stream = load("res://Music/MainMenu/Dreams Dreams _ A-Cappella Ver..mp3")
+			$AudioStreamPlayer2D.play()
 		
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
@@ -66,31 +83,31 @@ func _on_area_exited(area: Area2D) -> void:
 func update_text():
 	if use_alt:
 		match Test.level:
-			0:
+			4:
 				$CanvasLayer/Label.text = "LET'S PLAY A GAME
 YOU CAN CHOOSE YOUR FAVORITE THING
 THIS CLICHE NEVER DIES
 YOU CAN'T RUN AND YOU CAN'T HIDE!"
-			4:
+			8:
 				$CanvasLayer/Label.text = "LET YOUR SPIRIT
 LEAVE YOUR BODY
 I AM GOD
 AND YOU'RE NOBODY!"
-			8:
+			12:
 				$CanvasLayer/Label.text = "BE NOT AFRAID
 IT'S ALL OKAY
 LET'S PLAY A GAME
 FOR OLD TIME'S SAKE
 
 YOU ARE FLAWED, I AM GOD"
-			12:
+			16:
 				$CanvasLayer/Label.text = "YOUR WORLD'S A MIRROR OF YOURSELF,
 AND NEVER THE OTHER WAY AROUND!
 IN YOUR HAND LAYS ALL OF THEIR CRIES.
 FREE WILL ALWAYS HAS A PRICE!"
-			16:
-				$CanvasLayer/Label.text = "Are you still there? That's a silly question. I know you are! It's hard to let go of things, isn't it? You stubborn head. You see... When you're soaked underwater, all the way down to the bottom, with all this pressure on you, they say it's an excruciating pain when you make contact with the air again. It doesn't hurt to invite the water in. Might even be a relief for your flesh. And, in the end... that's what lasts from it. But fear not! You won't have to worry about this anymore, friend. You're deep down the lake.."
 			20:
+				$CanvasLayer/Label.text = "Are you still there? That's a silly question. I know you are! It's hard to let go of things, isn't it? You stubborn head. You see... When you're soaked underwater, all the way down to the bottom, with all this pressure on you, they say it's an excruciating pain when you make contact with the air again. It doesn't hurt to invite the water in. Might even be a relief for your flesh. And, in the end... that's what lasts from it. But fear not! You won't have to worry about this anymore, friend. You're deep down the lake.."
+			24:
 				$CanvasLayer/Label.text = "IN A LUCID PARADISE
 YOU COME HERE TO BREAK THE TIME
 I'LL MAKE YOU PROTAGONIST
@@ -120,7 +137,9 @@ Kick: (Air) Jump + Jump
 Drop Dash: (Air) Jump (Hold)
 Stomp: (Air) Down + Air Dash
 Cyclone: (Air) Air Dash+ Forward
-Flip: (Air) Air Dash + Up"""
+Flip: (Air) Air Dash + Up
+
+We Will Find Him..."""
 			4:
 				$CanvasLayer/Label.text = """I lay here
 blind,
@@ -249,6 +268,16 @@ I have become stronger, wiser, unshaken.
 a woman who learned love,
 and in losing it,
 found herself."""
+			24:
+				$CanvasLayer/Label.text = """Life isn't about what you have,
+how talented you are,
+or even who you are.
+				
+It's about the relationships you make,
+The memories you have,
+and the lessons you learn from them.
+				
+Now go make more memories!"""
 			_:
 				$CanvasLayer/Label.text = "Current Floor: " + str(Test.level)
 

@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://ci8ftav22k13s" path="res://Music/MainMenu/Stellar Blade - Shelter (Main Menu Theme) English Ver..mp3" id="8_sopqj"]
 [ext_resource type="AudioStream" uid="uid://cewffediw5xu5" path="res://Sounds/Environmental/Wind Trees Sound Effect 1074.mp3" id="9_1p2b4"]
 [ext_resource type="Texture2D" uid="uid://ds0snf5tmji63" path="res://Sprites/Obstacles/RestTree/rewrite.png" id="10_ojlps"]
+[ext_resource type="Texture2D" uid="uid://llq5qxvwlvv6" path="res://Sprites/Obstacles/RestTree/NiGHTS.png" id="12_4oy5n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fgpd8"]
 atlas = ExtResource("3_wt5bm")
@@ -421,6 +422,70 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uevc"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(0, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ba5i"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(138, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_03myv"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(276, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_id7si"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(414, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ac4l1"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(552, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh60x"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(690, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qe6p"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(828, 0, 138, 172)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e17hj"]
+atlas = ExtResource("12_4oy5n")
+region = Rect2(966, 0, 138, 172)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6uevc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ba5i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_03myv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_id7si")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ac4l1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eh60x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qe6p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e17hj")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 12.0
+}]
+
 [node name="Area2D" type="Area2D" unique_id=923355231]
 script = ExtResource("1_gsb32")
 
@@ -464,6 +529,7 @@ position = Vector2(2672, 609.88696)
 shape = SubResource("RectangleShape2D_th0bb")
 
 [node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=2033288175]
+z_index = 1
 position = Vector2(2673, 588)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_3c6oy")
@@ -557,6 +623,13 @@ sprite_frames = SubResource("SpriteFrames_wmmba")
 autoplay = "default"
 speed_scale = 5.0
 flip_h = true
+
+[node name="NiGHTS" type="AnimatedSprite2D" parent="." unique_id=341829794]
+position = Vector2(2680, 584)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_kofwu")
+autoplay = "default"
+frame_progress = 0.31051525
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

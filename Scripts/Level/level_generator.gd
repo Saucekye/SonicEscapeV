@@ -90,12 +90,22 @@ func _spawn_next_boss_level():
 		chunks.append(chunk)
 		end_spawned = true
 		return
+	
+	if Test.level == 24:
+		var chunk := chunk_rest.instantiate()
+		add_child(chunk)
+		var start = chunk.get_node("Start").global_position
+		chunk.global_position = first_chunk_offset - start
+		last_end_position = chunk.get_node("End").global_position
+		chunks.append(chunk)
+		end_spawned = true
+		return
 
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
 
 	var index: int = Test.boss_rotation_order.pop_front()
-	var scene_map := [chunk_boss, chunk_boss1, chunk_boss2, chunk_boss3, chunk_rest]
+	var scene_map := [chunk_boss, chunk_boss1, chunk_rest, chunk_boss2, chunk_boss3]
 	var scene: PackedScene = scene_map[index]
 	var chunk := scene.instantiate()
 	add_child(chunk)

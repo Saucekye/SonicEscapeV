@@ -3,6 +3,8 @@ extends Node2D
 enum BossState {INTRO, FLY, ATTACK1, ATTACK2, ATTACK3, ATTACK4, FALLING, PHASE2TRANSITION, DEAD}
 signal end
 signal dialogue2
+signal lunara
+signal over
 
 var phase2_voice_played = false
 var state = BossState.INTRO
@@ -68,7 +70,7 @@ func _start():
 	anim.play("intro_2")
 	await anim.animation_finished
 	anim.play("intro_3")
-	await get_tree().create_timer(10).timeout
+	await get_tree().create_timer(7).timeout
 	anim.play("intro_4")
 	await anim.animation_finished
 	anim.play("intro_5")
@@ -85,10 +87,10 @@ func _start():
 
 func _ready():
 	$TextureRect2.visible = false
+	$TextureRect3.visible = false
 	sprite_mat = sprite.material as ShaderMaterial
 	anim.play("intro")
 	get_parent().get_node("AnimatedSprite2D").visible = false
-
 
 # --------------------------------------------------
 # PROCESS
@@ -108,8 +110,8 @@ func _process(delta):
 			Engine.time_scale = 1.0
 			
 			if sprite.global_position.y > get_viewport_rect().size.y + 200:
-				emit_signal("end")
-				queue_free()
+				await get_tree().create_timer(3).timeout
+				GlobalSignals.emit_signal("complete")
 			return
 
 		if state == BossState.FALLING:
@@ -178,7 +180,7 @@ func start_attack_loop():
 				next_attack = 2
 			elif next_attack == 2:
 				await start_attack3()
-				next_attack = 3
+				next_attack = 0
 			else:
 				await start_follow_attack()
 				next_attack = 0
@@ -424,23 +426,37 @@ func start_attack2():
 func start_attack3() -> void:
 
 	state = BossState.ATTACK3
-
+	
 	var marker = attack3_markers.pick_random()
 	if marker == null:
 		return
-
+	
 	await move_to_position(marker.global_position, 1000)
 	face_player()
-
+	
 	anim.play("Attack3")  # swap to your actual animation name
-	await anim.animation_finished
-
-	if state == BossState.FALLING or state == BossState.DEAD:
+	$Sprite2D.visible = true
+	$TextureRect3.visible = true
+	await get_tree().create_timer(3.3).timeout
+	
+	if active_player == null:
+		state = BossState.FLY
+		anim.play("Idle")
 		return
+
+	var direction = (active_player.global_position - self.global_position).normalized()
+	var target_position = self.global_position + direction * 900
+
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target_position, 0.35)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+
+	await tween.finished
 
 	anim.play("Idle")
 	state = BossState.FLY
-
+	start_attack_loop()
 # --------------------------------------------------
 # FLASH
 # --------------------------------------------------
@@ -459,6 +475,7 @@ func flash_sprite(duration: float = 0.1) -> void:
 		if phase == 1:
 			start_fall_phase1()
 		else:
+			emit_signal("over")
 			start_death()
 
 # --------------------------------------------------
@@ -494,6 +511,7 @@ func take_damage(amount = 1):
 # --------------------------------------------------
 
 func start_fall_phase1() -> void:
+	GlobalCanvasLayer.tricks = 10
 	anim.play("death")
 	state = BossState.FALLING
 	anim.stop()
@@ -515,27 +533,31 @@ func start_phase2() -> void:
 		emit_signal("dialogue2")
 	
 	phase = 2
-	health = max_health
-	update_health_bar.emit(health, max_health)
+	health = 75
+
 	
-	await get_tree().create_timer(5).timeout
-	#velocity = Vector2(0,0)
-	#await move_to_position(get_parent().get_node("Marker2D3").global_position,1000)
+	await get_tree().create_timer(9).timeout
+	update_health_bar.emit(health, 75)
+	var display = get_parent().get_node("BossHPDisplay")
+	display._set_new_boss(self, "LunaraNoctis")
+	($TextureRect2.material as ShaderMaterial).set_shader_parameter("base_rain_speed", 1.0) 
 	velocity.y = 0
 	sprite.position = Vector2.ZERO
 	$Sprite2D/HitBox.monitorable = false
 	$Sprite2D/HitBox.monitoring = false
 	sprite.rotation = 0
-	sprite.visible = true
+	sprite.visible = false
 	
 	start_attack3()
+	await get_tree().create_timer(14).timeout
+	emit_signal("lunara")
 
 # --------------------------------------------------
 # REAL DEATH (Phase 2 only)
 # --------------------------------------------------
 
 func start_death():
-	GlobalCanvasLayer.tricks += 10
+	GlobalCanvasLayer.tricks = 10
 	dying = true
 	state = BossState.DEAD
 	$AudioStreamPlayer.stop()
