@@ -314,6 +314,7 @@ scale = Vector2(0.85, 0.85)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AnimationPlayer/Node2D" unique_id=1096549209]
 stream = ExtResource("2_h2hei")
+bus = &"Music"
 
 [node name="ColorRect" type="ColorRect" parent="AnimationPlayer/Node2D/AudioStreamPlayer" unique_id=1794972287]
 material = SubResource("ShaderMaterial_pkf53")

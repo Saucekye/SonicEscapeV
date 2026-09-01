@@ -82,4 +82,4 @@ func _move_to_boss_position() -> void:
 	var position_tween = get_tree().create_tween()
 	position_tween.tween_property(self, "global_position", boss_position.global_position, tween_time)
 	await position_tween.finished
-	projectile.timer.start()
+#	projectile.timer.start()

@@ -17,7 +17,7 @@ var can_play : bool = true
 
 var scene_music := {
 	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
-	"warningscreen": preload("res://Music/Intro/sos(3).MP3"),
+	"warningscreen": preload("res://Music/Intro/sos.MP3"),
 	
 }
 
@@ -25,23 +25,22 @@ var scene_music := {
 # Node2D playlist
 # ─────────────────────────────
 var node2d_music_pool := [
-	preload("res://Music/Level/TNH NebulaChemical CyberFunk!  Fog Funk Cyberspace REMIX (Sonic Frontiers).mp3"),
-	preload("res://Music/Level/Great Desert (Reboot Type A).mp3"),
-	preload("res://Music/Level/Scent Of Love.mp3"),
 	preload("res://Music/Level/Another Life.MP3"),
 	preload("res://Music/Level/Luxury.MP3"),
-	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
-	preload("res://Music/Level/Don't Get In My Way.MP3"),
+	preload("res://Music/Level/High on Life.mp3"),
+	
 	preload("res://Music/Level/Heaven Knows.mp3"),
-	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
-	preload("res://Music/Level/Stellar Blade OST - Eidos 7 Silent Street Combat.mp3"),
+	preload("res://Music/Level/Don't Get In My Way.MP3"),
+	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
 	preload("res://Music/Level/The Vanished People - DANCE ALONE (feat. Hashimero).mp3"),
 	preload("res://Music/Level/The Vanished People - IT'S GOING DOWN (feat. WaMi).mp3"),
-	preload("res://Music/Level/[Sonic Rush_ ReRun OST] Ska Cha Real Smooth - BLAZY REMIX  TNH Nebula.mp3"),
+	preload("res://Music/Level/[TNH Nebula] Work It Out Ft. JanettPlanett.MP3"),
 	preload("res://Music/Level/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3"),
 	preload("res://Music/Level/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3"),
-	preload("res://Music/Level/[TNH Nebula] Sonic Rush Remix What U Need is Super.MP3"),
-	preload("res://Music/Level/[TNH Nebula] Work It Out Ft. JanettPlanett.MP3")
+	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
+	preload("res://Music/Level/Sonic 2  Chemical Plant Zone (R&BSoul Remix)  Rhythm & Bits.mp3"),
+	preload("res://Music/Level/Sonic Mania Mirage Saloon Zone Rhythm & Bits.MP3"),
+	preload("res://Music/Level/The Palace That Was Found.mp3")
 ]
 
 var node2d_track_index := 0

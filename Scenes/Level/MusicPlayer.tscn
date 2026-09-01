@@ -429,10 +429,12 @@ offset_left = -290.0
 offset_top = -93.0
 offset_right = -96.0
 offset_bottom = -73.0
+focus_mode = 1
 text_overrun_behavior = 1
 clip_text = true
 fit_to_longest_item = false
 allow_reselect = true
+search_bar_enabled = true
 
 [node name="MusicButtons" type="Control" parent="." unique_id=9895404]
 layout_mode = 3

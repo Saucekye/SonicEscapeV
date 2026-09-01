@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://xf23e0v12uw2" path="res://Sprites/Boss/Super Silver/soupsilver-Recovered.png" id="8_5a04w"]
 [ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="9_p6ew8"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="10_ohs0x"]
-[ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="11_6omj1"]
+[ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="11_6omj1"]
 [ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="12_ip035"]
 [ext_resource type="AudioStream" uid="uid://dhlgpaqsxpg6p" path="res://Music/Boss/Super Silver/[Absolution OST] Warrior of Hope - Silver's Theme  2026 SPRING SHOWCASE AWARD WINNING TRACK.mp3" id="14_6fo3o"]
 [ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="15_wo7un"]
@@ -1780,7 +1780,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_c3epx"]
 resource_name = "attack2"
-length = 0.45999999999999996
+length = 0.46
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cmepllxv1pfol" path="res://Sounds/Environmental/strongwin.MP3" id="9_0iqyq"]
 [ext_resource type="Texture2D" uid="uid://borq6qj52hl73" path="res://Sprites/Boss/Thragg/thragg - formatted.png" id="10_1bfwp"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="10_yxo0d"]
-[ext_resource type="AudioStream" uid="uid://bq07lljcxqm6m" path="res://Sounds/BossSFX/NeoMetal/startup4(1).MP3" id="11_45ap3"]
+[ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="11_45ap3"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_qdjoc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0iqyq"]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=48 format=3 uid="uid://b0s1wfy77ahv"]
+[gd_scene format=3 uid="uid://ie57osbwx2e1"]
 
 [ext_resource type="Script" uid="uid://chuuwjpt4uofb" path="res://Scripts/Characters/Sonic/CharacterBody2D.gd" id="1_ge8jj"]
 [ext_resource type="Script" uid="uid://847tj84js4yt" path="res://addons/trail_2d/trail_2d.gd" id="2_vvofc"]
 [ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="3_q4csj"]
-[ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_2o23j"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_5mbtu"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_86w65"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_ceaps"]
@@ -2081,7 +2080,7 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Player"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1930619752 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
 collision_mask = 2
@@ -2089,7 +2088,7 @@ floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_ge8jj")
 
-[node name="Trail2D" type="Line2D" parent="."]
+[node name="Trail2D" type="Line2D" parent="." unique_id=1129192993]
 z_index = 1
 width = 30.0
 width_curve = SubResource("Curve_7xxox")
@@ -2097,7 +2096,7 @@ default_color = Color(0.239216, 0.352941, 1, 0.466667)
 script = ExtResource("2_vvofc")
 length = 20
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1264166457]
 z_index = 1
 position = Vector2(0, 0.02)
 scale = Vector2(0.009, 0.009)
@@ -2106,33 +2105,30 @@ hframes = 10
 vframes = 9
 frame = 13
 
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D" unique_id=1769602957]
 visible = false
-texture = ExtResource("4_2o23j")
 hframes = 3
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_1831k")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=871328330]
+libraries/ = SubResource("AnimationLibrary_1831k")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1270591853 groups=["Player"]]
 position = Vector2(0, 0.0799999)
 shape = SubResource("RectangleShape2D_hls4d")
 
-[node name="Raycast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="Raycast" type="RayCast2D" parent="CollisionShape2D" unique_id=1899415846]
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(0, 24)
 collision_mask = 4
 
-[node name="WallCast" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast" type="RayCast2D" parent="CollisionShape2D" unique_id=1119072846]
 position = Vector2(7.45058e-09, 0)
 scale = Vector2(0.0163969, 0.01)
 target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D"]
+[node name="WallCast2" type="RayCast2D" parent="CollisionShape2D" unique_id=94024509]
 position = Vector2(-7.45058e-09, 0)
 rotation = 3.14159
 scale = Vector2(0.0163969, 0.01)
@@ -2140,74 +2136,72 @@ target_position = Vector2(-7.31848, 0)
 collision_mask = 4
 hit_from_inside = true
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=737044445]
 visible = false
 position = Vector2(0, 0.0400391)
 scale = Vector2(0.01, 0.01)
 texture = SubResource("CompressedTexture2D_5ncpa")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1040158634]
 wait_time = 2.0
 
-[node name="Voice" type="AudioStreamPlayer2D" parent="."]
+[node name="Voice" type="AudioStreamPlayer2D" parent="." unique_id=895221671]
 volume_db = -15.0
 bus = &"SFX"
 
-[node name="Sfx" type="AudioStreamPlayer2D" parent="."]
+[node name="Sfx" type="AudioStreamPlayer2D" parent="." unique_id=90111628]
 volume_db = -15.0
 bus = &"SFX"
 
-[node name="Step" type="AudioStreamPlayer2D" parent="."]
+[node name="Step" type="AudioStreamPlayer2D" parent="." unique_id=1325974429]
 stream = ExtResource("5_5mbtu")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="SpinTimer" type="Timer" parent="."]
+[node name="SpinTimer" type="Timer" parent="." unique_id=1442888687]
 
-[node name="WaitTimer" type="Timer" parent="."]
+[node name="WaitTimer" type="Timer" parent="." unique_id=361892345]
 wait_time = 6.0
 
-[node name="CoyoteTimer" type="Timer" parent="."]
+[node name="CoyoteTimer" type="Timer" parent="." unique_id=650740436]
 one_shot = true
 
-[node name="ControlLockTimer" type="Timer" parent="."]
+[node name="ControlLockTimer" type="Timer" parent="." unique_id=734636868]
 wait_time = 0.5
 one_shot = true
 
-[node name="invincibity" type="Timer" parent="."]
+[node name="invincibity" type="Timer" parent="." unique_id=1974198996]
 
-[node name="Hitbox" type="Area2D" parent="." groups=["Player"]]
+[node name="Hitbox" type="Area2D" parent="." unique_id=246592564 groups=["Player"]]
 position = Vector2(-2.98023e-08, 0.08)
 scale = Vector2(0.00799688, 0.0159968)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=899275053]
 position = Vector2(0.00195313, 0)
 shape = SubResource("RectangleShape2D_ajy0d")
 debug_color = Color(0.847059, 0.423529, 0, 0.419608)
 
-[node name="Attackbox" type="Area2D" parent="." groups=["Playerattack"]]
+[node name="Attackbox" type="Area2D" parent="." unique_id=1325310638 groups=["Playerattack"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=808531170]
 position = Vector2(0, 0.04)
 shape = SubResource("RectangleShape2D_0qscb")
 debug_color = Color(1, 0.00689957, 0.0521525, 0.42)
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=89307475]
 position = Vector2(8.68, 8.84)
 rect = Rect2(-10, -10, 2.5, 2.5)
 
-[node name="onscreentimer" type="Timer" parent="."]
+[node name="onscreentimer" type="Timer" parent="." unique_id=1297768394]
 
-[node name="Parry" type="Sprite2D" parent="."]
+[node name="Parry" type="Sprite2D" parent="." unique_id=1158895719]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(0, 0.039999995)
 scale = Vector2(0.009, 0.009)
 texture = ExtResource("9_q1bh0")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Parry"]
-libraries = {
-&"": SubResource("AnimationLibrary_l6ohk")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=273880344]
+libraries/ = SubResource("AnimationLibrary_l6ohk")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

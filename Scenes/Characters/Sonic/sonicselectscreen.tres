@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://be01brj5lna8m"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://be01brj5lna8m"]
 
 [ext_resource type="Texture2D" uid="uid://h7754up3acfx" path="res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet.png" id="1_nwj1w"]
 
@@ -40,12 +40,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cvtyn")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 8.0
 }, {
 "frames": [],
-"loop": true,
+"loop": 1,
 "name": &"new_animation",
 "speed": 5.0
 }]

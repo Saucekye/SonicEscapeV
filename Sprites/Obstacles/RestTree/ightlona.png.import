@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbljebhpcvh41"
-path="res://.godot/imported/cloud_lonely.png-20de764b5eaa611865ae53bf20fa0867.ctex"
+uid="uid://bi23vcuhe736e"
+path="res://.godot/imported/ightlona.png-2fe021da519a92e35a49872f114ac105.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Background/Mountains/cloud_lonely.png"
-dest_files=["res://.godot/imported/cloud_lonely.png-20de764b5eaa611865ae53bf20fa0867.ctex"]
+source_file="res://Sprites/Obstacles/RestTree/ightlona.png"
+dest_files=["res://.godot/imported/ightlona.png-2fe021da519a92e35a49872f114ac105.ctex"]
 
 [params]
 
