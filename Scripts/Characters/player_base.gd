@@ -1375,7 +1375,7 @@ func spindash():
 	if is_ready or Input.is_action_pressed("ui_up"):
 		return
 		
-	if is_on_floor() and Input.is_action_pressed("ui_down") and ball == false and next_bounce == false and motion.x == 0 and direction == 0:
+	if is_on_floor() and Input.is_action_pressed("ui_down") and ball == false and motion.x == 0 and direction == 0:
 		control_lock = true
 		if Input.is_action_just_pressed("ui_accept"):
 			# Each accept press adds one charge and revs up the sound
@@ -1508,7 +1508,8 @@ func player_death():
 	is_player_dead = true
 	GlobalSignals.set_teto_animation.emit("hurt_loop")
 	# Reset level back to 0
-	Test.level = 0
+	if Test.level != 20:
+		Test.level = 0
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	

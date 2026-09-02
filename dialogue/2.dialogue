@@ -1,0 +1,18 @@
+~ start
+???: Is there someone you miss?
+- Yes
+	???: Are you having trouble moving on?
+	- Yes
+		???: It happens...
+		???: There are people I used to miss too.
+		???: I couldn't move on. I'd obess day and night about them.
+		???: But now I'm alot better now.
+		???: Do you wanna know how I moved on?
+	- No
+		Nathan: You picked the second one.
+- No
+	Nathan: You picked the second one.
+- Start again => start
+- End the conversation => END
+Nathan: For more information see the online documentation.
+=> END

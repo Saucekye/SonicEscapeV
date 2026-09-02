@@ -7,12 +7,12 @@ var phase2_voice_played = false
 var state = BossState.IDLE
 var dash_direction = 0
 var attackstaken = 0
-var health = 50
-var max_health = 50
+var health = 45
+var max_health = 45
 var start = false
 var begin = false
 
-var active_player: Node2D
+var active_player: CharacterBody2D
 
 # Death physics
 var velocity = Vector2.ZERO
@@ -64,6 +64,36 @@ func _ready():
 	#get_parent().get_node("CharacterBody2D").visible = false
 	#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED
 
+# --------------------------------------------------
+# FIND ACTIVE PLAYER
+# --------------------------------------------------
+
+func _find_active_player() -> CharacterBody2D:
+	# Use the group system - much more reliable!
+	var players = get_tree().get_nodes_in_group("active_player")
+	if players.size() > 0 and is_instance_valid(players[0]):
+		return players[0]
+
+	# Fallback: Check all CharacterBody2D nodes for is_player property
+	var all_characters = get_tree().get_nodes_in_group("all_characters")
+	for body in all_characters:
+		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
+			return body
+
+	return null
+
+# --------------------------------------------------
+# RESYNC ACTIVE PLAYER
+# --------------------------------------------------
+# Call this every frame (or right before using active_player after an
+# await) so a mid-fight character switch is picked up immediately instead
+# of the boss staying locked onto whichever character it started with.
+
+func _resync_active_player() -> void:
+	var current_player = _find_active_player()
+	if current_player != null:
+		active_player = current_player
+
 func _process(delta):
 	# ---------------- DEATH PHYSICS ----------------
 	if state == BossState.DEAD:
@@ -84,6 +114,8 @@ func _process(delta):
 		return
 	# ------------------------------------------------
 
+	# Always resync with whoever is currently in the "active_player" group.
+	_resync_active_player()
 
 	# -------- SPEED BASED ON HEALTH --------
 	var health_ratio = clamp(health / float(max_health), 0.0, 1.0)
@@ -240,7 +272,11 @@ func start_attack3():
 		anim.play("Attack3")
 		await anim.animation_finished
 
-		if active_player == null:
+		# Resync here too: the player may have switched characters during
+		# the Attack3 animation, and we're about to aim using their position.
+		_resync_active_player()
+
+		if active_player == null or not is_instance_valid(active_player):
 			state = BossState.IDLE
 			anim.play("Idle")
 			return
@@ -342,7 +378,9 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("Player") and start == false:
 
-		active_player = area.get_parent()
+		active_player = _find_active_player()
+		if active_player == null:
+			active_player = area.get_parent()
 
 		start = true
 

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dslyialw5dmdn"]
+
+[ext_resource type="Script" uid="uid://dq51sobhjv7h3" path="res://GameOverScreen.gd" id="1_chgic"]
+[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="2_bedtm"]
+[ext_resource type="Resource" uid="uid://dnyan6fde0a0q" path="res://FinalCutscene/Final1.dialogue" id="3_f4m3h"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+
+[node name="Node2D" type="Node2D" unique_id=254051684]
+script = ExtResource("1_chgic")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1247842396]
+sprite_frames = SubResource("SpriteFrames_kofwu")
+
+[node name="ExampleBalloon" parent="." unique_id=1336823390 instance=ExtResource("2_bedtm")]
+dialogue_resource = ExtResource("3_f4m3h")
+next_action = &""
+skip_action = &""
+skippable_dialogue = false
+
+[node name="Balloon" parent="ExampleBalloon" index="0"]
+offset_top = -8.0
+offset_bottom = -8.0
+
+[node name="Miku" parent="ExampleBalloon/Balloon" index="0"]
+visible = false
+
+[node name="AnimationPlayer" parent="ExampleBalloon/Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/Control" index="0"]
+autoplay = &"progress"
+
+[connection signal="next" from="." to="ExampleBalloon" method="_on_node_2d_next"]
+
+[editable path="ExampleBalloon"]

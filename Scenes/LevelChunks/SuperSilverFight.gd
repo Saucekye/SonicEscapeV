@@ -16,7 +16,7 @@ var max_health = 50
 var start = false
 var begin = false
 
-var active_player: Node2D
+var active_player: CharacterBody2D
 
 # Death / fall physics
 var velocity = Vector2.ZERO
@@ -93,6 +93,36 @@ func _ready():
 	get_parent().get_node("AnimatedSprite2D").visible = false
 
 # --------------------------------------------------
+# FIND ACTIVE PLAYER
+# --------------------------------------------------
+
+func _find_active_player() -> CharacterBody2D:
+	# Use the group system - much more reliable!
+	var players = get_tree().get_nodes_in_group("active_player")
+	if players.size() > 0 and is_instance_valid(players[0]):
+		return players[0]
+
+	# Fallback: Check all CharacterBody2D nodes for is_player property
+	var all_characters = get_tree().get_nodes_in_group("all_characters")
+	for body in all_characters:
+		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
+			return body
+
+	return null
+
+# --------------------------------------------------
+# RESYNC ACTIVE PLAYER
+# --------------------------------------------------
+# Call this every frame (or right before using active_player after an
+# await) so a mid-fight character switch is picked up immediately instead
+# of the boss staying locked onto whichever character it started with.
+
+func _resync_active_player() -> void:
+	var current_player = _find_active_player()
+	if current_player != null:
+		active_player = current_player
+
+# --------------------------------------------------
 # PROCESS
 # --------------------------------------------------
 
@@ -137,6 +167,11 @@ func _process(delta):
 		if state == BossState.INTRO or state == BossState.PHASE2TRANSITION:
 			return
 
+		# Always resync with whoever is currently in the "active_player" group.
+		# (A character switch keeps the old node valid, so an is_instance_valid
+		# check alone won't catch the swap — we need to re-query every frame.)
+		_resync_active_player()
+
 		if active_player == null or not is_instance_valid(active_player):
 			return
 
@@ -155,7 +190,7 @@ func start_attack_loop():
 			await get_tree().process_frame
 			continue
 
-		var wait_time = randf_range(3, 4) if phase == 1 else randf_range(1.5, 2.5)
+		var wait_time = randf_range(3, 4)
 		await get_tree().create_timer(wait_time).timeout
 
 		if state != BossState.FLY:
@@ -172,15 +207,13 @@ func start_attack_loop():
 				await start_follow_attack()
 				next_attack = 0
 		else:
+			
 			if next_attack == 0:
-				await start_punch_attack()
+				await start_attack2()
 				next_attack = 1
 			elif next_attack == 1:
-				await start_attack2()
-				next_attack = 2
-			elif next_attack == 2:
 				await start_attack3()
-				next_attack = 0
+				next_attack = 2
 			else:
 				await start_follow_attack()
 				next_attack = 0
@@ -297,6 +330,8 @@ func start_punch_attack() -> void:
 
 	while t < max_time:
 
+		_resync_active_player()
+
 		if active_player == null or not is_instance_valid(active_player):
 			break
 
@@ -319,6 +354,8 @@ func start_punch_attack() -> void:
 	anim.play("Attack1end")
 
 	while anim.is_playing():
+
+		_resync_active_player()
 
 		if active_player != null and is_instance_valid(active_player):
 			var pull_dir = (global_position - active_player.global_position).normalized()
@@ -346,10 +383,15 @@ func start_follow_attack() -> void:
 
 	anim.play("Attack4")
 
-	var rush_time = 2.65
+	var rush_time = 1.5
 	var t = 0.0
 
 	while t < rush_time:
+
+		_resync_active_player()
+
+		if active_player == null or not is_instance_valid(active_player):
+			break
 
 		global_position = global_position.move_toward(
 			active_player.global_position,
@@ -363,8 +405,12 @@ func start_follow_attack() -> void:
 
 	while anim.is_playing():
 
+		_resync_active_player()
+
 		global_position = locked_pos
-		face_player()
+
+		if active_player != null and is_instance_valid(active_player):
+			face_player()
 
 		await get_tree().process_frame
 
@@ -438,8 +484,12 @@ func start_attack3() -> void:
 	$Sprite2D.visible = true
 	$TextureRect3.visible = true
 	await get_tree().create_timer(3.3).timeout
-	
-	if active_player == null:
+
+	# Resync here: the player may have switched characters during the
+	# long windup above, and we're about to aim using their position.
+	_resync_active_player()
+
+	if active_player == null or not is_instance_valid(active_player):
 		state = BossState.FLY
 		anim.play("Idle")
 		return
@@ -485,7 +535,9 @@ func flash_sprite(duration: float = 0.1) -> void:
 func _on_area_2d_area_entered(area: Area2D):
 
 	if area.is_in_group("Player") and start == false:
-		active_player = area.get_parent()
+		active_player = _find_active_player()
+		if active_player == null:
+			active_player = area.get_parent()
 		start = true
 		_start()
 
@@ -516,7 +568,7 @@ func start_fall_phase1() -> void:
 	state = BossState.FALLING
 	anim.stop()
 	$AudioStreamPlayer.stop()
-	velocity.y = -600
+	#velocity.y = -600
 	#velocity.x = randf_range(-200, 200)
 
 # --------------------------------------------------
@@ -580,7 +632,6 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 		if area.is_in_group("Player"):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
-
 
 func _on_animated_sprite_2d_music() -> void:
 	$AudioStreamPlayer.play()

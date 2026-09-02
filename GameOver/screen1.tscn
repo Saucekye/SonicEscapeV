@@ -1,0 +1,169 @@
+[gd_scene format=3 uid="uid://dqf4p4l5v6rds"]
+
+[ext_resource type="Script" uid="uid://paxdevkppkfg" path="res://GameOver/screen_1.gd" id="1_7tdk6"]
+[ext_resource type="Texture2D" uid="uid://lp7hbsc823xb" path="res://GameOver/GameOver.png" id="2_7tdk6"]
+[ext_resource type="Shader" uid="uid://rjapj8dx7ufb" path="res://Shaders/vhseffect.gdshader" id="3_1mujf"]
+[ext_resource type="AudioStream" uid="uid://cuatfo3axnloo" path="res://GameOver/0831.MP3" id="4_2ew37"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kofwu"]
+shader = ExtResource("3_1mujf")
+shader_parameter/scanlines_1 = 500.0
+shader_parameter/scanlines_2 = 25.0
+shader_parameter/scan_reduction = 0.1
+shader_parameter/vinnette_alpla = 1.0
+shader_parameter/vinnette_inner_radius = 0.0
+shader_parameter/vinnette_outer_radius = 1.0
+
+[sub_resource type="Animation" id="Animation_1mujf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label2:theme_override_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2ew37"]
+resource_name = "play"
+length = 13.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.9, 4.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.8666666),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label2:theme_override_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.6, 8.166667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.24, 0, 0, 0), Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nixwt"]
+_data = {
+&"RESET": SubResource("Animation_1mujf"),
+&"play": SubResource("Animation_2ew37")
+}
+
+[node name="Node2D" type="Node2D" unique_id=254051684]
+script = ExtResource("1_7tdk6")
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=765050501]
+z_index = 1
+offset_top = -528.0
+offset_right = 1608.0
+offset_bottom = 240.0
+color = Color(0, 0, 0, 1)
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1385026404]
+
+[node name="GameOver" type="Sprite2D" parent="Node2D" unique_id=492915725]
+position = Vector2(832, 416)
+texture = ExtResource("2_7tdk6")
+
+[node name="ColorRect" type="ColorRect" parent="Node2D" unique_id=799178770]
+material = SubResource("ShaderMaterial_kofwu")
+offset_left = -16.0
+offset_top = 96.0
+offset_right = 1592.0
+offset_bottom = 864.0
+
+[node name="ColorRect3" type="ColorRect" parent="Node2D" unique_id=760233341]
+material = SubResource("ShaderMaterial_kofwu")
+offset_left = -16.0
+offset_top = 96.0
+offset_right = 1592.0
+offset_bottom = 864.0
+
+[node name="ColorRect4" type="ColorRect" parent="Node2D" unique_id=912955510]
+material = SubResource("ShaderMaterial_kofwu")
+offset_left = -16.0
+offset_top = 96.0
+offset_right = 1592.0
+offset_bottom = 864.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D" unique_id=980199136]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_nixwt")
+autoplay = &"play"
+
+[node name="Label" type="Label" parent="." unique_id=2118927937]
+z_index = 3
+offset_left = 536.0
+offset_top = 32.0
+offset_right = 1080.0
+offset_bottom = 216.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 47
+text = "IMPORTANT NOTICE"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="." unique_id=1740976599]
+z_index = 3
+offset_left = 320.0
+offset_top = 528.0
+offset_right = 1290.0
+offset_bottom = 712.0
+theme_override_colors/font_color = Color(0.24231142, 2.1959656e-07, 5.4147094e-08, 1)
+theme_override_font_sizes/font_size = 47
+text = "Your actions have consequnces"
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=33577773]
+stream = ExtResource("4_2ew37")
+
+[connection signal="animation_finished" from="Node2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

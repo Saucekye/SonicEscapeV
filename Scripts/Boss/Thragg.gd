@@ -6,7 +6,7 @@ var state = BossState.INTRO
 var max_health = 30
 var health = 30
 
-var active_player: Node2D
+var active_player: CharacterBody2D
 var start = false
 
 var next_attack = 0
@@ -39,6 +39,35 @@ func _ready():
 	sprite_mat = sprite.material as ShaderMaterial
 
 # --------------------------------------------------
+# FIND ACTIVE PLAYER
+# --------------------------------------------------
+
+func _find_active_player() -> CharacterBody2D:
+	# Use the group system - much more reliable!
+	var players = get_tree().get_nodes_in_group("active_player")
+	if players.size() > 0 and is_instance_valid(players[0]):
+		return players[0]
+
+	# Fallback: Check all CharacterBody2D nodes for is_player property
+	var all_characters = get_tree().get_nodes_in_group("all_characters")
+	for body in all_characters:
+		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
+			return body
+
+	return null
+
+# --------------------------------------------------
+# RESYNC ACTIVE PLAYER
+# --------------------------------------------------
+# Call this inside any attack loop so a mid-attack character switch is
+# picked up immediately instead of only at the top of the function.
+
+func _resync_active_player() -> void:
+	var current_player = _find_active_player()
+	if current_player != null:
+		active_player = current_player
+
+# --------------------------------------------------
 # PROCESS
 # --------------------------------------------------
 
@@ -62,6 +91,11 @@ func _process(delta):
 
 	if state == BossState.INTRO:
 		return
+
+	# Always resync with whoever is currently in the "active_player" group.
+	# (A character switch keeps the old node valid, so an is_instance_valid
+	# check alone won't catch the swap — we need to re-query every frame.)
+	_resync_active_player()
 
 	if active_player == null or not is_instance_valid(active_player):
 		return
@@ -227,6 +261,8 @@ func start_punch_attack() -> void:
 
 	while t < max_time:
 
+		_resync_active_player()
+
 		if active_player == null or not is_instance_valid(active_player):
 			break
 
@@ -249,6 +285,8 @@ func start_punch_attack() -> void:
 	anim.play("attack1end")
 
 	while anim.is_playing():
+
+		_resync_active_player()
 
 		if active_player != null and is_instance_valid(active_player):
 			var pull_dir = (global_position - active_player.global_position).normalized()
@@ -283,6 +321,11 @@ func start_follow_attack() -> void:
 
 	while t < rush_time:
 
+		_resync_active_player()
+
+		if active_player == null or not is_instance_valid(active_player):
+			break
+
 		global_position = global_position.move_toward(
 			active_player.global_position,
 			1200 * get_process_delta_time()
@@ -295,8 +338,12 @@ func start_follow_attack() -> void:
 
 	while anim.is_playing():
 
+		_resync_active_player()
+
 		global_position = locked_pos
-		face_player()
+
+		if active_player != null and is_instance_valid(active_player):
+			face_player()
 
 		await get_tree().process_frame
 
@@ -342,7 +389,9 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 func _on_area_2d_area_entered(area: Area2D):
 
 	if area.is_in_group("Player") and start == false:
-		active_player = area.get_parent()
+		active_player = _find_active_player()
+		if active_player == null:
+			active_player = area.get_parent()
 		start = true
 		start_intro()
 

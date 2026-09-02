@@ -18,6 +18,7 @@ func _on_node_2d_playcutscene() -> void:
 	#Sonic: Glad we’re on the same page, I'm sure Egghead can take care of himself.
 	await get_tree().create_timer(5).timeout
 	emit_signal("next")
+	play("6")
 	#Hatsune Miku: ...
 	await get_tree().create_timer(5).timeout
 	emit_signal("next")

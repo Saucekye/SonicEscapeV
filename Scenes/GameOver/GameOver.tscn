@@ -289,7 +289,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 75
 text = "
-TOO LATE FOR DAWN"
+TOO DEEP FOR DAWN"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 

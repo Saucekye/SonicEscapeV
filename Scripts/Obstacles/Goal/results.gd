@@ -26,3 +26,4 @@ func _on_game_over():
 	
 func _on_complete():
 	fade_animation_player.play("complete")
+	Test.complete = true

@@ -81,7 +81,7 @@ func _ready():
 # Boss Rotation
 # ─────────────────────────────
 func _spawn_next_boss_level():
-	"""if Test.level == 20:
+	if Test.level == 20:
 		var chunk := chunk_boss_final.instantiate()
 		add_child(chunk)
 		var start = chunk.get_node("Start").global_position
@@ -89,7 +89,7 @@ func _spawn_next_boss_level():
 		last_end_position = chunk.get_node("End").global_position
 		chunks.append(chunk)
 		end_spawned = true
-		return"""
+		return
 	
 	if Test.level == 24:
 		var chunk := chunk_rest.instantiate()

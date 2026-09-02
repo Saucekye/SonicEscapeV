@@ -20,8 +20,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK_FOLLLOW, ATTACK_BARRAGE, DEAD}
 
 var state = BossState.INTRO
-var max_health = 50
-var health = 50
+var max_health = 40
+var health = 40
 
 var active_player: Node2D
 var start = false
