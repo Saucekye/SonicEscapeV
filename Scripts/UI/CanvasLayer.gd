@@ -27,7 +27,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		#Test.quit = true
 		get_tree().change_scene_to_file("res://Scenes/GameOver/GameOver.tscn")
 	elif anim_name == "complete":
-		get_tree().change_scene_to_file("res://Scenes/Results/Results.tscn")
+		get_tree().change_scene_to_file("res://FinalCutscene/Ending.tscn")
 		
 	
 func _on_button_2_pressed() -> void:

@@ -1,19 +1,20 @@
 [gd_scene format=3 uid="uid://dslyialw5dmdn"]
 
-[ext_resource type="Script" uid="uid://dq51sobhjv7h3" path="res://GameOverScreen.gd" id="1_chgic"]
-[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="2_bedtm"]
-[ext_resource type="Resource" uid="uid://dnyan6fde0a0q" path="res://FinalCutscene/Final1.dialogue" id="3_f4m3h"]
+[ext_resource type="Script" uid="uid://dq51sobhjv7h3" path="res://GameOverScreen.gd" id="1_4a2td"]
+[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="2_bo8jh"]
+[ext_resource type="Resource" uid="uid://dnyan6fde0a0q" path="res://FinalCutscene/Final1.dialogue" id="3_mqptg"]
+[ext_resource type="AudioStream" uid="uid://4ccs8om1jknl" path="res://FinalCutscene/song1.MP3" id="4_bo8jh"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
 
 [node name="Node2D" type="Node2D" unique_id=254051684]
-script = ExtResource("1_chgic")
+script = ExtResource("1_4a2td")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1247842396]
 sprite_frames = SubResource("SpriteFrames_kofwu")
 
-[node name="ExampleBalloon" parent="." unique_id=1336823390 instance=ExtResource("2_bedtm")]
-dialogue_resource = ExtResource("3_f4m3h")
+[node name="ExampleBalloon" parent="." unique_id=1336823390 instance=ExtResource("2_bo8jh")]
+dialogue_resource = ExtResource("3_mqptg")
 next_action = &""
 skip_action = &""
 skippable_dialogue = false
@@ -27,6 +28,9 @@ visible = false
 
 [node name="AnimationPlayer" parent="ExampleBalloon/Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/Control" index="0"]
 autoplay = &"progress"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=201185711]
+stream = ExtResource("4_bo8jh")
 
 [connection signal="next" from="." to="ExampleBalloon" method="_on_node_2d_next"]
 

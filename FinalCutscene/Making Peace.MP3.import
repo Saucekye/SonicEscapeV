@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b1q1mqjfyoqk5"
+path="res://.godot/imported/Making Peace.MP3-84e05877681116316dbdccd7e2a63343.mp3str"
+
+[deps]
+
+source_file="res://FinalCutscene/Making Peace.MP3"
+dest_files=["res://.godot/imported/Making Peace.MP3-84e05877681116316dbdccd7e2a63343.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

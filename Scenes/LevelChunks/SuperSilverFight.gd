@@ -140,7 +140,7 @@ func _process(delta):
 			Engine.time_scale = 1.0
 			
 			if sprite.global_position.y > get_viewport_rect().size.y + 200:
-				await get_tree().create_timer(3).timeout
+				await get_tree().create_timer(2).timeout
 				GlobalSignals.emit_signal("complete")
 			return
 
