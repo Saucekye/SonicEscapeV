@@ -5,6 +5,7 @@
 [ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="3_rpvs4"]
 [ext_resource type="AudioStream" uid="uid://iofvkuliisf7" path="res://misc/entersfx.MP3" id="4_84han"]
 [ext_resource type="Texture2D" uid="uid://cryqy7nh658mt" path="res://Sprites/Logo/Sonic_Escape_5.png" id="5_6ejck"]
+[ext_resource type="AudioStream" uid="uid://cb7n82elbduoc" path="res://Music/Titlescreen/complete.MP3" id="5_w5j2g"]
 
 [sub_resource type="Animation" id="Animation_4cpdn"]
 length = 0.001
@@ -277,11 +278,13 @@ theme_override_font_sizes/font_size = 20
 text = "CREDITS
 Story / Pixel Art
 Saucekye
+Kyraneith
 
 Programming
 Ag2350
 April
 Delta
+Kyraneith
 
 Portrait Art
 StupidFred0
@@ -291,9 +294,10 @@ Crunchi
 Rainy
 TrizzieFrizzie
 Kornart
-Blackholed
 PK_draws40
 FUNNYMNKY
+Kyraneith
+Blackholed
 Saredd99
 Zeiame
 
@@ -301,6 +305,7 @@ Music
 TNH Nebula
 Kyraneith
 ToxicxEternity
+SilentDProductions
 
 Logo
 Mikael Cage
@@ -313,11 +318,11 @@ Techokami
 EderMuniZz
 Nezuyaki
 Octy'
-SilentDProductions
 killeak
 GamesCage
 Aario
 Bearanie
+Drkyrde
 My Mom & Dad
 (yes like SauceK's actual parents)"
 horizontal_alignment = 1
@@ -346,6 +351,7 @@ libraries/ = SubResource("AnimationLibrary_myao4")
 stream = ExtResource("4_84han")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1182609785]
+stream = ExtResource("5_w5j2g")
 
 [node name="SonicEscape5" type="Sprite2D" parent="." unique_id=26017847]
 position = Vector2(496, 227)

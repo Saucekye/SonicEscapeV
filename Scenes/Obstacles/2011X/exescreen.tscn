@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://frxpswhk8odc"]
+[gd_scene format=3 uid="uid://frxpswhk8odc"]
 
 [ext_resource type="Texture2D" uid="uid://cg2mm7uqmxn1u" path="res://Sprites/Obstacles/2011X/exescreen.webp" id="1_h8n3y"]
 [ext_resource type="Script" uid="uid://dajti7diylnnk" path="res://Scripts/Obstacles/2011X/exescreen.gd" id="1_s7u1t"]
@@ -44,10 +44,10 @@ _data = {
 &"start": SubResource("Animation_h8n3y")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" unique_id=1667140532]
 script = ExtResource("1_s7u1t")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1382700772]
 modulate = Color(0, 0, 0, 1)
 anchors_preset = -1
 offset_left = -391.99988
@@ -57,18 +57,16 @@ offset_bottom = -128.0
 scale = Vector2(58.013844, 28.177979)
 texture = SubResource("CanvasTexture_h8n3y")
 
-[node name="Exescreen" type="Sprite2D" parent="."]
+[node name="Exescreen" type="Sprite2D" parent="." unique_id=1326809385]
 position = Vector2(776, 384)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_h8n3y")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Exescreen"]
-libraries = {
-&"": SubResource("AnimationLibrary_s7u1t")
-}
-autoplay = "start"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Exescreen" unique_id=1056708900]
+libraries/ = SubResource("AnimationLibrary_s7u1t")
+autoplay = &"start"
 speed_scale = 2.5
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="." unique_id=1514088893]
 stream = ExtResource("3_sonl2")
 bus = &"SFX"

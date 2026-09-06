@@ -1602,14 +1602,6 @@ region = Rect2(0, 0, 976, 819)
 atlas = ExtResource("17_ikhev")
 region = Rect2(976, 0, 976, 819)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_p1yrn"]
-atlas = ExtResource("17_ikhev")
-region = Rect2(1952, 0, 976, 819)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o55oj"]
-atlas = ExtResource("17_ikhev")
-region = Rect2(2928, 0, 976, 819)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_j2gib"]
 atlas = ExtResource("18_yc7j7")
 region = Rect2(0, 0, 870, 892)
@@ -1642,14 +1634,6 @@ region = Rect2(0, 0, 976, 819)
 atlas = ExtResource("20_ip035")
 region = Rect2(976, 0, 976, 819)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d1x77"]
-atlas = ExtResource("20_ip035")
-region = Rect2(1952, 0, 976, 819)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aelub"]
-atlas = ExtResource("20_ip035")
-region = Rect2(2928, 0, 976, 819)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
 animations = [{
 "frames": [{
@@ -1678,12 +1662,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_c3epx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p1yrn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o55oj")
 }],
 "loop": 1,
 "name": &"2",
@@ -1728,12 +1706,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qc02l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d1x77")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aelub")
 }],
 "loop": 1,
 "name": &"6",
@@ -2293,6 +2265,9 @@ color = Color(1, 1, 1, 0)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Node2D/Sprite2D" unique_id=1599625422]
 
+[node name="AttackSpawnMarker" type="Marker2D" parent="Node2D/Sprite2D" unique_id=1239557654]
+position = Vector2(-6.400093, 17.599998)
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D" unique_id=1851548464]
 stream = ExtResource("14_6fo3o")
 volume_db = -10.0
@@ -2352,8 +2327,6 @@ position = Vector2(1248, 376)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_kofwu")
 animation = &"6"
-frame = 2
-frame_progress = 0.9099013
 script = ExtResource("20_p6ew8")
 
 [node name="ExampleBalloon" parent="." unique_id=1035361142 instance=ExtResource("21_yc7j7")]

@@ -6,6 +6,14 @@ signal dialogue2
 signal lunara
 signal over
 
+@export var base_projectile_lifetime : float = 6.0
+@export var max_projectile_lifetime : float = 10.0
+
+@onready var attack_spawn_marker: Marker2D = $Sprite2D/AttackSpawnMarker
+
+@export var positions : Array[Marker2D]
+@export var attack1_projectile : PackedScene = preload("uid://pkgu0rai06d7")
+
 var phase2_voice_played = false
 var state = BossState.INTRO
 var dash_direction = 0
@@ -352,7 +360,8 @@ func start_punch_attack() -> void:
 	# attack1end (KEEP SUCKING UNTIL ANIMATION ENDS)
 	# --------------------------------------------------
 	anim.play("Attack1end")
-
+	attack_behavior()
+	
 	while anim.is_playing():
 
 		_resync_active_player()
@@ -641,3 +650,16 @@ func _on_animated_sprite_2d_music_2() -> void:
 	$AudioStreamPlayer.stream = load("res://Music/Boss/Super Silver/FINAL(2).MP3")
 	$AudioStreamPlayer.volume_db = -5
 	$AudioStreamPlayer.play()
+	
+func attack_behavior() -> void:
+	var projecitle = attack1_projectile.instantiate()
+	var health_pct : float = clamp(float(health) / float(max_health), 0.0, 1.0)
+	var missing_pct : float = 1.0 - health_pct
+	var lifetime : float = lerp(base_projectile_lifetime, max_projectile_lifetime, missing_pct)
+
+	if "lifetime" in projecitle:
+		projecitle.lifetime = lifetime
+	self.get_parent().add_child(projecitle)
+	projecitle.global_position = attack_spawn_marker.global_position
+	if sprite.flip_h:
+		projecitle.global_position.x = attack_spawn_marker.global_position.x - attack_spawn_marker.position.x

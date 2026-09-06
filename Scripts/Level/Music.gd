@@ -25,12 +25,10 @@ var scene_music := {
 # Node2D playlist
 # ─────────────────────────────
 var node2d_music_pool := [
-	preload("res://Music/Level/Another Life.MP3"),
-	preload("res://Music/Level/Luxury.MP3"),
-	preload("res://Music/Level/High on Life.mp3"),
-	
-	preload("res://Music/Level/Heaven Knows.mp3"),
-	preload("res://Music/Level/Don't Get In My Way.MP3"),
+	preload("res://Music/Level/PinkPantheress ft. Rema - Another Life (Artisan Remix).MP3"),
+	preload("res://Music/Level/Azealia Banks - Luxury (Artisan Remix).MP3"),
+	preload("res://Music/Level/Heaven Knows - EUPHONIC RUSH (BONESAW).mp3"),
+	preload("res://Music/Level/Don't Get In My Way - EUPHONIC RUSH (BONESAW).MP3"),
 	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
 	preload("res://Music/Level/The Vanished People - DANCE ALONE (feat. Hashimero).mp3"),
 	preload("res://Music/Level/The Vanished People - IT'S GOING DOWN (feat. WaMi).mp3"),
@@ -40,12 +38,13 @@ var node2d_music_pool := [
 	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
 	preload("res://Music/Level/Sonic 2  Chemical Plant Zone (R&BSoul Remix)  Rhythm & Bits.mp3"),
 	preload("res://Music/Level/Sonic Mania Mirage Saloon Zone Rhythm & Bits.MP3"),
-	preload("res://Music/Level/The Palace That Was Found.mp3")
+	preload("res://Music/Level/Sonic Escape - Been Here Before.MP3")
 ]
 
 var node2d_track_index := 0
 var using_node2d_playlist := false
 var was_music_playing := false   # ← detects flip to false
+var last_checked_level := -1     # ← detects Test.level changing mid-scene
 
 func _ready() -> void:
 	bus = "Music"
@@ -75,6 +74,15 @@ func _process(delta: float) -> void:
 
 		was_music_playing = Test.musicplaying
 
+		# ─────────────────────────────
+		# Catch Test.level hitting 25 mid-scene (no scene-name change,
+		# no track-end needed) and force the last track right away.
+		# ─────────────────────────────
+		if Test.level != last_checked_level:
+			last_checked_level = Test.level
+			if Test.level == 25 and Test.complete:
+				_force_last_track()
+
 	# ─────────────────────────────
 	# Music play logic (yours)
 	# ─────────────────────────────
@@ -96,6 +104,15 @@ func _process(delta: float) -> void:
 	if volume_db != volume:
 		volume_db = volume
 
+func _get_playable_indices() -> Array:
+	var indices : Array = []
+	var last_index := node2d_music_pool.size() - 1
+	for i in range(node2d_music_pool.size()):
+		if i == last_index and not Test.complete:
+			continue
+		indices.append(i)
+	return indices
+
 func update_scene_music() -> void:
 	if playing:
 		stop()
@@ -109,11 +126,19 @@ func update_scene_music() -> void:
 		if node2d_music_pool.is_empty():
 			return
 
-		# 🎲 Random starting track
-		node2d_track_index = randi() % node2d_music_pool.size()
+		# 🎲 Random starting track (last track reserved for Test.complete == true)
+		if Test.level == 25 and Test.complete:
+			node2d_track_index = node2d_music_pool.size() - 1
+		else:
+			var playable := _get_playable_indices()
+			if playable.is_empty():
+				node2d_track_index = 0
+			else:
+				node2d_track_index = playable[randi() % playable.size()]
+
 		stream = node2d_music_pool[node2d_track_index]
 		using_node2d_playlist = true
-
+		
 		print("Node2D playlist start:",
 			node2d_track_index,
 			stream.resource_path)
@@ -131,14 +156,37 @@ func _advance_node2d_playlist() -> void:
 	if node2d_music_pool.is_empty():
 		return
 
-	node2d_track_index += 1
-	if node2d_track_index >= node2d_music_pool.size():
-		node2d_track_index = 0
+	if Test.level == 25 and Test.complete:
+		node2d_track_index = node2d_music_pool.size() - 1
+	else:
+		node2d_track_index += 1
+		if node2d_track_index >= node2d_music_pool.size():
+			node2d_track_index = 0
+		# Skip the reserved last track unless Test.complete is true
+		if node2d_track_index == node2d_music_pool.size() - 1 and not Test.complete:
+			node2d_track_index = 0
 
 	stream = node2d_music_pool[node2d_track_index]
 	Test.musicplaying = false
-
+	
 	print("Advance Node2D playlist:",
+		node2d_track_index,
+		stream.resource_path)
+
+func _force_last_track() -> void:
+	if node2d_music_pool.is_empty():
+		return
+	if not Test.complete:
+		return
+
+	node2d_track_index = node2d_music_pool.size() - 1
+	stream = node2d_music_pool[node2d_track_index]
+
+	if playing:
+		stop()
+	Test.musicplaying = false
+
+	print("Forced last Node2D track (level 25):",
 		node2d_track_index,
 		stream.resource_path)
 

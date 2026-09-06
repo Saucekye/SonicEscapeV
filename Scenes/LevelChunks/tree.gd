@@ -18,7 +18,7 @@ func _ready():
 	$CanvasLayer/Label.modulate.a = 0
 		
 	randomize()
-	if randf() <= 0.25 and Test.level != 0:
+	if randf() <= 0.25 and (Test.level != 0 and Test.level != 24):
 		use_alt = true
 		nights = false
 		$Node2D.visible = false
@@ -26,7 +26,7 @@ func _ready():
 		$Sprite2D.visible = false
 		$AnimatedSprite2D.visible = true
 		$NiGHTS.visible = false
-	elif randf() > 0.25 and randf() < 0.5 and Test.level != 0:
+	elif randf() > 0.25 and randf() < 0.5 and (Test.level != 0 and Test.level != 24):
 		nights = true
 		$Node2D.visible = true
 		$Node2D4.visible = true
@@ -285,6 +285,8 @@ Now go make more memories!"""
 func _on_timer_timeout() -> void:
 	if Test.level > 0:
 		if musicplay == false and use_alt == false:
+			if Test.level == 24:
+				$AudioStreamPlayer2D.stream = load("res://Scenes/Music/0903.MP3")
 			$AudioStreamPlayer2D.volume_db = -40  # start very quiet
 			$AudioStreamPlayer2D.play()
 			

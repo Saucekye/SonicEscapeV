@@ -37,7 +37,7 @@ func _ready():
 	for i in range(73):
 		await wait_for_input()
 		emit_signal("next")
-		if i == 36:
+		if i == 35:
 			$AudioStreamPlayer.stream = load("res://FinalCutscene/Making Peace.MP3")
 			$AudioStreamPlayer.volume_db = -80.0
 			$AudioStreamPlayer.play()

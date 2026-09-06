@@ -15,8 +15,9 @@ func _ready() -> void:
 	fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(fade_rect)  # Add on top
 	
-	await get_tree().create_timer(8.0).timeout
-	$AudioStreamPlayer2D.play()
+	if Test.complete == true:
+		await get_tree().create_timer(2.25).timeout
+		$AudioStreamPlayer2D.play()
 
 var has_started := false
 
