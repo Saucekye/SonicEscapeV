@@ -2,6 +2,7 @@ extends Node2D
 
 @export var next_scene_path: String = "res://Scenes/Intro/titlescreen.tscn"  # Replace with your scene path
 var fade_rect: ColorRect
+var ok = false
 
 func _ready() -> void:
 	Pause.current_scene = ""
@@ -15,13 +16,15 @@ func _ready() -> void:
 	add_child(fade_rect)  # Add on top
 	
 	await get_tree().create_timer(3).timeout
+	ok = true
 	$AnimationPlayer/Node2D/AudioStreamPlayer.play()
 
 func _input(event):
-	if (event is InputEventMouseButton and event.pressed) \
-		or (event is InputEventKey and event.pressed and event.keycode == KEY_ENTER) \
-		or (event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A):
-			fade_and_change_scene()
+	if ok == true:
+		if (event is InputEventMouseButton and event.pressed) \
+			or (event is InputEventKey and event.pressed and event.keycode == KEY_ENTER) \
+			or (event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A):
+				fade_and_change_scene()
 
 
 func fade_and_change_scene():

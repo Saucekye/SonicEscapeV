@@ -594,11 +594,11 @@ func start_phase2() -> void:
 		emit_signal("dialogue2")
 	
 	phase = 2
-	health = 75
+	health = 80
 
 	
 	await get_tree().create_timer(9).timeout
-	update_health_bar.emit(health, 75)
+	update_health_bar.emit(health, 80)
 	var display = get_parent().get_node("BossHPDisplay")
 	display._set_new_boss(self, "LunaraNoctis")
 	($TextureRect2.material as ShaderMaterial).set_shader_parameter("base_rain_speed", 1.0) 
@@ -648,7 +648,7 @@ func _on_animated_sprite_2d_music() -> void:
 
 func _on_animated_sprite_2d_music_2() -> void:
 	$AudioStreamPlayer.stream = load("res://Music/Boss/Super Silver/FINAL(2).MP3")
-	$AudioStreamPlayer.volume_db = -5
+	$AudioStreamPlayer.volume_db = -10
 	$AudioStreamPlayer.play()
 	
 func attack_behavior() -> void:
