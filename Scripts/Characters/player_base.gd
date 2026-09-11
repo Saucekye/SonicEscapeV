@@ -249,8 +249,8 @@ func _process(_delta):
 	if Test.mobile == true:
 		handle_stick_input()	
 	if debug_prevent_death and Input.is_action_just_pressed("debug"):
-		Test.rings = 100
-		Test.level = 3
+		Test.rings = 999
+		Test.level = 19
 	
 func handle_stick_input():
 	# Translate the Y axis of the virtual stick into ui_up / ui_down action events
@@ -1510,6 +1510,7 @@ func player_death():
 	# Reset level back to 0
 	if Test.level != 20:
 		Test.level = 0
+		Test.elapsed_sesion_time = 0
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	

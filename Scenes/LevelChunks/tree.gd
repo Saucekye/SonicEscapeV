@@ -139,7 +139,8 @@ Stomp: (Air) Down + Air Dash
 Cyclone: (Air) Air Dash+ Forward
 Flip: (Air) Air Dash + Up
 
-We Will Find Him..."""
+We Will Find Him...
+Floor 20?"""
 			4:
 				$CanvasLayer/Label.text = """I lay here
 blind,
@@ -271,7 +272,7 @@ found herself."""
 			24:
 				$CanvasLayer/Label.text = """Life isn't about what you have,
 how talented you are,
-or even who you are.
+or even what you are.
 				
 It's about the relationships you make,
 The memories you have,

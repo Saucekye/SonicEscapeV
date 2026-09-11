@@ -222,6 +222,7 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 #endregion
 
 func _on_node_2d_dialogue() -> void:
+	balloon.visible = true
 	start()
 
 func _on_node_2d_next() -> void:
@@ -230,3 +231,7 @@ func _on_node_2d_next() -> void:
 
 func _on_animated_sprite_2d_next() -> void:
 	next(dialogue_line.next_id)
+
+
+func _on_node_2d_skip() -> void:
+	balloon.visible = false

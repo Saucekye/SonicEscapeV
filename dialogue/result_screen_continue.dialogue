@@ -1,0 +1,11 @@
+~ continue_screen
+set viewing_dialogue = true
+Miku: Wow! Congrats on completing your [color=red]ESCAPE![/color]
+Miku: On behalf of everyone who has worked on this project, thank you so much for playing, and great job on making it this far!
+Miku: Now that we're done here, you can choose to reset the floor count back to 0, or continue playing from floor 24. If you continue, your playthrough will continue endlessly and you'll be able to fight all the other bosses as much as you want.
+- Continue
+	set Test.level = 24
+- Exit
+	set Test.level = 0
+do fade_and_change_scene()
+=> END

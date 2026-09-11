@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cgo5uucvbjxho"
+path="res://.godot/imported/result_screen_continue.dialogue-203af7ac94cf122b86b7ded957ef4969.tres"
+
+[deps]
+
+source_file="res://dialogue/result_screen_continue.dialogue"
+dest_files=["res://.godot/imported/result_screen_continue.dialogue-203af7ac94cf122b86b7ded957ef4969.tres"]
+
+[params]
+
+defaults=true

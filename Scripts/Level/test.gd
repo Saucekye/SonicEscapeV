@@ -2,6 +2,7 @@ extends Node2D
 
 var bestTimeFloat := INF
 var bestTimeText := ""
+var elapsed_sesion_time : float = 0
 var music = false
 var musicplaying = false
 var mobile = false
@@ -208,3 +209,6 @@ func _process(delta: float) -> void:
 	if quit == true:
 		quit = false
 		fade_and_change_scene()
+		
+	if Pause.current_scene == "Node2D" and self.elapsed_sesion_time + delta != INF:
+		self.elapsed_sesion_time += delta
