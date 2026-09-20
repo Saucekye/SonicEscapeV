@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="9_utefi"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="10_5s7ur"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="10_vusow"]
+[ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="14_uhyks"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -3068,6 +3069,8 @@ y_sped = 400
 [node name="Trick" parent="." unique_id=1691762210 instance=ExtResource("5_s31ke")]
 
 [node name="WallClimb" parent="." unique_id=998073176 instance=ExtResource("6_egr3s")]
+
+[node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("14_uhyks")]
 
 [node name="Flymeter" parent="." unique_id=125538704 instance=ExtResource("8_xnyr7")]
 

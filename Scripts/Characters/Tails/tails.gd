@@ -14,6 +14,6 @@ func handle_air_actions(is_grounded) -> void:
 func handle_ground_action() -> void:
 	# Only triggers when not already swiping
 	swipe_attack_component.action()
-
+	
 func handle_wall_mechanics() -> void:
 	pass

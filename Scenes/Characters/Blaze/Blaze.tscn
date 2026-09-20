@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://3s7x2i3ym6lt" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V03_BZ.aif.wav" id="3_64slw"]
 [ext_resource type="Texture2D" uid="uid://w744lsvt15wv" path="res://Scenes/Characters/Blaze/blaze.png" id="3_fioc4"]
 [ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="3_ss304"]
-[ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_1dccu"]
+[ext_resource type="Texture2D" uid="uid://2wk484nscrmx" path="res://trailer/goatku.png" id="4_1dccu"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_305ry"]
 [ext_resource type="AudioStream" uid="uid://c515744idd8me" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V05_BZ.aif.wav" id="4_g3a3j"]
 [ext_resource type="AudioStream" uid="uid://b2kut6bcyl4o1" path="res://Sounds/CharacterVoiceLines/Blaze/ALL01_V07_BZ.aif.wav" id="5_4fuia"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_lwbsf"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="9_ah0rx"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="10_3p5yj"]
+[ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="14_4fuia"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2301,6 +2302,8 @@ trail_ball_position = Vector2(0, 10)
 [node name="Trick" parent="." unique_id=1730289477 instance=ExtResource("5_ed1cx")]
 
 [node name="WallJump" parent="." unique_id=768329650 instance=ExtResource("7_ed1cx")]
+
+[node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("14_4fuia")]
 
 [node name="Flymeter" parent="." unique_id=369890603 instance=ExtResource("7_305ry")]
 

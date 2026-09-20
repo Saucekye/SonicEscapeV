@@ -8,6 +8,7 @@ extends Player
 @onready var wall_jump_component: Node = $WallJump
 @onready var drop_dash_component: Node = $DropDash
 @onready var peelout_component: Node = $Peelout
+@onready var ground_boost_component: Components_Action = $GroundBoost
 
 func handle_air_actions(is_grounded) -> void:
 	flick_component.action()
@@ -19,6 +20,7 @@ func handle_air_actions(is_grounded) -> void:
 func handle_ground_action() -> void:
 	drop_dash_component.action() 
 	peelout_component.action()
+	ground_boost_component.action()
 
 func handle_wall_mechanics() -> void:
 	wall_jump_component.action()

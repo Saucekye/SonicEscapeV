@@ -7,12 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://cgwf2325rtxoc" path="res://Scenes/Characters/Components/Air Actions/airspin.tscn" id="3_hopts"]
 [ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="3_lhsoh"]
 [ext_resource type="Texture2D" uid="uid://bm3a5bk4unx1p" path="res://Sprites/Characters/MetalSonic/metalsonic.png" id="3_m1qu7"]
-[ext_resource type="Texture2D" uid="uid://bg7vdvcah63y5" path="res://trailer/goatku.png" id="4_cht55"]
+[ext_resource type="Texture2D" uid="uid://2wk484nscrmx" path="res://trailer/goatku.png" id="4_cht55"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_lhsoh"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_hvbcv"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_t7fmt"]
 [ext_resource type="PackedScene" uid="uid://eu3w12wsdd3j" path="res://Scenes/Characters/Components/Air Actions/airspinup.tscn" id="6_lhsoh"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_2tq67"]
+[ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="9_hvbcv"]
 [ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="9_x4wmt"]
 [ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="10_li3im"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="11_pos35"]
@@ -2248,6 +2249,8 @@ x_speed = 1000
 [node name="Stomp" parent="." unique_id=764063026 instance=ExtResource("4_lhsoh")]
 
 [node name="Trick" parent="." unique_id=209616621 instance=ExtResource("5_hvbcv")]
+
+[node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("9_hvbcv")]
 
 [node name="Flymeter" type="TextureProgressBar" parent="." unique_id=541754800]
 offset_left = -0.393367

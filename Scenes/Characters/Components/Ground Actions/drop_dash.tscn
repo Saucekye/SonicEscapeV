@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbsocjeageuyq"]
+[gd_scene format=3 uid="uid://dbsocjeageuyq"]
 
 [ext_resource type="Script" uid="uid://c7yidho0kcv1p" path="res://Scripts/Characters/Components/Ground Actions/drop_dash.gd" id="1_8dmfv"]
 
-[node name="DropDash" type="Node"]
+[node name="DropDash" type="Node" unique_id=133850483]
 script = ExtResource("1_8dmfv")

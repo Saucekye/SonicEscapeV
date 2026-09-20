@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://db1uis5pei1bq" path="res://Scenes/Characters/Components/Air Actions/airup.tscn" id="11_xqug3"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="12_levbm"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="13_k0gmh"]
+[ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="14_n0mdj"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="16_uvhn0"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
@@ -2306,6 +2307,8 @@ trail_dash_max_position = Vector2(0, 8)
 [node name="DropDash" parent="." unique_id=949783579 instance=ExtResource("8_acmx4")]
 
 [node name="Peelout" parent="." unique_id=1919544440 instance=ExtResource("9_x4ndc")]
+
+[node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("14_n0mdj")]
 
 [node name="Flymeter" parent="." unique_id=1469748806 instance=ExtResource("7_uvhn0")]
 
