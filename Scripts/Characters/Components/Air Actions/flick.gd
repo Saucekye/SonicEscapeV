@@ -4,7 +4,7 @@ extends Components_Action
 @export var min_launch_x : float = 1050
 
 func action() -> void:
-	if not (Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and player.can_dash == true and not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding() and not player.is_coyote_time_active()):
+	if not (Input.is_action_just_pressed("ui_accept") and player.can_dash == true and not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding() and not player.is_coyote_time_active()):
 		return
 	
 	# Prevent from doing action while on wall

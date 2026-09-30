@@ -15,6 +15,9 @@
 [ext_resource type="Script" uid="uid://dk4a3sa48hs0h" path="res://Scripts/UI/timer.gd" id="14_o2333"]
 [ext_resource type="Texture2D" uid="uid://c8po8bidqr685" path="res://Scenes/Characters/Sonic/icon2.png" id="15_02dvw"]
 [ext_resource type="Script" uid="uid://d4ifnkas6j7gl" path="res://Scripts/UI/best_time.gd" id="15_ckufi"]
+[ext_resource type="Shader" uid="uid://16p7tu0yxa8w" path="res://Scenes/Level/speedlines.gdshader" id="17_v4th5"]
+[ext_resource type="Script" uid="uid://bmosaxh0mry8h" path="res://Scenes/Level/boost.gd" id="18_7qsj7"]
+[ext_resource type="Texture2D" uid="uid://lbjrp5whywsx" path="res://Sprites/Effects/1k_Dissolve_Noise_Texture.png" id="18_nqk64"]
 [ext_resource type="Script" uid="uid://b6h6xirfugrmt" path="res://Scripts/UI/Ring Count.gd" id="18_x2jr0"]
 
 [sub_resource type="Animation" id="Animation_02dvw"]
@@ -482,6 +485,22 @@ _data = {
 &"RESET": SubResource("Animation_2pvyk")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nqk64"]
+shader = ExtResource("17_v4th5")
+shader_parameter/noise_tex = ExtResource("18_nqk64")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_opacity = 0.3550000168625
+shader_parameter/color_levels = 2.0
+shader_parameter/power = 1.5
+shader_parameter/speed_v = 0.1
+shader_parameter/radial_center = Vector2(0.5, 0.5)
+shader_parameter/radial_zoom = 0.0
+shader_parameter/radial_repeat = 10.0
+shader_parameter/radial_min = 0.102000004845
+shader_parameter/radial_max = 0.6750000320625
+shader_parameter/dist_strength = 0.0
+shader_parameter/dist_power = 0.0
+
 [node name="CanvasLayer" type="CanvasLayer" unique_id=1047015023]
 layer = 10
 script = ExtResource("1_c8npb")
@@ -657,6 +676,14 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Label" unique_id=524884316]
 libraries/ = SubResource("AnimationLibrary_4edof")
+
+[node name="TextureRect" type="ColorRect" parent="." unique_id=1062661503]
+visible = false
+material = SubResource("ShaderMaterial_nqk64")
+offset_left = -168.0
+offset_right = 1799.0
+offset_bottom = 936.0
+script = ExtResource("18_7qsj7")
 
 [connection signal="animation_finished" from="RESTARTFLASH/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Sprite2D3/AnimationPlayer" to="Sprite2D3" method="_on_animation_player_animation_finished"]

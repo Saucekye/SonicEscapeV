@@ -17,6 +17,7 @@ class_name Player extends CharacterBody2D
 @onready var sfx = $Sfx
 @onready var voice = $Voice
 @onready var invincibity: Timer = $invincibity
+@onready var boost = $Boost
 
 @export_group("Node References")
 @export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
@@ -346,7 +347,8 @@ func _physics_process(delta):
 
 	# ── Rotation & Sprite Alignment ────────────────────────────────────
 	$CollisionShape2D.rotation = rot           # Collision shape snaps to floor angle immediately
-	$Sprite2D.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)  # Sprite smoothly follows
+	$Sprite2D.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)
+	boost.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)  # Sprite smoothly follows
 
 	if is_on_floor():
 		# ── Momentum Conversion on Landing ────────────────────────────
@@ -1117,7 +1119,10 @@ func handle_air_logic(delta, is_grounded):
 	if not hang and not grinding and not dashed:
 		hangable = true
 		
-	rot = 0  # Always reset rotation while airborne
+	boost.rotation = lerp_angle(
+	$Sprite2D.rotation,
+	velocity.angle(),
+	0.5)
 	
 	if not hang:
 		control_lock = false  # Restore directional input in the air
@@ -1321,6 +1326,7 @@ func roll():
 func switch_direction(_direction):
 	# Flip sprite to face the correct way
 	sprite.flip_h = direction == -1
+	boost.flip_h = direction == -1
 
 # ─────────────────────────────────────────────
 # Special Moves

@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://corr0p7i6mkwo" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="3_lhsoh"]
 [ext_resource type="Texture2D" uid="uid://bm3a5bk4unx1p" path="res://Sprites/Characters/MetalSonic/metalsonic.png" id="3_m1qu7"]
 [ext_resource type="Texture2D" uid="uid://2wk484nscrmx" path="res://trailer/goatku.png" id="4_cht55"]
+[ext_resource type="PackedScene" uid="uid://yg38kkqyqbea" path="res://Scenes/Characters/Components/Air Actions/homing_attack.tscn" id="4_kct2v"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="4_lhsoh"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="5_hvbcv"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_t7fmt"]
@@ -16,7 +17,10 @@
 [ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="9_hvbcv"]
 [ext_resource type="Texture2D" uid="uid://c1bsxhdnnvbwc" path="res://misc/Meter/border.png" id="9_x4wmt"]
 [ext_resource type="Texture2D" uid="uid://bsb8nqaysswpr" path="res://misc/Meter/progress.png" id="10_li3im"]
+[ext_resource type="PackedScene" uid="uid://cbeunrav4iw1h" path="res://Scenes/Characters/Components/Wall Mechanics/wall_jump.tscn" id="11_ejixm"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="11_pos35"]
+[ext_resource type="Texture2D" uid="uid://0qm713jijmkc" path="res://Sprites/Effects/boosteffect.png" id="18_1onta"]
+[ext_resource type="Texture2D" uid="uid://podp0gtr07oi" path="res://Sprites/Effects/boostshockwave.png" id="19_66byo"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2217,6 +2221,75 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr16m"]
+atlas = ExtResource("18_1onta")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrgak"]
+atlas = ExtResource("18_1onta")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sc7p"]
+atlas = ExtResource("18_1onta")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8s85t"]
+atlas = ExtResource("18_1onta")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfjyc"]
+atlas = ExtResource("19_66byo")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut1lw"]
+atlas = ExtResource("19_66byo")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr0v3"]
+atlas = ExtResource("19_66byo")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v3scs"]
+atlas = ExtResource("19_66byo")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_66byo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pr16m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrgak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sc7p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8s85t")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfjyc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ut1lw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr0v3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v3scs")
+}],
+"loop": 0,
+"name": &"shockwave",
+"speed": 25.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=809778583 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
@@ -2228,6 +2301,8 @@ audio_files = [ExtResource("2_hopts")]
 music_color = Color(0, 0, 0.44313726, 1)
 icon_character = ExtResource("3_lhsoh")
 trail_ball_position = Vector2(0, 5)
+
+[node name="Homing Attack" parent="." unique_id=937111614 instance=ExtResource("4_kct2v")]
 
 [node name="Fly" parent="." unique_id=1081368087 node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")
@@ -2251,6 +2326,8 @@ x_speed = 1000
 [node name="Trick" parent="." unique_id=209616621 instance=ExtResource("5_hvbcv")]
 
 [node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("9_hvbcv")]
+
+[node name="WallJump" parent="." unique_id=964703182 instance=ExtResource("11_ejixm")]
 
 [node name="Flymeter" type="TextureProgressBar" parent="." unique_id=541754800]
 offset_left = -0.393367
@@ -2391,6 +2468,16 @@ texture = ExtResource("9_2tq67")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=1582272907]
 libraries/ = SubResource("AnimationLibrary_l6ohk")
 
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=849588190]
+modulate = Color(1, 1, 1, 0.64705884)
+self_modulate = Color(0.4499998, 0, 1, 1)
+z_index = 1
+position = Vector2(-0.040000007, -7.450581e-09)
+scale = Vector2(0.017250001, 0.018625)
+sprite_frames = SubResource("SpriteFrames_66byo")
+animation = &"shockwave"
+autoplay = "shockwave"
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
@@ -2404,3 +2491,4 @@ libraries/ = SubResource("AnimationLibrary_l6ohk")
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="onscreentimer" to="." method="_on_onscreentimer_timeout"]
+[connection signal="animation_finished" from="Boost" to="." method="_on_boost_animation_finished"]

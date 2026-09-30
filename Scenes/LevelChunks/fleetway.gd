@@ -3,8 +3,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, FLY, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var max_health : int = 20
-var health : int = max_health
+var max_health: int 
+var health: int
 
 var dying = false
 var attacking = false
@@ -51,7 +51,8 @@ var hover_offset = 0.0
 
 func _ready():
 	randomize()
-
+	max_health = min(50, max(8, Test.level * 2))/2
+	health = max_health # Update the boss HP bar immediately update_health_bar.emit(health, max_health)
 # --------------------------------------------------
 # GET CURRENT PLAYER (IMPORTANT)
 # --------------------------------------------------

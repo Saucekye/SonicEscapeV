@@ -17,6 +17,7 @@ dest_files=["res://.godot/imported/metalsonic.png-99cd4030ae27c95950789b0eecc728
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

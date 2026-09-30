@@ -3,8 +3,8 @@ extends Node2D
 enum BossState {INTRO, FLY, ATTACK_PUNCH, ATTACK_FOLLOW, DEAD}
 
 var state = BossState.INTRO
-var max_health = 30
-var health = 30
+var max_health: int 
+var health: int
 
 var active_player: CharacterBody2D
 var start = false
@@ -37,7 +37,8 @@ signal update_health_bar(boss_health : int, boss_max_health : int)
 func _ready():
 	$TextureRect2.visible = false
 	sprite_mat = sprite.material as ShaderMaterial
-
+	max_health = min(50, max(8, Test.level * 2))
+	health = max_health # Update the boss HP bar immediately update_health_bar.emit(health, max_health)
 # --------------------------------------------------
 # FIND ACTIVE PLAYER
 # --------------------------------------------------

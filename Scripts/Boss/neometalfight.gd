@@ -7,8 +7,8 @@ var phase2_voice_played = false
 var state = BossState.IDLE
 var dash_direction = 0
 var attackstaken = 0
-var health = 45
-var max_health = 45
+var max_health: int 
+var health: int
 var start = false
 var begin = false
 
@@ -61,6 +61,8 @@ func _start():
 
 func _ready():
 	self.process_mode = Node.PROCESS_MODE_DISABLED
+	max_health = min(50, max(8, Test.level * 2))
+	health = max_health
 	#get_parent().get_node("CharacterBody2D").visible = false
 	#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED
 
@@ -133,7 +135,7 @@ func _process(delta):
 
 		BossState.IDLE:
 			if timer.is_stopped():
-				if health > 30:
+				if health > (max_health/2):
 					timer.start(randf_range(4,4))
 				else:
 					timer.start(randf_range(2,2))
@@ -255,11 +257,11 @@ func start_attack2():
 func start_attack3():
 	if health > 0:
 		timer.stop()
-		if health > 30:
+		if health > (max_health/2):
 			start_attack1()
 			return
 			
-		if health <= 30 and not phase2_voice_played:
+		if health <= (max_health/2) and not phase2_voice_played:
 			phase2_voice_played = true
 			#get_parent().get_node("CharacterBody2D").visible = true
 			#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_INHERIT
@@ -302,7 +304,7 @@ func _on_timer_timeout():
 		start_attack1()
 		return
 
-	if health <= 30:
+	if health <= (max_health/2):
 		var r = randi() % 3
 		if r == 0:
 			start_attack1()
@@ -356,7 +358,7 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 				start_attack1()
 			else:
 
-				if health <= 30:
+				if health <= (max_health/2):
 					var r = randi() % 3
 					if r == 0:
 						start_attack1()

@@ -230,7 +230,7 @@ It makes you feel vulnerable.
 It makes you incomplete.
 
 All that's left to be pondered is how much longer until everything else falls apart."""
-			20:
+			28:
 				$CanvasLayer/Label.text = """But then came him—
 before I even knew it, my heart had decided.
 It saw something I wasn't ready for,
@@ -279,6 +279,20 @@ The memories you have,
 and the lessons you learn from them.
 				
 Now go make more memories!"""
+
+			32:
+				$CanvasLayer/Label.text = """Go make more memories.
+They made their choice.
+
+Stop trying to mess with other people's lives.
+Because you can't accept what you could of had.
+Reflect, forgive yourself, and move on.
+You hurt them. Stop victimizing yourself. Stop fetishinzing your own sadness.
+
+Stop working on this just so you can escape."""
+
+			36:
+				$CanvasLayer/Label.text = """They're not going to won."""
 			_:
 				$CanvasLayer/Label.text = "Current Floor: " + str(Test.level)
 

@@ -20,8 +20,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK_FOLLLOW, ATTACK_BARRAGE, DEAD}
 
 var state = BossState.INTRO
-var max_health = 40
-var health = 40
+var max_health: int 
+var health: int
 
 var active_player: Node2D
 var start = false
@@ -80,6 +80,8 @@ func _ready():
 	current_pos_idx = 0
 	sprite_base_position = sprite.position
 	default_action_timer_wait = action_timer.wait_time
+	max_health = min(50, max(8, Test.level * 2))
+	health = max_health
 
 func _on_caine_start_goku_black() -> void:
 	music.play()

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://yg38kkqyqbea"]
+
+[ext_resource type="Script" uid="uid://v2ybkralvm56" path="res://Scenes/Characters/Components/Air Actions/homing_attack.gd" id="1_d4ygs"]
+[ext_resource type="Script" uid="uid://uikahkncq4p" path="res://Scenes/Characters/Components/Air Actions/rangevisual.gd" id="2_nn7gq"]
+
+[node name="Homing Attack" type="Node" unique_id=937111614]
+script = ExtResource("1_d4ygs")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1141500201 node_paths=PackedStringArray("homing_attack")]
+script = ExtResource("2_nn7gq")
+homing_attack = NodePath("..")

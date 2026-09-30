@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://babhlra7avvpy" path="res://Sprites/Obstacles/Ocs/web.png" id="14_5bli4"]
 [ext_resource type="Texture2D" uid="uid://wml2oh37gndy" path="res://Sprites/Obstacles/Ocs/jacket.png" id="15_oknut"]
 [ext_resource type="Texture2D" uid="uid://nk8y7vwc4ls2" path="res://Sprites/Obstacles/Ocs/mnky.png" id="16_tykoy"]
+[ext_resource type="Texture2D" uid="uid://bbtjuj6084k7l" path="res://Sprites/Obstacles/Ocs/lunaraNoctis.png" id="17_gltql"]
+[ext_resource type="Texture2D" uid="uid://cxys10olvc0fl" path="res://Sprites/Obstacles/Ocs/Sprite-0019.png" id="18_vt5iy"]
 
 [sub_resource type="Animation" id="Animation_0rx4k"]
 length = 0.001
@@ -98,8 +100,8 @@ collision_mask = 16
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_tykoy")
-textures = Array[Texture2D]([ExtResource("2_gltql"), ExtResource("3_vt5iy"), ExtResource("4_x6xcm"), ExtResource("5_lxwdd"), ExtResource("6_ijsm5"), ExtResource("7_7x24r"), ExtResource("8_b7gya"), ExtResource("9_rx1k2"), ExtResource("10_y04ek"), ExtResource("11_w8tt0"), ExtResource("12_jlvv3"), ExtResource("13_3bwvm"), ExtResource("14_5bli4"), ExtResource("15_oknut"), ExtResource("16_tykoy")])
-item_labels = Array[String](["@Aario", "@Gamescage", "@Rainy", "@Daeream", "@StupidFred", "", "@HeatDragon", "@KornArt", "@Nezuyaki", "@OctyDrawz", "@IronicnotSavage", "@TNH Nebula", "@Saredd99", "@TrizzieFrizzie", "@Funnymnky"])
+textures = Array[Texture2D]([ExtResource("2_gltql"), ExtResource("3_vt5iy"), ExtResource("4_x6xcm"), ExtResource("5_lxwdd"), ExtResource("6_ijsm5"), ExtResource("7_7x24r"), ExtResource("8_b7gya"), ExtResource("9_rx1k2"), ExtResource("10_y04ek"), ExtResource("11_w8tt0"), ExtResource("12_jlvv3"), ExtResource("13_3bwvm"), ExtResource("14_5bli4"), ExtResource("15_oknut"), ExtResource("16_tykoy"), ExtResource("17_gltql"), ExtResource("18_vt5iy")])
+item_labels = Array[String](["@Aario", "@Gamescage", "@Rainy", "@Daeream", "@StupidFred", "", "@HeatDragon", "@KornArt", "@Nezuyaki", "@OctyDrawz", "@IronicnotSavage", "@TNH Nebula", "@Saredd99", "@TrizzieFrizzie", "@Funnymnky", "@LunaraNoctis"])
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=235954254]
 position = Vector2(0, -0.03999996)

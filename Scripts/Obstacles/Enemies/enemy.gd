@@ -12,7 +12,7 @@ var player_body = null
 var enemy_body = null
 var damage_timer = 0.0
 var hurt = false
-var dying = false
+var dying: bool = false
 var launch = 0
 var spin = false
 var spin_amount = 0.0
@@ -98,6 +98,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		player_body = area.get_parent()
 		var player_position = player_body.global_position
 		var enemy_position = global_position
+		GlobalSignals.emit_signal("camerashake")
 		
 		if player_body.is_in_group("Player"):
 			if not player_body.can_stomp:

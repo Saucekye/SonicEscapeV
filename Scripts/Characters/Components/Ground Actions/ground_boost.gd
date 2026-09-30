@@ -9,6 +9,8 @@ extends Components_Action
 
 func action() -> void:
 	if Test.meter < meter_cost or (Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")) or (!Input.is_action_pressed("airspin") or player.direction == 0):
+		player.boost.visible = false
+		GlobalCanvasLayer.boost = false
 		return
 	
 	# Prevent from doing action while on wall
@@ -26,6 +28,14 @@ func action() -> void:
 	if Input.is_action_just_pressed("airspin"):
 		player.motion.x = max_speed_startup * player.direction
 		if player.is_player:
+			Test.meter -= 25
+			if Test.meter <= 0:
+				Test.meter = 0
 			boost_startaudio.play()
+			player.boost.visible = true
+			player.boost.play("shockwave")
+			GlobalCanvasLayer.boost = true
+			GlobalSignals.emit_signal("camerashake")
 	else:
 		player.motion.x += x_speed_increase * player.direction
+		

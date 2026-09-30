@@ -16,7 +16,8 @@ func handle_air_actions(is_grounded) -> void:
 	trick_component.action()
 
 func handle_ground_action() -> void:
-	ground_boost_component.action()
+	return
+#	ground_boost_component.action()
 
 func handle_wall_mechanics() -> void:
 	wall_climb_component.action()

@@ -20,3 +20,7 @@ func handle_ground_action() -> void:
 
 func handle_wall_mechanics() -> void:
 	wall_jump_component.action()
+
+
+func _on_boost_animation_finished() -> void:
+	$Boost.play("default")

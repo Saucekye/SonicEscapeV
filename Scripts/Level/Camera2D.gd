@@ -3,42 +3,44 @@ extends Camera2D
 # =========================
 # SHAKE
 # =========================
-var shake_amount = 0
-var default_offset : Vector2 = Vector2.ZERO
+var shake_amount: float = 0.0
+var default_offset: Vector2 = Vector2.ZERO
+
 
 # =========================
 # LOOK AHEAD SETTINGS
 # =========================
 @export var look_ahead_distance: float = 0.9
-@export var look_ahead_smoothness: float = 1
+@export var look_ahead_smoothness: float = 1.0
 @export var velocity_threshold: float = 300.0
+
 
 # =========================
 # ATTRACT CAMERA SETTINGS
 # =========================
-@export var attract_speed : float = 3.0
+@export var attract_speed: float = 3.0
 
 var velocity: Vector2 = Vector2.ZERO
 var attract_mode := false
-var attract_target : Node2D = null
+var attract_target: Node2D = null
 
 
 func _ready() -> void:
 	enabled = Test.level % 4 != 0
-	
-	# 🔒 LOCKED ZOOM (Never changes)
 	zoom = Vector2(1.5, 1.5)
+	GlobalSignals.connect("camerashake", _on_camerashake)
+	default_offset = offset
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 
 	# =========================
 	# CAMERA SHAKE
 	# =========================
-	if shake_amount > 0:
+	if shake_amount > 0.0:
 		offset = default_offset + Vector2(
-			randf_range(-1, 1) * shake_amount,
-			randf_range(-1, 1) * shake_amount
+			randf_range(-shake_amount, shake_amount),
+			randf_range(-shake_amount, shake_amount)
 		)
 	else:
 		offset = default_offset
@@ -49,13 +51,17 @@ func _process(delta):
 	# =========================
 	if attract_mode and attract_target:
 		var parent = get_parent()
+
 		if parent:
-			var local_target = parent.to_local(attract_target.global_position)
+			var local_target = parent.to_local(
+				attract_target.global_position
+			)
 
 			position = position.lerp(
 				local_target,
 				attract_speed * delta
 			)
+
 		return
 
 
@@ -65,8 +71,11 @@ func _process(delta):
 	var parent = get_parent()
 
 	if parent:
-
-		rotation = lerp_angle(rotation, 0, 8 * delta)
+		rotation = lerp_angle(
+			rotation,
+			0,
+			8 * delta
+		)
 
 		if parent.has_method("get_velocity") and parent.has_method("is_on_floor"):
 
@@ -99,12 +108,22 @@ func _process(delta):
 # =========================
 # SHAKE FUNCTION
 # =========================
-func shake(time: float, amount: float):
+func shake(time: float, amount: float) -> void:
 	shake_amount = amount
+
 	await get_tree().create_timer(time).timeout
-	shake_amount = 0
+
+	shake_amount = 0.0
 	offset = default_offset
 
+
+func _on_camerashake():
+	shake_amount = 3
+
+	await get_tree().create_timer(0.4).timeout
+
+	shake_amount = 0.0
+	offset = default_offset
 
 # =========================
 # ENTER ATTRACT CAMERA

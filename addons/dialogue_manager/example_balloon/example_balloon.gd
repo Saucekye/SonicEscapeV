@@ -223,6 +223,9 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 
 func _on_node_2d_dialogue() -> void:
 	balloon.visible = true
+	var button = get_node_or_null("Button")
+	if button:
+		button.visible = true
 	start()
 
 func _on_node_2d_next() -> void:
@@ -235,3 +238,8 @@ func _on_animated_sprite_2d_next() -> void:
 
 func _on_node_2d_skip() -> void:
 	balloon.visible = false
+
+
+func _on_button_pressed() -> void:
+	balloon.visible = false
+	$Button.visible = false

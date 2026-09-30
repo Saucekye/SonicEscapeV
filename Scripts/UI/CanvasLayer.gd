@@ -2,8 +2,8 @@ extends CanvasLayer
 
 var player = null
 var tricks = 0
+var boost = false
 # Called when the node enters the scene tree for the first time.
-
 	
 func _on_button_pressed():
 	if $TouchScreenButton.visible == true:
@@ -13,7 +13,6 @@ func _on_button_pressed():
 	Test.meter = 100
 	Test.rings = 0
 	get_tree().reload_current_scene()
-	
 	
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "restart":

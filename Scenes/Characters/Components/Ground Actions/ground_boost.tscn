@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://ccc1pg0upayca"]
 
 [ext_resource type="Script" uid="uid://m56pyk3lu50q" path="res://Scripts/Characters/Components/Ground Actions/ground_boost.gd" id="1_mdk3u"]
-[ext_resource type="AudioStream" uid="uid://cqw3kk4kkqrgw" path="res://Sounds/SonicSFX/Break Speed.wav" id="2_44p1x"]
+[ext_resource type="AudioStream" uid="uid://n2p1tv3njffy" path="res://Sounds/SonicSFX/0922(1).MP3" id="2_44p1x"]
 
 [node name="GroundBoost" type="Node" unique_id=861378271]
 script = ExtResource("1_mdk3u")
+meter_cost_inital = 25.0
 
 [node name="BoostStartaudio" type="AudioStreamPlayer" parent="." unique_id=2015779484]
 stream = ExtResource("2_44p1x")
 volume_db = -15.0
-pitch_scale = 2.0

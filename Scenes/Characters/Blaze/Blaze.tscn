@@ -24,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="9_ah0rx"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="10_3p5yj"]
 [ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="14_4fuia"]
+[ext_resource type="Texture2D" uid="uid://di4t06fitvdhl" path="res://Sprites/Effects/fireboosteffect.png" id="25_x7ch2"]
+[ext_resource type="Texture2D" uid="uid://c37t0b5xguumc" path="res://Sprites/Effects/fireshockwave.png" id="26_6pixe"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2278,6 +2280,75 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pixe"]
+atlas = ExtResource("25_x7ch2")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvc2m"]
+atlas = ExtResource("25_x7ch2")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwd4x"]
+atlas = ExtResource("25_x7ch2")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61ryf"]
+atlas = ExtResource("25_x7ch2")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6icja"]
+atlas = ExtResource("26_6pixe")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xen36"]
+atlas = ExtResource("26_6pixe")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mw1e"]
+atlas = ExtResource("26_6pixe")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gp30q"]
+atlas = ExtResource("26_6pixe")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6pixe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pixe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvc2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rwd4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61ryf")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6icja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xen36")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mw1e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gp30q")
+}],
+"loop": 0,
+"name": &"shockwave",
+"speed": 25.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1728487101 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
@@ -2435,6 +2506,14 @@ texture = ExtResource("10_3p5yj")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=1281259138]
 libraries/ = SubResource("AnimationLibrary_l6ohk")
 
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=956632889]
+modulate = Color(1, 1, 1, 0.64705884)
+z_index = 1
+position = Vector2(-0.16, 0.04)
+scale = Vector2(0.017250001, 0.018625)
+sprite_frames = SubResource("SpriteFrames_6pixe")
+autoplay = "shockwave"
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
@@ -2448,3 +2527,4 @@ libraries/ = SubResource("AnimationLibrary_l6ohk")
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="onscreentimer" to="." method="_on_onscreentimer_timeout"]
+[connection signal="animation_finished" from="Boost" to="." method="_on_boost_animation_finished"]

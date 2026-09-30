@@ -6,41 +6,34 @@ extends Node2D
 @export var parallax_5: PackedScene
 @export var parallax_6: PackedScene
 
-# Static variable persists across scene reloads
-static var parallax_pool: Array[PackedScene] = []
+static var parallax_index: int = 0
+
+var parallax_scenes: Array[PackedScene] = []
+
 
 func _ready():
-	randomize()
-
-	# SPECIAL CASE: Level divisible by 4 always spawns parallax_6
-	if Test.level % 4 == 0:
-		_spawn_specific(parallax_6, 6)
-		return
-
-	if parallax_pool.size() == 0:
-		_reset_pool()
-
-	_spawn_parallax()
-
-func _reset_pool():
-	parallax_pool = [
+	parallax_scenes = [
 		parallax_1,
 		parallax_2,
 		parallax_4,
 		parallax_5
-		
 	]
 
-	parallax_pool = parallax_pool.filter(func(s): return s != null)
-	parallax_pool.shuffle()
+	# Every 4th floor uses parallax_6
+	if Test.level % 4 == 0:
+		_spawn_specific(parallax_6, 6)
+		return
 
-func get_next_parallax() -> PackedScene:
-	if parallax_pool.size() == 0:
-		_reset_pool()
-	return parallax_pool.pop_back()
+	# Change background every 4 floors
+	var current_set = (Test.level - 1) / 4
+	parallax_index = current_set % parallax_scenes.size()
+
+	_spawn_parallax()
+
 
 func _spawn_parallax():
-	var scene = get_next_parallax()
+	var scene = parallax_scenes[parallax_index]
+
 	if scene == null:
 		push_error("No parallax scene available!")
 		return
@@ -53,6 +46,7 @@ func _spawn_parallax():
 	var bg = scene.instantiate()
 	add_child(bg)
 
+
 func _spawn_specific(scene: PackedScene, id: int):
 	if scene == null:
 		push_error("Specific parallax scene is null!")
@@ -63,6 +57,7 @@ func _spawn_specific(scene: PackedScene, id: int):
 
 	var bg = scene.instantiate()
 	add_child(bg)
+
 
 func _get_background_id(scene: PackedScene) -> int:
 	if scene == parallax_1: return 1

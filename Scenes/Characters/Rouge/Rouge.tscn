@@ -22,7 +22,7 @@
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="8_dungh"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="9_8lemr"]
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="10_l15t3"]
-[ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="13_n1p8y"]
+[ext_resource type="Texture2D" uid="uid://0qm713jijmkc" path="res://Sprites/Effects/boosteffect.png" id="24_vgbt6"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -3042,6 +3042,42 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_co66v"]
+atlas = ExtResource("24_vgbt6")
+region = Rect2(0, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wegc"]
+atlas = ExtResource("24_vgbt6")
+region = Rect2(128, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4diiq"]
+atlas = ExtResource("24_vgbt6")
+region = Rect2(256, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7c00"]
+atlas = ExtResource("24_vgbt6")
+region = Rect2(384, 0, 128, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bhgt3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_co66v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wegc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4diiq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7c00")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1426991612 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 4
@@ -3065,8 +3101,6 @@ icon_background = ExtResource("5_5gpwu")
 [node name="Trick" parent="." unique_id=791439002 instance=ExtResource("6_5gpwu")]
 
 [node name="WallClimb" parent="." unique_id=1044874409 instance=ExtResource("7_ehiok")]
-
-[node name="GroundBoost" parent="." unique_id=861378271 instance=ExtResource("13_n1p8y")]
 
 [node name="Flymeter" parent="." unique_id=1114476930 instance=ExtResource("2_fen2b")]
 
@@ -3199,6 +3233,15 @@ texture = ExtResource("10_l15t3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=2003268600]
 libraries/ = SubResource("AnimationLibrary_l6ohk")
+
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=726256073]
+visible = false
+modulate = Color(1, 1, 1, 0.64705884)
+z_index = 1
+position = Vector2(-0.08, 0.04)
+scale = Vector2(0.007, 0.007)
+sprite_frames = SubResource("SpriteFrames_bhgt3")
+autoplay = "default"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

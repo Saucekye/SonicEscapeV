@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dsndue58ush0c" path="res://Sprites/UI/Icon/UI Icon.png" id="5_bxdx6"]
 [ext_resource type="AudioStream" uid="uid://bxr05thd4shmn" path="res://Sounds/SonicSFX/step2.MP3" id="5_levbm"]
 [ext_resource type="AudioStream" uid="uid://jqr25otgqtj8" path="res://Sounds/SonicSFX/step4.MP3" id="6_k0gmh"]
+[ext_resource type="PackedScene" uid="uid://yg38kkqyqbea" path="res://Scenes/Characters/Components/Air Actions/homing_attack.tscn" id="6_lrgak"]
 [ext_resource type="AudioStream" uid="uid://c72w8cwl2dqwj" path="res://Sounds/SonicSFX/step1.MP3" id="7_6xb3l"]
 [ext_resource type="PackedScene" uid="uid://ch0br0junxe8" path="res://misc/Meter/flymeter.tscn" id="7_uvhn0"]
 [ext_resource type="PackedScene" uid="uid://cbeunrav4iw1h" path="res://Scenes/Characters/Components/Wall Mechanics/wall_jump.tscn" id="7_x6aia"]
@@ -24,6 +25,8 @@
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="13_k0gmh"]
 [ext_resource type="PackedScene" uid="uid://ccc1pg0upayca" path="res://Scenes/Characters/Components/Ground Actions/ground_boost.tscn" id="14_n0mdj"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="16_uvhn0"]
+[ext_resource type="Texture2D" uid="uid://0qm713jijmkc" path="res://Sprites/Effects/boosteffect.png" id="25_blaa6"]
+[ext_resource type="Texture2D" uid="uid://podp0gtr07oi" path="res://Sprites/Effects/boostshockwave.png" id="26_pr16m"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2279,6 +2282,75 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr16m"]
+atlas = ExtResource("25_blaa6")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrgak"]
+atlas = ExtResource("25_blaa6")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sc7p"]
+atlas = ExtResource("25_blaa6")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8s85t"]
+atlas = ExtResource("25_blaa6")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfjyc"]
+atlas = ExtResource("26_pr16m")
+region = Rect2(0, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut1lw"]
+atlas = ExtResource("26_pr16m")
+region = Rect2(96, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr0v3"]
+atlas = ExtResource("26_pr16m")
+region = Rect2(192, 0, 96, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v3scs"]
+atlas = ExtResource("26_pr16m")
+region = Rect2(288, 0, 96, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gfjyc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pr16m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrgak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sc7p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8s85t")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfjyc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ut1lw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr0v3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v3scs")
+}],
+"loop": 0,
+"name": &"shockwave",
+"speed": 25.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1442544425 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
@@ -2291,6 +2363,8 @@ icon_background = ExtResource("5_bxdx6")
 trail_position = Vector2(0, 3)
 trail_ball_position = Vector2(-10, 15)
 trail_dash_max_position = Vector2(0, 8)
+
+[node name="HomingAttack" parent="." unique_id=1730953021 instance=ExtResource("6_lrgak")]
 
 [node name="Airspin" parent="." unique_id=1830908 instance=ExtResource("9_yxy1h")]
 
@@ -2438,6 +2512,15 @@ sprite_frames = SubResource("SpriteFrames_x6aia")
 autoplay = "default"
 speed_scale = 0.8
 
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=1480925231]
+modulate = Color(1, 1, 1, 0.64705884)
+z_index = 1
+position = Vector2(-0.040000007, -7.450581e-09)
+scale = Vector2(0.017250001, 0.018625)
+sprite_frames = SubResource("SpriteFrames_gfjyc")
+animation = &"shockwave"
+autoplay = "shockwave"
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
@@ -2451,3 +2534,4 @@ speed_scale = 0.8
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="onscreentimer" to="." method="_on_onscreentimer_timeout"]
+[connection signal="animation_finished" from="Boost" to="." method="_on_boost_animation_finished"]

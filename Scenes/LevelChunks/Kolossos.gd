@@ -3,8 +3,8 @@ extends Node2D
 enum BossState {INTRO, IDLE, ATTACK, DEAD}
 
 var state = BossState.INTRO
-var max_health : int = 20
-var health : int = max_health
+var max_health: int 
+var health: int
 var active_player: Node2D
 var dying = false
 var attacking = false
@@ -34,7 +34,8 @@ var gravity := 900
 
 func _ready():
 	randomize()
-
+	max_health = min(50, max(8, Test.level * 2))/2
+	health = max_health
 # --------------------------------------------------
 # PROCESS
 # --------------------------------------------------

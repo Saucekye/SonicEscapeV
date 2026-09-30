@@ -17,6 +17,7 @@ dest_files=["res://.godot/imported/Down.png-ac2e4b16e8a107b19f5ca20b94e3973b.cte
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

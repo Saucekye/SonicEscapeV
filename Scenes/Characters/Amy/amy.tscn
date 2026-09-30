@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="9_qsu3h"]
 [ext_resource type="AudioStream" uid="uid://yf2rokspol3w" path="res://Sounds/SonicSFX/step3.MP3" id="10_8qel3"]
 [ext_resource type="Texture2D" uid="uid://boo0x73oplsu5" path="res://misc/pickup.png" id="15_ocgdo"]
+[ext_resource type="Texture2D" uid="uid://0qm713jijmkc" path="res://Sprites/Effects/boosteffect.png" id="21_r8xol"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2989,6 +2990,42 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_co66v"]
+atlas = ExtResource("21_r8xol")
+region = Rect2(0, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wegc"]
+atlas = ExtResource("21_r8xol")
+region = Rect2(128, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4diiq"]
+atlas = ExtResource("21_r8xol")
+region = Rect2(256, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7c00"]
+atlas = ExtResource("21_r8xol")
+region = Rect2(384, 0, 128, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_csbp3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_co66v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wegc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4diiq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7c00")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=2128443049 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 4
@@ -3145,6 +3182,15 @@ scale = Vector2(0.009, 0.009)
 sprite_frames = SubResource("SpriteFrames_dj5vv")
 autoplay = "default"
 speed_scale = 0.8
+
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=378139360]
+visible = false
+modulate = Color(1, 1, 1, 0.49019608)
+z_index = 1
+position = Vector2(-0.08, 0.04)
+scale = Vector2(0.007, 0.007)
+sprite_frames = SubResource("SpriteFrames_csbp3")
+autoplay = "default"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://c3foou3v567qe" path="res://misc/BAM.png" id="12_3c4rp"]
 [ext_resource type="PackedScene" uid="uid://dnggrubhy13x8" path="res://Scenes/Characters/Components/Air Actions/stomp.tscn" id="16_idr0s"]
 [ext_resource type="PackedScene" uid="uid://cigx0ij4736vq" path="res://Scenes/Characters/Components/Air Actions/trick.tscn" id="17_aawou"]
+[ext_resource type="Texture2D" uid="uid://0qm713jijmkc" path="res://Sprites/Effects/boosteffect.png" id="21_aawou"]
 
 [sub_resource type="Curve" id="Curve_7xxox"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.528571, 0.505263), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -2970,6 +2971,42 @@ _data = {
 &"play": SubResource("Animation_hp6x6")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_co66v"]
+atlas = ExtResource("21_aawou")
+region = Rect2(0, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wegc"]
+atlas = ExtResource("21_aawou")
+region = Rect2(128, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4diiq"]
+atlas = ExtResource("21_aawou")
+region = Rect2(256, 0, 128, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7c00"]
+atlas = ExtResource("21_aawou")
+region = Rect2(384, 0, 128, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_byr4r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_co66v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wegc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4diiq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7c00")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}]
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=989921442 groups=["Player"]]
 scale = Vector2(25, 25)
 collision_layer = 2
@@ -3125,6 +3162,15 @@ texture = ExtResource("12_3c4rp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Parry" unique_id=1394204378]
 libraries/ = SubResource("AnimationLibrary_l6ohk")
+
+[node name="Boost" type="AnimatedSprite2D" parent="." unique_id=1782235949]
+visible = false
+modulate = Color(1, 1, 1, 0.64705884)
+z_index = 1
+position = Vector2(-0.08, 0.04)
+scale = Vector2(0.007, 0.007)
+sprite_frames = SubResource("SpriteFrames_byr4r")
+autoplay = "default"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

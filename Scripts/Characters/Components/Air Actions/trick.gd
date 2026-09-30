@@ -12,8 +12,9 @@ func action() -> void:
 	player.dashed = true
 	player.falling = true
 	if player.is_player == true:
-		Test.meter += 1
+		Test.meter += 2
 		GlobalCanvasLayer.tricks += 1
+		player.boost.visible = false
 		
 	var tricks = ["trick1", "trick2", "trick3", "trick4"]
 	var last_index = tricks.find(player.last_trick)

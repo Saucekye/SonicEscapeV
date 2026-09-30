@@ -68,30 +68,40 @@ signal dialogue
 
 func _start():
 	randomize()
+	if begin: return
+
 	anim.play("introto1")
 	await anim.animation_finished
+	if begin: return
+
 	anim.play("introto1_2")
 	get_parent().get_node("AnimatedSprite2D").visible = true
 	emit_signal("playcutscene")
 	emit_signal("dialogue")
 	await get_tree().create_timer(40).timeout
+	if begin: return
+
 	anim.play("intro_2")
 	await anim.animation_finished
+	if begin: return
+
 	anim.play("intro_3")
 	await get_tree().create_timer(7).timeout
+	if begin: return
+
 	anim.play("intro_4")
 	await anim.animation_finished
+	if begin: return
+
 	anim.play("intro_5")
 	await get_tree().create_timer(3.5).timeout
+	if begin: return
+
 	anim.play("intro_6")
 	await anim.animation_finished
-	anim.play("Idle")
-	$Sprite2D.z_index = -1
-	state = BossState.FLY
-	GlobalSignals.disable_boss_ui.emit(false)
-	start_attack_loop()
+	if begin: return
 
-	begin = true
+	_finish_intro()
 
 func _ready():
 	$TextureRect2.visible = false
@@ -594,11 +604,11 @@ func start_phase2() -> void:
 		emit_signal("dialogue2")
 	
 	phase = 2
-	health = 80
+	health = 75
 
 	
 	await get_tree().create_timer(9).timeout
-	update_health_bar.emit(health, 80)
+	update_health_bar.emit(health, 75)
 	var display = get_parent().get_node("BossHPDisplay")
 	display._set_new_boss(self, "LunaraNoctis")
 	($TextureRect2.material as ShaderMaterial).set_shader_parameter("base_rain_speed", 1.0) 
@@ -663,3 +673,17 @@ func attack_behavior() -> void:
 	projecitle.global_position = attack_spawn_marker.global_position
 	if sprite.flip_h:
 		projecitle.global_position.x = attack_spawn_marker.global_position.x - attack_spawn_marker.position.x
+
+
+func _on_button_pressed() -> void:
+	if begin: return  # already finished or already skipped
+	_finish_intro()
+
+
+func _finish_intro() -> void:
+	begin = true  # set first, so any sleeping _start() coroutine exits when it wakes up
+	anim.play("Idle")
+	$Sprite2D.z_index = -1
+	state = BossState.FLY
+	GlobalSignals.disable_boss_ui.emit(false)
+	start_attack_loop()

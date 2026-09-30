@@ -13,3 +13,5 @@ signal disable_music_player(disabled : bool)
 signal disable_boss_ui(disabled : bool)
 
 signal complete
+
+signal camerashake
