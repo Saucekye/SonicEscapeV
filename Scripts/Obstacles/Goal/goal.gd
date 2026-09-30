@@ -15,8 +15,11 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_sprite_2d_animation_finished() -> void:
 			GlobalCanvasLayer.tricks += 1
 			Test.end = true
+			
+			
 			if levelover == false:
-				Test.level += 1
+				if Test.rest == false:
+					Test.level += 1
 				levelover = true
 				if Test.level % 4 == 0:
 					var tween = create_tween()

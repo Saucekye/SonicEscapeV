@@ -27,15 +27,11 @@ var scene_music := {
 var node2d_music_pool := [
 	preload("res://Music/Level/PinkPantheress ft. Rema - Another Life (Artisan Remix).MP3"),
 	preload("res://Music/Level/Azealia Banks - Luxury (Artisan Remix).MP3"),
-	preload("res://Music/Level/Heaven Knows - EUPHONIC RUSH (BONESAW).mp3"),
 	preload("res://Music/Level/2 Mello - Love Lightside (Love Sickubus).mp3"),
-	preload("res://Music/Level/The Vanished People - DANCE ALONE (feat. Hashimero).mp3"),
-	preload("res://Music/Level/The Vanished People - IT'S GOING DOWN (feat. WaMi).mp3"),
 	preload("res://Music/Level/[TNH Nebula] Work It Out Ft. JanettPlanett.MP3"),
 	preload("res://Music/Level/[TNH Nebula] I'm Yours and You're Mine Ft. Hatsune Miku.mp3"),
 	preload("res://Music/Level/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3"),
 	preload("res://Music/Level/Hideki Naganuma x DnB Type Beat  - Butter [prod. Hydraa].mp3"),
-	preload("res://Music/Level/Sonic Mania Mirage Saloon Zone Rhythm & Bits.MP3"),
 	preload("res://Music/Level/Sonic Escape - Been Here Before.MP3")
 ]
 

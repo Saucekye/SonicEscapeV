@@ -9,4 +9,4 @@ meter_cost_inital = 25.0
 
 [node name="BoostStartaudio" type="AudioStreamPlayer" parent="." unique_id=2015779484]
 stream = ExtResource("2_44p1x")
-volume_db = -15.0
+volume_db = -20.0

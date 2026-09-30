@@ -1,7 +1,7 @@
 extends Components_Action
 
 @export var homing_speed: float = 2000.0
-@export var homing_range: float = 500.0
+@export var homing_range: float = 450
 @export var max_homing_time: float = 0.6
 @export var hit_distance: float = 40.0
 @export var hit_bounce_y: float = 650.0

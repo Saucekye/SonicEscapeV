@@ -105,9 +105,9 @@ YOU ARE FLAWED, I AM GOD"
 AND NEVER THE OTHER WAY AROUND!
 IN YOUR HAND LAYS ALL OF THEIR CRIES.
 FREE WILL ALWAYS HAS A PRICE!"
-			20:
+			28:
 				$CanvasLayer/Label.text = "Are you still there? That's a silly question. I know you are! It's hard to let go of things, isn't it? You stubborn head. You see... When you're soaked underwater, all the way down to the bottom, with all this pressure on you, they say it's an excruciating pain when you make contact with the air again. It doesn't hurt to invite the water in. Might even be a relief for your flesh. And, in the end... that's what lasts from it. But fear not! You won't have to worry about this anymore, friend. You're deep down the lake.."
-			24:
+			32:
 				$CanvasLayer/Label.text = "IN A LUCID PARADISE
 YOU COME HERE TO BREAK THE TIME
 I'LL MAKE YOU PROTAGONIST
@@ -121,26 +121,34 @@ ALL YOU CAN FEEL IS SUNSHINE"
 	else:
 		match Test.level:
 			0:
-				$CanvasLayer/Label.text = """Controls
+				$CanvasLayer/Label.text = """CONTROLS
 
 Move: Arrow Keys
-Jump: Space/Z | Air Dash: Shift/X | Air Tricks: A 
-Character Swap: V / Tap Player Icon
 
-Move List:
-Ball Curl: (Ground/Air) Down + Moving
-Uncurl: (Ground) Up | Air Dash | Air Trick
-Spin Dash: (Ground) Down + Idle + Jump
-Super Peel Out: (Ground) Up + Idle + Jump (Hold)
+Jump: Space / Z
 
-Kick: (Air) Jump + Jump
-Drop Dash: (Air) Jump (Hold)
-Stomp: (Air) Down + Air Dash
-Cyclone: (Air) Air Dash+ Forward
-Flip: (Air) Air Dash + Up
+Dash: Shift / X
 
-We Will Find Him...
-Floor 20?"""
+Trick: A / C
+
+Swap: V
+
+
+MOVES
+
+Spin Dash: ↓ + Jump
+Ball Curl: ↓ + Move
+Boost: Dash + Forward + 25 Meter Gauge
+
+Kick: (AIR) Jump + Jump
+Stomp: (AIR) ↓ + Dash
+Cyclone: (AIR) Dash + Forward + 50 Meter Gauge
+Flip: (AIR) Dash + ↑ + 50 Meter Gauge
+
+
+WE WILL FIND HIM...
+FLOOR 20"""
+
 			4:
 				$CanvasLayer/Label.text = """I lay here
 blind,
@@ -178,61 +186,9 @@ the way I loved you.
 But who could love a body
 stripped of every limb by love?
 who could love a soul
-emptied by devotion?"""
+emptied by devotion? ~ Kim"""
 			8:
-				$CanvasLayer/Label.text = """When should you give up on somebody? On something? On a dream?
-On yourself?
-
-When is it okay to finally call it quits and tell yourself
-it wasn't worth it, it never was?
-
-Well, I think if you're looking at things that way, what's the point of doing anything?
-
-Because a lot of us, we like to relish in the mistakes
-that we've made in the past, instead of recognizing that if we had not
-made them, we would have never learned.
-
-But with people it's different,
-because there's a lot more time that gets sunk into relationships"""
-			12:
-				$CanvasLayer/Label.text = """I do think that it happened the way it was supposed to,
-Now you can't hold on to this experience,
-this person and feel very, very upset and feel almost
-like it was your fault that you lost them.
-
-Or you can realize that it not working taught
-you so much more that you would never know beforehand.
-It's really difficult when you love somebody,
-and you don't want to let them go
-because you know it will make your life very different.
-
-It will make you feel more alone.
-It will probably expose a lot of the things
-that you've been distracting yourself from,
-like your lack of self-worth and wrapping your entire identity
-into another person just so you can feel less alone."""
-			16:
-				$CanvasLayer/Label.text = """It feels great to have somebody by your side throughout everything.
-It feels great to love them throughout everything, and them loving you back.
-
-It makes you alive.
-It makes every action you do for them feel more worth it than the last.
-It makes you feel unstoppable.
-It makes you complete.
-
-On one very cold day, when that person steps out the front door, your heart sinks.
-
-You start to feel so, so cold.
-
-It makes you stop.
-It makes every action feel worse than the last.
-It makes you feel vulnerable.
-It makes you incomplete.
-
-All that's left to be pondered is how much longer until everything else falls apart."""
-			28:
-				$CanvasLayer/Label.text = """But then came him—
-before I even knew it, my heart had decided.
+				$CanvasLayer/Label.text = """before I even knew it, my heart had decided.
 It saw something I wasn't ready for,
 wrote a story I hadn't planned to read.
 Not a fleeting chapter, but a forever.
@@ -268,7 +224,45 @@ Yet, through all the ache,
 I have become stronger, wiser, unshaken.
 a woman who learned love,
 and in losing it,
-found herself."""
+found herself. ~ Rose"""
+			12:
+				$CanvasLayer/Label.text = """I do think that it happened the way it was supposed to,
+Now you can't hold on to this experience,
+this person and feel very, very upset and feel almost
+like it was your fault that you lost them.
+
+Or you can realize that it not working taught
+you so much more that you would never know beforehand.
+It's really difficult when you love somebody,
+and you don't want to let them go
+because you know it will make your life very different.
+
+It will make you feel more alone.
+It will probably expose a lot of the things
+that you've been distracting yourself from,
+like your lack of self-worth and wrapping your entire identity
+into another person just so you can feel less alone."""
+			16:
+				$CanvasLayer/Label.text = """It feels great to have somebody by your side throughout everything.
+It feels great to love them throughout everything, and them loving you back.
+
+It makes you alive.
+It makes every action you do for them feel more worth it than the last.
+It makes you feel unstoppable.
+It makes you complete.
+
+On one very cold day, when that person steps out the front door, your heart sinks.
+
+You start to feel so, so cold.
+
+It makes you stop.
+It makes every action feel worse than the last.
+It makes you feel vulnerable.
+It makes you incomplete.
+
+All that's left to be pondered is how much longer until everything else falls apart. ~ kevin"""
+			20:
+				$CanvasLayer/Label.text = """Floor 20..."""
 			24:
 				$CanvasLayer/Label.text = """Life isn't about what you have,
 how talented you are,
@@ -279,20 +273,6 @@ The memories you have,
 and the lessons you learn from them.
 				
 Now go make more memories!"""
-
-			32:
-				$CanvasLayer/Label.text = """Go make more memories.
-They made their choice.
-
-Stop trying to mess with other people's lives.
-Because you can't accept what you could of had.
-Reflect, forgive yourself, and move on.
-You hurt them. Stop victimizing yourself. Stop fetishinzing your own sadness.
-
-Stop working on this just so you can escape."""
-
-			36:
-				$CanvasLayer/Label.text = """They're not going to won."""
 			_:
 				$CanvasLayer/Label.text = "Current Floor: " + str(Test.level)
 

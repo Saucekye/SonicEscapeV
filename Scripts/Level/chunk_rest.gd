@@ -10,6 +10,11 @@ func _ready():
 	disable_character(character1)
 	disable_character(character2)
 
+	# Keep both disabled on levels 0 and 24
+	if Test.level == 0 or Test.level == 24:
+		return
+
+	# Randomly enable one or neither
 	match randi() % 3:
 		0:
 			enable_character(character1)

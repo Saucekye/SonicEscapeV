@@ -4,6 +4,7 @@ var bestTimeFloat := INF
 var bestTimeText := ""
 var elapsed_sesion_time : float = 0
 var music = false
+var rest = false
 var musicplaying = false
 var mobile = false
 var end = false
@@ -65,7 +66,7 @@ func _ready() -> void:
 
 func build_boss_rotation():
 	rng.randomize()
-	boss_rotation_order = [0, 1, 2, 3, 4]  # 0=boss, 1=boss1, 2=boss2, 3=rest
+	boss_rotation_order = [0, 1, 2, 3, 4,]  # 0=boss, 1=boss1, 2=boss2, 3=rest
 	for i in range(boss_rotation_order.size() - 1, 0, -1):
 		var j = rng.randi_range(0, i)
 		var tmp = boss_rotation_order[i]

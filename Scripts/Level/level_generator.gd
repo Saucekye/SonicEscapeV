@@ -54,6 +54,9 @@ var end_spawned := false
 
 var rng := RandomNumberGenerator.new()
 
+# Persists across scene reloads: the last boss level whose rest area was already shown
+static var rest_done_level := -1
+
 @export var minimap_path: NodePath = "CanvasLayer/Minimap"
 
 # ─────────────────────────────
@@ -61,6 +64,9 @@ var rng := RandomNumberGenerator.new()
 # ─────────────────────────────
 func _ready():
 	rng.randomize()
+	if Test.level == 0:
+		rest_done_level = -1  # new run, reset
+	Test.rest = false  # default; set to true only when a rest chunk spawns
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
 
@@ -81,32 +87,41 @@ func _ready():
 # Boss Rotation
 # ─────────────────────────────
 func _spawn_next_boss_level():
-	if Test.level == 20:
-		var chunk := chunk_boss_final.instantiate()
-		add_child(chunk)
-		var start = chunk.get_node("Start").global_position
-		chunk.global_position = first_chunk_offset - start
-		last_end_position = chunk.get_node("End").global_position
-		chunks.append(chunk)
-		end_spawned = true
-		return
-	
+	# Level 24 is the rest after the final boss; its goal proceeds normally
 	if Test.level == 24:
-		var chunk := chunk_rest.instantiate()
-		add_child(chunk)
-		var start = chunk.get_node("Start").global_position
-		chunk.global_position = first_chunk_offset - start
-		last_end_position = chunk.get_node("End").global_position
-		chunks.append(chunk)
-		end_spawned = true
+		_spawn_single_chunk(chunk_rest)
+		Test.rest = false
+		return
+
+	# First visit to a boss level: spawn the rest area.
+	# Its goal should reload the level WITHOUT incrementing Test.level (see Test.rest below).
+	if rest_done_level != Test.level:
+		rest_done_level = Test.level
+		_spawn_single_chunk(chunk_rest)
+		Test.rest = true
+		return
+
+	# Second visit (after the rest goal reloaded the level): spawn the boss
+	Test.rest = false
+	Pause.current_scene = "Boss"
+
+	if Test.level == 20:
+		_spawn_single_chunk(chunk_boss_final)
 		return
 
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
-
 	var index: int = Test.boss_rotation_order.pop_front()
+	while index == 2:  # skip the old rest entry in the rotation
+		if Test.boss_rotation_order.is_empty():
+			Test.build_boss_rotation()
+		index = Test.boss_rotation_order.pop_front()
+
 	var scene_map := [chunk_boss, chunk_boss1, chunk_rest, chunk_boss2, chunk_boss3]
-	var scene: PackedScene = scene_map[index]
+	_spawn_single_chunk(scene_map[index])
+
+# Spawns one chunk as the entire level
+func _spawn_single_chunk(scene: PackedScene):
 	var chunk := scene.instantiate()
 	add_child(chunk)
 	var start = chunk.get_node("Start").global_position
@@ -114,19 +129,13 @@ func _spawn_next_boss_level():
 	last_end_position = chunk.get_node("End").global_position
 	chunks.append(chunk)
 	end_spawned = true
-	Pause.current_scene = "Boss"
 
 # ─────────────────────────────
 # Chunk Spawning Functions
 # ─────────────────────────────
 func _spawn_rest_level():
-	var chunk := chunk_rest.instantiate()
-	add_child(chunk)
-	var start = chunk.get_node("Start").global_position
-	chunk.global_position = first_chunk_offset - start
-	last_end_position = chunk.get_node("End").global_position
-	chunks.append(chunk)
-	end_spawned = true
+	_spawn_single_chunk(chunk_rest)
+	Test.rest = false
 
 func _spawn_start_chunk():
 	var chunk := chunk_start.instantiate()
@@ -231,4 +240,3 @@ func _spawn_miku_on_ground():
 	if(spawned == false):
 		print("Failed to spawn Miku in middle chunks far from player")
 		miku.global_position = first_chunk_offset
-	
