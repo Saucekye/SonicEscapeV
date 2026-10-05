@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="4_p58hw"]
 [ext_resource type="Script" uid="uid://c55hq7s84scea" path="res://Scenes/LevelChunks/SuperSilverFight.gd" id="5_48imp"]
 [ext_resource type="Shader" uid="uid://dxliwfv4rql5a" path="res://Shaders/rain.gdshader" id="6_ikhev"]
+[ext_resource type="PackedScene" uid="uid://cdjn42lb4uo07" path="res://Scenes/Boss/SilverProjectile.tscn" id="7_gx7f5"]
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="7_yc7j7"]
 [ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="9_p6ew8"]
 [ext_resource type="Texture2D" uid="uid://bpahe3omtt5q" path="res://Sprites/Boss/Super Silver/soupsilver-Recovered - organized.png" id="9_snxq0"]
@@ -2340,6 +2341,7 @@ z_index = 2
 position = Vector2(1632.0001, 618)
 scale = Vector2(1.25, 1.25)
 script = ExtResource("5_48imp")
+attack1_projectile = ExtResource("7_gx7f5")
 
 [node name="TextureRect3" type="ColorRect" parent="Node2D" unique_id=2065524563]
 z_index = -5

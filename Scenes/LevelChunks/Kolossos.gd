@@ -34,7 +34,7 @@ var gravity := 900
 
 func _ready():
 	randomize()
-	max_health = min(50, max(8, Test.level * 2))/2
+	max_health = min(50, max(10, Test.level * 2))/2
 	health = max_health
 # --------------------------------------------------
 # PROCESS

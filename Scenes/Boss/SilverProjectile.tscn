@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://cdjn42lb4uo07"]
+
+[ext_resource type="Script" uid="uid://dqi6vsm3smfhx" path="res://Scripts/Boss/goku_black_projectile.gd" id="1_uye2x"]
+[ext_resource type="Texture2D" uid="uid://cddm447n1n1g8" path="res://misc/spritesheet.png" id="2_v4q1x"]
+[ext_resource type="AudioStream" uid="uid://dtfnqwh0mgixo" path="res://Sounds/BossSFX/Goku Black & Caine/ballfollow.MP3" id="3_vtnh6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isfcx"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(144, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5hr1i"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(216, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcq0f"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(288, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knevh"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(360, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpvc4"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(432, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sp0ak"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(504, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6otw2"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(576, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8g1cg"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(648, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_to6ie"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(720, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov7p3"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(792, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr6vl"]
+atlas = ExtResource("2_v4q1x")
+region = Rect2(864, 0, 72, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isfcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5hr1i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcq0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knevh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpvc4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sp0ak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6otw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8g1cg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_to6ie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov7p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cr6vl")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 25.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_ob1fb"]
+offsets = PackedFloat32Array(0.27941176, 1)
+colors = PackedColorArray(0.9213973, 0.9213973, 0, 0.9213973, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r1jr2"]
+gradient = SubResource("Gradient_ob1fb")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mvuam"]
+radius = 22.666668
+
+[node name="GokuBlackProjectile" type="Node2D" unique_id=1972911035 groups=["EnemyProjectile"]]
+scale = Vector2(1.5, 1.5)
+script = ExtResource("1_uye2x")
+lifetime = 2.0
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=2094722535]
+modulate = Color(0, 1.2003384, 1.0603509, 1)
+position = Vector2(0, -0.6666667)
+sprite_frames = SubResource("SpriteFrames_kofwu")
+autoplay = "default"
+frame_progress = 0.8264046
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=425801748]
+visible = false
+texture = SubResource("GradientTexture2D_r1jr2")
+
+[node name="Attackbox" type="Area2D" parent="." unique_id=330302173 groups=["enemyattack"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=1460057368]
+shape = SubResource("CircleShape2D_mvuam")
+debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
+
+[node name="Timer" type="Timer" parent="." unique_id=355483283]
+wait_time = 20.0
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=40678732]
+stream = ExtResource("3_vtnh6")
+volume_db = -5.0
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

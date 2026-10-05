@@ -38,7 +38,9 @@ func _flight() -> void:
 	player.motion.y = -450            # Small upward push per flutter
 	player.sfx.pitch_scale = 2
 	player.fall_gravity = 700         # Reduced gravity while hovering (vs default ~1700+)
-
+	player.is_boosting = false
+	player.boost_sprite.visible = false
+	GlobalCanvasLayer.boost = false
 	# Disable further dashing if meter is depleted
 	if player.flymeter_current_amount >= 1:
 		player.can_dash = true

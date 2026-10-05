@@ -17,7 +17,7 @@ class_name Player extends CharacterBody2D
 @onready var sfx = $Sfx
 @onready var voice = $Voice
 @onready var invincibity: Timer = $invincibity
-@onready var boost = $Boost
+@onready var boost_sprite = $Boost
 
 @export_group("Node References")
 @export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
@@ -348,7 +348,8 @@ func _physics_process(delta):
 	# ── Rotation & Sprite Alignment ────────────────────────────────────
 	$CollisionShape2D.rotation = rot           # Collision shape snaps to floor angle immediately
 	$Sprite2D.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)
-	boost.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)  # Sprite smoothly follows
+	if grounded:
+		boost_sprite.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)  # Sprite smoothly follows
 
 	if is_on_floor():
 		# ── Momentum Conversion on Landing ────────────────────────────
@@ -1119,10 +1120,7 @@ func handle_air_logic(delta, is_grounded):
 	if not hang and not grinding and not dashed:
 		hangable = true
 		
-	boost.rotation = lerp_angle(
-	$Sprite2D.rotation,
-	velocity.angle(),
-	0.5)
+	boost_sprite.rotation = lerp_angle($Sprite2D.rotation,0,0.5)
 	
 	if not hang:
 		control_lock = false  # Restore directional input in the air
@@ -1326,7 +1324,7 @@ func roll():
 func switch_direction(_direction):
 	# Flip sprite to face the correct way
 	sprite.flip_h = direction == -1
-	boost.flip_h = direction == -1
+	boost_sprite.flip_h = direction == -1
 
 # ─────────────────────────────────────────────
 # Special Moves
@@ -1460,7 +1458,10 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		can_dash = true
 		dashed = false
 		motion.y = 0  # Snap vertical motion to rail level
-
+		is_boosting = false
+		boost_sprite.visible = false
+		GlobalCanvasLayer.boost = false
+		
 	if area.is_in_group("Player") and flying:
 		# Show the directional arrow when near a player while flying
 		# (signals to the other player that this character can carry them)

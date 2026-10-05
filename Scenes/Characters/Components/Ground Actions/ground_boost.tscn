@@ -5,7 +5,6 @@
 
 [node name="GroundBoost" type="Node" unique_id=861378271]
 script = ExtResource("1_mdk3u")
-meter_cost_inital = 25.0
 
 [node name="BoostStartaudio" type="AudioStreamPlayer" parent="." unique_id=2015779484]
 stream = ExtResource("2_44p1x")
