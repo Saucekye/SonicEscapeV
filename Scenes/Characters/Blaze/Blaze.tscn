@@ -2509,7 +2509,6 @@ libraries/ = SubResource("AnimationLibrary_l6ohk")
 [node name="Boost" type="AnimatedSprite2D" parent="." unique_id=956632889]
 modulate = Color(1, 1, 1, 0.64705884)
 z_index = 1
-position = Vector2(-0.16, 0.04)
 scale = Vector2(0.017250001, 0.018625)
 sprite_frames = SubResource("SpriteFrames_6pixe")
 autoplay = "shockwave"

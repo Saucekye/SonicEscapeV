@@ -17,7 +17,7 @@ class_name Player extends CharacterBody2D
 @onready var sfx = $Sfx
 @onready var voice = $Voice
 @onready var invincibity: Timer = $invincibity
-@onready var boost_sprite = $Boost
+@onready var boost_sprite : AnimatedSprite2D = $Boost
 
 @export_group("Node References")
 @export var is_player := true        ## If false, this character is AI-controlled and will follow a player node
@@ -1057,6 +1057,13 @@ func handle_floor_logic(delta):
 			trail.offset = trail_dash_max_position
 		else:
 			trail.offset = trail_position
+			
+	# Fix the position of the boost sprite base on direction
+		if is_boosting:
+			if direction == 1:
+				boost_sprite.position = Vector2(-0.16, 0.04)
+			else:
+				boost_sprite.position = Vector2(0.16, 0.04)
 			
 		# Reset crouching if now moving forward while not in ball mode
 		if abs(motion.x) > 0 and ball == false:
