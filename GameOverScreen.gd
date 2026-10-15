@@ -75,7 +75,7 @@ func _ready():
 	new_dialogue = load("res://dialogue/4.dialogue")
 	balloon.dialogue_resource = new_dialogue
 	balloon.start(new_dialogue, "start")
-	$AudioStreamPlayer.stream = load("res://FinalCutscene/0908.MP3")
+	$AudioStreamPlayer.stream = load("res://FinalCutscene/Hug.MP3")
 	$AudioStreamPlayer.play()
 	$AnimationPlayer.play("play4")
 	

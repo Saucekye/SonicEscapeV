@@ -12,13 +12,14 @@ func _ready():
 	$CanvasLayer/TextSprite2.visible = false
 	
 	$CanvasLayer/Label.visible = false
+	$CanvasLayer/Button.visible = false
 	
 	$CanvasLayer/TextSprite.modulate.a = 0
 	$CanvasLayer/TextSprite2.modulate.a = 0
 	$CanvasLayer/Label.modulate.a = 0
 		
 	randomize()
-	if randf() <= 0.25 and (Test.level != 0 and Test.level != 24):
+	if randf() <= 0.25 and (Test.level != 0 and Test.level != 24 and Test.level != 20):
 		use_alt = true
 		nights = false
 		$Node2D.visible = false
@@ -26,7 +27,7 @@ func _ready():
 		$Sprite2D.visible = false
 		$AnimatedSprite2D.visible = true
 		$NiGHTS.visible = false
-	elif randf() > 0.25 and randf() < 0.5 and (Test.level != 0 and Test.level != 24):
+	elif randf() > 0.25 and randf() < 0.5 and (Test.level != 0 and Test.level != 24 and Test.level != 20):
 		nights = true
 		$Node2D.visible = true
 		$Node2D4.visible = true
@@ -76,6 +77,7 @@ func _on_area_exited(area: Area2D) -> void:
 		$CanvasLayer/TextSprite.visible = false   
 		$CanvasLayer/TextSprite2.visible = false  
 		$CanvasLayer/Label.visible = false
+		$CanvasLayer/Button.visible = false
 		if use_alt and area.get_parent().is_player:
 			$CanvasLayer/PageSfx.play()
 			
@@ -136,18 +138,18 @@ Swap: V
 
 MOVES
 
-Spin Dash: ↓ + Jump
-Ball Curl: ↓ + Move
-Boost: Dash + Forward + 25 Meter Gauge
+Spin Dash: Down & Jump
+Roll: Down & Move
+Boost: Dash & Forward & 25 Meter Gauge
 
-Kick: (AIR) Jump + Jump
-Stomp: (AIR) ↓ + Dash
-Cyclone: (AIR) Dash + Forward + 50 Meter Gauge
-Flip: (AIR) Dash + ↑ + 50 Meter Gauge
+Kick: (AIR) Jump & Jump
+Stomp: (AIR) Down & Dash
+Cyclone: (AIR) Dash & Forward & 50 Meter Gauge
+Flip: (AIR) Dash & Up & 50 Meter Gauge
 
 
 WE WILL FIND HIM...
-FLOOR 20"""
+FLOOR 0..."""
 
 			4:
 				$CanvasLayer/Label.text = """I lay here
@@ -262,7 +264,16 @@ It makes you incomplete.
 
 All that's left to be pondered is how much longer until everything else falls apart. ~ kevin"""
 			20:
-				$CanvasLayer/Label.text = """Floor 20..."""
+				$CanvasLayer/Label.text = """		Hang on to your dreams,
+		the future is built on dreams
+	~ metalsonikfan1
+
+				In Honor of
+				
+				SilentDProductions
+				BlackDevilX
+				Etika
+				Charlotte"""
 			24:
 				$CanvasLayer/Label.text = """Life isn't about what you have,
 how talented you are,
@@ -273,12 +284,14 @@ The memories you have,
 and the lessons you learn from them.
 				
 Now go make more memories!"""
+			28:
+				$CanvasLayer/Label.text = """this really was a sonic escape ~ Neonocto"""
 			_:
-				$CanvasLayer/Label.text = "Current Floor: " + str(Test.level)
+				$CanvasLayer/Label.text = "Current Floor: " + str(20 - Test.level)
 
 
 func _on_timer_timeout() -> void:
-	if Test.level > 0:
+	if Test.level > 0 and Test.level != 20:
 		if musicplay == false and use_alt == false:
 			if Test.level == 24:
 				$AudioStreamPlayer2D.stream = load("res://Scenes/Music/0903.MP3")
@@ -307,6 +320,8 @@ func toggle_text():
 
 	# If currently invisible → fade in
 	if sprite.modulate.a == 0:
+		# Hide the button on floor 0 and on floor 24 and beyond
+		$CanvasLayer/Button.visible = Test.level != 0 and Test.level < 24
 		sprite.visible = true
 		label.visible = true
 		
@@ -321,4 +336,30 @@ func toggle_text():
 		tween.finished.connect(func():
 			sprite.visible = false
 			label.visible = false
+			$CanvasLayer/Button.visible = false
 		)
+
+
+func _on_button_pressed() -> void:
+	var sprite = $CanvasLayer/TextSprite
+	if use_alt:
+		sprite = $CanvasLayer/TextSprite2
+		
+	var label = $CanvasLayer/Label
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	GlobalSignals.emit_signal("vision")
+
+	
+	tween.tween_property(sprite, "modulate:a", 0.0, 0.3)
+	tween.tween_property(label, "modulate:a", 0.0, 0.3)
+		
+		# After fade finishes, hide them
+	tween.finished.connect(func():
+		sprite.visible = false
+		label.visible = false
+		$CanvasLayer/Button.visible = false
+		await get_tree().create_timer(3.0).timeout
+		get_tree().change_scene_to_file("res://FinalCutscene/vision.tscn")
+)

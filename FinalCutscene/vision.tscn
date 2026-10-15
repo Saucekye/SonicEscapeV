@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://cx42cvkuqiw04"]
+
+[ext_resource type="Script" uid="uid://cvwg47yl8rgad" path="res://vision.gd" id="1_6vqfo"]
+[ext_resource type="Texture2D" uid="uid://c33gynsgd6dyq" path="res://Vision/vision2.png" id="5_7hj0o"]
+[ext_resource type="Texture2D" uid="uid://fnyl8hww88jg" path="res://Vision/vision1.png" id="5_qmpql"]
+[ext_resource type="Texture2D" uid="uid://burq3mamffp14" path="res://Vision/vision3.png" id="6_jw1qh"]
+[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="7_f8uu4"]
+[ext_resource type="Texture2D" uid="uid://ct2aeaue5g7se" path="res://Vision/vision4.png" id="7_io4ok"]
+[ext_resource type="Texture2D" uid="uid://b6busly1bxmwg" path="res://Vision/vision5.png" id="8_6vqfo"]
+[ext_resource type="Resource" uid="uid://dnyan6fde0a0q" path="res://FinalCutscene/Final1.dialogue" id="8_8qktd"]
+[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="8_io4ok"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7hj0o"]
+atlas = ExtResource("5_qmpql")
+region = Rect2(0, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jw1qh"]
+atlas = ExtResource("5_qmpql")
+region = Rect2(1648, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_io4ok"]
+atlas = ExtResource("5_7hj0o")
+region = Rect2(0, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vqfo"]
+atlas = ExtResource("5_7hj0o")
+region = Rect2(1648, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur60c"]
+atlas = ExtResource("6_jw1qh")
+region = Rect2(0, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h16tc"]
+atlas = ExtResource("6_jw1qh")
+region = Rect2(1648, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ew65t"]
+atlas = ExtResource("7_io4ok")
+region = Rect2(0, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqh1v"]
+atlas = ExtResource("7_io4ok")
+region = Rect2(1648, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdqrq"]
+atlas = ExtResource("8_6vqfo")
+region = Rect2(0, 0, 1648, 1260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8uu4"]
+atlas = ExtResource("8_6vqfo")
+region = Rect2(1648, 0, 1648, 1260)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hj0o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jw1qh")
+}],
+"loop": 1,
+"name": &"vision1",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_io4ok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6vqfo")
+}],
+"loop": 1,
+"name": &"vision2",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur60c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h16tc")
+}],
+"loop": 1,
+"name": &"vision3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ew65t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aqh1v")
+}],
+"loop": 1,
+"name": &"vision4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdqrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8uu4")
+}],
+"loop": 1,
+"name": &"vision5",
+"speed": 5.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kofwu"]
+shader = ExtResource("8_io4ok")
+shader_parameter/brightnessMult = 2.0000000298024
+shader_parameter/wiggleMult = 0.005
+shader_parameter/chromaticAberrationOffset = 0.001
+
+[node name="Node2D" type="Node2D" unique_id=254051684]
+script = ExtResource("1_6vqfo")
+
+[node name="ExampleBalloon" parent="." unique_id=1336823390 instance=ExtResource("7_f8uu4")]
+dialogue_resource = ExtResource("8_8qktd")
+next_action = &""
+skip_action = &""
+skippable_dialogue = false
+
+[node name="Balloon" parent="ExampleBalloon" index="0" unique_id=549891630]
+offset_top = -8.0
+offset_bottom = -8.0
+
+[node name="Miku" parent="ExampleBalloon/Balloon" index="0" unique_id=834904185]
+visible = false
+
+[node name="Button" type="Button" parent="ExampleBalloon" unique_id=652157215]
+offset_left = 1320.0
+offset_top = 592.0
+offset_right = 1444.0
+offset_bottom = 624.0
+scale = Vector2(2, 2)
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+text = "SKIP"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=201185711]
+volume_db = -8.0
+bus = &"Music"
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2050918039]
+offset_left = -59.0
+offset_top = -31.0
+offset_right = 1645.0
+offset_bottom = 937.0
+color = Color(0.8117647, 0.8117647, 0.8117647, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1247842396]
+position = Vector2(784, 352)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_kofwu")
+animation = &"vision5"
+autoplay = "vision1"
+
+[node name="ColorRect3" type="ColorRect" parent="." unique_id=327153738]
+material = SubResource("ShaderMaterial_kofwu")
+offset_left = -224.0
+offset_top = -128.0
+offset_right = 1872.0
+offset_bottom = 1040.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1145473310]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=361702800]
+offset_left = -161.0
+offset_top = -88.0
+offset_right = 1731.0
+offset_bottom = 1002.0
+color = Color(0, 0, 0, 1)
+
+[connection signal="next" from="." to="ExampleBalloon" method="_on_node_2d_next"]
+[connection signal="skip" from="." to="ExampleBalloon" method="_on_node_2d_skip"]
+[connection signal="pressed" from="ExampleBalloon/Button" to="." method="_on_button_pressed"]
+
+[editable path="ExampleBalloon"]

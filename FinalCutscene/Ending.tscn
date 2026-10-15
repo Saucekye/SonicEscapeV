@@ -948,15 +948,12 @@ next_action = &""
 skip_action = &""
 skippable_dialogue = false
 
-[node name="Balloon" parent="ExampleBalloon" index="0"]
+[node name="Balloon" parent="ExampleBalloon" index="0" unique_id=549891630]
 offset_top = -8.0
 offset_bottom = -8.0
 
-[node name="Miku" parent="ExampleBalloon/Balloon" index="0"]
+[node name="Miku" parent="ExampleBalloon/Balloon" index="0" unique_id=834904185]
 visible = false
-
-[node name="AnimationPlayer" parent="ExampleBalloon/Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/Control" index="0"]
-autoplay = &"progress"
 
 [node name="Button" type="Button" parent="ExampleBalloon" unique_id=652157215]
 offset_left = 1320.0

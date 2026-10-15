@@ -16,7 +16,7 @@ var current_flash = 0
 var is_in_intro : bool = false
 
 func _ready() -> void:
-	$Node2D/Label.text = "FLOOR " + str(Test.level) 
+	$Node2D/Label.text = "FLOOR " + str(20 - Test.level)
 	if Test.music == false:
 		Test.music = true
 	# Set initial states for optional elements

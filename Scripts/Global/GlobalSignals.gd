@@ -14,4 +14,8 @@ signal disable_boss_ui(disabled : bool)
 
 signal complete
 
+signal vision
+
 signal camerashake
+
+signal black

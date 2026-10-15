@@ -31,6 +31,7 @@ var characters: Array[CharacterBody2D] = []
 var current_character_index: int = 0
 
 func _ready() -> void:
+	GlobalSignals.connect("black", black)
 	var character_order = [Test.characterone, Test.charactertwo, Test.characterthree]
 	
 	for name in character_order:
@@ -82,6 +83,8 @@ func _ready() -> void:
 	camera_instance.position = Vector2.ZERO
 
 	update_character_states()
+	
+
 
 
 func setup_characters():
@@ -249,3 +252,7 @@ func _on_touch_screen_button_joystick_change(new_pos: Vector2) -> void:
 	for i in range(characters.size()):
 		if i != current_character_index:  # Skip current character
 			characters[i].stickdir = new_pos
+			
+func black() -> void:
+	modulate = Color(0, 0, 0, 1)
+	
