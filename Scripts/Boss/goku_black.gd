@@ -80,7 +80,7 @@ func _ready():
 	current_pos_idx = 0
 	sprite_base_position = sprite.position
 	default_action_timer_wait = action_timer.wait_time
-	max_health = min(50, max(8, Test.level * 2))
+	max_health = min(50, max(10, Test.level * 2))
 	health = max_health
 
 func _on_caine_start_goku_black() -> void:

@@ -2358,6 +2358,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
+debug_prevent_death = true
 audio_files = [ExtResource("2_sex4o"), ExtResource("3_bxdx6"), ExtResource("4_n0mdj")]
 icon_background = ExtResource("5_bxdx6")
 trail_position = Vector2(0, 3)
@@ -2518,7 +2519,6 @@ z_index = 1
 position = Vector2(-0.040000007, -7.450581e-09)
 scale = Vector2(0.017250001, 0.018625)
 sprite_frames = SubResource("SpriteFrames_gfjyc")
-animation = &"shockwave"
 autoplay = "shockwave"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

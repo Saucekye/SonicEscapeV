@@ -40,9 +40,9 @@ func _on_area_entered(area: Area2D) -> void:
 		var spring_rotation : float = self.rotation
 		if ignore_rotation:
 			spring_rotation = deg_to_rad(independent_rotation)
-		var player_body = area.get_parent()
+		var player_body : Player = area.get_parent()
 		player_body.apply_spring_boost(spring_velocity.rotated(spring_rotation))
-		
+		player_body.is_boosting = false
 		#$Sprite2D/AnimationPlayer.play("play")
 
 

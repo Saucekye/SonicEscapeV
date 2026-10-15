@@ -3,7 +3,7 @@ extends Node2D
 @onready var timer: Timer = $Timer
 @onready var attackbox: Area2D = $Attackbox
 
-@export var lifetime : int = 10
+@export var lifetime : float = 10
 
 const PROJECTILE_SCALE : float = 3.0
 
