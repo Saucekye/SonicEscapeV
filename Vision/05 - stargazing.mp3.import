@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bh813c0k0bhta"
+path="res://.godot/imported/05 - stargazing.mp3-6ff0b1bc30fa465c14b1ea9989630c4f.mp3str"
+
+[deps]
+
+source_file="res://Vision/05 - stargazing.mp3"
+dest_files=["res://.godot/imported/05 - stargazing.mp3-6ff0b1bc30fa465c14b1ea9989630c4f.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

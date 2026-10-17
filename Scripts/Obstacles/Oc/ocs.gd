@@ -41,13 +41,13 @@ var current_player: Node2D = null
 
 func _ready():
 	if textures.size() > 0:
-		var idx = 16
+		var idx = randi_range(0, textures.size() - 1)
 		$Sprite2D.texture = textures[idx]
 
 		if idx == 16:
 			$Sprite2D.scale = Vector2(0.0015, 0.0015)
 		else:
-			$Sprite2D.scale = Vector2(1, 1)
+			$Sprite2D.scale = Vector2(0.011,0.011)
 
 		if idx < item_labels.size():
 			$Label.text = item_labels[idx]

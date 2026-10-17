@@ -8,17 +8,17 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		if body.is_player:
+			GlobalSignals.emit_signal("camerashake")
 			$Sprite2D.play("default")
+			
 	if body.is_in_group("Miku"):
 		GlobalCanvasLayer.tricks += 10
 
 func _on_sprite_2d_animation_finished() -> void:
 			GlobalCanvasLayer.tricks += 1
 			Test.end = true
-			
-			
 			if levelover == false:
-				if Test.rest == false:
+				if Test.rest == false and Test.final == false:
 					Test.level += 1
 				levelover = true
 				if Test.level % 4 == 0:

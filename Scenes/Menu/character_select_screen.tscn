@@ -891,6 +891,19 @@ position = Vector2(-8.000002, -10.666671)
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("13_dhxux")
 
+[node name="Sage" type="AnimatedSprite2D" parent="Charborder" unique_id=1635988817]
+modulate = Color(0.41568628, 0.41568628, 0.41568628, 1)
+position = Vector2(-352, 576)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_thrnm")
+autoplay = "default"
+frame_progress = 0.2057189
+
+[node name="Sageicon" type="Sprite2D" parent="Charborder/Sage" unique_id=1073617707]
+position = Vector2(-8.000002, -8.000004)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("13_dhxux")
+
 [node name="Rouge" parent="Charborder" unique_id=606043377 instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 150)
 texture = ExtResource("13_g0mmr")

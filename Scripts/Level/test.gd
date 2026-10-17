@@ -16,6 +16,7 @@ var trick = ""
 var quit = false
 var ridenemies = false
 var fail = false
+var final = false
 var level = 0
 var complete = false
 var current_background : int = 0

@@ -12,9 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://bpahe3omtt5q" path="res://Sprites/Boss/Super Silver/soupsilver-Recovered - organized.png" id="9_snxq0"]
 [ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="10_ohs0x"]
 [ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="12_ip035"]
+[ext_resource type="Texture2D" uid="uid://skdu172y6sb1" path="res://misc/castle.png" id="13_4ermd"]
 [ext_resource type="AudioStream" uid="uid://dhlgpaqsxpg6p" path="res://Music/Boss/Super Silver/[Absolution OST] Warrior of Hope - Silver's Theme  2026 SPRING SHOWCASE AWARD WINNING TRACK.mp3" id="14_6fo3o"]
+[ext_resource type="Texture2D" uid="uid://dnjq1x3o8udkj" path="res://misc/rockwater2.png" id="14_koqma"]
+[ext_resource type="Texture2D" uid="uid://kbx1hqnnqie8" path="res://misc/rockwater.png" id="15_rnhnv"]
 [ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="15_wo7un"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_koqma"]
+[ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="16_rnhnv"]
 [ext_resource type="Texture2D" uid="uid://6ugp7vemsy8w" path="res://FinalCutscene/0.png" id="16_tem66"]
 [ext_resource type="Texture2D" uid="uid://dneopf25gwtry" path="res://FinalCutscene/1.png" id="17_ikhev"]
 [ext_resource type="Texture2D" uid="uid://vijcysqtr6po" path="res://FinalCutscene/2.png" id="18_yc7j7"]
@@ -29,7 +33,6 @@
 [ext_resource type="Texture2D" uid="uid://ccdnnmquwjj5j" path="res://misc/Effect 6.png" id="24_ohs0x"]
 [ext_resource type="Script" uid="uid://dmiejotonol2p" path="res://Scenes/LevelChunks/Skip.gd" id="25_4ermd"]
 [ext_resource type="AudioStream" uid="uid://c65me2e8t7ebg" path="res://misc/lightningsfx.MP3" id="25_6omj1"]
-[ext_resource type="Texture2D" uid="uid://e7y7tuqxku37" path="res://Sprites/Boss/Super Silver/lunaranoc-export-Recovered - organized.png" id="26_4ermd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yyfmi"]
 size = Vector2(134.0482, 136.00002)
@@ -1563,6 +1566,12 @@ size = Vector2(139.99973, 99.99997)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3iy0"]
 size = Vector2(106.666695, 76.721344)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kofwu"]
+shader = ExtResource("16_rnhnv")
+shader_parameter/brightnessMult = 4.0
+shader_parameter/wiggleMult = 0.005
+shader_parameter/chromaticAberrationOffset = 0.001
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wlcxu"]
 shader = ExtResource("6_ikhev")
 shader_parameter/rain_amount = 200.0
@@ -2401,6 +2410,45 @@ debug_color = Color(0.97221905, 0.13375625, 0.26391807, 0.41960785)
 [node name="CanvasLayer" type="CanvasLayer" parent="Node2D/Sprite2D" unique_id=1968440152]
 layer = -1
 
+[node name="Castle" type="Sprite2D" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1868282602]
+modulate = Color(0.46, 0.46, 0.46, 1)
+z_index = -101
+position = Vector2(827, 503)
+scale = Vector2(2, 2)
+texture = ExtResource("13_4ermd")
+
+[node name="ColorRect6" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=621196762]
+z_index = -5
+offset_left = -384.0
+offset_top = 605.0
+offset_right = 7400.0
+offset_bottom = 1285.0
+color = Color(0.12223644, 0.08949488, 0.26809186, 1)
+
+[node name="ColorRect7" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1692046396]
+z_index = -5
+offset_left = -352.0
+offset_top = 621.0
+offset_right = 7432.0
+offset_bottom = 1301.0
+color = Color(0.18039216, 0.22352941, 0.5529412, 1)
+
+[node name="ColorRect8" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1504296774]
+z_index = -5
+offset_left = -368.0
+offset_top = 653.0
+offset_right = 7416.0
+offset_bottom = 1333.0
+color = Color(0.18039216, 0.3764706, 0.67058825, 1)
+
+[node name="ColorRect9" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1316529437]
+z_index = -5
+offset_left = -392.0
+offset_top = 677.0
+offset_right = 7392.0
+offset_bottom = 1357.0
+color = Color(0.21960784, 0.6784314, 0.827451, 1)
+
 [node name="ColorRect" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1011284269]
 anchors_preset = -1
 offset_left = -472.0
@@ -2409,6 +2457,32 @@ offset_right = -432.0
 offset_bottom = -472.00006
 scale = Vector2(93.18001, 45.59333)
 color = Color(1, 1, 1, 0)
+
+[node name="Rockwater2" type="Sprite2D" parent="Node2D/Sprite2D/CanvasLayer" unique_id=447172082]
+z_index = -5
+position = Vector2(358.125, 679.5)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("14_koqma")
+
+[node name="Rockwater" type="Sprite2D" parent="Node2D/Sprite2D/CanvasLayer" unique_id=1278024946]
+z_index = -5
+position = Vector2(1315.1251, 677.5)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("15_rnhnv")
+
+[node name="RED" type="ColorRect" parent="Node2D/Sprite2D/CanvasLayer" unique_id=467182996]
+material = SubResource("ShaderMaterial_kofwu")
+offset_left = -6.0
+offset_top = -430.99997
+offset_right = 50.244446
+offset_bottom = -390.44443
+scale = Vector2(45, 45)
+
+[node name="RED" type="CanvasModulate" parent="Node2D/Sprite2D/CanvasLayer/RED" unique_id=37963001]
+z_index = 10
+position = Vector2(0.13333334, 9.577777)
+scale = Vector2(0.022222223, 0.022222223)
+color = Color(1, 0, 0.016666412, 1)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Node2D/Sprite2D" unique_id=1599625422]
 
@@ -2489,17 +2563,14 @@ next_action = &""
 skip_action = &""
 skippable_dialogue = false
 
-[node name="Balloon" parent="ExampleBalloon" index="0"]
+[node name="Balloon" parent="ExampleBalloon" index="0" unique_id=549891630]
 offset_left = 8.0
 offset_top = -664.0
 offset_right = 8.0
 offset_bottom = -664.0
 
-[node name="Miku" parent="ExampleBalloon/Balloon" index="0"]
+[node name="Miku" parent="ExampleBalloon/Balloon" index="0" unique_id=834904185]
 visible = false
-
-[node name="AnimationPlayer" parent="ExampleBalloon/Balloon/MarginContainer/PanelContainer/MarginContainer/HBoxContainer/Control" index="0"]
-autoplay = &"progress"
 
 [node name="Button" type="Button" parent="ExampleBalloon" unique_id=495504044]
 offset_left = 1328.0
@@ -2523,7 +2594,6 @@ motion_scale = Vector2(0.15, 0.15)
 z_index = -3
 position = Vector2(784.00006, 504)
 scale = Vector2(2.25, 2.25)
-texture = ExtResource("26_4ermd")
 hframes = 14
 vframes = 7
 
@@ -2568,7 +2638,6 @@ volume_db = -10.0
 [connection signal="dialogue" from="Node2D" to="ExampleBalloon" method="_on_node_2d_dialogue"]
 [connection signal="dialogue2" from="Node2D" to="AnimatedSprite2D" method="_on_node_2d_dialogue_2"]
 [connection signal="end" from="Node2D" to="." method="_on_node_2d_end"]
-[connection signal="lunara" from="Node2D" to="Node" method="_on_node_2d_lunara"]
 [connection signal="over" from="Node2D" to="Node" method="_on_node_2d_over"]
 [connection signal="playcutscene" from="Node2D" to="AnimatedSprite2D" method="_on_node_2d_playcutscene"]
 [connection signal="update_health_bar" from="Node2D" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]

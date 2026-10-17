@@ -62,6 +62,8 @@ func _on_node_2d_dialogue_2() -> void:
 
 	var balloon = get_parent().get_node("ExampleBalloon")
 	var new_dialogue: DialogueResource = load("res://FinalCutscene/Final3.dialogue")
+	if Test.level > 24:
+		new_dialogue = load("res://FinalCutscene/Final34.dialogue")
 	balloon.dialogue_resource = new_dialogue
 	balloon.start(new_dialogue, "start")
 	if not await wait(3, id): return
@@ -89,3 +91,7 @@ func _on_button_pressed() -> void:
 
 	emit_signal("skip")  # tells other nodes to jump to the end state
 	emit_signal("music")
+	
+func _ready() -> void:
+	if Test.level > 24:
+		visible = false

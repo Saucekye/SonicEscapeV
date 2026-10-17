@@ -1,6 +1,7 @@
 extends ColorRect
 
 @onready var fade_animation_player: AnimationPlayer = $AnimationPlayer
+signal goal
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -8,6 +9,7 @@ func _ready() -> void:
 	Test.fail = false
 	GlobalSignals.connect("game_over", _on_game_over)
 	GlobalSignals.connect("complete", _on_complete)
+	GlobalSignals.connect("vision", _on_vision)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -27,3 +29,7 @@ func _on_game_over():
 func _on_complete():
 	fade_animation_player.play("complete")
 	Test.complete = true
+	
+func _on_vision():
+	fade_animation_player.play("vision")
+	

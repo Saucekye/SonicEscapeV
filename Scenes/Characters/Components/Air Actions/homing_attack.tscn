@@ -9,3 +9,4 @@ script = ExtResource("1_d4ygs")
 [node name="Node2D" type="Node2D" parent="." unique_id=1141500201 node_paths=PackedStringArray("homing_attack")]
 script = ExtResource("2_nn7gq")
 homing_attack = NodePath("..")
+show_range = false

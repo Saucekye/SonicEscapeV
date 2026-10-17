@@ -10,19 +10,17 @@ func _ready():
 	disable_character(character1)
 	disable_character(character2)
 
-	# Keep both disabled on levels 0 and 24
-	if Test.level == 0 or Test.level == 24:
+	# Keep both disabled on levels 0, 20, and 24
+	if Test.level == 0 or Test.level == 20 or Test.level == 24:
 		return
 
-	# Randomly enable one or neither
-	match randi() % 3:
-		0:
-			enable_character(character1)
-		1:
-			enable_character(character2)
-		2:
-			# Neither character is enabled
-			pass
+	# Character 2 is ALWAYS enabled on every other floor
+	enable_character(character2)
+
+	# Character 1 has a 50% chance to also be enabled
+	if randi() % 2 == 0:
+		enable_character(character1)
+
 
 func disable_character(character: CharacterBody2D):
 	character.visible = false
@@ -31,6 +29,7 @@ func disable_character(character: CharacterBody2D):
 	var collision = character.get_node_or_null("CollisionShape2D")
 	if collision:
 		collision.disabled = true
+
 
 func enable_character(character: CharacterBody2D):
 	character.visible = true

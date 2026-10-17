@@ -538,6 +538,7 @@ frame_progress = 0.6626423
 speed_scale = 0.5
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2079281192]
+layer = 100
 
 [node name="TextSprite" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=1484345449]
 modulate = Color(1, 1, 1, 0.6627451)
@@ -580,10 +581,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1040.0
-offset_top = -215.99998
-offset_right = 446.0
-offset_bottom = 13.0
+offset_left = -608.0
+offset_top = -240.0
+offset_right = 83.714355
+offset_bottom = 40.42859
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.4, 1.4)
@@ -605,10 +606,25 @@ position = Vector2(1272.0002, 512.00006)
 scale = Vector2(1.25, 1.25)
 stream = ExtResource("7_wgruj")
 
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=1051260131]
+offset_left = 912.0
+offset_top = 664.0
+offset_right = 1184.0
+offset_bottom = 736.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+theme_override_font_sizes/font_size = 30
+text = "Watch
+Vision"
+
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1443363725]
 position = Vector2(2680, 640)
 stream = ExtResource("8_sopqj")
-max_distance = 900.0
+max_distance = 500.0
 
 [node name="Timer" type="Timer" parent="." unique_id=1611412778]
 
@@ -633,4 +649,5 @@ frame_progress = 0.31051525
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

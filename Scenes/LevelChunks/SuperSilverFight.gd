@@ -3,7 +3,6 @@ extends Node2D
 enum BossState {INTRO, FLY, ATTACK1, ATTACK2, ATTACK3, ATTACK4, FALLING, PHASE2TRANSITION, DEAD}
 signal end
 signal dialogue2
-signal lunara
 signal over
 
 @export var base_projectile_lifetime : float = 6.0
@@ -68,42 +67,47 @@ signal dialogue
 
 func _start():
 	randomize()
-	if begin: return
+	if Test.level < 24:
+		if begin: return
 
-	anim.play("introto1")
-	await anim.animation_finished
-	if begin: return
+		anim.play("introto1")
+		await anim.animation_finished
+		if begin: return
 
-	anim.play("introto1_2")
-	get_parent().get_node("AnimatedSprite2D").visible = true
-	emit_signal("playcutscene")
-	emit_signal("dialogue")
-	await get_tree().create_timer(40).timeout
-	if begin: return
+		anim.play("introto1_2")
+		get_parent().get_node("AnimatedSprite2D").visible = true
+		emit_signal("playcutscene")
+		emit_signal("dialogue")
+		await get_tree().create_timer(40).timeout
+		if begin: return
 
-	anim.play("intro_2")
-	await anim.animation_finished
-	if begin: return
+		anim.play("intro_2")
+		await anim.animation_finished
+		if begin: return
 
-	anim.play("intro_3")
-	await get_tree().create_timer(7).timeout
-	if begin: return
+		anim.play("intro_3")
+		await get_tree().create_timer(7).timeout
+		if begin: return
 
-	anim.play("intro_4")
-	await anim.animation_finished
-	if begin: return
+		anim.play("intro_4")
+		await anim.animation_finished
+		if begin: return
 
-	anim.play("intro_5")
-	await get_tree().create_timer(3.5).timeout
-	if begin: return
+		anim.play("intro_5")
+		await get_tree().create_timer(3.5).timeout
+		if begin: return
 
-	anim.play("intro_6")
-	await anim.animation_finished
-	if begin: return
+		anim.play("intro_6")
+		await anim.animation_finished
+		if begin: return
 
-	_finish_intro()
+		_finish_intro()
+	else:
+		$AudioStreamPlayer.play()
+		_finish_intro()
 
 func _ready():
+	$Sprite2D/CanvasLayer/RED.visible = false
 	$TextureRect2.visible = false
 	$TextureRect3.visible = false
 	sprite_mat = sprite.material as ShaderMaterial
@@ -158,8 +162,12 @@ func _process(delta):
 			Engine.time_scale = 1.0
 			
 			if sprite.global_position.y > get_viewport_rect().size.y + 200:
-				await get_tree().create_timer(2).timeout
-				GlobalSignals.emit_signal("complete")
+				if Test.level < 24:
+					await get_tree().create_timer(2).timeout
+					GlobalSignals.emit_signal("complete")
+				else:
+					emit_signal("end")
+					queue_free()
 			return
 
 		if state == BossState.FALLING:
@@ -219,15 +227,17 @@ func start_attack_loop():
 				await start_punch_attack()
 				next_attack = 1
 			elif next_attack == 1:
-				await start_attack2()
+				if Test.level > 24:
+					await start_attack2()
 				next_attack = 2
 			else:
-				await start_follow_attack()
+				await start_follow_attack() 
 				next_attack = 0
 		else:
 			
 			if next_attack == 0:
-				await start_attack2()
+				if Test.level > 24:
+					await start_attack2()
 				next_attack = 1
 			elif next_attack == 1:
 				await start_attack3()
@@ -604,13 +614,13 @@ func start_phase2() -> void:
 		emit_signal("dialogue2")
 	
 	phase = 2
-	health = 75
+	health = 50
 
 	
 	await get_tree().create_timer(9).timeout
-	update_health_bar.emit(health, 75)
+	update_health_bar.emit(health, 50)
 	var display = get_parent().get_node("BossHPDisplay")
-	display._set_new_boss(self, "LunaraNoctis")
+	display._set_new_boss(self, "Silver")
 	($TextureRect2.material as ShaderMaterial).set_shader_parameter("base_rain_speed", 1.0) 
 	velocity.y = 0
 	sprite.position = Vector2.ZERO
@@ -620,8 +630,9 @@ func start_phase2() -> void:
 	sprite.visible = false
 	
 	start_attack3()
+	$Sprite2D/CanvasLayer/RED.visible = true
+
 	await get_tree().create_timer(14).timeout
-	emit_signal("lunara")
 
 # --------------------------------------------------
 # REAL DEATH (Phase 2 only)

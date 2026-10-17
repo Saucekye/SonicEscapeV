@@ -13,6 +13,7 @@ extends Node2D
 @export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
+@export var chunk_finalrest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_RestFinal.tscn")
 
 # Load all level and boss chunks from an exported array
 @export var level_chunks : Array[PackedScene] 
@@ -79,15 +80,19 @@ func _spawn_next_boss_level():
 	# Its goal should reload the level WITHOUT incrementing Test.level (see Test.rest below).
 	if rest_done_level != Test.level:
 		rest_done_level = Test.level
-		_spawn_single_chunk(chunk_rest)
-		Test.rest = true
+		if Test.level == 20:
+			Test.rest = true
+			_spawn_single_chunk(chunk_finalrest)	
+		else:
+			Test.rest = true
+			_spawn_single_chunk(chunk_rest)
 		return
 
 	# Second visit (after the rest goal reloaded the level): spawn the boss
 	Test.rest = false
 	Pause.current_scene = "Boss"
 
-	if Test.level == 20:
+	if Test.level % 20 == 0:
 		_spawn_single_chunk(chunk_boss_final)
 		return
 
@@ -104,6 +109,7 @@ func _spawn_next_boss_level():
 
 # Spawns one chunk as the entire level
 func _spawn_single_chunk(scene: PackedScene):
+	Test.rest = true
 	var chunk := scene.instantiate()
 	add_child(chunk)
 	var start = chunk.get_node("Start").global_position
