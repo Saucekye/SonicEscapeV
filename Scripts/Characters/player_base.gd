@@ -251,7 +251,7 @@ func _process(_delta):
 		handle_stick_input()	
 	if debug_prevent_death and Input.is_action_just_pressed("debug"):
 		Test.rings = 999
-		Test.level = 19
+		Test.level = 3
 	
 func handle_stick_input():
 	# Translate the Y axis of the virtual stick into ui_up / ui_down action events
