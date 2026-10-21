@@ -6,6 +6,7 @@ var state = BossState.INTRO
 var max_health: int 
 var health: int
 var begin = false
+var attacking : bool = false
 
 var active_player: CharacterBody2D
 var axe_throw_position_x : float
@@ -31,10 +32,11 @@ signal end
 @onready var hitsfx: AudioStreamPlayer = $hitsfx
 @onready var flash_animation_player: AnimationPlayer = $DefeatFlashScreen/FlashAnimationPlayer
 @onready var anim: AnimationPlayer = $AnimationPlayer
-
+@onready var line_attack: CollisionShape2D = $HitBox/LineAttack
+@onready var line_2d: Line2D = $Line2D
 
 func _ready():
-	max_health = min(50, max(10, Test.level * 2))
+	max_health = min(50, max(15, Test.level * 2))
 	health = max_health
 
 func _start():
@@ -80,25 +82,22 @@ func _resync_active_player() -> void:
 func _process(delta):
 	# Always resync with whoever is currently in the "active_player" group.
 	_resync_active_player()
-	
-	face_player()
 
 	match state:
 		BossState.INTRO or BossState.IDLE:
 			return
 		BossState.ATTACK1:
-			attack_axe_throw(delta)
+			attack_line()
 		BossState.ATTACK2:
-			attack_axe_throw(delta)
+			attack_axe_throw()
 		BossState.DEAD:
 			_death_physics(delta)
 
 	if health <= 0 and not dying:
 		start_death()
 		
-func face_player():
-	if state == BossState.IDLE:
-		sprite.flip_h = active_player.global_position.x < global_position.x
+func flip(face_right : bool = true):
+	self.scale.x = -1 if face_right else 1
 
 func _on_action_timer_timeout() -> void:
 	var randAttack : float = RandomNumberGenerator.new().randf()
@@ -111,33 +110,72 @@ func _on_action_timer_timeout() -> void:
 		
 # ---------------- ATTACKS ----------------
 func attack_line():
-	pass
-	
-func attack_axe_throw(delta : float):
-	const AXE_THR0W_SPEED_SCALAR : float = 10.0
-	const AXE_FALL_SPEED_SCALAR : float = 10.0
-	if dying:
+	if dying or attacking:
 		return
-	elif anim.current_animation == "AttackTransition":
-		anim.play("Attack2to")
-		axe_throw_position_x = active_player.global_position.x
-	#elif anim.current_animation == "Attack2part1":
-		#self.global_position.x += delta * (self.global_position.y - axe_launch_marker.global_position.y)
-		#self.global_position.y += delta * (self.global_position.x - axe_throw_position_x)
-		#if self.global_position.y <= axe_launch_marker.global_position.y:
-		#print(self.global_position)
-		#print(axe_launch_marker.global_position.y)
-		#print(axe_throw_position_x)
+	attacking = true
+	anim.play("Attack1to")
+	await anim.animation_finished
+	anim.play("Attack1")
+	var wait_time : float = randf_range(1, 2)
+	await get_tree().create_timer(wait_time).timeout
+	anim.play("Attack1end")
+	
+func attack_line_create_collision() -> void:
+	var attack_stall_time : float = 0.15
+	var line_attack_duration : float = 0.3
+	var line_scalar : float = 50
+	var line_collision : SegmentShape2D = line_attack.shape
+	# Set the points for the segment collision
+	line_collision.a = Vector2.ZERO
+	line_collision.b = line_attack.to_local(active_player.global_position) * line_scalar
+	# Clear previous points and have the line visual match the collision
+	line_2d.clear_points()
+	line_2d.points = PackedVector2Array([line_collision.a, line_collision.b])
+	await get_tree().create_timer(attack_stall_time).timeout
+	line_attack.disabled = false
+	line_2d.visible = true
+	await get_tree().create_timer(line_attack_duration).timeout
+	line_attack.disabled = true
+	line_2d.visible = false
+	
+func attack_axe_throw():
+	var attack_pos_x_offset : float = 50 
+	attack_pos_x_offset *= -1 if self.scale.x > 0 else 1
+	if dying or attacking:
+		return
+	attacking = true
+	anim.play("Attack2to")
+	await anim.animation_finished
+	axe_throw_position_x = active_player.global_position.x + attack_pos_x_offset
+	anim.play("Attack2part1")		
+	var position_tween = get_tree().create_tween()
+	position_tween.tween_property(self, "global_position:x", axe_throw_position_x, 0.5)
+	await anim.animation_finished
+	position_tween.stop()
+	anim.play("Attack2part2")
+	await anim.animation_finished
+	anim.play("Attack2end")
 		
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "Attack2to":
-		anim.play("Attack2part1")
-		var position_tween = get_tree().create_tween()
-		var offset_flip = 1 if sprite.flip_h else -1
-		position_tween.tween_property(self, "global_position", Vector2(axe_throw_position_x - (AXE_THROW_POSITION_X_OFFSET * offset_flip), axe_launch_marker.global_position.y), 1)
-		await position_tween.finished
-		anim.play("Attack2part2")
+	if dying:
+		return
+	if anim_name == "Attack1end" or anim_name == "Attack2end":
+		state = BossState.IDLE
+		anim.play_backwards("AttackTransition")
+		attacking = false
+	if anim_name == "AttackTransition":
+		anim.play("Idle")
+		timer.start()
+		set_new_position()
 		
+func set_new_position() -> void:
+	var rndm = RandomNumberGenerator.new()
+	if rndm.randf() > 0.5:
+		self.global_position.x = position_1.global_position.x
+		flip(false)
+	else:
+		self.global_position.x = position_2.global_position.x	
+		flip(true)
 	
 # ---------------- DEATH ----------------
 func start_death():

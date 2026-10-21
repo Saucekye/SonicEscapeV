@@ -9,7 +9,7 @@ var has_interacted : bool = false
 signal makima_intro_done
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if !area.is_in_group("Playerattack") or has_interacted:
+	if !area.is_in_group("Player") or has_interacted:
 		return
 	var TWEEN_TIME : float = 1.5
 	var sprite_tween : Tween = get_tree().create_tween()
