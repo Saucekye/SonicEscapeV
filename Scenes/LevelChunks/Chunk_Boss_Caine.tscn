@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://dj6dyvulmbswy"]
+[gd_scene format=4 uid="uid://b2j14ewg07q0e"]
 
 [ext_resource type="Script" uid="uid://dbtqsaf35m10b" path="res://Scripts/Level/chunk_boss.gd" id="1_tsd7l"]
 [ext_resource type="PackedScene" uid="uid://cnlvwymtvcnxr" path="res://Scenes/Boss/Boss HP.tscn" id="2_m5pao"]
@@ -912,12 +912,11 @@ zoom = Vector2(1.1, 1.1)
 position = Vector2(1265.9999, 202)
 scale = Vector2(0.99999994, 1)
 
-[node name="Caine" type="Node2D" parent="." unique_id=1581126704 node_paths=PackedStringArray("boss_position", "projectile")]
+[node name="Caine" type="Node2D" parent="." unique_id=1581126704 node_paths=PackedStringArray("boss_position")]
 position = Vector2(1280, 400)
 scale = Vector2(1.5, 1.5)
 script = ExtResource("5_h5euk")
 boss_position = NodePath("../CaineBossMarker")
-projectile = NodePath("")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Caine" unique_id=683366815]
 sprite_frames = SubResource("SpriteFrames_m5pao")

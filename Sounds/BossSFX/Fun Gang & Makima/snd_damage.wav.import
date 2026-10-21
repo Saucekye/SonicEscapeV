@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bsf1jjg0gjt1n"
+path="res://.godot/imported/snd_damage.wav-212eacf9ce8fa77bbc1d67cb9469e14b.sample"
+
+[deps]
+
+source_file="res://Sounds/BossSFX/Fun Gang & Makima/snd_damage.wav"
+dest_files=["res://.godot/imported/snd_damage.wav-212eacf9ce8fa77bbc1d67cb9469e14b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

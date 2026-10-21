@@ -61,7 +61,7 @@ func _start():
 
 func _ready():
 	self.process_mode = Node.PROCESS_MODE_DISABLED
-	max_health = min(50, max(10, Test.level * 2))
+	max_health = min(50, max(15, Test.level * 2))
 	health = max_health
 	#get_parent().get_node("CharacterBody2D").visible = false
 	#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED

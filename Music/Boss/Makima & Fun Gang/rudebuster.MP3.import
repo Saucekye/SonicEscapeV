@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c2h0ebb4whap6"
+path="res://.godot/imported/rudebuster.MP3-0cdf14e2ceec1a5362a9f82f058c1f77.mp3str"
+
+[deps]
+
+source_file="res://Music/Boss/Makima & Fun Gang/rudebuster.MP3"
+dest_files=["res://.godot/imported/rudebuster.MP3-0cdf14e2ceec1a5362a9f82f058c1f77.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

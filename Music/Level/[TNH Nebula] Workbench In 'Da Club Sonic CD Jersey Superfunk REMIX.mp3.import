@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bb2lci2y22r03"
+path="res://.godot/imported/[TNH Nebula] Workbench In 'Da Club Sonic CD Jersey Superfunk REMIX.mp3-a3ede08dd41446cbd69f57dbc12f9759.mp3str"
+
+[deps]
+
+source_file="res://Music/Level/[TNH Nebula] Workbench In 'Da Club Sonic CD Jersey Superfunk REMIX.mp3"
+dest_files=["res://.godot/imported/[TNH Nebula] Workbench In 'Da Club Sonic CD Jersey Superfunk REMIX.mp3-a3ede08dd41446cbd69f57dbc12f9759.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

@@ -37,7 +37,7 @@ signal update_health_bar(boss_health : int, boss_max_health : int)
 func _ready():
 	$TextureRect2.visible = false
 	sprite_mat = sprite.material as ShaderMaterial
-	max_health = min(50, max(10, Test.level * 2))
+	max_health = min(50, max(15, Test.level * 2))
 	health = max_health # Update the boss HP bar immediately update_health_bar.emit(health, max_health)
 # --------------------------------------------------
 # FIND ACTIVE PLAYER

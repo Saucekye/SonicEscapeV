@@ -892,6 +892,7 @@ scale = Vector2(0.03, 0.03)
 texture = ExtResource("13_dhxux")
 
 [node name="Sage" type="AnimatedSprite2D" parent="Charborder" unique_id=1635988817]
+visible = false
 modulate = Color(0.41568628, 0.41568628, 0.41568628, 1)
 position = Vector2(-352, 576)
 scale = Vector2(3, 3)

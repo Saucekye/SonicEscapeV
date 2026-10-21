@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dgdw0msmx1is1"]
+
+[ext_resource type="Script" uid="uid://bd76v0sgohy51" path="res://Scenes/Boss/soul.gd" id="1_3tw88"]
+[ext_resource type="Texture2D" uid="uid://b280xal34me2p" path="res://Sprites/Boss/Fun Gang & Makima/SOUL.webp" id="2_0bgvq"]
+[ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="2_k0gnq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mvuam"]
+radius = 9.333334
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_54iou"]
+shader = ExtResource("2_k0gnq")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k0gnq"]
+atlas = ExtResource("2_0bgvq")
+region = Rect2(0, 0, 1200, 1200)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kofwu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k0gnq")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 25.0
+}]
+
+[node name="SOUL" type="CharacterBody2D" unique_id=1664613055 groups=["Enemy"]]
+scale = Vector2(2, 2)
+script = ExtResource("1_3tw88")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1562406805]
+position = Vector2(0, -1.3333334)
+shape = SubResource("CircleShape2D_mvuam")
+debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=2094722535]
+material = SubResource("ShaderMaterial_54iou")
+position = Vector2(0, -0.6666667)
+scale = Vector2(0.01, 0.01)
+sprite_frames = SubResource("SpriteFrames_kofwu")
+autoplay = "default"
+frame_progress = 0.63174176
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=330302173 groups=["Enemy"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1460057368 groups=["Enemy"]]
+position = Vector2(0, -1.3333334)
+shape = SubResource("CircleShape2D_mvuam")
+debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
+
+[node name="Timer" type="Timer" parent="." unique_id=355483283]
+wait_time = 20.0
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

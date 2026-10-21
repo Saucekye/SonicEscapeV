@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b0cr7h38oyng"
+path="res://.godot/imported/Fire.MP3-ab191edd156efe8ad66b20f22e6369ae.mp3str"
+
+[deps]
+
+source_file="res://Sounds/BossSFX/Fun Gang & Makima/Fire.MP3"
+dest_files=["res://.godot/imported/Fire.MP3-ab191edd156efe8ad66b20f22e6369ae.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -8,7 +8,6 @@ extends Node2D
 @export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
 @export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
 @export var chunk_boss3: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss3.tscn")
-@export var chunk_boss_caine: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_Caine.tscn")
 @export var chunk_boss_delta_rune: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_DeltaRune.tscn")
 @export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
@@ -104,7 +103,7 @@ func _spawn_next_boss_level():
 			Test.build_boss_rotation()
 		index = Test.boss_rotation_order.pop_front()
 
-	var scene_map := [chunk_boss_delta_rune, chunk_boss_delta_rune, chunk_boss_delta_rune, chunk_boss_delta_rune, chunk_boss_delta_rune]
+	var scene_map := [chunk_boss, chunk_boss1, chunk_rest, chunk_boss2, chunk_boss3, chunk_boss_delta_rune]
 	_spawn_single_chunk(scene_map[index])
 
 # Spawns one chunk as the entire level

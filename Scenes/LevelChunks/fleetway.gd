@@ -51,7 +51,7 @@ var hover_offset = 0.0
 
 func _ready():
 	randomize()
-	max_health = min(50, max(10, Test.level * 2))/2
+	max_health = min(50, max(15, Test.level * 2))/2
 	health = max_health # Update the boss HP bar immediately update_health_bar.emit(health, max_health)
 # --------------------------------------------------
 # GET CURRENT PLAYER (IMPORTANT)

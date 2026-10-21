@@ -11,11 +11,12 @@ signal makima_intro_done
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if !area.is_in_group("Player") or has_interacted:
 		return
-	var TWEEN_TIME : float = 1.5
+	var TWEEN_TIME : float = 0.5
 	var sprite_tween : Tween = get_tree().create_tween()
 	has_interacted = true
 	area_2d.monitoring = false
 	sprite_tween.tween_property(animated_sprite_2d, "modulate:a", 0, TWEEN_TIME)
 	await sprite_tween.finished
 	makima_intro_done.emit()
+	$Node2D/AnimationPlayer.play("Translation")
 	
