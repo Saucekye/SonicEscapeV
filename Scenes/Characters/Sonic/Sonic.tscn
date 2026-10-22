@@ -2358,7 +2358,6 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
-debug_prevent_death = true
 audio_files = [ExtResource("2_sex4o"), ExtResource("3_bxdx6"), ExtResource("4_n0mdj")]
 icon_background = ExtResource("5_bxdx6")
 trail_position = Vector2(0, 3)
