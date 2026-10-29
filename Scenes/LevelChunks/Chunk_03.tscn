@@ -22,7 +22,23 @@ position = Vector2(-8134.399, -2438.3855)
 position = Vector2(-1168, -128)
 
 [node name="Enemy12" parent="Enemies" unique_id=1712802134 instance=ExtResource("1_htqrx")]
+visible = false
 position = Vector2(12416, 2272)
+
+[node name="CollisionShape2D" parent="Enemies/Enemy12" index="0"]
+visible = false
+
+[node name="Sprite2D" parent="Enemies/Enemy12" index="1"]
+visible = false
+
+[node name="Area2D" parent="Enemies/Enemy12" index="2"]
+visible = false
+
+[node name="CollisionShape2D" parent="Enemies/Enemy12/Area2D" index="0"]
+visible = false
+
+[node name="AudioStreamPlayer2D" parent="Enemies/Enemy12" index="3"]
+visible = false
 
 [node name="Enemy25" parent="Enemies" unique_id=1311212074 instance=ExtResource("1_htqrx")]
 position = Vector2(12712, 3096)
@@ -125,3 +141,5 @@ position = Vector2(8134.4097, 2438.3845)
 
 [node name="End" type="Marker2D" parent="." unique_id=1132024233]
 position = Vector2(15929.558, 2783.9905)
+
+[editable path="Enemies/Enemy12"]

@@ -31,8 +31,13 @@
 [ext_resource type="PackedScene" uid="uid://bx1c02qjfvxk2" path="res://Scenes/LevelChunks/Chunk_28.tscn" id="29_1jyg1"]
 [ext_resource type="PackedScene" uid="uid://bc1dj0lhv8odb" path="res://Scenes/LevelChunks/Chunk_29.tscn" id="30_7qk77"]
 [ext_resource type="PackedScene" uid="uid://cxtvn7uvh7n2i" path="res://Scenes/LevelChunks/Chunk_30.tscn" id="31_rgexl"]
+[ext_resource type="PackedScene" uid="uid://lmksolu17esl" path="res://Scenes/LevelChunks/Chunk_31.tscn" id="32_h3wyy"]
+[ext_resource type="PackedScene" uid="uid://d31wdpcmpj64h" path="res://Scenes/LevelChunks/Chunk_32.tscn" id="33_7a7ak"]
+[ext_resource type="PackedScene" uid="uid://dsy4lqfxsihdy" path="res://Scenes/LevelChunks/Chunk_33.tscn" id="34_v2lyd"]
+[ext_resource type="PackedScene" uid="uid://rn75w3gh3kls" path="res://Scenes/LevelChunks/Chunk_34.tscn" id="35_q1tf2"]
+[ext_resource type="PackedScene" uid="uid://b081mrrrxeu5e" path="res://Scenes/LevelChunks/Chunk_35.tscn" id="36_03nf7"]
 
 [node name="LevelGenerator" type="Node2D" unique_id=1884788569]
 script = ExtResource("1_q7b6x")
-level_chunks = Array[PackedScene]([ExtResource("2_pbout"), ExtResource("3_k4qdo"), ExtResource("4_dhi4p"), ExtResource("5_6ad4j"), ExtResource("6_q3v1r"), ExtResource("7_pmt2c"), ExtResource("8_q6auv"), ExtResource("9_8afpk"), ExtResource("10_1jyg1"), ExtResource("11_7qk77"), ExtResource("12_k4qdo"), ExtResource("13_gex3i"), ExtResource("14_pikt7"), ExtResource("15_h3wyy"), ExtResource("16_7a7ak"), ExtResource("17_v2lyd"), ExtResource("18_q1tf2"), ExtResource("19_03nf7"), ExtResource("20_753jc"), ExtResource("21_dsrqq"), ExtResource("22_kd54k"), ExtResource("23_dhi4p"), ExtResource("12_rgexl"), ExtResource("25_dhi4p"), ExtResource("26_6ad4j"), ExtResource("27_pmt2c"), ExtResource("28_q6auv"), ExtResource("29_1jyg1"), ExtResource("30_7qk77"), ExtResource("31_rgexl")])
+level_chunks = Array[PackedScene]([ExtResource("2_pbout"), ExtResource("3_k4qdo"), ExtResource("4_dhi4p"), ExtResource("5_6ad4j"), ExtResource("6_q3v1r"), ExtResource("7_pmt2c"), ExtResource("8_q6auv"), ExtResource("9_8afpk"), ExtResource("10_1jyg1"), ExtResource("11_7qk77"), ExtResource("12_k4qdo"), ExtResource("13_gex3i"), ExtResource("14_pikt7"), ExtResource("15_h3wyy"), ExtResource("16_7a7ak"), ExtResource("17_v2lyd"), ExtResource("18_q1tf2"), ExtResource("19_03nf7"), ExtResource("20_753jc"), ExtResource("21_dsrqq"), ExtResource("22_kd54k"), ExtResource("23_dhi4p"), ExtResource("12_rgexl"), ExtResource("25_dhi4p"), ExtResource("26_6ad4j"), ExtResource("27_pmt2c"), ExtResource("28_q6auv"), ExtResource("29_1jyg1"), ExtResource("30_7qk77"), ExtResource("31_rgexl"), ExtResource("32_h3wyy"), ExtResource("33_7a7ak"), ExtResource("34_v2lyd"), ExtResource("35_q1tf2"), ExtResource("36_03nf7")])
 max_chunks = 6
