@@ -118,3 +118,4 @@ rotation = 3.1415927
 spring_velocity = Vector2(0, -2000)
 ignore_rotation = true
 independent_rotation = 255.0
+force_player_roll = true

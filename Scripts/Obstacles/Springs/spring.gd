@@ -7,6 +7,7 @@ extends Area2D
 @export var arc_points: int = 20
 @export var gravityarc: float = 1200.0
 @export var show_arc: bool = true
+@export var force_player_roll : bool = false
 
 func _draw():
 	if not show_arc:
@@ -45,7 +46,8 @@ func _on_area_entered(area: Area2D) -> void:
 		player_body.is_boosting = false
 		#$Sprite2D/AnimationPlayer.play("play")
 
-
+		if force_player_roll:
+			player_body.ball = true
 
 func _on_property_list_changed() -> void:
 		queue_redraw()
