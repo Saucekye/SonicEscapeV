@@ -10,13 +10,21 @@ var grinding_players: Dictionary = {}
 var player_followers: Dictionary = {}
 var player_speeds: Dictionary = {}  # Each player has their own grind speed
 const RAIL_SPEED_MODIFIER : int = 19
+const RAIL_BOOST_MAX := 2000.0   # top speed while boosting on a rail (the game's top speed elsewhere)
 
 func _ready():
 	var path_points: PackedVector2Array = curve.get_baked_points()
 	var polyline := Geometry2D.offset_polyline(path_points, path_width, Geometry2D.JOIN_MITER, Geometry2D.END_SQUARE)
 	collision_polygon.polygon = polyline[0]
+	# A rail styled to match the stage (rail_skin.gd); the plain line below is the fallback
+	_skinned = preload("res://Scripts/Obstacles/Rail/rail_skin.gd").apply(self)
+	queue_redraw()
+
+var _skinned := false
 
 func _draw():
+	if _skinned:
+		return
 	var points = curve.get_baked_points()
 	if points.size() < 2:
 		return
@@ -51,6 +59,9 @@ func _physics_process(delta):
 				
 			if abs(player_grind_speed) < player_base_speed:
 				player_grind_speed = player_base_speed * dir
+			
+			# Boosting along the rail: the same button, meter and numbers as the ground boost
+			player_grind_speed = _rail_boost(player, player_grind_speed)
 				
 			# Set the player's speed so it applies when they jump or exit the rail
 			# And store player grind speed
@@ -88,6 +99,78 @@ func _physics_process(delta):
 	# Clean up players that stopped grinding
 	for player in players_to_remove:
 		grinding_players.erase(player)
+
+## Boost while grinding (ground_boost.gd leaves rails to this): pressing boost
+## kicks you to the boost's start speed along the rail, holding it keeps speeding
+## you up, and both cost meter like on the ground
+func _rail_boost(player, speed: float) -> float:
+	var dir := signf(speed) if speed != 0.0 else 1.0
+	var boost = _boost_component(player)
+	if boost == null:
+		# Only characters with a ground boost (Sonic, Metal Sonic, Blaze) boost on rails
+		if player.is_boosting:
+			player.is_boosting = false
+			if player.is_player:
+				player.boost_sprite.visible = false
+				GlobalCanvasLayer.boost = false
+		_rail_attack(player, false)
+		return speed
+	var start_speed: float = boost.max_speed_startup if boost else 1500.0
+	var accel: float = boost.x_speed_increase if boost else 15.0
+	var start_cost: float = boost.meter_cost_inital if boost else 5.0
+	var cost: float = boost.meter_cost if boost else 0.3
+	if player.inp_pressed("airspin") and player.my_meter > 0.0:
+		if player.inp_just_pressed("airspin") or not player.is_boosting:
+			if player.my_meter >= start_cost:
+				if player.is_player:
+					player.my_meter -= start_cost
+					var sfx = player.find_child("BoostStartaudio", true, false)
+					if sfx:
+						sfx.play()
+					player.boost_sprite.play("shockwave")
+					GlobalSignals.emit_signal("camerashake")
+				speed = maxf(absf(speed), start_speed) * dir
+				player.is_boosting = true
+		elif player.is_boosting:
+			speed += accel * dir
+			if player.is_player:
+				player.my_meter = maxf(player.my_meter - cost, 0.0)
+	elif player.is_boosting:
+		player.is_boosting = false
+	if player.is_player:
+		player.boost_sprite.visible = player.is_boosting
+		GlobalCanvasLayer.boost = player.is_boosting
+	_rail_attack(player, player.is_boosting)
+	if player.is_boosting:
+		speed = clampf(speed, -RAIL_BOOST_MAX, RAIL_BOOST_MAX)
+	return speed
+
+
+## While boosting on a rail your attack box is on, so enemies you hit are knocked
+## out (like a spin attack); it goes back off when you stop boosting or leave
+func _rail_attack(player, on: bool) -> void:
+	var box := player.get_node_or_null("Attackbox") as Area2D
+	if box == null:
+		return
+	if on:
+		box.monitorable = true
+		box.monitoring = true
+		player.set_meta("rail_attack", true)
+	elif player.has_meta("rail_attack"):
+		player.remove_meta("rail_attack")
+		box.set_deferred("monitorable", false)
+		box.set_deferred("monitoring", false)
+
+
+## The character's ground boost (its numbers are used on rails too); null for
+## characters without one (everyone but Sonic, Metal Sonic and Blaze)
+func _boost_component(player) -> Node:
+	for n in player.find_children("*", "", true, false):
+		var sc = n.get_script()
+		if sc and sc.resource_path.ends_with("ground_boost.gd"):
+			return n
+	return null
+
 
 func start_grind(player):
 	if not player:
@@ -127,6 +210,7 @@ func start_grind(player):
 func stop_grind(player):
 	if not player:
 		return
+	_rail_attack(player, false)
 	
 	print("stop_grind called. Player grinding state: ", player.grinding)
 	

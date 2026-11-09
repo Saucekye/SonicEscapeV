@@ -13,12 +13,36 @@ func _ready():
 	print(characters)
 
 func find_and_setup_characters():
+	_add_missing_slots()
 	characters = find_children("*", "SelectableCharacter")
 	for character in characters:
 		character.sprite_hovered.connect(_on_character_hovered)
 		character.sprite_unhovered.connect(_on_character_unhovered)
 		character.sprite_selected.connect(_on_character_selected)
 		character.sprite_deselected.connect(_on_character_deselected)
+
+## Characters in game_content.tres without a slot on this screen get one, in a
+## new column to the right of the hand-placed ones.
+func _add_missing_slots() -> void:
+	const SLOT_SCENE := preload("res://misc/Icons.tscn")
+	const FIRST_SLOT := Vector2(-160, -139)
+	const SLOT_STEP := Vector2(176, 148)
+	const ROWS := 5
+	var added := 0
+	for entry in Content.characters():
+		if has_node(NodePath(entry.id)):
+			continue
+		var slot: SelectableCharacter = SLOT_SCENE.instantiate()
+		slot.name = entry.id
+		if entry.select_icon:
+			slot.set("texture", entry.select_icon)   # (the slot scene's root is a Sprite2D)
+		if entry.select_icon_active:
+			slot.sprite2_texture = entry.select_icon_active
+		slot.hover_color = entry.hover_color
+		slot.position = FIRST_SLOT + Vector2(SLOT_STEP.x * (added / ROWS), SLOT_STEP.y * (added % ROWS))
+		add_child(slot)
+		added += 1
+
 
 func _on_character_hovered(character: SelectableCharacter):
 	if selected_characters.has(character) or selected_characters.size() >= 3:
@@ -100,27 +124,8 @@ func update_selection_highlight():
 func update_highlight_for_node(highlight_node: Node, character: SelectableCharacter):
 	highlight_node.visible = true
 
-	match character.name:
-		"Sonic":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Sonic/Sonichighlight.png")
-		"Tails":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Tails/highlight.png")
-		"Knuckles":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Knuckles/knuckleshighlight.png")
-		"Amy":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Amy/Amyhighlight.png")
-		"Rouge":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Rouge/rougehighlight.png")
-		"Blaze":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Blaze/blazehighlight.png")
-		"Cream":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Cream/creamhighlight.png")
-		"MetalSonic":
-			highlight_node.get_node("Texture").texture = load("res://Scenes/Characters/Metal Sonic/metalhighlight1.png")
-		"Silver2":
-			highlight_node.get_node("Texture").texture = load("res://Sprites/Characters/Silver/highlight.png")
-		_:
-			highlight_node.get_node("Texture").texture = null
+	var entry := Content.character(character.name)
+	highlight_node.get_node("Texture").texture = entry.select_highlight if entry else null
 
 func update_hover_highlight(character: SelectableCharacter):
 	match selected_characters.size():

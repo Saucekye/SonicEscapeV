@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_f8d7q"]
+
+[resource]
+script = ExtResource("1_f8d7q")
+display_name = "Cash Register"
+cost = 20
+value = 140
+color = Color(0.45, 0.48, 0.52, 1)

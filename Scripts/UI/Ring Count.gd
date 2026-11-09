@@ -5,7 +5,8 @@ extends Label
 var player: Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	player = get_node(player_path)
+	if not player_path.is_empty():
+		player = get_node_or_null(player_path)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

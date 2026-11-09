@@ -11,8 +11,6 @@ func action() -> void:
 		player.tricknumber()
 		GlobalCanvasLayer.tricks = 0
 
-	# print("ON WALL - Current animation: ", player.ap.current_animation)
-
 	player.hanging_on_wall = true
 	# Cancel all special states when grabbing a wall
 	player.falling = false
@@ -22,11 +20,11 @@ func action() -> void:
 	player.flying = false  # Glide ends on wall contact (transitions to climb)
 	
 	# ── Wall Climbing ──────────────────────────────────────────────
-	if Input.is_action_pressed("ui_up"):
+	if player.inp_pressed("ui_up"):
 		player.motion.y = -climb_up_speed        # Climb upward
 		player.ap.play("climb")
 		player.ap.speed_scale = 1.0
-	elif Input.is_action_pressed("ui_down"):
+	elif player.inp_pressed("ui_down"):
 		player.motion.y = climb_down_speed          # Slide down
 		player.ap.play_backwards("climb")		# Reverse animation when sliding down
 		player.ap.speed_scale = 1.0
@@ -35,7 +33,6 @@ func action() -> void:
 		player.ap.play("climb")
 		player.ap.speed_scale = 0.0    # Freeze animation when idle on wall
 
-	print("ON WALL - Current animation: ", player.ap.current_animation)
 	# Face away from the wall
 	if player.wall_cast.is_colliding():
 		player.sprite.flip_h = true
@@ -45,7 +42,7 @@ func action() -> void:
 	var wall_normal = player.get_wall_normal()
 	var push_dir = 1 if wall_normal.x > 0 else -1
 
-	if (Input.is_action_just_pressed("ui_accept")):
+	if (player.inp_just_pressed("ui_accept")):
 		# Wall jump — push away and launch upward, then restore dash
 		player.can_dash = true
 		player.position += Vector2(push_dir * 25, 0).rotated(player.rot)

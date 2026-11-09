@@ -25,14 +25,54 @@ var attract_mode := false
 var attract_target: Node2D = null
 
 
+# =========================
+# PIXEL-PERFECT ZOOM
+# =========================
+## Size of one sprite pixel in world units: character scale (125) x sprite scale (0.009).
+@export var art_pixel_world_size: float = 1.125
+## Base zoom. "Wide" uses the nearest whole-pixel zoom to this.
+@export var reference_zoom: float = 1.5
+
+var _applied_zoom_key := ""
+
+
 func _ready() -> void:
 	enabled = Test.level % 4 != 0
-	zoom = Vector2(1.5, 1.5)
+	_apply_pixel_zoom()
 	GlobalSignals.connect("camerashake", _on_camerashake)
 	default_offset = offset
 
 
+func _screen_stretch() -> float:
+	# How much the 1600x720 game canvas is scaled up to fit the window/screen.
+	var w := get_window()
+	if w == null or w.content_scale_size.x <= 0 or w.content_scale_size.y <= 0:
+		return 1.0
+	var sx := float(w.size.x) / w.content_scale_size.x
+	var sy := float(w.size.y) / w.content_scale_size.y
+	return max(0.01, min(sx, sy) * w.content_scale_factor)
+
+
+func _apply_pixel_zoom() -> void:
+	# Picks a zoom where every sprite pixel covers a whole number of screen pixels.
+	# Otherwise nearest filtering draws some pixels wider than others, and outlines
+	# look lumpy and shimmer while scrolling.
+	var stretch := _screen_stretch()
+	var key := "%s|%s" % [stretch, Test.zoom_level]
+	if key == _applied_zoom_key:
+		return
+	_applied_zoom_key = key
+	var wide_px: float = max(1.0, round(art_pixel_world_size * reference_zoom * stretch))
+	var px := wide_px               # Close (the original view)
+	match Test.zoom_level:
+		0: px = max(1.0, wide_px - 1.0)   # Wide: pulled further back
+		2: px = wide_px + 1.0             # Closest
+	var z := px / (art_pixel_world_size * stretch)
+	zoom = Vector2(z, z)
+
+
 func _process(delta: float) -> void:
+	_apply_pixel_zoom()  # Cheap; only does work when the window size or zoom setting changes
 
 	# =========================
 	# CAMERA SHAKE

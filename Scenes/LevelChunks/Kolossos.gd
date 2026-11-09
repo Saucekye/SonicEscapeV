@@ -189,20 +189,22 @@ func _on_hitbox_area_entered(area: Area2D):
 	if state == BossState.DEAD:
 		return
 
-	if area.is_in_group("item"):
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
 
 		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
-			area.get_parent().queue_free()
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):   # (may be freed during the hit flash)
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
+	if not is_instance_valid(area):
+		return   # freed during an earlier hit flash
 	if area.is_in_group("Playerattack"):
 		
 		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 

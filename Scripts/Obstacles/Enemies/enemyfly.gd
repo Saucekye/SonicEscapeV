@@ -14,6 +14,7 @@ var enemy_body = null
 var damage_timer = 0.0
 var hurt = false
 var dying = false
+var _gone := false   # death() ran (online: maybe from another player)
 var launch = 0
 
 var spin = false
@@ -82,6 +83,10 @@ func start_death_check() -> void:
 
 
 func death():
+	if _gone:
+		return
+	_gone = true
+	Net.obj_gone(self, "enemy")   # online: defeated for everyone
 	var boom = smoke.instantiate()
 	boom.position = position
 	get_parent().add_child(boom)
@@ -141,3 +146,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		player_body = null
+
+
+## Online: another player defeated this enemy (net.gd)
+func net_remove(_kind: String) -> void:
+	if not _gone:
+		death()

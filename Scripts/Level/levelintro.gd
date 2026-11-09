@@ -3,12 +3,13 @@ extends CanvasLayer
 signal start
 
 @onready var animation_player = $Node2D/AnimationPlayer
-@onready var particles = $ParticleSystem
-@onready var flash_overlay = $FlashOverlay
-@onready var title_label = $TitleContainer/TitleLabel
-@onready var subtitle_label = $TitleContainer/SubtitleLabel
-@onready var glow_effect = $GlowEffect
-@onready var audio_player = $AudioStreamPlayer
+# Optional extras: add any of these nodes to the intro scene to use them
+@onready var particles = get_node_or_null("ParticleSystem")
+@onready var flash_overlay = get_node_or_null("FlashOverlay")
+@onready var title_label = get_node_or_null("TitleContainer/TitleLabel")
+@onready var subtitle_label = get_node_or_null("TitleContainer/SubtitleLabel")
+@onready var glow_effect = get_node_or_null("GlowEffect")
+@onready var audio_player = get_node_or_null("AudioStreamPlayer")
 @onready var tween: Tween
 
 var flash_colors = [Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE]
@@ -16,7 +17,7 @@ var current_flash = 0
 var is_in_intro : bool = false
 
 func _ready() -> void:
-	$Node2D/Label.text = "FLOOR " + str(20 - Test.level)
+	$Node2D/Label.text = "TRAINING" if Test.level == 1 else "FLOOR " + str(20 - Test.level)
 	if Test.music == false:
 		Test.music = true
 	# Set initial states for optional elements
@@ -120,6 +121,8 @@ func shake_screen():
 
 func finish_intro():
 	
+	if not is_in_intro:
+		return   # already finishing (a key press and the animation can both end it)
 	is_in_intro = false
 	
 	# Add screen shake for impact
@@ -133,8 +136,9 @@ func finish_intro():
 	# Fade out dramatically
 	var outro_tween = create_tween()
 	outro_tween.set_parallel(true)
-	outro_tween.tween_property(self, "modulate:a", 0.0, 1.0)
-	outro_tween.tween_property(title_label, "scale", Vector2(1.5, 1.5), 1.0)
+	outro_tween.tween_property($Node2D, "modulate:a", 0.0, 1.0)
+	if title_label:
+		outro_tween.tween_property(title_label, "scale", Vector2(1.5, 1.5), 1.0)
 	outro_tween.set_ease(Tween.EASE_IN)
 	
 	await outro_tween.finished

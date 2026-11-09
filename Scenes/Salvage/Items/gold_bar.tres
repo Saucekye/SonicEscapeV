@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_ehf4c"]
+
+[resource]
+script = ExtResource("1_ehf4c")
+display_name = "Gold Bar"
+cost = 25
+value = 180
+shape = "diamond"
+color = Color(0.95, 0.78, 0.25, 1)

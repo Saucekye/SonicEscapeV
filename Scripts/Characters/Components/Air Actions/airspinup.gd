@@ -10,7 +10,7 @@ extends Components_Action
 @export var x_speed : int = 1200
 
 func action() -> void:
-	if player.direction == 0 or not (player.is_player == true and Test.meter >= meter_cost and ((Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_up")) or Input.is_action_just_pressed("airup")) and not (!can_when_flying and player.flying)):
+	if player.direction == 0 or not (player.is_player == true and player.my_meter >= meter_cost and ((player.inp_just_pressed("airspin") and player.inp_pressed("ui_up")) or player.inp_just_pressed("airup")) and not (!can_when_flying and player.flying)):
 		return
 	
 	# Prevent from doing action while on wall
@@ -29,7 +29,7 @@ func action() -> void:
 	player.dashed = true
 	player.ball = false
 	if player.is_player == true:
-		Test.meter -= meter_cost
+		player.my_meter -= meter_cost
 	player.ap.play("airspin")
 	player.motion.y = -abs(y_sped)
 	player.fall_gravity = 0         # Brief gravity suspension for the spin hang-time

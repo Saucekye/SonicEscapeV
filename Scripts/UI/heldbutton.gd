@@ -98,6 +98,6 @@ func _input(event: InputEvent) -> void:
 					print(name, ": Global mouse release detected - forcing release")
 				_force_release()
 	
-	# Debug key presses
-	if event is InputEventKey and event.pressed:
+	# Debug key presses (only with debug_prints on: printing every key press caused hitches)
+	if debug_prints and event is InputEventKey and event.pressed:
 		print(event.keycode, " ", event.as_text())

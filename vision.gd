@@ -199,6 +199,11 @@ func _go_to_next_scene() -> void:
 	# Reset the final cutscene flag after Vision 5.
 	if current_vision == 5:
 		Test.final = false
+	else:
+		# A vision watched at the rest tree: back to the rest area, not on to the
+		# boss (the level rebuilds its rest area, like coming back from Salvage)
+		var lg = load("res://Scripts/Level/level_generator.gd")
+		lg.rest_done_level = -1
 
 	Test.rest = true
 

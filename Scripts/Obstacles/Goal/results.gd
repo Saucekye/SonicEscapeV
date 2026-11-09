@@ -13,6 +13,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if Test.end == true and not Net.floor_ended():
+		# Online: only the host ends a floor; everyone else waits for them
+		Test.end = false
+		Net.show_waiting()
+		return
 	if Test.end == true:
 		emit_signal("goal")
 		Test.ridenemies = true

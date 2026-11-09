@@ -13,6 +13,7 @@ func _ready():
 	
 	$CanvasLayer/Label.visible = false
 	$CanvasLayer/Button.visible = false
+	_add_menu_options()
 	
 	$CanvasLayer/TextSprite.modulate.a = 0
 	$CanvasLayer/TextSprite2.modulate.a = 0
@@ -45,7 +46,17 @@ func _ready():
 
 
 func _process(delta):
-	if player_inside and Input.is_action_just_pressed("ui_up"):
+	# Salvage and Chao Garden show whenever the tree's page is open
+	var page_open: bool = $CanvasLayer/Label.visible and $CanvasLayer/Label.modulate.a > 0.5
+	for b in _extra_buttons:
+		b.visible = page_open
+	_update_windows()
+	_update_focus()
+	# With the page open, up/down move between the buttons (the GUI does that);
+	# up on the top button (or with nothing to pick) closes the page, as before
+	var up_closes := not page_open or _focus_before == null or _focus_before == _top_button()
+	_focus_before = get_viewport().gui_get_focus_owner()
+	if player_inside and Input.is_action_just_pressed("ui_up") and up_closes:
 		toggle_text()
 		if use_alt:
 			$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/rewrite-laughing-lol.mp3")
@@ -315,29 +326,21 @@ func toggle_text():
 		
 	var label = $CanvasLayer/Label
 	
-	var tween = create_tween()
-	tween.set_parallel(true)
-
-	# If currently invisible → fade in
+	# The page pops up and goes away at once (no fade)
 	if sprite.modulate.a == 0:
 		# Hide the button on floor 0 and on floor 24 and beyond
-		$CanvasLayer/Button.visible = Test.level != 0 and Test.level < 24
+		# (Online, only the host picks Watch Vision; it plays for everyone, net.gd)
+		$CanvasLayer/Button.visible = Test.level != 0 and Test.level < 24 and (not Net.online or Net.is_host)
 		sprite.visible = true
 		label.visible = true
-		
-		tween.tween_property(sprite, "modulate:a", 0.66, 0.3)
-		tween.tween_property(label, "modulate:a", 1.0, 0.3)
+		sprite.modulate.a = 0.66
+		label.modulate.a = 1.0
 	else:
-		# Fade out
-		tween.tween_property(sprite, "modulate:a", 0.0, 0.3)
-		tween.tween_property(label, "modulate:a", 0.0, 0.3)
-		
-		# After fade finishes, hide them
-		tween.finished.connect(func():
-			sprite.visible = false
-			label.visible = false
-			$CanvasLayer/Button.visible = false
-		)
+		sprite.modulate.a = 0.0
+		label.modulate.a = 0.0
+		sprite.visible = false
+		label.visible = false
+		$CanvasLayer/Button.visible = false
 
 
 func _on_button_pressed() -> void:
@@ -363,3 +366,204 @@ func _on_button_pressed() -> void:
 		await get_tree().create_timer(3.0).timeout
 		get_tree().change_scene_to_file("res://FinalCutscene/vision.tscn")
 )
+
+
+# ── Rest tree options: Salvage, Chao Garden, Watch Vision ────────────────────
+# Salvage takes you to the Salvage mini game, once per rest area (then it's greyed
+# out); Chao Garden is greyed out (not ready yet).
+# They're copies of the Watch Vision button, stacked above it.
+var _extra_buttons: Array[Button] = []
+var _soon_label: Label
+
+func _add_menu_options() -> void:
+	var watch: Button = $CanvasLayer/Button
+	# The options sit in their own window to the right of the poem's window
+	watch.position = Vector2(OPTIONS_X, watch.position.y)
+	var gap := watch.size.y + 12.0
+	var entries := [["Chao\nGarden", "Chao Garden"], ["Salvage", "Salvage"]]
+	for i in entries.size():
+		var b := watch.duplicate(0) as Button   # (no signals: it gets its own below)
+		b.name = entries[i][1].replace(" ", "")
+		b.text = entries[i][0]
+		b.position = watch.position - Vector2(0, gap * (i + 1))
+		b.visible = false
+		var what: String = entries[i][1]
+		b.pressed.connect(func(): _coming_soon(what, b))
+		if what == "Chao Garden":
+			b.disabled = true            # greyed out: not ready yet
+			b.focus_mode = Control.FOCUS_NONE
+		elif what == "Salvage" and Test.salvage_done_level == Test.level:
+			b.disabled = true            # already been in from this rest area (once per rest area)
+			b.focus_mode = Control.FOCUS_NONE
+		watch.get_parent().add_child(b)
+		_extra_buttons.append(b)
+	_soon_label = Label.new()
+	_soon_label.name = "ComingSoon"
+	_soon_label.add_theme_font_size_override("font_size", 26)
+	_soon_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	_soon_label.add_theme_constant_override("outline_size", 8)
+	_soon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_soon_label.size = Vector2(400, 40)
+	_soon_label.visible = false
+	# The options look like the pause menu's bars
+	var rush_theme: Theme = preload("res://Scripts/UI/rush_theme.gd").build()
+	for b in _extra_buttons + [watch]:
+		b.theme = rush_theme
+	watch.get_parent().add_child(_soon_label)
+	# Two see-through boxes like the pause menu's: one for the poem, one for the
+	# options. Drawn behind the text and buttons; they fade in and out with the page.
+	_poem_window = _make_window("tree.txt")
+	_poem_window.name = "PoemWindow"
+	_options_window = _make_window("rest.exe")
+	_options_window.name = "OptionsWindow"
+	var layer := watch.get_parent()
+	layer.add_child(_poem_window)
+	layer.add_child(_options_window)
+	# Drawing order: the screen dims, then the boxes, then the drawing that pops up
+	# (Metal Sonic & Sage, or the strange version's) as the poem box's background,
+	# then the poem and the options on top
+	_dim = ColorRect.new()
+	_dim.name = "Dim"
+	_dim.color = Color(0, 0, 0, 0)
+	_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(_dim)
+	layer.move_child(_options_window, 0)
+	layer.move_child(_poem_window, 0)
+	layer.move_child(_dim, 0)
+	for sp in [$CanvasLayer/TextSprite, $CanvasLayer/TextSprite2]:
+		var black := sp.get_node_or_null("ColorRect") as CanvasItem
+		if black:
+			black.visible = false   # (it covers the drawing; _dim darkens the screen instead)
+	$CanvasLayer/TextSprite.self_modulate.a = 0.7   # a little softer, so the poem reads over it
+
+
+func _coming_soon(what: String, from: Button) -> void:
+	if what == "Salvage":
+		if Test.salvage_done_level == Test.level:
+			return   # once per rest area		# The Salvage mini game (Scenes/Salvage/salvage.gd); it brings you back here after.
+		# Online, 1P (the host) takes everyone in together.
+		if Net.online:
+			if Net.is_host:
+				Net.start_salvage()
+			else:
+				_soon_label.position = from.position + Vector2(0, -48)
+				_soon_label.size = Vector2(from.size.x, 40)
+				_soon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				_soon_label.text = "1P starts Salvage"
+				_soon_label.visible = true
+				_soon_label.modulate.a = 1.0
+				var t := _soon_label.create_tween()
+				t.tween_interval(1.6)
+				t.tween_property(_soon_label, "modulate:a", 0.0, 0.4)
+			return
+		# Fade to black, the elevator, SALVAGE typed out, then in
+		preload("res://Scenes/Salvage/salvage_transition.gd").go(get_tree())
+		return
+
+
+
+# ── Controller ──────────────────────────────────────────────────────────────
+# When the page opens, the top button you can pick gets focus, so the D-pad /
+# stick (up and down) moves between the buttons and A presses one. Greyed-out
+# buttons are skipped.
+var _focus_before: Control = null
+var _had_focus_page := false
+
+
+## The buttons you can pick right now, top to bottom
+func _pickable_buttons() -> Array[Button]:
+	var out: Array[Button] = []
+	for b in _extra_buttons + [$CanvasLayer/Button]:
+		if b.visible and not b.disabled:
+			out.append(b)
+	out.sort_custom(func(x, y): return x.position.y < y.position.y)
+	return out
+
+
+func _top_button() -> Button:
+	var list := _pickable_buttons()
+	return list[0] if not list.is_empty() else null
+
+
+func _update_focus() -> void:
+	var label: Control = $CanvasLayer/Label
+	var open: bool = label.visible and label.modulate.a > 0.5
+	var list := _pickable_buttons()
+	if open and not list.is_empty():
+		# Up/down go to the next pickable button; left/right stay put
+		for i in list.size():
+			var b := list[i]
+			var me := b.get_path()
+			b.focus_neighbor_top = list[i - 1].get_path() if i > 0 else me
+			b.focus_neighbor_bottom = list[i + 1].get_path() if i < list.size() - 1 else me
+			b.focus_neighbor_left = me
+			b.focus_neighbor_right = me
+			b.focus_previous = b.focus_neighbor_top
+			b.focus_next = b.focus_neighbor_bottom
+		var owner := get_viewport().gui_get_focus_owner()
+		if not _had_focus_page or not (owner in list):
+			list[0].grab_focus()
+		_had_focus_page = true
+	elif _had_focus_page:
+		_had_focus_page = false
+		var owner := get_viewport().gui_get_focus_owner()
+		if owner and (owner in _extra_buttons or owner == $CanvasLayer/Button):
+			owner.release_focus()
+
+
+# ── The boxes ───────────────────────────────────────────────────────────────
+# The poem and the options each sit in a see-through box like the pause menu's
+# (Scripts/UI/rush_theme.gd): translucent black with a thin grey edge, and the
+# options as the menu's own bars (red with a white marker when picked).
+const OPTIONS_X := 1250.0      # left edge of the option buttons
+const WIN_PAD := 18.0          # space between a box's edge and its contents
+const TITLE_H := 0.0           # (no title bars)
+var _poem_window: Panel
+var _options_window: Panel
+var _dim: ColorRect
+const DIM := 0.66            # how dark the screen gets behind the page
+
+
+func _make_window(_title: String) -> Panel:
+	var rush = preload("res://Scripts/UI/rush_theme.gd")
+	var win := Panel.new()
+	win.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var body := StyleBoxFlat.new()
+	body.bg_color = Color(rush.BLACK, rush.BAR_ALPHA)
+	body.border_color = rush.GREY
+	body.set_border_width_all(1)
+	body.anti_aliasing = false
+	win.add_theme_stylebox_override("panel", body)
+	return win
+
+
+## Fits each box around what it holds, and fades it with the page
+func _update_windows() -> void:
+	if _poem_window == null:
+		return
+	var label: Control = $CanvasLayer/Label
+	var a: float = label.modulate.a if label.visible else 0.0
+	_poem_window.visible = a > 0.01
+	_options_window.visible = false   # (no box around the options)
+	_poem_window.modulate.a = a
+	_options_window.modulate.a = a
+	_dim.color.a = a * DIM
+	if a <= 0.01:
+		return
+	_place(_poem_window, label.get_global_transform() * Rect2(Vector2.ZERO, label.size))
+	# The drawing fills the poem box's height, centred in it
+	for sp in [$CanvasLayer/TextSprite, $CanvasLayer/TextSprite2]:
+		var tex: Texture2D = sp.sprite_frames.get_frame_texture(sp.animation, sp.frame) if sp.sprite_frames else null
+		if tex:
+			var k: float = _poem_window.size.y / float(tex.get_height())
+			sp.scale = Vector2(k, k)
+			sp.position = _poem_window.position + _poem_window.size * 0.5
+	# No box around the options: just the buttons
+	_options_window.visible = false
+
+
+func _place(win: Panel, content: Rect2) -> void:
+	var rect := content.grow(WIN_PAD)
+	win.position = rect.position
+	win.size = rect.size

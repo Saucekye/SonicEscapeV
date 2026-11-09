@@ -1,0 +1,185 @@
+[gd_resource type="Resource" script_class="GameContent" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Content/boss_entry.gd" id="1_30n0f"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_Boss.tscn" id="2_5oi8q"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_Boss1.tscn" id="3_5yrea"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_Boss2.tscn" id="4_7y0m2"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_Boss3.tscn" id="5_qt1ux"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_Boss_DeltaRune.tscn" id="6_htit1"]
+[ext_resource type="Script" path="res://Scripts/Content/character_entry.gd" id="7_585eq"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Sonic/Sonic.tscn" id="8_3vjwm"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Sonic/Sonichighlight.png" id="9_qm7hp"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon.png" id="10_ewfml"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Sonic/icon2.png" id="11_840ha"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Tails/Tails.tscn" id="12_lcxth"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Tails/highlight.png" id="13_rxdxq"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Yellow.png" id="14_aetvy"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Tails/icon.png" id="15_jscfg"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Knuckles/Knuckles.tscn" id="16_1fbno"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Knuckles/knuckleshighlight.png" id="17_b8fp6"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Red.png" id="18_kcy86"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Knuckles/Icon.png" id="19_mc8da"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Amy/amy.tscn" id="20_cd5gg"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Amy/Amyhighlight.png" id="21_e2owy"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Pink.png" id="22_ouu26"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Amy/Icon1.png" id="23_ihcb6"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Rouge/Rouge.tscn" id="24_rfbdw"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Rouge/rougehighlight.png" id="25_i0jt8"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Black.png" id="26_b8la1"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Rouge/rougeicon.png" id="27_j5apl"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Blaze/Blaze.tscn" id="28_drgvp"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Blaze/blazehighlight.png" id="29_tbn4s"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Purple.png" id="30_1fbj8"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Blaze/blazeicon.png" id="31_7nei5"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Cream/Cream.tscn" id="32_ri0ty"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Cream/creamhighlight.png" id="33_l7hes"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Orange.png" id="34_u1hrn"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Cream/creamicon.png" id="35_oipaw"]
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Metal Sonic/metalsonic.tscn" id="36_jh141"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Metal Sonic/metalhighlight1.png" id="37_wtiq3"]
+[ext_resource type="Texture2D" path="res://Sprites/UI/Icon/UI Icon Blue Black.png" id="38_gksvg"]
+[ext_resource type="Texture2D" path="res://Scenes/Characters/Metal Sonic/metalicon.png" id="39_ohcfl"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_01.tscn" id="40_8oi7t"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_02.tscn" id="41_gmvgv"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_03.tscn" id="42_msviv"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_04.tscn" id="43_lobko"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_05.tscn" id="44_57e3r"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_06.tscn" id="45_o3iy0"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_07.tscn" id="46_xpb2t"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_08.tscn" id="47_m5ohs"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_09.tscn" id="48_67dyy"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_10.tscn" id="49_w8jpc"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_11.tscn" id="50_kyyk7"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_12.tscn" id="51_qrpri"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_13.tscn" id="52_um2l5"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_14.tscn" id="53_mmg5a"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_15.tscn" id="54_75dlp"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_16.tscn" id="55_jpis2"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_17.tscn" id="56_fk22t"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_18.tscn" id="57_rnbka"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_19.tscn" id="58_w2uia"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_20.tscn" id="59_6band"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_21.tscn" id="60_jn4si"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_22.tscn" id="61_vih4y"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_23.tscn" id="62_ws0mj"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_24.tscn" id="63_f4vlg"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_25.tscn" id="64_p8dk6"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_26.tscn" id="65_pcsh0"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_27.tscn" id="66_voq54"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_28.tscn" id="67_c6wyf"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_29.tscn" id="68_r3aod"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_30.tscn" id="69_q28h0"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_31.tscn" id="70_n84ii"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_32.tscn" id="71_kxfen"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_33.tscn" id="72_i7vha"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_34.tscn" id="73_rjenc"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_35.tscn" id="74_rbeqi"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_36.tscn" id="75_uqkmv"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_37.tscn" id="76_n1wys"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_38.tscn" id="77_g4g0m"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_39.tscn" id="78_so1l7"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelChunks/Chunk_40.tscn" id="79_hoegn"]
+[ext_resource type="Script" path="res://Scripts/Content/game_content.gd" id="80_gs8bp"]
+
+[sub_resource type="Resource" id="Resource_6pdr5"]
+script = ExtResource("1_30n0f")
+display_name = "Neo Metal Sonic"
+arena = ExtResource("2_5oi8q")
+
+[sub_resource type="Resource" id="Resource_1kuxo"]
+script = ExtResource("1_30n0f")
+display_name = "Thragg"
+arena = ExtResource("3_5yrea")
+
+[sub_resource type="Resource" id="Resource_q0fnm"]
+script = ExtResource("1_30n0f")
+display_name = "Kolossos & Fleetway"
+arena = ExtResource("4_7y0m2")
+
+[sub_resource type="Resource" id="Resource_m76rq"]
+script = ExtResource("1_30n0f")
+display_name = "Caine & Goku Black"
+arena = ExtResource("5_qt1ux")
+
+[sub_resource type="Resource" id="Resource_mrtoq"]
+script = ExtResource("1_30n0f")
+display_name = "Fun Gang & Makima"
+arena = ExtResource("6_htit1")
+
+[sub_resource type="Resource" id="Resource_slo60"]
+script = ExtResource("7_585eq")
+id = "Sonic"
+scene = ExtResource("8_3vjwm")
+select_icon = ExtResource("10_ewfml")
+select_icon_active = ExtResource("11_840ha")
+select_highlight = ExtResource("9_qm7hp")
+hover_color = Color(0.38, 1, 1, 1)
+
+[sub_resource type="Resource" id="Resource_av5oq"]
+script = ExtResource("7_585eq")
+id = "Tails"
+scene = ExtResource("12_lcxth")
+select_icon = ExtResource("14_aetvy")
+select_icon_active = ExtResource("15_jscfg")
+select_highlight = ExtResource("13_rxdxq")
+hover_color = Color(1, 0.931, 0.31, 1)
+
+[sub_resource type="Resource" id="Resource_kcvyy"]
+script = ExtResource("7_585eq")
+id = "Knuckles"
+scene = ExtResource("16_1fbno")
+select_icon = ExtResource("18_kcy86")
+select_icon_active = ExtResource("19_mc8da")
+select_highlight = ExtResource("17_b8fp6")
+hover_color = Color(1, 0.45, 0.45, 1)
+
+[sub_resource type="Resource" id="Resource_4hmjl"]
+script = ExtResource("7_585eq")
+id = "Amy"
+scene = ExtResource("20_cd5gg")
+select_icon = ExtResource("22_ouu26")
+select_icon_active = ExtResource("23_ihcb6")
+select_highlight = ExtResource("21_e2owy")
+hover_color = Color(1, 0.25, 0.77499986, 1)
+
+[sub_resource type="Resource" id="Resource_pqf7l"]
+script = ExtResource("7_585eq")
+id = "Rouge"
+scene = ExtResource("24_rfbdw")
+select_icon = ExtResource("26_b8la1")
+select_icon_active = ExtResource("27_j5apl")
+select_highlight = ExtResource("25_i0jt8")
+hover_color = Color(0.74558026, 0.7455802, 0.74558014, 1)
+
+[sub_resource type="Resource" id="Resource_vpq5c"]
+script = ExtResource("7_585eq")
+id = "Blaze"
+scene = ExtResource("28_drgvp")
+select_icon = ExtResource("30_1fbj8")
+select_icon_active = ExtResource("31_7nei5")
+select_highlight = ExtResource("29_tbn4s")
+hover_color = Color(0.47605157, 0.4804187, 1, 1)
+
+[sub_resource type="Resource" id="Resource_hn1uo"]
+script = ExtResource("7_585eq")
+id = "Cream"
+scene = ExtResource("32_ri0ty")
+select_icon = ExtResource("34_u1hrn")
+select_icon_active = ExtResource("35_oipaw")
+select_highlight = ExtResource("33_l7hes")
+hover_color = Color(1, 0.70533335, 0.48000005, 1)
+
+[sub_resource type="Resource" id="Resource_jb7k0"]
+script = ExtResource("7_585eq")
+id = "MetalSonic"
+scene = ExtResource("36_jh141")
+select_icon = ExtResource("38_gksvg")
+select_icon_active = ExtResource("39_ohcfl")
+select_highlight = ExtResource("37_wtiq3")
+hover_color = Color(0.64, 0.68799996, 1, 1)
+
+[resource]
+script = ExtResource("80_gs8bp")
+characters = Array[ExtResource("7_585eq")]([SubResource("Resource_slo60"), SubResource("Resource_av5oq"), SubResource("Resource_kcvyy"), SubResource("Resource_4hmjl"), SubResource("Resource_pqf7l"), SubResource("Resource_vpq5c"), SubResource("Resource_hn1uo"), SubResource("Resource_jb7k0")])
+bosses = Array[ExtResource("1_30n0f")]([SubResource("Resource_6pdr5"), SubResource("Resource_1kuxo"), SubResource("Resource_q0fnm"), SubResource("Resource_m76rq"), SubResource("Resource_mrtoq")])
+level_chunks = Array[PackedScene]([ExtResource("40_8oi7t"), ExtResource("41_gmvgv"), ExtResource("42_msviv"), ExtResource("43_lobko"), ExtResource("44_57e3r"), ExtResource("45_o3iy0"), ExtResource("46_xpb2t"), ExtResource("47_m5ohs"), ExtResource("48_67dyy"), ExtResource("49_w8jpc"), ExtResource("50_kyyk7"), ExtResource("51_qrpri"), ExtResource("52_um2l5"), ExtResource("53_mmg5a"), ExtResource("54_75dlp"), ExtResource("55_jpis2"), ExtResource("56_fk22t"), ExtResource("57_rnbka"), ExtResource("58_w2uia"), ExtResource("59_6band"), ExtResource("60_jn4si"), ExtResource("61_vih4y"), ExtResource("62_ws0mj"), ExtResource("63_f4vlg"), ExtResource("64_p8dk6"), ExtResource("65_pcsh0"), ExtResource("66_voq54"), ExtResource("67_c6wyf"), ExtResource("68_r3aod"), ExtResource("69_q28h0"), ExtResource("70_n84ii"), ExtResource("71_kxfen"), ExtResource("72_i7vha"), ExtResource("73_rjenc"), ExtResource("74_rbeqi"), ExtResource("75_uqkmv"), ExtResource("76_n1wys"), ExtResource("77_g4g0m"), ExtResource("78_so1l7"), ExtResource("79_hoegn")])

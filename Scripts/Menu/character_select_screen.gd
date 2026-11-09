@@ -19,11 +19,32 @@ func _ready():
 	Test.charactertwo = ""
 	Test.characterthree = ""
 	Test.rings = 0
+	Test.p2_rings = 0
+	Test.p2_meter = 100
+	Test.mikus_saved = 0   # new run
+	Test.tricks_done = 0
+	Test.elapsed_sesion_time = 0.0
 	Test.meter = 100
 	Pause.current_scene = "Character_Select_Screen"
 	tutorial_cover.visible = false
 	create_flashy_intro()
 	$Openingsfx.play()
+	# Controller / keyboard navigation (the screen was mouse-only)
+	if Net.room_code != "":
+		Net.leave()   # back from an online lobby or game
+	# ONLINE: a copy of the TUTORIALS label, under it, that opens the online lobby
+	if has_node("Tutorial"):
+		var online_btn := $Tutorial.duplicate(Node.DUPLICATE_GROUPS | Node.DUPLICATE_SCRIPTS) as Label   # (not its tutorial signal connection)
+		online_btn.name = "Online"
+		online_btn.text = "ONLINE"
+		online_btn.offset_top += 70
+		online_btn.offset_bottom += 70
+		add_child(online_btn)
+		online_btn.connect("tutorial", func(): get_tree().change_scene_to_file("res://Scenes/Menu/online_lobby.tscn"))
+	var nav = preload("res://Scripts/Menu/controller_select.gd").new()
+	nav.name = "ControllerSelect"
+	add_child(nav)
+	nav.setup(self)
 	
 func create_flashy_intro():
 	# Create wipe overlay
@@ -37,16 +58,18 @@ func create_flashy_intro():
 	
 	# Flash sequence: White -> Black -> Wipe out
 	tween.tween_property(wipe_rect, "color", Color.BLACK, 0.1)
-	await get_tree().create_timer(0.05).timeout
+	# (Every step is added up front: a tween can't take more steps once it's running.)
 	
 	# Lightning-fast wipe with bounce
 #	tween.tween_method(update_wipe, 0.0, 1.2, 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
 	# Screen shake effect
-	tween.parallel().tween_method(shake_screen, 0.0, 1.0, 0.4)
+	tween.parallel().tween_method(shake_screen, 0.0, 1.0, 0.4).set_delay(0.05)
 	
 	# Clean up
-	tween.tween_callback(func(): wipe_rect.queue_free())
+	tween.tween_callback(func():
+		wipe_rect.queue_free()
+		position = Vector2.ZERO)   # settle exactly back in place after the shake
 
 func update_wipe(progress: float):
 	if wipe_rect:

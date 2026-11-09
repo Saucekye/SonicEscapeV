@@ -4,6 +4,8 @@ extends Control
 var fade_rect: ColorRect
 
 func _ready() -> void:
+	if Net.room_code != "":
+		Net.leave()   # back from an online game
 	$Title3/AnimationPlayer.play("fade")
 	Pause.current_scene = ""
 	Test.elapsed_sesion_time = 0

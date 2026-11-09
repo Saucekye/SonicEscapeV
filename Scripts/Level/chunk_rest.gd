@@ -5,6 +5,8 @@ extends Node2D
 
 func _ready():
 	randomize()
+	if Net.online:
+		seed(Net.floor_seed() + 7)   # same rest-stop visitors for every online player
 
 	# Disable both first
 	disable_character(character1)

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_31gxr"]
+
+[resource]
+script = ExtResource("1_31gxr")
+display_name = "Fancy Lamp"
+cost = 15
+value = 110
+shape = "triangle"
+color = Color(0.8, 0.35, 0.3, 1)

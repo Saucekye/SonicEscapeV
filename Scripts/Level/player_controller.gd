@@ -10,14 +10,6 @@ var music = false
 var mobile = false
 var end = false
 
-@onready var sonic_scene = preload("res://Scenes/Characters/Sonic/Sonic.tscn")
-@onready var tails_scene = preload("res://Scenes/Characters/Tails/Tails.tscn")
-@onready var knuckles_scene = preload("res://Scenes/Characters/Knuckles/Knuckles.tscn")
-@onready var amy_scene = preload("res://Scenes/Characters/Amy/amy.tscn")
-@onready var blaze_scene = preload("res://Scenes/Characters/Blaze/Blaze.tscn")
-@onready var rouge_scene = preload("res://Scenes/Characters/Rouge/Rouge.tscn")
-@onready var cream_scene = preload("res://Scenes/Characters/Cream/Cream.tscn")
-@onready var metal_scene = preload("res://Scenes/Characters/Metal Sonic/metalsonic.tscn")
 @onready var camera = preload("res://Scenes/Level/camera.tscn")
 
 var sonic_instance: CharacterBody2D
@@ -29,33 +21,18 @@ var camera_instance: Camera2D
 # Array to hold all characters for easy cycling
 var characters: Array[CharacterBody2D] = []
 var current_character_index: int = 0
+var coop: Node = null   # set when local co-op is running (coop.gd)
 
 func _ready() -> void:
 	GlobalSignals.connect("black", black)
 	var character_order = [Test.characterone, Test.charactertwo, Test.characterthree]
 	
 	for name in character_order:
-		var instance: CharacterBody2D = null
-		
-		match name:
-			"Sonic":
-				instance = sonic_scene.instantiate()
-			"Tails":
-				instance = tails_scene.instantiate()
-			"Knuckles":
-				instance = knuckles_scene.instantiate()
-			"Amy":
-				instance = amy_scene.instantiate()
-			"Rouge":
-				instance = rouge_scene.instantiate()
-			"Blaze":
-				instance = blaze_scene.instantiate()
-			"Cream":
-				instance = cream_scene.instantiate()
-			"MetalSonic":
-				instance = metal_scene.instantiate()
-			_: 
-				continue  # Skip if no match
+		var entry := Content.character(name)
+		if entry == null or entry.scene == null:
+			continue   # empty slot, or a character missing from game_content.tres
+		var instance: CharacterBody2D = entry.scene.instantiate()
+		instance.set_meta("character_id", name)
 		
 		if instance:
 			instance.scale = Vector2(125, 125)
@@ -71,6 +48,10 @@ func _ready() -> void:
 	
 	# Set initial character index and reference
 	self.current_character_index = Test.current_character_index
+	if Test.coop_enabled and not Net.online and characters.size() >= 2:
+		# Co-op: Player 1 is always the first character picked
+		self.current_character_index = 0
+		Test.current_character_index = 0
 	current_character = characters[current_character_index]
 	current_character.position = Vector2.ZERO
 
@@ -83,7 +64,16 @@ func _ready() -> void:
 	camera_instance.position = Vector2.ZERO
 
 	update_character_states()
-	
+
+	# Local co-op (Pause > Settings > Co-op): the second character is Player 2 (coop.gd)
+	if Test.coop_enabled and not Net.online:
+		var c = preload("res://Scripts/Level/coop.gd").new()
+		c.name = "Coop"
+		if c.setup(self):
+			coop = c
+			add_child(c)
+		else:
+			c.free()
 
 
 
@@ -148,6 +138,8 @@ func update_character_states():
 func _input(event):
 	if characters.size() <= 1:
 		return  # Don't switch if there's only one character
+	if coop:
+		return  # no switching characters in co-op
 
 	if event.is_action_pressed("switch") and current_character.is_on_floor():
 		on_player_change()
@@ -205,16 +197,9 @@ func on_texture_button_pressed() -> void:
 
 # Helper function to get current character name (useful for UI/debugging)
 func get_current_character_name() -> String:
-	match current_character_index:
-		0: return "Sonic"
-		1: return "Tails"
-		2: return "Knuckles"
-		3: return "Amy"
-		4: return "Rouge"
-		5: return "Blaze"
-		6: return "Cream"
-		7: return "MetalSonic"
-		_: return "Unknown"
+	if current_character and current_character.has_meta("character_id"):
+		return current_character.get_meta("character_id")
+	return "Unknown"
 
 # Helper function to switch to a specific character by index
 func switch_to_character(index: int):

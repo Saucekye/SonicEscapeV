@@ -2,7 +2,7 @@ extends Components_Action
 
 func action() -> void:
 	# ── Glide (hold jump while airborne) ──────────────────────────
-	if player.flying == true and Input.is_action_pressed("ui_accept"):
+	if player.flying == true and player.inp_pressed("ui_accept"):
 		_handle_hover_physics()
 	else:
 		# Not actively gliding — resume normal falling
@@ -11,7 +11,7 @@ func action() -> void:
 		player.falling = true
 
 	# Initial jump press in air starts the glide
-	if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and not player.hanging_on_wall and not player.is_coyote_time_active():
+	if player.inp_just_pressed("ui_accept") and not player.inp_pressed("ui_down") and not player.hanging_on_wall and not player.is_coyote_time_active():
 		_dash(player.direction if player.direction != 0 else (1 if not player.sprite.flip_h else -1))
 
 # ─────────────────────────────────────────────
@@ -20,7 +20,7 @@ func action() -> void:
 # Uses "flick" animation (not "fly" like Knuckles).
 # ─────────────────────────────────────────────
 func _handle_hover_physics():
-	if (player.flying and Input.is_action_pressed("ui_accept")) and not Input.is_action_just_released("ui_accept") and not player.is_on_wall():
+	if (player.flying and player.inp_pressed("ui_accept")) and not player.inp_just_released("ui_accept") and not player.is_on_wall():
 		if player.ap.current_animation != "flick":
 			player.ap.play("flick")
 			player.ap.speed_scale = 1
@@ -44,7 +44,7 @@ func _handle_hover_physics():
 			player.flying = false
 			player.fall_gravity = player.default
 			player.can_dash = true
-		elif not Input.is_action_pressed("ui_accept"):
+		elif not player.inp_pressed("ui_accept"):
 			# Button released mid-glide — resume falling
 			player.flying = false
 			player.fall_gravity = player.default

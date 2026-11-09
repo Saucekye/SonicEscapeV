@@ -127,8 +127,8 @@ func _can_start() -> bool:
 		return false
 
 	return (
-		Input.is_action_just_pressed("ui_accept")
-		and not Input.is_action_pressed("ui_down")
+		player.inp_just_pressed("ui_accept")
+		and not player.inp_pressed("ui_down")
 		and player.can_dash
 		and not player.wall_cast.is_colliding()
 		and not player.wall_cast_2.is_colliding()

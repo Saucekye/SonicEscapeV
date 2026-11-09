@@ -1,0 +1,9 @@
+{
+  "name": "sonic-escape-relay",
+  "version": "1.0.0",
+  "description": "Room-code relay for Sonic Escape online multiplayer (up to 4 players, player 1 hosts)",
+  "main": "relay.js",
+  "scripts": { "start": "node relay.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "ws": "^8.18.0" }
+}

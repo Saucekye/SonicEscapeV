@@ -2453,8 +2453,8 @@ position = Vector2(0.0799999, 0.280001)
 [node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=1234275953]
 visible = false
 z_index = 1
-position = Vector2(-0.0005471043, -0.30784926)
 scale = Vector2(0.009, 0.009)
+offset = Vector2(0, -34)
 sprite_frames = SubResource("SpriteFrames_crhyl")
 autoplay = "default"
 speed_scale = 0.8

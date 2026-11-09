@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_8xs2g"]
+
+[resource]
+script = ExtResource("1_8xs2g")
+display_name = "Rubber Duck"
+value = 25
+shape = "circle"
+color = Color(0.95, 0.85, 0.2, 1)

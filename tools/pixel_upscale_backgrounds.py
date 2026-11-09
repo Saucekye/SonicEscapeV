@@ -1,0 +1,27 @@
+"""Stage background files enlarged by tools/pixel_upscale.py --all (source, factor, frames).
+Factors follow Scripts/Level/pixel_match.gd: the sprite's scale / 1.125, rounded to a mix of 2s and 3s."""
+JOBS = [
+    ('Sprites/Background/City/10-middleground-lights-tower.png', 4, 1),
+    ('Sprites/Background/City/2-backround.png', 4, 1),
+    ('Sprites/Background/City/3-backround.png', 4, 1),
+    ('Sprites/Background/City/3.png', 3, 1),
+    ('Sprites/Background/City/4b-backround--traffic-lights.png', 4, 1),
+    ('Sprites/Background/City/4backround-traffic-lights.png', 4, 1),
+    ('Sprites/Background/City/6-backround-train.png', 12, 1),
+    ('Sprites/Background/City/9-middleground-tower.png', 4, 1),
+    ('Sprites/Background/Industrial/Layer_1.png', 3, 1),
+    ('Sprites/Background/Industrial/Layer_2.png', 3, 1),
+    ('Sprites/Background/Industrial/Layer_3.png', 3, 1),
+    ('Sprites/Background/Industrial/Layer_4.png', 3, 1),
+    ('Sprites/Background/Mountains/1.png', 3, 1),
+    ('Sprites/Background/Mountains/10.png', 3, 1),
+    ('Sprites/Background/Mountains/2.png', 8, 1),
+    ('Sprites/Background/Mountains/3.png', 3, 1),
+    ('Sprites/Background/Mountains/4.png', 3, 1),
+    ('Sprites/Background/Night/7.png', 3, 1),
+    ('Sprites/Background/Night/bg0moon-and-stars-export.png', 2, 1),
+    ('Sprites/Background/Town/1.png', 3, 1),
+    ('Sprites/Background/Town/2.png', 3, 1),
+    ('Sprites/Background/Town/3.png', 3, 1),
+    ('Sprites/Background/Town/4.png', 3, 1),
+]

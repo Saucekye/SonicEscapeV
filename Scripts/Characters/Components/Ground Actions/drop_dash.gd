@@ -4,7 +4,7 @@ func action() -> void:
 # ── Drop Dash Release ──────────────────────────────────────────
 	if not player.is_drop_dashing or not player.drop_dash_charge >= player.drop_dash_charge_time:
 		return
-	if Input.is_action_pressed("ui_accept"):
+	if player.inp_pressed("ui_accept"):
 		_execute_drop_dash()
 	else:
 		# Button was released before landing — cancel the drop dash

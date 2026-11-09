@@ -11,7 +11,7 @@ extends Player
 
 func handle_air_actions(is_grounded) -> void:
 	# Don't Homing Attack if Down + ui_accept are pressed together
-	if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down"):
+	if inp_just_pressed("ui_accept") and not inp_pressed("ui_down"):
 		if homingattack_component.has_target():
 			homingattack_component.action()
 			return

@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/salvage.gd" id="1_salv"]
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="2_kind"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/old_battery.tres" id="s1"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/brass_bell.tres" id="s2"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/toy_robot.tres" id="s3"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/rubber_duck.tres" id="s4"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/gold_bar.tres" id="s5"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/cash_register.tres" id="s6"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/large_axle.tres" id="s7"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/fancy_lamp.tres" id="s8"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/chao_plushie.tres" id="s9"]
+[ext_resource type="Resource" path="res://Scenes/Salvage/Items/old_cartridge.tres" id="s10"]
+
+[node name="Salvage" type="Node3D"]
+script = ExtResource("1_salv")
+item_kinds = Array[ExtResource("2_kind")]([ExtResource("s1"), ExtResource("s2"), ExtResource("s3"), ExtResource("s4"), ExtResource("s5"), ExtResource("s6"), ExtResource("s7"), ExtResource("s8"), ExtResource("s9"), ExtResource("s10")])

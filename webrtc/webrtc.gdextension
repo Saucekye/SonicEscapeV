@@ -1,0 +1,15 @@
+; Godot's official WebRTC plugin (github.com/godotengine/webrtc-native, 1.1.0),
+; for direct connections between players in desktop builds (Scripts/Online/p2p.gd).
+; Only 64-bit Windows and Linux are included, to keep the game small; other
+; desktop builds just use the online server. The web build has WebRTC built in.
+[configuration]
+
+entry_symbol = "webrtc_extension_init"
+compatibility_minimum = 4.1
+
+[libraries]
+
+windows.debug.x86_64 = "lib/libwebrtc_native.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "lib/libwebrtc_native.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "lib/libwebrtc_native.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "lib/libwebrtc_native.linux.template_release.x86_64.so"

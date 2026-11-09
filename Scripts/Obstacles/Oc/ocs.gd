@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const GROUNDED := preload("res://Scripts/Obstacles/grounded_sprite.gd")
+
 @export var textures : Array[Texture2D]
 @export var item_labels : Array[String]   # same order/index as textures
 
@@ -16,6 +18,10 @@ var speed_multiplier = 1.8
 
 # State
 var is_being_held = false
+## Online (net.gd): she was picked up on this machine, so this machine tells the
+## others when she's thrown or dropped
+var _held_local := false
+var _released_local := false
 var has_touched_surface = false
 var can_be_picked_up = false
 
@@ -41,7 +47,7 @@ var current_player: Node2D = null
 
 func _ready():
 	if textures.size() > 0:
-		var idx = randi_range(0, textures.size() - 1)
+		var idx = Net.shared_rng("oc").randi_range(0, textures.size() - 1)   # (online: the same OC for everyone)
 		$Sprite2D.texture = textures[idx]
 
 		if idx == 16:
@@ -73,7 +79,19 @@ func set_item_group(active: bool) -> void:
 
 # --------------------------------------------------
 
+## Seconds of invincibility left after the OC appears (item_hit.gd checks this)
+const SPAWN_SAFE_TIME := 2.0
+var spawn_safe := SPAWN_SAFE_TIME
+var knocked_off := false
+
 func _physics_process(delta):
+	if spawn_safe > 0.0:
+		spawn_safe -= delta
+		# Blink while invincible, in boss fights only
+		if get_tree().get_first_node_in_group("boss_arena") != null:
+			$Sprite2D.visible = spawn_safe <= 0.0 or int(spawn_safe * 12.0) % 2 == 0
+	# Feet on the ground, like the playable characters (grounded_sprite.gd)
+	GROUNDED.update(self, $Sprite2D, $CollisionShape2D, is_being_held)
 
 	if is_being_held:
 		$Label.visible = false
@@ -203,6 +221,9 @@ func _physics_process(delta):
 # --------------------------------------------------
 
 func start_spinning(throw_direction: Vector2):
+	if _released_local:
+		_released_local = false
+		Net.miku_event(self, "throw", {"vx": velocity.x, "vy": velocity.y, "dx": throw_direction.x, "dy": throw_direction.y})
 
 	is_spinning = true
 	has_touched_surface = false
@@ -227,7 +248,7 @@ func start_spinning(throw_direction: Vector2):
 # PICKUP
 # --------------------------------------------------
 
-func disable_physics():
+func disable_physics(by = null):
 
 	if not can_be_picked_up:
 		return
@@ -241,13 +262,24 @@ func disable_physics():
 
 	set_item_group(false)
 
-	Test.meter += 25
+	if by != null and "my_meter" in by:
+		by.my_meter += 25   # whoever picked her up
+	else:
+		Test.meter += 25
+	_held_local = by != null and by.get("is_player") == true
+	if _held_local:
+		Net.miku_event(self, "held")   # online: the others see her with this player
+
 
 # --------------------------------------------------
 # DROP
 # --------------------------------------------------
 
 func enable_physics():
+	_released_local = _held_local
+	if _held_local:
+		_held_local = false
+		Net.miku_event(self, "free")
 
 	is_being_held = false
 	has_touched_surface = false

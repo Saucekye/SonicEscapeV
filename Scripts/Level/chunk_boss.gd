@@ -2,16 +2,45 @@ extends Node2D
 
 var levelover = false
 
+var _bosses: Array = []
+
 func _ready() -> void:
 	# DIsable ability to change music
 	GlobalSignals.disable_music_player.emit(true)
+	Test.music_locked = true   # also hides the pause menu's Song row and Teto
+	add_to_group("boss_arena")   # Miku and the OCs only blink in here (miku.gd, ocs.gd)
+	# Speedrun timer: the boss split stops the moment every boss is out of health,
+	# not after the death animation (timer.gd). The final boss refills its health
+	# between phases, so it keeps stopping on its end signal instead.
+	if Test.level % 20 != 0:
+		for n in find_children("*", "", true, false):
+			if "health" in n and "max_health" in n:
+				_bosses.append(n)
+
+
+func _exit_tree() -> void:
+	Test.music_locked = false
+
+
+func _process(_delta: float) -> void:
+	if _bosses.is_empty() or Test.floor_done:
+		return
+	for b in _bosses:
+		if is_instance_valid(b) and float(b.health) > 0.0:
+			return
+	Test.floor_done = true
 
 func _on_node_2d_end() -> void:
+	Test.floor_done = true   # stops the boss timer (timer.gd)
+	if Net.online and not Net.is_host:
+		Net.show_waiting()   # online: the host's fight decides when the floor ends
+		return
 	if Test.level != 20: 
 		if Test.level != 16:
 			Test.end = true
 			# Reenable ability to choose music
 			GlobalSignals.disable_music_player.emit(false)
+			Test.music_locked = false
 			GlobalSignals.disable_boss_ui.emit(true)
 			if levelover == false:
 				Test.level += 1

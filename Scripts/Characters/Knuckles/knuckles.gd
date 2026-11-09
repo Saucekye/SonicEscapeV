@@ -6,7 +6,7 @@ extends Player
 @onready var stomp_component: Node = $Stomp
 @onready var trick_component: Node = $Trick
 @onready var wall_climb_component: Node = $WallClimb
-@onready var ground_boost_component: Components_Action = $GroundBoost
+@onready var ground_boost_component: Components_Action = get_node_or_null("GroundBoost")   # Knuckles has none
 
 func handle_air_actions(is_grounded) -> void:
 	glide_component.action()#

@@ -27,7 +27,7 @@ func action() -> void:
 	var wall_normal = player.get_wall_normal()
 	var push_dir = 1 if wall_normal.x > 0 else -1  # Direction away from the wall
 	
-	if (Input.is_action_just_pressed("ui_accept")):
+	if (player.inp_just_pressed("ui_accept")):
 		# Wall jump: push away from wall and launch upward
 		player.position += Vector2(push_dir * 25, 0).rotated(player.rot)
 		player.motion.x = 2500 * push_dir

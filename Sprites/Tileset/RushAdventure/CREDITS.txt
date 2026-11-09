@@ -1,0 +1,14 @@
+Terrain tiles
+-------------
+The fill and surface tiles in this folder were cut from the Sonic Rush tileset
+sheets supplied by the game's author. Original art: SEGA and Dimps.
+If the sheets came from a rip that asks for credit (for example Techokami's
+Sonic Rush level rip, or a sheet on The Spriters Resource), credit that ripper
+in the game's credits too.
+
+Stage -> tiles (sheet, position, size)
+  Night city   neon_tech    green circuit fill + purple hex ledge
+  Sunset       brick_ruins  brick-and-stone fill + cream zigzag ledge
+  Purple town  roof_town    roof-tile fill + teal-and-red stone cornice (scaled 2x from a half-size sheet)
+  Grey city    industrial   crate fill + orange caution girder
+  4th floors   teal_tech    teal machinery fill + teal pipe rail

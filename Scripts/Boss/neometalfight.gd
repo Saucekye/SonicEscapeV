@@ -340,7 +340,7 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Playerattack") and begin == true:
 		update_health_bar.emit(health - 1, max_health)
 		await flash_sprite()
-		if area.is_in_group("Player"):
+		if is_instance_valid(area) and area.is_in_group("Player") and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 

@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Templates/Boss/template_projectile.gd" id="1_o5ig8"]
+[ext_resource type="Texture2D" path="res://Sprites/Boss/Goku Black & Caine/BlackBall.png" id="2_q2l50"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lqcf3"]
+radius = 15.0
+
+[node name="TemplateProjectile" type="Area2D" unique_id=379151504 groups=["EnemyProjectile", "enemyattack"]]
+script = ExtResource("1_o5ig8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=707704338]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_q2l50")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1211556613]
+shape = SubResource("CircleShape2D_lqcf3")

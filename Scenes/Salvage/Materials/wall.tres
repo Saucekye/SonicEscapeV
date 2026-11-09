@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://Shaders/ps1_world.gdshader" id="1_ux8da"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ux8da")
+shader_parameter/pattern = 1
+shader_parameter/color_a = Color(0.62, 0.61, 0.64, 1)
+shader_parameter/color_b = Color(0.015, 0.015, 0.02, 1)
+shader_parameter/tile_size = 1.4
+shader_parameter/level_height = 3.6
+shader_parameter/affine_amount = 0.0

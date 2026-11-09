@@ -1,0 +1,15 @@
+# Sonic Escape relay on Cloudflare Workers (free plan): room codes for online play.
+# Same messages as ../relay.js, so the game doesn't care which one it talks to.
+# Deploy: see README.md in this folder.
+name = "sonic-escape-relay-cf"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+
+[[durable_objects.bindings]]
+name = "RELAY"
+class_name = "Relay"
+
+# Free plan: Durable Objects must use the SQLite storage backend
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Relay"]

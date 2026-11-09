@@ -406,14 +406,14 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if dying:
 		return
 
-	if area.is_in_group("item"):
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
 		await flash_sprite()
 
 		if dying:
 			return
 
 		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
-			area.get_parent().queue_free()
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
 		take_damage()
 		spawn_heart()

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_i5kdk"]
+
+[resource]
+script = ExtResource("1_i5kdk")
+display_name = "Toy Robot"
+cost = 10
+value = 70
+color = Color(0.6, 0.62, 0.7, 1)

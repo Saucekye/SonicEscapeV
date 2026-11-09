@@ -44,11 +44,18 @@ func _ready() -> void:
 	_reset_teto_animation()
 	
 	# --- Dropdown setup ---
-	for song_name in MusicManager.node2d_music_pool:
-		var clean_name = str(song_name).get_basename().get_file()
+	_fill_dropdown()
+	# Your playlist (the MUSIC screen) can swap the songs: list the new ones
+	MusicManager.pool_changed.connect(_fill_dropdown)
+
+
+func _fill_dropdown() -> void:
+	dropdown.clear()
+	for song in MusicManager.node2d_music_pool:
+		var clean_name = (song.resource_path if song is Resource and song.resource_path != "" else str(song)).get_file().get_basename()
 		dropdown.add_item(clean_name)
-		
-	dropdown.select(MusicManager.node2d_track_index)
+	if dropdown.item_count > 0:
+		dropdown.select(clampi(MusicManager.node2d_track_index, 0, dropdown.item_count - 1))
 		
 """
 func _process(delta: float) -> void:
@@ -78,7 +85,7 @@ func _on_option_button_item_selected(music_idx: int) -> void:
 	dropdown.release_focus()
 	
 	# Only allow the music to be changed while in a level
-	if !MusicManager.can_play:
+	if !MusicManager.can_play or Test.music_locked:   # no song changes in boss arenas
 		return
 	
 	# Ensure the index is within range

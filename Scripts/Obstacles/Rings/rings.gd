@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var loss = false
+var _collected := false   # (online: another player may have collected it)
 var timer_started = false
 const GRAVITY = 900.0
 
@@ -29,16 +30,32 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func _on_node_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		var player_body = area.get_parent()
-		if player_body.ouch == false:
+		if player_body.ouch == false and not _collected:
+			_collected = true
 			$Node2D.set_deferred("monitoring", false)
 			$Node2D.set_deferred("monitorable", false)
-			print("WHAT NODE 2D")
-			print($Node2D)
-			Test.rings += 1
-			Test.meter += 5
+			if "my_rings" in player_body:   # co-op: each player has their own rings
+				player_body.my_rings += 1
+				player_body.my_meter += 5
+			else:
+				Test.rings += 1
+				Test.meter += 5
 			$BlinkTimer.stop()
 			$Node2D/Sprite2D.visible = true
 			$Node2D/Sprite2D/AnimationPlayer.play("collect")
+			if not loss:
+				Net.obj_gone(self, "ring")   # online: it's gone for everyone
+
+## Online: another player collected this ring (net.gd). It goes, without counting for us.
+func net_remove(_kind: String) -> void:
+	if _collected:
+		return
+	_collected = true
+	$Node2D.set_deferred("monitoring", false)
+	$Node2D.set_deferred("monitorable", false)
+	$BlinkTimer.stop()
+	$Node2D/Sprite2D.visible = true
+	$Node2D/Sprite2D/AnimationPlayer.play("collect")
 
 func _on_timer_timeout() -> void:
 	queue_free()

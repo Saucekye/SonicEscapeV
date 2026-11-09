@@ -4,18 +4,13 @@ extends Node2D
 # Chunk Scenes
 # ─────────────────────────────
 @export var chunk_start: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Start.tscn")
-@export var chunk_boss: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss.tscn")
-@export var chunk_boss1: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss1.tscn")
-@export var chunk_boss2: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss2.tscn")
-@export var chunk_boss3: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss3.tscn")
-@export var chunk_boss_delta_rune: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_DeltaRune.tscn")
 @export var chunk_boss_final: PackedScene = preload("res://Scenes/LevelChunks/Chunk_FinalBoss.tscn")
 @export var chunk_end: PackedScene = preload("res://Scenes/LevelChunks/Chunk_End.tscn")
 @export var chunk_rest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Rest.tscn")
 @export var chunk_finalrest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_RestFinal.tscn")
 
-# Load all level and boss chunks from an exported array
-@export var level_chunks : Array[PackedScene] 
+# Level chunks and boss fights come from res://game_content.tres (Content)
+var level_chunks: Array[PackedScene] = []
 
 # Miku
 @export var miku_scene: PackedScene = preload("res://Scenes/Obstacles/Miku/miku.tscn")
@@ -46,14 +41,27 @@ static var rest_done_level := -1
 # ─────────────────────────────
 func _ready():
 	rng.randomize()
+	if Net.online:
+		# Online: every player generates the same floor (net.gd)
+		rng.seed = Net.floor_seed()
+		seed(rng.seed)
 	if Test.level == 0:
 		rest_done_level = -1  # new run, reset
+		Test.salvage_done_level = -1
 	Test.rest = false  # default; set to true only when a rest chunk spawns
+	Test.in_rest_area = false   # set below for rest areas; the timers don't run there
+	Test.floor_done = false
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
+	level_chunks = Content.level_chunks()
+	if Test.playtest_chunk:
+		level_chunks = [Test.playtest_chunk]
+		Test.playtest_chunk = null   # once; the next floors are normal
 
 	if Test.level == 0:
 		_spawn_rest_level()
+	elif Test.level == 1:
+		_spawn_tutorial()   # Level 1 is always the training stage
 	elif Test.level % 4 == 0:
 		_spawn_next_boss_level()
 	else:
@@ -71,6 +79,7 @@ func _ready():
 func _spawn_next_boss_level():
 	# Level 24 is the rest after the final boss; its goal proceeds normally
 	if Test.level == 24:
+		Test.in_rest_area = true
 		_spawn_single_chunk(chunk_rest)
 		Test.rest = false
 		return
@@ -79,6 +88,7 @@ func _spawn_next_boss_level():
 	# Its goal should reload the level WITHOUT incrementing Test.level (see Test.rest below).
 	if rest_done_level != Test.level:
 		rest_done_level = Test.level
+		Test.in_rest_area = true
 		if Test.level == 20:
 			Test.rest = true
 			_spawn_single_chunk(chunk_finalrest)	
@@ -92,22 +102,32 @@ func _spawn_next_boss_level():
 	Pause.current_scene = "Boss"
 
 	if Test.level % 20 == 0:
-		_spawn_single_chunk(chunk_boss_final)
+		_add_boss_miku(_spawn_single_chunk(chunk_boss_final))
 		return
 
+	if Test.playtest_arena:
+		_add_boss_miku(_spawn_single_chunk(Test.playtest_arena))
+		Test.playtest_arena = null   # once; the next floors are normal
+		return
+	var bosses := Content.bosses()
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
 	var index: int = Test.boss_rotation_order.pop_front()
-	while index == 2:  # skip the old rest entry in the rotation
-		if Test.boss_rotation_order.is_empty():
-			Test.build_boss_rotation()
-		index = Test.boss_rotation_order.pop_front()
+	var boss_chunk := _spawn_single_chunk(bosses[index % bosses.size()].arena)
+	_add_boss_miku(boss_chunk)
 
-	var scene_map := [chunk_boss, chunk_boss1, chunk_rest, chunk_boss2, chunk_boss3, chunk_boss_delta_rune]
-	_spawn_single_chunk(scene_map[index])
+# After level 8, a Miku drops into boss arenas when the boss is down to half
+# health; she's saved if she's still there when the boss is beaten (boss_miku.gd)
+func _add_boss_miku(chunk: Node) -> void:
+	if Test.level <= 8 or chunk == null:
+		return
+	var watcher = preload("res://Scripts/Level/boss_miku.gd").new()
+	watcher.name = "BossMiku"
+	watcher.setup(self, chunk)
+	add_child(watcher)
 
 # Spawns one chunk as the entire level
-func _spawn_single_chunk(scene: PackedScene):
+func _spawn_single_chunk(scene: PackedScene) -> Node:
 	Test.rest = true
 	var chunk := scene.instantiate()
 	add_child(chunk)
@@ -116,11 +136,26 @@ func _spawn_single_chunk(scene: PackedScene):
 	last_end_position = chunk.get_node("End").global_position
 	chunks.append(chunk)
 	end_spawned = true
+	return chunk
+
+# The training stage (tutorial_stage.gd), followed by the normal goal chunk
+func _spawn_tutorial():
+	var ref := chunk_start.instantiate()
+	var tile_set: TileSet = ref.get_node("Level/TileMapLayer").tile_set
+	ref.free()
+	var chunk = preload("res://Scripts/Level/tutorial_stage.gd").create(tile_set)
+	add_child(chunk)
+	var start = chunk.get_node("Start").global_position
+	chunk.global_position = first_chunk_offset - start
+	last_end_position = chunk.get_node("End").global_position
+	chunks.append(chunk)
+	_spawn_end_chunk()
 
 # ─────────────────────────────
 # Chunk Spawning Functions
 # ─────────────────────────────
 func _spawn_rest_level():
+	Test.in_rest_area = true
 	_spawn_single_chunk(chunk_rest)
 	Test.rest = false
 
@@ -148,7 +183,7 @@ func _spawn_next_chunk():
 	chunks.append(chunk)
 
 func _pick_random_chunk() -> PackedScene:
-	if last_chunk_scene != null:
+	if last_chunk_scene != null and level_chunks.size() > 1:
 		level_chunks.erase(last_chunk_scene)
 	var chosen = level_chunks[rng.randi_range(0, level_chunks.size() - 1)]
 	last_chunk_scene = chosen
@@ -168,7 +203,8 @@ func _spawn_end_chunk():
 # ─────────────────────────────
 func _spawn_miku_on_ground():
 	var spawned = false
-	var miku = miku_scene.instantiate()
+	# Rarely an OC appears instead of Miku (miku_saved.gd)
+	var miku = preload("res://Scripts/Effects/miku_saved.gd").rescue_scene(miku_scene, Net.shared_rng("ground_miku") if Net.online else rng).instantiate()
 	add_child(miku)
 	miku.scale = Vector2(125, 125)
 
@@ -219,10 +255,6 @@ func _spawn_miku_on_ground():
 						miku.global_position = world_pos
 						spawned = true
 						return
-					else:
-						print("miku was too close to the player")
-				else:
-					print("tile was too low for miku to spawn")
 
 	if(spawned == false):
 		print("Failed to spawn Miku in middle chunks far from player")

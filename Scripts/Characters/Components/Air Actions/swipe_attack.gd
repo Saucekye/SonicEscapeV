@@ -1,7 +1,7 @@
 extends Components_Action
 
 func action() -> void:
-	if not (Input.is_action_just_pressed("airspin") and not Input.is_action_pressed("ui_down") and not player.dashed and not player.swipe):
+	if not (player.inp_just_pressed("airspin") and not player.inp_pressed("ui_down") and not player.dashed and not player.swipe):
 		return
 	
 	# Swipe attack — short animation window that damages enemies on contact.

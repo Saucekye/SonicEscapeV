@@ -71,6 +71,12 @@ func build_map(chunks: Array[Node2D]):
 		add_child(mini_chunk)
 
 func _strip_node(node: Node):
+	# Screen UI (like the rest tree's page) isn't part of the map: a copy of it
+	# would sit on screen over the real one
+	for child in node.get_children():
+		if child is CanvasLayer:
+			node.remove_child(child)
+			child.free()
 	# Remove scripts
 	if node.get_script():
 		node.set_script(null)

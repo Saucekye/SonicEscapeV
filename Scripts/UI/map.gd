@@ -9,6 +9,13 @@ const RED_TEXTURE: Texture2D = preload("res://Sprites/Tileset/Red.png")
 
 func _ready():
 	_swap_texture()
+	# Boss arenas and rest stops: glowing cave dressing (boss_arena.gd)
+	var scene_file: String = owner.scene_file_path.get_file() if owner else ""
+	if scene_file.begins_with("Chunk_Boss") or scene_file.begins_with("Chunk_Rest") or scene_file == "Chunk_FinalBoss.tscn":
+		preload("res://Scripts/Level/boss_arena.gd").apply.call_deferred(self)
+		return
+	# Dress the terrain with Sonic Rush Adventure tiles (rush_skin.gd)
+	preload("res://Scripts/Level/rush_skin.gd").apply.call_deferred(self, Test.current_background)
 
 func _swap_texture():
 	if tile_set == null:

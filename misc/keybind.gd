@@ -40,7 +40,12 @@ func _backup_default_bindings() -> void:
 	# FIXED: Added "airup" to the action list
 	for action in ["ui_accept", "airspin", "airup", "trick", "ui_left", "ui_right", "ui_up", "ui_down"]:
 		if InputMap.has_action(action):
+			# Defaults come from the project settings, not the live InputMap, which may
+			# already hold the player's saved bindings
 			var events = InputMap.action_get_events(action)
+			var setting = ProjectSettings.get_setting("input/" + action)
+			if setting is Dictionary and setting.has("events"):
+				events = setting["events"]
 			default_bindings[action] = []
 			
 			# Create DEEP COPIES of each event
@@ -48,7 +53,6 @@ func _backup_default_bindings() -> void:
 				var copied_event = _duplicate_event(event)
 				if copied_event:
 					default_bindings[action].append(copied_event)
-					print("Backed up ", action, ": ", copied_event.as_text())
 		else:
 			print("WARNING: Action '", action, "' does not exist in InputMap!")
 
@@ -108,6 +112,7 @@ func _input(event: InputEvent) -> void:
 		
 		if should_rebind and new_event:
 			rebind_action(action_to_rebind, new_event)
+			Test.save_keybinds()   # keep the change between runs
 			waiting_for_rebind = false
 			button_being_rebound = null
 			_update_button_texts()
@@ -163,7 +168,10 @@ func _events_match(event1: InputEvent, event2: InputEvent) -> bool:
 		return false
 	
 	if event1 is InputEventKey:
-		return event1.keycode == event2.keycode
+		# Project defaults only set the physical key, so compare by either
+		var k1: int = event1.keycode if event1.keycode != 0 else DisplayServer.keyboard_get_keycode_from_physical(event1.physical_keycode)
+		var k2: int = event2.keycode if event2.keycode != 0 else DisplayServer.keyboard_get_keycode_from_physical(event2.physical_keycode)
+		return k1 == k2
 	elif event1 is InputEventJoypadButton:
 		return event1.button_index == event2.button_index
 	elif event1 is InputEventJoypadMotion:
@@ -185,6 +193,7 @@ func restore_all_bindings() -> void:
 					InputMap.action_add_event(action_name, copied_event)
 					print("Restored ", action_name, " to: ", copied_event.as_text())
 	
+	Test.clear_saved_keybinds()   # defaults again next run too
 	print("All bindings restored to defaults")
 	_update_button_texts()
 
@@ -209,7 +218,11 @@ func _update_button_texts() -> void:
 		var events = InputMap.action_get_events(action)
 		
 		if events.size() > 0:
-			button.text = events[0].as_text()
+			var e0 = events[0]
+			if e0 is InputEventKey and e0.keycode == 0 and e0.physical_keycode != 0:
+				button.text = OS.get_keycode_string(DisplayServer.keyboard_get_keycode_from_physical(e0.physical_keycode))
+			else:
+				button.text = e0.as_text()
 		else:
 			button.text = "Unbound"
 

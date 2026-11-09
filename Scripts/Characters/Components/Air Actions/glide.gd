@@ -3,7 +3,7 @@ extends Components_Action
 @export var min_glide_speed : float = 1100
 
 func action() -> void:
-	if player.flying == true and Input.is_action_pressed("ui_accept"):
+	if player.flying == true and player.inp_pressed("ui_accept"):
 		_handle_glide_physics()
 	else:
 		# If not actively gliding, resume normal falling
@@ -12,7 +12,7 @@ func action() -> void:
 		player.falling = true
 
 	# Jump press in air starts the glide
-	if Input.is_action_just_pressed("ui_accept") and not Input.is_action_pressed("ui_down") and not player.hanging_on_wall and not player.is_coyote_time_active():
+	if player.inp_just_pressed("ui_accept") and not player.inp_pressed("ui_down") and not player.hanging_on_wall and not player.is_coyote_time_active():
 		_dash(player.direction if player.direction != 0 else (1 if not player.sprite.flip_h else -1))
 
 func _dash(direction) -> void:
@@ -37,7 +37,7 @@ func _dash(direction) -> void:
 		player.time_elapsed = 60
 
 func _handle_glide_physics() -> void:
-	if not ((player.flying and Input.is_action_pressed("ui_accept")) and not Input.is_action_just_released("ui_accept") and not player.is_on_wall()):
+	if not ((player.flying and player.inp_pressed("ui_accept")) and not player.inp_just_released("ui_accept") and not player.is_on_wall()):
 		return
 		
 	if player.ap.current_animation != "fly":
@@ -64,7 +64,7 @@ func _handle_glide_physics() -> void:
 		player.flying = false
 		player.fall_gravity = player.default
 		player.can_dash = true
-	elif not Input.is_action_pressed("ui_accept"):
+	elif not player.inp_pressed("ui_accept"):
 		# Button released mid-glide — fall normally
 		player.flying = false
 		player.fall_gravity = player.default

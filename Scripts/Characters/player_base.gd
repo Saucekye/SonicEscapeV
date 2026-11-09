@@ -1,6 +1,8 @@
 @abstract
 class_name Player extends CharacterBody2D
 
+signal enemy_hit(at: Vector2)   ## fired when this character strikes an enemy (hit flash, character_fx.gd)
+
 # ─────────────────────────────────────────────
 # Debug Variables
 # ─────────────────────────────────────────────
@@ -61,6 +63,8 @@ signal amazing
 @export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
 @export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
 @export var  MAX_LOW_SPEED : float = 500	## The maximum motion.x when player is traveling at low speed
+var run_smoke_interval : float = 0.06   ## seconds between run dust puffs
+var run_smoke_timer := 0.0
 var is_boosting = false         ## True while the ground boost is active (drains meter)
 var stomp_no_bounce = false     ## Unused/reserved: prevent bounce after stomp
 var is_jumping = false          ## True between pressing jump and releasing it
@@ -86,6 +90,44 @@ var next_bounce = false         ## True when the character should bounce on the 
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
 var is_player_dead : bool = false		## Indicates that the player character has died, remove all playability
+
+# Local co-op: which player's controls this character reads (Scripts/Level/coop.gd).
+# "" = the normal shared controls (single player); "p1_" / "p2_" in co-op.
+var input_prefix := ""
+var joy_device := 0   ## which controller's sticks to read (-1 = none, keyboard only)
+
+func inp_pressed(action: String) -> bool:
+	return Input.is_action_pressed(input_prefix + action)
+
+func inp_just_pressed(action: String) -> bool:
+	return Input.is_action_just_pressed(input_prefix + action)
+
+func inp_just_released(action: String) -> bool:
+	return Input.is_action_just_released(input_prefix + action)
+
+func inp_axis(negative: String, positive: String) -> float:
+	return Input.get_axis(input_prefix + negative, input_prefix + positive)
+
+func joy_axis(axis: JoyAxis) -> float:
+	return Input.get_joy_axis(joy_device, axis) if joy_device >= 0 else 0.0
+
+## This character's rings and meter: co-op Player 2 has their own
+## (Test.p2_rings / Test.p2_meter); everyone else shares Player 1's (Test.rings / Test.meter)
+var my_rings:
+	get: return Test.p2_rings if input_prefix == "p2_" else Test.rings
+	set(v):
+		if input_prefix == "p2_":
+			Test.p2_rings = v
+		else:
+			Test.rings = v
+var my_meter:
+	get: return Test.p2_meter if input_prefix == "p2_" else Test.meter
+	set(v):
+		if input_prefix == "p2_":
+			Test.p2_meter = v
+		else:
+			Test.meter = v
+
 var last_animation : String = ""			## Keeps track of the last animation. Useful for things like airup where you go from air up aniamtion to falling animation only if you were previously in air
 # ─────────────────────────────────────────────
 # Flying State Variables
@@ -247,10 +289,10 @@ func assign_formation_slot():
 	
 func _process(_delta):
 	# Handle virtual joystick on mobile — converts stick input into action events
-	if Test.mobile == true:
+	if Test.mobile == true and not Test.touch_controls_v2:	# the new touch controls press up/down themselves
 		handle_stick_input()	
-	if debug_prevent_death and Input.is_action_just_pressed("debug"):
-		Test.rings = 999
+	if debug_prevent_death and inp_just_pressed("debug"):
+		my_rings = 999
 		Test.level = 3
 	
 func handle_stick_input():
@@ -286,7 +328,7 @@ func _on_launch_finished():
 func _physics_process(delta):
 	
 	# Release boost if the airspin button is let go
-	if Input.is_action_just_released("airspin"):
+	if inp_just_released("airspin"):
 		is_boosting = false
 
 	# ── Track floor state ──────────────────────────────────────────────
@@ -297,11 +339,13 @@ func _physics_process(delta):
 	
 	if is_grounded and not prev_grounded:
 		# Just landed — reset flying state and hide the fly arrow indicator
+		if motion.y > 500 and not grinding:
+			landing_dust(motion.y)  # dust burst on hard landings
 		$Arrow.visible = false
 		flying = false
 		fall_gravity = default
 		has_jumped = false
-		if not Input.is_action_pressed("crouch"):
+		if not inp_pressed("crouch"):
 			ball = false
 	
 	# Reset has_jumped on fresh landing (allows coyote jump on next edge)
@@ -311,16 +355,16 @@ func _physics_process(delta):
 	prev_grounded = is_grounded
 	
 	# Cap the boost meter so it never exceeds maximum
-	if Test.meter > Test.maxmeter:
-		Test.meter = Test.maxmeter
+	if my_meter > Test.maxmeter:
+		my_meter = Test.maxmeter
 		
 	# ── Ground Boost Logic ─────────────────────────────────────────────
 	if is_on_floor_only():
 		if is_boosting:
 			# Drain meter while boosting; cancel if depleted
-			Test.meter -= 10 * delta
-			if Test.meter <= 0:
-				Test.meter = 0
+			my_meter -= 10 * delta
+			if my_meter <= 0:
+				my_meter = 0
 				is_boosting = false
 			else:
 				# Allow steering during boost — use current direction input
@@ -329,7 +373,7 @@ func _physics_process(delta):
 				max_speed = 1800
 		else:
 			# Passively recharge meter when not boosting
-			Test.meter += 1 * delta
+			my_meter += 1 * delta
 			
 	# ── Slope Calculation ──────────────────────────────────────────────
 	if is_on_floor():
@@ -358,10 +402,7 @@ func _physics_process(delta):
 			# convert some vertical speed into horizontal speed (like Sonic's slope physics)
 			if abs(slopeangle) >= 0.5 and abs(motion.y) > abs(motion.x):
 				var downhill_direction = sign(slopefactor)
-				print(sign(motion.x))
-				print(downhill_direction)
 				if sign(motion.x) == downhill_direction or motion.x == 0:
-					print(motion.y * slopefactor)
 					const SLOPE_FACTOR_MULTIPLIER : float = 0.8
 					motion.x += motion.y * slopefactor * SLOPE_FACTOR_MULTIPLIER
 			grounded = true
@@ -413,7 +454,6 @@ func _physics_process(delta):
 					if ball == true:
 						max_speed = ABOSLUTE_MAX_SPEED
 						acc = 5 + 10 * slope_influence
-						print(acc)
 					else:
 						max_speed = MAX_SPEED
 						acc = 12.5 + 5 * slope_influence
@@ -474,15 +514,15 @@ func _physics_process(delta):
 					control_lock = false
 				direction = sign(direction)  # Normalize to -1 or 1
 			else:
-				if abs(Input.get_joy_axis(0,JOY_AXIS_LEFT_X)) > 0.5:
+				if abs(joy_axis(JOY_AXIS_LEFT_X)) > 0.5:
 					# Controller analog stick — combine with digital input
-					direction = Input.get_axis("ui_left", "ui_right") + Input.get_joy_axis(0,JOY_AXIS_LEFT_X)
+					direction = inp_axis("ui_left", "ui_right") + joy_axis(JOY_AXIS_LEFT_X)
 					if spin_charge == 0:
 						control_lock = false
 					direction = sign(direction)
 				else:
 					# Keyboard / digital input
-					direction = Input.get_axis("ui_left", "ui_right")
+					direction = inp_axis("ui_left", "ui_right")
 					if direction > 0 or direction < 0:
 						if spin_charge == 0:
 							control_lock = false
@@ -619,7 +659,7 @@ func handle_attachment(delta):
 		elif not attached_to_entity.get("flying"):
 			should_detach = true
 			detach_reason = "player stopped flying"
-		elif Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("trick"):
+		elif inp_just_pressed("airspin") or inp_just_pressed("trick"):
 			should_detach = true
 			detach_reason = "player input"
 		
@@ -648,12 +688,12 @@ func handle_item(delta):
 		item_pickup_cooldown -= delta
 	
 	# Drop / throw item on trick button
-	if held_item and Input.is_action_just_pressed("trick"):
+	if held_item and inp_just_pressed("trick"):
 		drop_item()
 		return
 	
 	# Pick up a nearby item when holding up (and not already carrying something)
-	if not held_item and Input.is_action_pressed("ui_up") and item_pickup_cooldown <= 0:
+	if not held_item and inp_pressed("ui_up") and item_pickup_cooldown <= 0:
 		var item = find_item_nearby()
 		if item and not hang:  # Can't pick up while hanging on a flying player
 			pick_up_item(item)
@@ -743,7 +783,7 @@ func pick_up_item(item: Node2D):
 	
 	# Prefer the item's own disable function; fall back to manual disabling
 	if item.has_method("disable_physics"):
-		item.disable_physics()
+		item.disable_physics(self)
 	else:
 		if item.has_method("set_physics_process"):
 			item.set_physics_process(false)
@@ -771,18 +811,18 @@ func throw_item():
 		has_input = true
 		print("Mobile throw:", throw_direction)
 
-	elif abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_X)) > 0.5 or abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)) > 0.5:
+	elif abs(joy_axis(JOY_AXIS_LEFT_X)) > 0.5 or abs(joy_axis(JOY_AXIS_LEFT_Y)) > 0.5:
 		throw_direction = Vector2(
-			Input.get_joy_axis(0, JOY_AXIS_LEFT_X),
-			Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
+			joy_axis(JOY_AXIS_LEFT_X),
+			joy_axis(JOY_AXIS_LEFT_Y)
 		).normalized()
 		has_input = true
 		print("Controller raw:", throw_direction)
 
 	else:
 		throw_direction = Vector2(
-			Input.get_axis("ui_left", "ui_right"),
-			Input.get_axis("ui_down", "ui_up")
+			inp_axis("ui_left", "ui_right"),
+			inp_axis("ui_down", "ui_up")
 		)
 		if throw_direction != Vector2.ZERO:
 			throw_direction = throw_direction.normalized()
@@ -859,10 +899,15 @@ func find_flying_player_nearby():
 	# Search overlapping hitbox areas for a flying player while holding ui_up
 	var areas = $Hitbox.get_overlapping_areas()
 	for area in areas:
-		if area.is_in_group("Player") and Input.is_action_pressed("ui_up"):
+		if area.is_in_group("Player") and inp_pressed("ui_up"):
 			var player_node = area.get_parent()
 			if player_node != self and player_node.has_method("get") and player_node.get("flying"):
 				return player_node
+		# Online: another player's character (net.gd) who is flying or gliding
+		if area.is_in_group("net_grab") and inp_pressed("ui_up"):
+			var other = area.get_meta("puppet", null)
+			if other and is_instance_valid(other) and other.get("flying"):
+				return other
 	return null
 
 func find_item_nearby():
@@ -896,6 +941,8 @@ func handle_movement_input(delta):
 			# Reversing direction — use high deceleration for a "skidding" feel
 			if sign(motion.x) != sign(target_speed) and motion.x != 0:
 				current_acc = 2500 * delta
+				if is_on_floor() and abs(motion.x) > 300 and not ball:
+					skid_dust()  # dust sprays forward while braking
 				
 			motion.x = approach(motion.x, target_speed, current_acc)
 			
@@ -1016,7 +1063,7 @@ func calculate_dynamic_speed():
 
 func preserve_ball_momentum():
 	# Optional helper — call in handle_floor_logic to enter ball mode naturally without forcing speed
-	if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+	if ((velocity.x != 0 or velocity.y != 0) and inp_just_pressed("ui_down")) or ((rot != 0) and inp_just_pressed("ui_down")) and next_bounce == false:
 		crouch = true
 		ball = true
 
@@ -1071,17 +1118,17 @@ func handle_floor_logic(delta):
 			control_lock = false
 		
 		# Enter crouch from still
-		if Input.is_action_pressed("ui_down") and motion.x == 0 and is_spinning == false and next_bounce == false:
+		if inp_pressed("ui_down") and motion.x == 0 and is_spinning == false and next_bounce == false:
 			crouch = true
 			ap.play("Crouch")
 			
 		# Stand up from crouch on release
-		if Input.is_action_just_released("crouch") or Input.is_action_just_released("ui_up") and motion.x == 0:
+		if inp_just_released("crouch") or inp_just_released("ui_up") and motion.x == 0:
 			control_lock = false
 			crouch = false
 			
 		# Enter ball mode when pressing down while moving or on a slope
-		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
+		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and inp_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
 			
@@ -1095,14 +1142,14 @@ func handle_floor_logic(delta):
 		handle_ground_action()	## Abstract method
 
 	# Exit ball mode when any action button is pressed
-	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("trick") or Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("airup")) and ball == true and is_on_floor():
+	if (inp_just_pressed("ui_up") or inp_just_pressed("trick") or inp_just_pressed("airspin") or inp_just_pressed("airup")) and ball == true and is_on_floor():
 		control_lock = false
 		ball = false
 		crouch = false
 		roll()
 		
 	# Boost input check (currently returns early without doing anything — boost is handled in _physics_process)
-	if Input.is_action_just_pressed("airspin") and ball == false and not crouch and not is_spinning and not is_spinningdash and Test.meter >= 50 and abs(motion.x) > 0:
+	if inp_just_pressed("airspin") and ball == false and not crouch and not is_spinning and not is_spinningdash and my_meter >= 50 and abs(motion.x) > 0:
 		return
 			
 func reset_dash_after_delay() -> void:
@@ -1140,13 +1187,13 @@ func handle_air_logic(delta, is_grounded):
 		next_bounce = false
 	
 	# You can enter ball mode upon landing
-	if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+	if ((velocity.x != 0 or velocity.y != 0) and inp_just_pressed("ui_down")) or ((rot != 0) and inp_just_pressed("ui_down")) and next_bounce == false:
 		crouch = true
 		ball = true
 	
 	# ── Drop Dash Charging ─────────────────────────────────────────
 	# Charge the drop dash by holding jump while airborne
-	if Input.is_action_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
+	if inp_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
 		drop_dash_charge += delta
 		if drop_dash_charge >= drop_dash_charge_time:
 			is_drop_dashing = true  # Fully charged — ready to fire on landing
@@ -1183,17 +1230,17 @@ func handle_jump_input(is_grounded):
 	var slope_acceleration = sign(-slopefactor * direction)
 	
 	# Variable jump height: cut upward velocity when button is released early
-	if is_jumping and !Input.is_action_pressed("ui_accept") and motion.y < 0:
+	if is_jumping and !inp_pressed("ui_accept") and motion.y < 0:
 		motion.y *= 0.8
 		is_jumping = false
 	
-	if Input.is_action_just_pressed("ui_accept") and (grinding or is_grounded or is_coyote_time_active()) and (ball or (!crouch and !ball)) and not just_wall_jumped and not is_spinning:
+	if inp_just_pressed("ui_accept") and (grinding or is_grounded or is_coyote_time_active()) and (ball or (!crouch and !ball)) and not just_wall_jumped and not is_spinning:
 		floor_snap_length = 0
 		
 		# Allow jumping while pressing down only if also pressing a direction
-		var can_jump_with_down = Input.is_action_pressed("ui_down") and direction != 0
+		var can_jump_with_down = inp_pressed("ui_down") and direction != 0
 		
-		if !Input.is_action_pressed("ui_down") or can_jump_with_down:
+		if !inp_pressed("ui_down") or can_jump_with_down:
 			if slope_acceleration < 0:
 				if time_elapsed >= 50:
 					# Boost launch angle on steep uphill slopes at high speed
@@ -1264,8 +1311,13 @@ func handle_idle_animations():
 		else:
 			ap.play("stance")
 		ap.speed_scale = 1
-		if Input.is_action_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false and swipe == false:
+		if inp_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false and swipe == false:
 			ap.play("Crouch")
+		# Look up: every character, standing still and holding up. (Sonic, Blaze and
+		# Metal Sonic already did this as the start of their peel-out.)
+		elif inp_pressed("ui_up") and direction == 0 and motion.x == 0 and is_on_floor() and not is_ready \
+				and next_bounce == false and grinding == false and swipe == false and ap.has_animation("ready"):
+			ap.play("ready")
 
 func handle_movement_animations(doturn):
 	# doturn < 1 means the character is slower than half speed — play "turn" transition anim
@@ -1283,13 +1335,56 @@ func handle_movement_animations(doturn):
 				runsmoke()
 
 func runsmoke():
-	# Spawn a ground dust puff at the feet and mirror it to the movement direction
-	var runsmoke_effect : Node = smokeground.instantiate()
-	runsmoke_effect.position = position
-	get_parent().add_child(runsmoke_effect)
-	runsmoke_effect.rotation_degrees = rot
-	runsmoke_effect.flip_h = velocity.x < 0
-	await get_tree().create_timer(0.13).timeout  # Brief delay before cleanup (handled in runsmoke scene)
+	# Rate-limited (one node per physics frame would stutter); the faster you
+	# run, the more often dust kicks up
+	var speed_t : float = clamp((abs(motion.x) - 500.0) / 1300.0, 0.0, 1.0)
+	var interval : float = lerp(run_smoke_interval * 1.6, run_smoke_interval * 0.6, speed_t)
+	if not is_player:
+		interval *= 2.0  # AI followers kick up half as much, so trails don't pile up
+	var now = Time.get_ticks_msec() / 1000.0
+	if now - run_smoke_timer < interval:
+		return
+	# Irregular rhythm, so the puffs don't line up like a dotted line
+	run_smoke_timer = now + interval * randf_range(-0.35, 0.35)
+	# Kick the puff back from the feet and let it drift up as it fades
+	var dir : float = sign(motion.x) if motion.x != 0 else (-1.0 if sprite.flip_h else 1.0)
+	var kick := Vector2(-dir * lerp(60.0, 240.0, speed_t), -randf_range(8.0, 40.0))
+	spawn_dust(Vector2(-dir * randf_range(0.0, 12.0), randf_range(-4.0, 1.0)), kick, dir < 0)
+
+func spawn_dust(offset: Vector2, kick: Vector2, face_left: bool, anim_speed: float = -1.0) -> void:
+	# One dust puff from the runsmoke sprite: kicked back and slowing down, fading
+	# out with slightly varied timing, tilted with the ground, and at the same
+	# pixel size as the characters
+	var puff : Node = smokeground.instantiate()
+	puff.position = position + offset.rotated(rot)
+	get_parent().add_child(puff)
+	puff.rotation = rot
+	puff.scale = Vector2(1.125, 1.125)
+	puff.flip_h = face_left
+	puff.speed_scale = anim_speed if anim_speed > 0.0 else randf_range(1.7, 2.5)
+	if randf() < 0.5:
+		puff.frame = 1  # skip the small first blob half the time, for variety
+	if "velocity" in puff:
+		puff.velocity = kick.rotated(rot)
+		puff.drag = 420.0
+		puff.fade_out = true
+
+func skid_dust() -> void:
+	# Classic Sonic skid: dust sprays FORWARD from your feet while braking
+	var now = Time.get_ticks_msec() / 1000.0
+	if now - run_smoke_timer < 0.045:
+		return
+	run_smoke_timer = now
+	var dir : float = sign(motion.x)
+	spawn_dust(Vector2(dir * randf_range(4.0, 10.0), randf_range(-2.0, 1.0)),
+		Vector2(dir * randf_range(80.0, 160.0), -randf_range(20.0, 60.0)), dir > 0, 2.6)
+
+func landing_dust(impact: float) -> void:
+	# A hard landing kicks dust out to both sides
+	var power : float = clamp(impact / 1200.0, 0.4, 1.0)
+	for side in [-1.0, 1.0]:
+		spawn_dust(Vector2(side * 6.0, 0.0),
+			Vector2(side * lerp(80.0, 200.0, power), -lerp(10.0, 40.0, power)), side < 0, 2.4)
 
 func smokeemit():
 	# Spawn a burst smoke effect at the character's position (used on dashes and boosts)
@@ -1383,12 +1478,12 @@ func _on_animation_player_current_animation_changed(anim_name: String):
 
 func spindash():
 	# Guard: don't process spindash if peelout is active
-	if is_ready or Input.is_action_pressed("ui_up"):
+	if is_ready or inp_pressed("ui_up"):
 		return
 		
-	if is_on_floor() and Input.is_action_pressed("ui_down") and ball == false and motion.x == 0 and direction == 0:
+	if is_on_floor() and inp_pressed("ui_down") and ball == false and motion.x == 0 and direction == 0:
 		control_lock = true
-		if Input.is_action_just_pressed("ui_accept"):
+		if inp_just_pressed("ui_accept"):
 			# Each accept press adds one charge and revs up the sound
 			ap.play("revcharge")
 			await(get_tree().create_timer(0.05)).timeout
@@ -1403,7 +1498,7 @@ func spindash():
 			sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 			sfx.play()
 
-	elif is_on_floor() and Input.is_action_just_released("ui_down") and is_spinning and is_spinningdash:
+	elif is_on_floor() and inp_just_released("ui_down") and is_spinning and is_spinningdash:
 		# Release: calculate and apply burst speed based on charge level
 		sfx.pitch_scale = 1.5
 		sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
@@ -1450,7 +1545,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		tricknumber()
 		flying = false          # Springs cancel the glide
 		GlobalCanvasLayer.tricks = 0
-		Test.meter += 50  # Springs give a meter bonus
+		my_meter += 50  # Springs give a meter bonus
 		
 	if area.is_in_group("Rail"):
 		# Grinding resets fly state and meter
@@ -1510,8 +1605,12 @@ func pick_upward_angle() -> float:
 	return randf_range(selected_range.x, selected_range.y)		
 		
 func player_death():
-	if not is_player:
+	if not is_player or has_meta("downed"):
 		return
+	if Net.player_died(self):
+		return   # online, others still playing: watch them until the next floor (net.gd)
+	if _coop_down():
+		return   # local co-op, partner still playing: back in on the next floor (coop.gd)
 	trail.visible = false
 	ap.speed_scale = 1
 	ap.play("death")
@@ -1524,13 +1623,34 @@ func player_death():
 	# Reset level back to 0
 	if Test.level != 20:
 		Test.level = 0
-		Test.elapsed_sesion_time = 0
+		# (The run time is kept for the results screen; it resets when a new run starts.)
 	# Prevent physics process method from running anymore
 	set_physics_process(false)
 	
+## Local co-op: if the other player is still going, this one is only "down":
+## hidden and out of play, riding along with the partner (coop.gd keeps it with
+## them, so its half of the screen follows the action) until the next floor.
+## Game over only when both are down.
+func _coop_down() -> bool:
+	if Net.online or not is_in_group("coop_players"):
+		return false
+	for p in get_tree().get_nodes_in_group("coop_players"):
+		if p != self and is_instance_valid(p) and not p.has_meta("downed"):
+			set_meta("downed", true)
+			visible = false
+			set_physics_process(false)
+			velocity = Vector2.ZERO
+			collision_layer = 0
+			collision_mask = 0
+			for a in find_children("*", "Area2D", true, false):
+				a.set_deferred("monitoring", false)
+				a.set_deferred("monitorable", false)
+			return true
+	return false
+
 func emit_rings():
 	# Scatter a portion of held rings on taking damage (mimics classic Sonic ring loss)
-	if Test.rings <= 0 and invincible == false and ouch == false:
+	if my_rings <= 0 and invincible == false and ouch == false:
 		player_death()
 		return
 	else:
@@ -1543,15 +1663,15 @@ func emit_rings():
 	var loss : int
 	var spawn_count : int
 	
-	if Test.rings < 6:
-		Test.rings = 0
+	if my_rings < 6:
+		my_rings = 0
 	else:
-		loss = round((float)(Test.rings) / 2)
-		Test.rings -= loss
+		loss = round((float)(my_rings) / 2)
+		my_rings -= loss
 		
 	
 	# Lookup table: maps total rings held to how many ring objects to spawn
-	match Test.rings + loss:
+	match my_rings + loss:
 		1:  spawn_count = 0
 		2:  spawn_count = 1
 		3:  spawn_count = 2
@@ -1587,11 +1707,19 @@ func emit_rings():
 		
 func hurt():
 	# Trigger damage response: scatter rings, drain meter, play hurt animation, begin invincibility
+	# A carried Miku is knocked out of your arms and falls off screen (miku.gd)
+	if not invincible and held_item and is_instance_valid(held_item) and held_item.has_method("knock_off") \
+			and float(held_item.get("spawn_safe") if held_item.get("spawn_safe") != null else 0.0) <= 0.0:
+		var lost_item = held_item
+		held_item = null
+		item_pickup_cooldown = 0.5
+		var away := -signf(motion.x) if absf(motion.x) > 1.0 else (1.0 if $Sprite2D.flip_h else -1.0)
+		lost_item.knock_off(away)
 	if is_player == true:
 		emit_rings()
-		Test.meter -= 50
-		if Test.meter <= 0:
-			Test.meter = 0
+		my_meter -= 50
+		if my_meter <= 0:
+			my_meter = 0
 		var rand : float = randf()
 		if !is_player_dead:
 			if rand >= 1.0/2.0:
@@ -1618,6 +1746,7 @@ func _on_invincibity_timeout() -> void:
 
 func _on_attackbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Enemy"):
+		enemy_hit.emit(area.global_position)   # hit flash (character_fx.gd)
 		can_stomp = true
 		bounce = 0
 		if not is_on_floor() and swipe == false:
@@ -1626,7 +1755,7 @@ func _on_attackbox_area_entered(area: Area2D) -> void:
 				motion.y = -1000
 			else:
 				motion.y = -750
-		Test.meter += 5  # Gain meter for every enemy hit
+		my_meter += 5  # Gain meter for every enemy hit
 
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	$onscreentimer.stop()  # Stop the out-of-screen repositioning timer when back on screen

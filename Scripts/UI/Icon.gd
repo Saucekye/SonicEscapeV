@@ -12,6 +12,9 @@ func _ready() -> void:
 	#character_icon_player_original_position = character_icon_player.global_position
 	var new_player : Player = get_tree().get_first_node_in_group("active_player")
 	switch_icons(new_player)
+	# Keep the player icon clear of the CRT filter (crt_overlay.gd)
+	if Test.crt and Test.crt.has_method("exclude"):
+		Test.crt.call("exclude", [background_icon, character_icon])
 	
 func switch_icons(new_player : Player) -> void:
 	character_icon.texture = new_player.icon_character

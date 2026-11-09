@@ -1,0 +1,10 @@
+# Render.com settings for the Sonic Escape relay (used when this folder is the
+# root of its own GitHub repo: Render > New > Blueprint picks this up).
+services:
+  - type: web
+    name: sonic-escape-relay
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /

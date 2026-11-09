@@ -53,7 +53,14 @@ func face_player():
 	animated_sprite.flip_h = active_player.global_position.x < global_position.x
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
-	if !area.is_in_group("Playerattack"):
+	if !area.is_in_group("Playerattack") or death:
+		return
+	net_hit()
+
+
+## Caine goes down (also used online when another player hit him: boss_sync.gd)
+func net_hit() -> void:
+	if death:
 		return
 	hitsfx.play()
 	update_health_bar.emit(0, max_health)

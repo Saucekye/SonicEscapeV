@@ -11,12 +11,16 @@ func _ready():
 	text = format_time(time_passed)
 	GlobalSignals.game_over.connect(_on_game_over)
 
+## Speedrun timer: times each floor and each boss fight, from the end of the floor
+## intro until you touch the goal or the boss is beaten, then freezes on that split.
+## It doesn't run in rest areas, while paused, or between floors. Every split is
+## added to the run's total time (Test.elapsed_sesion_time, on the results screen).
 func _process(delta):
-	if not start:
+	if not start or Test.in_rest_area or Test.floor_done:
 		return
-	if not Test.level % 4 == 0:
-		time_passed += delta
-		text = format_time(time_passed)
+	time_passed += delta
+	Test.elapsed_sesion_time += delta
+	text = format_time(time_passed)
 
 func format_time(t: float) -> String:
 	# total centiseconds since start
@@ -34,7 +38,7 @@ func format_time(t: float) -> String:
 func _on_restartflash_goal() -> void:
 	if Test.fail == true:
 		Test.bestTimeText = "BEST TIME: 666:66:66"
-	elif (time_passed < Test.bestTimeFloat) and not (Test.level-1) % 4 == 0:
+	elif (time_passed < Test.bestTimeFloat) and time_passed > 0.0 and not Test.in_rest_area and not (Test.level-1) % 4 == 0:
 		Test.bestTimeFloat = time_passed
 		Test.bestTimeText = "BEST TIME: " + format_time(time_passed)
 
