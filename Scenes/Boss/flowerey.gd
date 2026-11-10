@@ -1,18 +1,32 @@
 extends Node2D
 
 signal health_changed(current: int, maximum: int)
+# Same signal the other bosses use to drive the boss HP bar
+signal update_health_bar(boss_health: int, boss_max_health: int)
 signal phase_changed(new_phase: int)
 signal defeated
+signal end # emitted on death; the chunk's level script listens to this
 signal lunge_done
 
 enum State { INACTIVE, INTRO, IDLE, ATTACKING, DYING }
 
 
 # ---------------- TUNING ----------------
+# true: health is computed like the other bosses, clamp(Test.level * 2, 15, 50).
+# false: the max_health value below is used as is.
+@export var scale_health_with_level: bool = true
 @export var max_health: int = 30
 @export var phase_thresholds: Array[float] = [0.5]
 @export var idle_times: Array[float] = [3.0, 1.8]
 @export var hits_to_interrupt_idle: int = 3
+
+# true: the fight starts as soon as the scene loads.
+# false: it waits until begin_fight() is called (e.g. from the level intro's "start" signal).
+@export var auto_start: bool = true
+
+# Chase: the player is constantly pushed to the left while the fight is active
+@export var chase_push_speed: float = 100.0
+@export var chase_phase_bonus: float = 0.5 # extra push per phase (0.5 = +50% in phase 2)
 
 @export var jarona1Count: int = 4
 @export var jarona1StartSpeed: float = 600.0
@@ -41,47 +55,65 @@ var _deflected: bool = false
 var _lunge_dir: Vector2 = Vector2.ZERO
 var _last_voice_line: AudioStream
 var _last_attack: StringName = &""
+var _fight_requested: bool = false
 
 var attack_pools: Array = [
 	[&"attack_a", &"attack_Jarona"],
 	[&"attack_a", &"attack_Jarona", &"attack_c"],
 ]
 
+# ---------------- NODES (names match the scene tree) ----------------
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var anim: AnimationPlayer = $Sprite2D/AnimationPlayer
+@onready var hit_box: Area2D = $Sprite2D/HitBox
+@onready var attack_box: Area2D = $Sprite2D/AttackBox
 @onready var timer: Timer = $Timer
-@onready var lunge_hitbox: Area2D = $Sprite2D/LungeHitbox
-@onready var voice_player: AudioStreamPlayer = $VoicePlayer
-@onready var hit_sfx: AudioStreamPlayer = get_node_or_null("hitsfx")
+@onready var voice_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var hit_sfx: Array[AudioStreamPlayer] = [$hitsfx, $hitsfx2]
 
-@onready var markers_a: Array = [$Marker2D1, $Marker2D2]
+@onready var markers_a: Array = [$Marker2D1, $Marker2D2, $Marker2D3, $Marker2D6]
 
 
 # ---------------- LIFECYCLE ----------------
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_DISABLED
+	if scale_health_with_level:
+		max_health = min(50, max(15, Test.level * 2))
 	health = max_health
 	timer.one_shot = true
 	timer.timeout.connect(_on_timer_timeout)
-	$TriggerArea.area_entered.connect(_on_trigger_area_entered)
-	$HitBox.area_entered.connect(_on_hitbox_area_entered)
-	lunge_hitbox.area_entered.connect(_on_lunge_hitbox_area_entered)
-	lunge_hitbox.monitoring = false
+	hit_box.area_entered.connect(_on_hit_box_area_entered)
+	attack_box.area_entered.connect(_on_attack_box_area_entered)
+	attack_box.monitoring = false
+	if auto_start:
+		begin_fight.call_deferred()
 
 
-func _on_trigger_area_entered(area: Area2D) -> void:
-	if state != State.INACTIVE or not area.is_in_group("Player"):
+func _exit_tree() -> void:
+	# Safety: never leave the game stuck in slow motion
+	Engine.time_scale = 1.0
+
+
+# Call this to start the fight. Safe to call more than once: only the first call counts.
+func begin_fight() -> void:
+	if _fight_requested:
 		return
-	process_mode = Node.PROCESS_MODE_INHERIT
+	_fight_requested = true
 	_start_fight()
 
 
 func _start_fight() -> void:
-	state = State.INTRO
+	# Wait until the player exists
 	_resync_player()
-	anim.play("intro")
-	await anim.animation_finished
-	health_changed.emit(health, max_health)
+	while active_player == null:
+		await get_tree().process_frame
+		_resync_player()
+
+	state = State.INTRO
+	await _play_and_wait(&"intro")
+	if state != State.INTRO:
+		return
+	GlobalSignals.disable_boss_ui.emit(false) # show the boss HP bar, like the other bosses
+	_emit_health()
 	_enter_idle()
 
 
@@ -89,11 +121,38 @@ func _process(_delta: float) -> void:
 	_resync_player()
 
 
+func _physics_process(delta: float) -> void:
+	_push_player_left(delta)
+
+
+# ---------------- CHASE PUSH ----------------
+func _push_player_left(delta: float) -> void:
+	if state == State.INACTIVE or state == State.INTRO or state == State.DYING:
+		return
+	if active_player == null or not is_instance_valid(active_player):
+		return
+	var push_speed := chase_push_speed * (1.0 + phase * chase_phase_bonus)
+	# move_and_collide respects walls, so the player can be pinned against the edge
+	active_player.move_and_collide(Vector2.LEFT * push_speed * delta)
+
+
 # ---------------- PLAYER TRACKING ----------------
 func _resync_player() -> void:
 	var players := get_tree().get_nodes_in_group("active_player")
 	if players.size() > 0 and is_instance_valid(players[0]):
 		active_player = players[0]
+		return
+	# Fallback used by the other bosses
+	for body in get_tree().get_nodes_in_group("all_characters"):
+		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
+			active_player = body
+			return
+
+
+# ---------------- HEALTH UI ----------------
+func _emit_health() -> void:
+	health_changed.emit(health, max_health)
+	update_health_bar.emit(health, max_health)
 
 
 # ---------------- ATTACK LOOP ----------------
@@ -102,7 +161,7 @@ func _enter_idle() -> void:
 		return
 	state = State.IDLE
 	hits_while_idle = 0
-	anim.play("Idle")
+	_play_anim(&"Idle")
 	timer.start(idle_times[min(phase, idle_times.size() - 1)])
 
 
@@ -138,9 +197,22 @@ func _end_attack(token: int) -> void:
 	_enter_idle()
 
 
+# Plays an animation only if it exists, so a typo gives a warning instead of an error.
+func _play_anim(anim_name: StringName) -> void:
+	if anim.has_animation(anim_name):
+		anim.play(anim_name)
+	else:
+		push_warning("Flowery: missing animation '%s'" % anim_name)
+
+
+# Waits for the animation length with a timer instead of "animation_finished",
+# so a missing or looping animation can never freeze the fight.
 func _play_and_wait(anim_name: StringName) -> void:
+	if not anim.has_animation(anim_name):
+		push_warning("Flowery: missing animation '%s'" % anim_name)
+		return
 	anim.play(anim_name)
-	await anim.animation_finished
+	await get_tree().create_timer(anim.current_animation_length).timeout
 
 
 # ---------------- VOICE ----------------
@@ -168,7 +240,7 @@ func attack_Jarona() -> void:
 		if active_player == null:
 			break
 
-		anim.play("jaronaWindup")
+		_play_anim(&"jaronaWindup")
 		await get_tree().create_timer(telegraphAttack).timeout
 		if _stale(t): return
 
@@ -185,15 +257,15 @@ func attack_Jarona() -> void:
 		_lunge_hit_player = false
 		_deflected = false
 		_lunging = true
-		lunge_hitbox.set_deferred("monitoring", true)
+		attack_box.set_deferred("monitoring", true)
 
-		anim.play("Jarona")
+		_play_anim(&"Jarona")
 		_active_tween = create_tween()
 		_active_tween.tween_property(sprite, "global_position", target, duration)
 		_active_tween.finished.connect(_end_lunge)
 		await lunge_done
 
-		lunge_hitbox.set_deferred("monitoring", false)
+		attack_box.set_deferred("monitoring", false)
 		if _stale(t): return
 
 		if _deflected:
@@ -230,14 +302,14 @@ func _deflect() -> void:
 
 
 func _recoil() -> void:
-	anim.play("Deflected")
+	_play_anim(&"Deflected")
 	var tween := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(sprite, "global_position", sprite.global_position - _lunge_dir * jarona1RecoilDistance, jarona1RecoilTime)
 	await tween.finished
 	await get_tree().create_timer(0.25).timeout
 
 
-func _on_lunge_hitbox_area_entered(area: Area2D) -> void:
+func _on_attack_box_area_entered(area: Area2D) -> void:
 	if state != State.ATTACKING or _lunge_hit_player:
 		return
 	if area.is_in_group("Player"):
@@ -273,18 +345,34 @@ func attack_c() -> void:
 		return
 
 	var dir := (active_player.global_position - sprite.global_position).normalized()
-	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(sprite, "global_position", sprite.global_position + dir * 900, 0.35)
-	await tween.finished
+	# Stored in _active_tween so _die() can kill it
+	_active_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_active_tween.tween_property(sprite, "global_position", sprite.global_position + dir * 900, 0.35)
+	await _active_tween.finished
 	if _stale(t): return
 
 	_end_attack(t)
 
 
 # ---------------- DAMAGE ----------------
-func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Playerattack") and state in [State.IDLE, State.ATTACKING]:
+# Mirrors the other bosses: thrown items ("item") and player attacks ("Playerattack")
+# both hurt the boss, and a stomp (area also in "Player") makes the player bounce.
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	if not (state in [State.IDLE, State.ATTACKING]):
+		return
+
+	if area.is_in_group("item"):
 		take_damage(1)
+		area.get_parent().queue_free()
+
+	if area.is_in_group("Playerattack"):
+		take_damage(1)
+		if area.is_in_group("Player"):
+			var p = area.get_parent()
+			if "can_stomp" in p:
+				p.can_stomp = true
+			if "bounce" in p:
+				p.bounce = 0
 
 
 func take_damage(amount: int = 1) -> void:
@@ -292,9 +380,8 @@ func take_damage(amount: int = 1) -> void:
 		return
 
 	health = max(health - amount, 0)
-	health_changed.emit(health, max_health)
-	if hit_sfx:
-		hit_sfx.play()
+	_emit_health()
+	hit_sfx.pick_random().play()
 	_flash()
 
 	if health <= 0:
@@ -342,13 +429,19 @@ func _on_phase_started(_new_phase: int) -> void:
 func _die() -> void:
 	state = State.DYING
 	_attack_token += 1
+	GlobalCanvasLayer.tricks += 10 # same reward as the other bosses
 	timer.stop()
 	voice_player.stop()
-	lunge_hitbox.set_deferred("monitoring", false)
+	attack_box.set_deferred("monitoring", false)
 	if _active_tween and _active_tween.is_valid():
 		_active_tween.kill()
 	_end_lunge()
-	anim.play("death")
+	_play_anim(&"death")
+
+	# Same death overlay animation the other bosses play, if this scene has it
+	var overlay_anim := get_node_or_null("TextureRect/AnimationPlayer") as AnimationPlayer
+	if overlay_anim and overlay_anim.has_animation(&"end"):
+		overlay_anim.play(&"end")
 
 	Engine.time_scale = 0.25
 	var fall := create_tween().set_parallel(true)
@@ -361,4 +454,5 @@ func _die() -> void:
 	await fall.finished
 
 	defeated.emit()
+	end.emit()
 	queue_free()
