@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dwk23upj8jv1b"
+path="res://.godot/imported/snd_flowery_voiceclip_heh_it_s_my_jarona.wav-1a47cb5300cd105a7153fa1ca4556e47.sample"
+
+[deps]
+
+source_file="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_heh_it_s_my_jarona.wav"
+dest_files=["res://.godot/imported/snd_flowery_voiceclip_heh_it_s_my_jarona.wav-1a47cb5300cd105a7153fa1ca4556e47.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -49,6 +49,8 @@ func _ready():
 	if Test.level == 0:
 		rest_done_level = -1  # new run, reset
 	Test.rest = false  # default; set to true only when a rest chunk spawns
+	_spawn_single_chunk(chunk_boss1) # TEMP: force the boss chunk
+	return
 	if Test.boss_rotation_order.is_empty():
 		Test.build_boss_rotation()
 

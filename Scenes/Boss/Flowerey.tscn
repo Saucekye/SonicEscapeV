@@ -851,15 +851,16 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_al1vl"]
-size = Vector2(79.999664, 81.945724)
+size = Vector2(59.583183, 55.46051)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e3iy0"]
-size = Vector2(184.99979, 106.64874)
+size = Vector2(37.499954, 46.25)
 
 [node name="Flowery" type="Node2D" unique_id=14096194]
-scale = Vector2(1.2, 1.2)
+scale = Vector2(2.4, 2.4)
 script = ExtResource("1_j4prp")
-chase_push_speed = 700.0
+skip_intro = true
+chase_push_speed = 650.0
 
 [node name="TextureRect" type="ColorRect" parent="." unique_id=1711039593]
 material = SubResource("ShaderMaterial_wlcxu")
@@ -884,7 +885,7 @@ autoplay = &"RESET"
 [node name="HitBox" type="Area2D" parent="Sprite2D" unique_id=861169678 groups=["Enemy"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/HitBox" unique_id=100191091]
-position = Vector2(-7.3327637, 14.679016)
+position = Vector2(-13.958435, 1.4364071)
 shape = SubResource("RectangleShape2D_al1vl")
 
 [node name="AttackBox" type="Area2D" parent="Sprite2D" unique_id=4933438 groups=["Enemy", "enemyattack"]]
@@ -893,7 +894,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/AttackBox" unique_id=1932418503]
-position = Vector2(-10.300171, -3.2697144)
+position = Vector2(-50.833374, 3.125)
 shape = SubResource("RectangleShape2D_e3iy0")
 debug_color = Color(0.97221905, 0.13375625, 0.26391807, 0.41960785)
 
@@ -901,10 +902,10 @@ debug_color = Color(0.97221905, 0.13375625, 0.26391807, 0.41960785)
 layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="Sprite2D/CanvasLayer" unique_id=733522614]
-offset_left = -722.0
-offset_top = -329.99997
-offset_right = -682.0
-offset_bottom = -289.99997
+offset_left = -707.0
+offset_top = -326.0
+offset_right = -667.0
+offset_bottom = -286.0
 scale = Vector2(93.18001, 45.59333)
 color = Color(1, 1, 1, 0)
 
@@ -935,6 +936,9 @@ volume_db = -20.0
 [node name="hitsfx2" type="AudioStreamPlayer" parent="." unique_id=1368252556]
 stream = ExtResource("6_oimtm")
 volume_db = -20.0
+
+[node name="IdlePoint" type="Marker2D" parent="." unique_id=1943215389]
+position = Vector2(771.6666, -98.333336)
 
 [connection signal="area_entered" from="Sprite2D/HitBox" to="." method="_on_hit_box_area_entered"]
 [connection signal="area_entered" from="Sprite2D/AttackBox" to="." method="_on_attack_box_area_entered"]

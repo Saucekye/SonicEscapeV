@@ -6,6 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://y0tuk0he8lw3" path="res://Scenes/Boss/Flowerey.tscn" id="4_2gt5l"]
 [ext_resource type="TileSet" uid="uid://mgepbxbl6ur7" path="res://Tileset/TestTilesBlue.tres" id="4_m2qmp"]
 [ext_resource type="Script" uid="uid://bg42bc20ofxy0" path="res://Scripts/UI/map.gd" id="5_xjt8x"]
+[ext_resource type="AudioStream" uid="uid://bfgu85ajllrgt" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona1.wav" id="7_q6eon"]
+[ext_resource type="AudioStream" uid="uid://cds3lymtv8ixj" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona2.wav" id="8_f6gt2"]
+[ext_resource type="AudioStream" uid="uid://cytjc7yf5g0ve" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona3.wav" id="9_oqhua"]
+[ext_resource type="AudioStream" uid="uid://bc0krny0h662b" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona4.wav" id="10_x1ky6"]
+[ext_resource type="PackedScene" uid="uid://bw1fae4g7yojj" path="res://Scenes/Boss/FloweryPetals.tscn" id="11_f6gt2"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_tr4su"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yyfmi"]
@@ -44,8 +49,15 @@ position = Vector2(1264, 392)
 zoom = Vector2(1.1, 1.1)
 
 [node name="Flowery" parent="." unique_id=14096194 instance=ExtResource("4_2gt5l")]
-position = Vector2(775, 541)
-jarona1StartSpeed = 700.0
+position = Vector2(-44, 498)
+jarona1Count = 6
+jarona1StartSpeed = 1500.0
+jarona1SpeedIncrease = 700.0
+jarona1SpeedDecrease = 400.0
+jarona1MinSpeed = 1000.0
+jarona1MaxSpeed = 4000.0
+jarona_voice_lines = Array[AudioStream]([ExtResource("7_q6eon"), ExtResource("8_f6gt2"), ExtResource("9_oqhua"), ExtResource("10_x1ky6")])
+jarona2HitboxScene = ExtResource("11_f6gt2")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1182778161]
 position = Vector2(1336, 8)

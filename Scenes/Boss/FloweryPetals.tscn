@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bw1fae4g7yojj"]
+
+[ext_resource type="Texture2D" uid="uid://bexf8ujf5vrgw" path="res://Sprites/Boss/Flowery/spinning_petals/spinning_petals_00.png" id="1_l1wyd"]
+[ext_resource type="Texture2D" uid="uid://ch6der545a2ta" path="res://Sprites/Boss/Flowery/spinning_petals/spinning_petals_01.png" id="2_j2ujf"]
+[ext_resource type="Texture2D" uid="uid://bl2qgqsifku3c" path="res://Sprites/Boss/Flowery/spinning_petals/spinning_petals_02.png" id="3_in26a"]
+[ext_resource type="Texture2D" uid="uid://bsjtkada15rxi" path="res://Sprites/Boss/Flowery/spinning_petals/spinning_petals_03.png" id="4_vhtw5"]
+
+[sub_resource type="Animation" id="Animation_j1dvj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_l1wyd")]
+}
+
+[sub_resource type="Animation" id="Animation_f7rh6"]
+resource_name = "SpinningPetal"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_l1wyd"), ExtResource("2_j2ujf"), ExtResource("3_in26a"), ExtResource("4_vhtw5")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_65lgx"]
+_data = {
+&"RESET": SubResource("Animation_j1dvj"),
+&"SpinningPetal": SubResource("Animation_f7rh6")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmdh2"]
+size = Vector2(14, 20)
+
+[node name="FloweryPetals" type="Area2D" unique_id=1801384941]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1424002439]
+texture = ExtResource("1_l1wyd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=2028931381]
+libraries/ = SubResource("AnimationLibrary_65lgx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1922568060]
+shape = SubResource("RectangleShape2D_wmdh2")
+debug_color = Color(1, 0, 0, 0.41960785)
