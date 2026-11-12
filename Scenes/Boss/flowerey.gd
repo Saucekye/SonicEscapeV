@@ -20,6 +20,9 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, DYING }
 @export var idle_times: Array[float] = [3.0, 1.8]
 @export var hits_to_interrupt_idle: int = 3
 
+# Bug testing: anything other than "None" makes him use only that attack, in any phase.
+@export_enum("None", "attack_Jarona", "attack_Jarona2", "attack_Jarona3") var debug_force_attack: String = "None"
+
 # true: the fight starts as soon as the scene loads.
 # false: it waits until begin_fight() is called (e.g. from the level intro's "start" signal).
 @export var auto_start: bool = true
@@ -62,6 +65,33 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, DYING }
 @export var jarona2ForwardDistance: float = 1800.0
 @export var jarona2FlipToDirection: bool = false # flip the hitbox to face its travel direction (assumes the art faces right)
 
+# Jarona 3 (walls of three hitboxes: ground + ceiling always hurt, the middle one breaks when the player stomps/attacks it)
+# Positions below use the arena's coordinates (the same numbers the editor shows for nodes in the arena scene).
+@export var jarona3Count: int = 3 # how many walls per attack
+@export var jarona3Spacing: float = 500.0 # distance in px between one wall and the next
+@export var jarona3Speed: float = 500.0
+@export var jarona3SpaceNode: NodePath # node whose coordinates the four numbers below use. Empty = Flowery's parent (the arena)
+@export var jarona3StartX: float = 2000.0 # x where each wall appears
+@export var jarona3EndX: float = 500.0 # x where it is removed
+@export var jarona3GroundY: float = 700.0 # y of the floor: the bottom of the ground block sits here
+@export var jarona3CeilingY: float = 70.0 # y of the ceiling: the top of the ceiling block sits here
+@export var jarona3WindupTime: float = 0.5 # Flowery's windup before the first wall
+@export var jarona3TelegraphTime: float = 0.4 # each wall shows up faded and harmless this long before it launches
+@export var jarona3HitboxWidth: float = 60.0 # thickness of the ground/ceiling blocks (the safe block uses its texture's width when it has one)
+@export var jarona3MiddleSizeMin: float = 60.0 # height of the middle block (random between min and max)
+@export var jarona3MiddleSizeMax: float = 160.0
+@export var jarona3MiddleHeightMin: float = 150.0 # centre of the middle block, px above the ground (random between min and max)
+@export var jarona3MiddleHeightMax: float = 400.0
+
+# Wall art. Leave empty to keep the placeholder rectangles (red = hurts, blue = safe/breakable).
+# The collision box always matches the block size.
+enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE: art repeats at its own size.
+@export var jarona3HurtTexture: Texture2D # ground + ceiling blocks (width = jarona3HitboxWidth)
+@export var jarona3SafeTexture: Texture2D # middle block: keeps the texture's own width, only its height changes
+@export var jarona3SafeTint: Color = Color(0.4, 0.7, 1.0) # tint applied to the safe texture (white = no tint); also the colour of the break particles
+@export var jarona3ArtMode: WallArt = WallArt.STRETCH
+@export var jarona3FlipToDirection: bool = false # mirror the wall to face its travel direction (assumes the art faces right)
+
 
 # ---------------- STATE ----------------
 var state: State = State.INACTIVE
@@ -85,7 +115,7 @@ var _home_position: Vector2
 
 var attack_pools: Array = [
 	[&"attack_Jarona"],
-	[&"attack_Jarona", &"attack_Jarona2"],
+	[&"attack_Jarona", &"attack_Jarona2", &"attack_Jarona3"],
 ]
 
 # ---------------- NODES (names match the scene tree) ----------------
@@ -230,6 +260,10 @@ func _on_timer_timeout() -> void:
 
 func _pick_next_attack() -> void:
 	timer.stop()
+	if debug_force_attack != "None" and has_method(debug_force_attack):
+		_last_attack = StringName(debug_force_attack)
+		call(_last_attack)
+		return
 	var pool: Array = attack_pools[min(phase, attack_pools.size() - 1)].duplicate()
 	if pool.size() > 1:
 		pool.erase(_last_attack)
@@ -403,6 +437,249 @@ func attack_Jarona2() -> void:
 	_end_attack(t)
 
 
+# ---------------- ATTACK: JARONA 3 (walls of hitboxes) ----------------
+func attack_Jarona3() -> void:
+	var t := _begin_attack()
+	_resync_player()
+	if active_player == null:
+		_end_attack(t)
+		return
+
+	# Walls travel from StartX to EndX
+	var dir := Vector2.RIGHT if jarona3EndX > jarona3StartX else Vector2.LEFT
+
+	_play_anim(&"jaronaWindup")
+	await get_tree().create_timer(jarona3WindupTime).timeout
+	if _stale(t): return
+
+	for i in jarona3Count:
+		_spawn_wall(dir)
+		if i < jarona3Count - 1:
+			# Every wall moves at the same speed, so a time gap of spacing / speed gives a constant distance
+			await get_tree().create_timer(jarona3Spacing / maxf(jarona3Speed, 1.0)).timeout
+			if _stale(t): return
+
+	await _play_and_wait(&"recoverJarona")
+	if _stale(t): return
+	_end_attack(t)
+
+
+func _ground_y() -> float:
+	return jarona3GroundY
+
+
+func _ceiling_y() -> float:
+	return jarona3CeilingY
+
+
+# The node whose coordinate space the Jarona 3 numbers are in: the one set in the Inspector,
+# otherwise Flowery's parent (the arena).
+func _wall_host() -> Node:
+	var n: Node = null
+	if not jarona3SpaceNode.is_empty():
+		n = get_node_or_null(jarona3SpaceNode)
+	if n == null:
+		n = get_parent()
+	return n
+
+
+# One wall = a ground block, a ceiling block and a breakable middle block, moving together.
+func _spawn_wall(dir: Vector2) -> void:
+	var spawn_x := jarona3StartX
+	var ground_y := _ground_y()
+	var ceiling_y := _ceiling_y()
+
+	# Middle block: random size and height, kept between the ground and ceiling blocks
+	var mid_size := randf_range(minf(jarona3MiddleSizeMin, jarona3MiddleSizeMax), maxf(jarona3MiddleSizeMin, jarona3MiddleSizeMax))
+	var mid_height := randf_range(minf(jarona3MiddleHeightMin, jarona3MiddleHeightMax), maxf(jarona3MiddleHeightMin, jarona3MiddleHeightMax))
+	# The middle block has to fit between the ceiling and the ground
+	mid_size = minf(mid_size, maxf(ground_y - ceiling_y, 0.0))
+	var mid_y := clampf(ground_y - mid_height, ceiling_y + mid_size * 0.5, ground_y - mid_size * 0.5)
+	var mid_top := mid_y - mid_size * 0.5
+	var mid_bottom := mid_y + mid_size * 0.5
+
+	var wall := Node2D.new()
+	# The wall lives in the arena (Flowery's parent), not under Flowery, so his own position can't
+	# affect it. Every number here is in the arena's coordinates, like the editor shows them.
+	_wall_host().add_child(wall)
+	wall.position = Vector2(spawn_x, 0.0)
+	wall.add_to_group("jarona_hitbox") # so _die() clears it
+	wall.modulate.a = 0.35 # telegraph: faded and harmless until it launches
+	if jarona3FlipToDirection:
+		wall.scale.x = 1.0 if dir.x > 0.0 else -1.0
+
+	# Shared by the three blocks: the wall hurts the player once at most
+	var wave := {"hit": false}
+	# Hurt blocks start at the ceiling and at the ground and end where the middle block begins,
+	# so their size is calculated and nothing overlaps
+	var ceiling_h := mid_top - ceiling_y
+	if ceiling_h >= 1.0:
+		_add_wall_piece(wall, wave, spawn_x, ceiling_y + ceiling_h * 0.5, ceiling_h, false)
+	var ground_h := ground_y - mid_bottom
+	if ground_h >= 1.0:
+		_add_wall_piece(wall, wave, spawn_x, mid_bottom + ground_h * 0.5, ground_h, false)
+	if mid_size >= 1.0:
+		_add_wall_piece(wall, wave, spawn_x, mid_y, mid_size, true)
+
+	var tw := wall.create_tween()
+	tw.tween_interval(jarona3TelegraphTime)
+	tw.tween_callback(_arm_wall.bind(wall))
+	tw.tween_property(wall, "position:x",
+		jarona3EndX,
+		absf(jarona3EndX - spawn_x) / maxf(jarona3Speed, 1.0))
+	tw.tween_callback(wall.queue_free)
+
+
+func _add_wall_piece(wall: Node2D, wave: Dictionary, x: float, center_y: float, height: float, breakable: bool) -> void:
+	var piece := Area2D.new()
+
+	# The safe block keeps its texture's own thickness; only its height is randomised
+	var width := jarona3HitboxWidth
+	if breakable and jarona3SafeTexture:
+		width = float(jarona3SafeTexture.get_width())
+
+	var shape := CollisionShape2D.new()
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(width, height)
+	shape.shape = rect
+	piece.add_child(shape)
+
+	piece.add_child(_make_wall_visual(Vector2(width, height), breakable))
+
+	# Same layers as his lunge hitbox so it detects the player the same way
+	piece.collision_layer = attack_box.collision_layer
+	piece.collision_mask = attack_box.collision_mask
+	if breakable:
+		# Also detect the player's attacks, the same ones that hurt Flowery's own hit box
+		piece.collision_mask |= hit_box.collision_mask
+	piece.monitoring = false # switched on when the wall launches
+	piece.monitorable = false
+	piece.area_entered.connect(_on_wall_area_entered.bind(piece, wave, breakable))
+	piece.body_entered.connect(_on_wall_body_entered.bind(piece, wave, breakable))
+
+	wall.add_child(piece)
+	piece.position = Vector2(x - wall.position.x, center_y)
+
+
+# Builds the look of one block: a texture, or the placeholder rectangle.
+func _make_wall_visual(size: Vector2, breakable: bool) -> Node2D:
+	var tex: Texture2D = jarona3SafeTexture if breakable else jarona3HurtTexture
+
+	if tex:
+		var s := Sprite2D.new()
+		s.texture = tex
+		if breakable:
+			s.modulate = jarona3SafeTint
+		if jarona3ArtMode == WallArt.TILE:
+			s.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+			s.region_enabled = true
+			s.region_rect = Rect2(Vector2.ZERO, size)
+		else:
+			s.scale = size / tex.get_size()
+		return s
+
+	# Placeholder: red = always hurts, blue = safe/breakable
+	var half := size * 0.5
+	var poly := Polygon2D.new()
+	poly.polygon = PackedVector2Array([
+		Vector2(-half.x, -half.y), Vector2(half.x, -half.y),
+		Vector2(half.x, half.y), Vector2(-half.x, half.y),
+	])
+	poly.color = Color(0.3, 0.8, 1.0, 0.8) if breakable else Color(1.0, 0.3, 0.4, 0.8)
+	return poly
+
+
+func _arm_wall(wall: Node2D) -> void:
+	if not is_instance_valid(wall):
+		return
+	wall.modulate.a = 1.0
+	for piece in wall.get_children():
+		if piece is Area2D:
+			piece.set_deferred("monitoring", true)
+
+
+func _on_wall_area_entered(area: Area2D, piece: Area2D, wave: Dictionary, breakable: bool) -> void:
+	if piece.has_meta(&"broken"):
+		return
+
+	# Stomping or attacking the middle block breaks it (same groups that interrupt Flowery)
+	if breakable and area.is_in_group("Playerattack"):
+		_break_wall_piece(piece)
+		if area.is_in_group("Player"):
+			var p = area.get_parent()
+			if "can_stomp" in p:
+				p.can_stomp = true
+			if "bounce" in p:
+				p.bounce = 0
+		return
+
+	if wave["hit"] or not area.is_in_group("Player"):
+		return
+	wave["hit"] = true
+	_hurt_player(area)
+
+
+func _on_wall_body_entered(body: Node2D, piece: Area2D, wave: Dictionary, breakable: bool) -> void:
+	if body != active_player or wave["hit"]:
+		return
+	if breakable:
+		# Give a stomp one physics frame to break the block before the body counts as a hit
+		await get_tree().physics_frame
+		if not is_instance_valid(piece) or piece.has_meta(&"broken") or wave["hit"]:
+			return
+	wave["hit"] = true
+	_hurt_player(body)
+
+
+func _break_wall_piece(piece: Area2D) -> void:
+	if piece.has_meta(&"broken"):
+		return
+	piece.set_meta(&"broken", true)
+	piece.set_deferred("monitoring", false)
+	_spawn_break_particles(piece)
+	piece.queue_free()
+
+
+# Small blue burst where the safe block was.
+# The particles live in the arena (not in the piece), because the piece is freed right away.
+func _spawn_break_particles(piece: Area2D) -> void:
+	# Cover the block's area; the first child of each piece is its CollisionShape2D
+	var size := Vector2(40.0, 40.0)
+	var col := piece.get_child(0) as CollisionShape2D
+	if col and col.shape is RectangleShape2D:
+		size = (col.shape as RectangleShape2D).size
+
+	var p := CPUParticles2D.new()
+	_wall_host().add_child(p)
+	p.global_position = piece.global_position
+
+	p.one_shot = true
+	p.explosiveness = 1.0 # all particles at once = explosion
+	p.amount = 18
+	p.lifetime = 0.45
+	p.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	p.emission_rect_extents = size * 0.5
+	p.direction = Vector2.ZERO
+	p.spread = 180.0 # any direction
+	p.gravity = Vector2.ZERO
+	p.initial_velocity_min = 120.0
+	p.initial_velocity_max = 260.0
+	p.damping_min = 150.0 # slows them down so it reads as a pop
+	p.damping_max = 250.0
+	p.scale_amount_min = 3.0
+	p.scale_amount_max = 6.0
+	p.color = jarona3SafeTint # same blue as the block
+
+	# Fade out each particle over its own life
+	var grad := Gradient.new()
+	grad.set_color(0, Color(1, 1, 1, 1))
+	grad.set_color(1, Color(1, 1, 1, 0))
+	p.color_ramp = grad
+
+	p.finished.connect(p.queue_free)
+	p.emitting = true
+
+
 # ---------------- LUNGE (shared by both Jarona attacks) ----------------
 # Steers toward the player every physics frame while a lunge is active.
 func _home_in(delta: float) -> void:
@@ -447,7 +724,7 @@ func _recoil() -> void:
 
 
 # ---------------- PLAYER DAMAGE ----------------
-# Finds whoever can take damage: the node itself, or its nearest parent that has take_damage
+# Finds whoever can be hurt: the node itself, or its nearest parent that has hurt()
 func _hurt_player(node: Node) -> bool:
 	var n := node
 	while n != null and n != get_tree().root:
@@ -456,6 +733,7 @@ func _hurt_player(node: Node) -> bool:
 			return true
 		n = n.get_parent()
 	return false
+
 
 func _on_attack_box_area_entered(area: Area2D) -> void:
 	if state != State.ATTACKING or _lunge_hit_player:

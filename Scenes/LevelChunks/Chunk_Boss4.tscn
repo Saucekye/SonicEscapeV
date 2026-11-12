@@ -11,6 +11,8 @@
 [ext_resource type="AudioStream" uid="uid://cytjc7yf5g0ve" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona3.wav" id="9_oqhua"]
 [ext_resource type="AudioStream" uid="uid://bc0krny0h662b" path="res://misc/Flowery Voice Lines/snd_flowery_voiceclip_jarona4.wav" id="10_x1ky6"]
 [ext_resource type="PackedScene" uid="uid://bw1fae4g7yojj" path="res://Scenes/Boss/FloweryPetals.tscn" id="11_f6gt2"]
+[ext_resource type="Texture2D" uid="uid://c52ymoixrm48x" path="res://Sprites/Boss/Flowery/cactus/cactus_00.png" id="12_x1ky6"]
+[ext_resource type="Texture2D" uid="uid://cjxr8o34nefhy" path="res://Sprites/Boss/Flowery/bamboo/bamboo_00.png" id="13_hjvgc"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_tr4su"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yyfmi"]
@@ -19,8 +21,9 @@ size = Vector2(128.0239, 765.8023)
 [node name="Node2D" type="Node2D" unique_id=139127787]
 script = ExtResource("1_kknbe")
 
-[node name="BossHPDisplay" parent="." unique_id=2083186901 instance=ExtResource("2_p4bxd")]
-boss_name = "Neo Metal Sonic"
+[node name="BossHPDisplay" parent="." unique_id=2083186901 node_paths=PackedStringArray("boss") instance=ExtResource("2_p4bxd")]
+boss = NodePath("../Flowery")
+boss_name = "Flowery"
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=96847940]
 stream = ExtResource("3_wua6y")
@@ -50,6 +53,7 @@ zoom = Vector2(1.1, 1.1)
 
 [node name="Flowery" parent="." unique_id=14096194 instance=ExtResource("4_2gt5l")]
 position = Vector2(-44, 498)
+debug_force_attack = "attack_Jarona3"
 jarona1Count = 6
 jarona1StartSpeed = 1500.0
 jarona1SpeedIncrease = 700.0
@@ -58,6 +62,15 @@ jarona1MinSpeed = 1000.0
 jarona1MaxSpeed = 4000.0
 jarona_voice_lines = Array[AudioStream]([ExtResource("7_q6eon"), ExtResource("8_f6gt2"), ExtResource("9_oqhua"), ExtResource("10_x1ky6")])
 jarona2HitboxScene = ExtResource("11_f6gt2")
+jarona3Count = 5
+jarona3Spacing = 600.0
+jarona3SpaceNode = NodePath("..")
+jarona3MiddleSizeMin = 100.0
+jarona3MiddleSizeMax = 150.0
+jarona3MiddleHeightMin = 240.0
+jarona3MiddleHeightMax = 350.0
+jarona3HurtTexture = ExtResource("12_x1ky6")
+jarona3SafeTexture = ExtResource("13_hjvgc")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1182778161]
 position = Vector2(1336, 8)
@@ -70,3 +83,5 @@ shape = SubResource("RectangleShape2D_yyfmi")
 
 [node name="Ring Strand" parent="." unique_id=1527507089 instance=ExtResource("16_tr4su")]
 position = Vector2(1274, 637)
+
+[connection signal="update_health_bar" from="Flowery" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
