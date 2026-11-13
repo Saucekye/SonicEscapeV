@@ -53,7 +53,6 @@ zoom = Vector2(1.1, 1.1)
 
 [node name="Flowery" parent="." unique_id=14096194 instance=ExtResource("4_2gt5l")]
 position = Vector2(-44, 498)
-debug_force_attack = "attack_Jarona3"
 jarona1Count = 6
 jarona1StartSpeed = 1500.0
 jarona1SpeedIncrease = 700.0
