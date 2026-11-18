@@ -30,6 +30,9 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, DYING }
 # Testing shortcut: jump the "intro" animation straight to its last frame instead of playing it.
 @export var skip_intro: bool = false
 
+# Reference for the lyric player
+@export var lyrics: FloweryLyrics
+
 # Where Flowery waits while idling and returns to between lunges.
 # Add a Marker2D named "IdlePoint" under this node and move it where you want him.
 # If there is none, he uses the position his sprite has when the fight starts.
@@ -187,6 +190,8 @@ func _start_fight() -> void:
 
 	GlobalSignals.disable_boss_ui.emit(false) # show the boss HP bar, like the other bosses
 	_emit_health()
+	if lyrics:
+		lyrics.start()
 	_enter_idle()
 
 
@@ -994,6 +999,8 @@ func _die() -> void:
 	state = State.DYING
 	_attack_token += 1
 	GlobalCanvasLayer.tricks += 10 # same reward as the other bosses
+	if lyrics:
+		lyrics.stop(0.8)
 	timer.stop()
 	_clear_hitboxes()
 	voice_player.stop()

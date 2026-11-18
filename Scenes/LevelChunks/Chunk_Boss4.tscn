@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bw1fae4g7yojj" path="res://Scenes/Boss/FloweryPetals.tscn" id="11_f6gt2"]
 [ext_resource type="Texture2D" uid="uid://c52ymoixrm48x" path="res://Sprites/Boss/Flowery/cactus/cactus_00.png" id="12_x1ky6"]
 [ext_resource type="Texture2D" uid="uid://cjxr8o34nefhy" path="res://Sprites/Boss/Flowery/bamboo/bamboo_00.png" id="13_hjvgc"]
+[ext_resource type="PackedScene" uid="uid://c7k7wv5uebtap" path="res://Scenes/Boss/FloweryLyrics.tscn" id="15_kknbe"]
 [ext_resource type="PackedScene" uid="uid://b6pwlvi67j877" path="res://Scenes/Obstacles/Rings/ring_strand.tscn" id="16_tr4su"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yyfmi"]
@@ -51,8 +52,9 @@ position = Vector2(1828.7343, 668.7998)
 position = Vector2(1264, 392)
 zoom = Vector2(1.1, 1.1)
 
-[node name="Flowery" parent="." unique_id=14096194 instance=ExtResource("4_2gt5l")]
+[node name="Flowery" parent="." unique_id=14096194 node_paths=PackedStringArray("lyrics") instance=ExtResource("4_2gt5l")]
 position = Vector2(-44, 498)
+lyrics = NodePath("../CanvasLayer/FloweryLyrics")
 jarona1Count = 6
 jarona1StartSpeed = 1500.0
 jarona1SpeedIncrease = 700.0
@@ -82,5 +84,10 @@ shape = SubResource("RectangleShape2D_yyfmi")
 
 [node name="Ring Strand" parent="." unique_id=1527507089 instance=ExtResource("16_tr4su")]
 position = Vector2(1274, 637)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1640743848]
+
+[node name="FloweryLyrics" parent="CanvasLayer" unique_id=1495710990 instance=ExtResource("15_kknbe")]
+position = Vector2(0, -600)
 
 [connection signal="update_health_bar" from="Flowery" to="BossHPDisplay" method="_on_node_2d_update_health_bar"]
