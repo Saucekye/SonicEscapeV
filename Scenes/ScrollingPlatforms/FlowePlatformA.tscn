@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://c54emxyp5otrm"]
+
+[ext_resource type="Script" uid="uid://c10n6u3q38msu" path="res://Scenes/ScrollingPlatforms/flowe_platform.gd" id="1_nj8f6"]
+[ext_resource type="Texture2D" uid="uid://bq2487t2javjw" path="res://Sprites/Boss/Flowery/flower_kris/flower_kris_00.png" id="2_scyrn"]
+[ext_resource type="Texture2D" uid="uid://bcv021ipuy016" path="res://Sprites/Boss/Flowery/flower_kris/flower_kris_01.png" id="3_fufuv"]
+[ext_resource type="Texture2D" uid="uid://clc80yrw85swx" path="res://Sprites/Boss/Flowery/flower_kris/flower_kris_02.png" id="4_70721"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m2qmp"]
+size = Vector2(28, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dv3uj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_scyrn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fufuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_70721")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="FlowePlatformA" type="AnimatableBody2D" unique_id=37525116 node_paths=PackedStringArray("sprite", "shape")]
+script = ExtResource("1_nj8f6")
+sprite = NodePath("AnimatedSprite2D")
+shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1729901720]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_m2qmp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1074598178]
+sprite_frames = SubResource("SpriteFrames_dv3uj")
+frame = 2
+frame_progress = 0.7621844
+speed_scale = 2.0
