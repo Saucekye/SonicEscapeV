@@ -15,9 +15,8 @@ shader = ExtResource("4_catta")
 [node name="Node2DBoss" type="Node2D" unique_id=133088642]
 script = ExtResource("1_qq26g")
 
-[node name="BossHPDisplay" parent="." unique_id=551385776 node_paths=PackedStringArray("boss") instance=ExtResource("2_oesl0")]
+[node name="BossHPDisplay" parent="." unique_id=551385776 instance=ExtResource("2_oesl0")]
 visible = false
-boss = NodePath("")
 boss_name = "Thragg"
 
 [node name="Level" type="Node2D" parent="." unique_id=1985077997]
