@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://c6ow0ml3c0ek5"]
+
+[ext_resource type="Script" uid="uid://bwmfrnvh1naiw" path="res://Scenes/april what the fuck/yeah_sure_whatever_man.gd" id="1_twxb4"]
+[ext_resource type="Script" uid="uid://3onvjmr84x61" path="res://Scenes/april what the fuck/apparentlytheresnootherwaytodothisfuckmylife.gd" id="2_u5kt5"]
+[ext_resource type="Texture2D" uid="uid://bgmwa0rnxxmsu" path="res://Scenes/april what the fuck/Rodneybody.webp" id="2_vttfu"]
+[ext_resource type="Texture2D" uid="uid://diurb41n8f80g" path="res://Scenes/april what the fuck/Rodneyhead3.webp" id="3_iodop"]
+[ext_resource type="Texture2D" uid="uid://bqgpor6xjf5kn" path="res://Scenes/april what the fuck/Rodneyneck.webp" id="3_u5kt5"]
+[ext_resource type="Texture2D" uid="uid://1lp3jjkm22cy" path="res://Scenes/april what the fuck/Rodneyhead2.webp" id="4_0mdbx"]
+[ext_resource type="Texture2D" uid="uid://d2hu8ie6eg5gd" path="res://Scenes/april what the fuck/Rodneyhead1.webp" id="4_iodop"]
+[ext_resource type="AudioStream" uid="uid://jvcnreiapydm" path="res://Scenes/april what the fuck/lines/IMBUSY.ogg" id="6_0mdbx"]
+[ext_resource type="AudioStream" uid="uid://cxlevhb857gfl" path="res://Scenes/april what the fuck/lines/wompwomp.ogg" id="6_2qqhn"]
+[ext_resource type="AudioStream" uid="uid://bctw57uqknj7p" path="res://Scenes/april what the fuck/lines/RaiseMe35K.ogg" id="7_oxxos"]
+[ext_resource type="AudioStream" uid="uid://bije27xlsp50l" path="res://Scenes/april what the fuck/lines/AdRevenue.ogg" id="8_10dp7"]
+[ext_resource type="AudioStream" uid="uid://bxh5d7di2socf" path="res://Scenes/april what the fuck/lines/Jumpscare.ogg" id="9_ktodu"]
+[ext_resource type="AudioStream" uid="uid://dpiltuce0a5u0" path="res://Scenes/april what the fuck/lines/SecretEnding.ogg" id="10_ok0ra"]
+
+[sub_resource type="Resource" id="Resource_oxxos"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("6_2qqhn")
+text = "Womp womp."
+segment_times = PackedFloat32Array()
+
+[sub_resource type="Resource" id="Resource_10dp7"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("7_oxxos")
+text = "Listen,
+ I could make a better game than this. 
+Just watch me. 
+Raise me 35,000 dollars and I'll show you."
+segment_times = null
+
+[sub_resource type="Resource" id="Resource_cqvrx"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("8_10dp7")
+text = "If you're recording this for a video, 
+I'm going to be expecting a cut of the ad revenue."
+segment_times = null
+
+[sub_resource type="Resource" id="Resource_ktodu"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("9_ktodu")
+text = "I don't wanna alarm you...
+AHH!!
+Ah, just kidding. I was lying."
+segment_times = null
+
+[sub_resource type="Resource" id="Resource_flhxu"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("10_ok0ra")
+text = "Press Alt + F4 to unlock the secret ending!"
+segment_times = PackedFloat32Array()
+
+[sub_resource type="Resource" id="Resource_2qqhn"]
+script = ExtResource("2_u5kt5")
+audio = ExtResource("6_0mdbx")
+text = "Whaddaya want from me!? I'm BUSY!"
+segment_times = null
+
+[node name="YeahSureWhateverMan" type="CanvasLayer" unique_id=2049967260 node_paths=PackedStringArray("Rodney")]
+process_mode = 3
+layer = 99
+script = ExtResource("1_twxb4")
+Rodney = NodePath("RodneyHead")
+notTalking = ExtResource("4_iodop")
+unfortunatelyTalking = ExtResource("3_iodop")
+blink = ExtResource("4_0mdbx")
+corner = 1
+talk_tilt = -15.0
+overshoot_max = 0.0
+idle_lines = Array[ExtResource("2_u5kt5")]([SubResource("Resource_oxxos"), SubResource("Resource_10dp7"), SubResource("Resource_cqvrx"), SubResource("Resource_ktodu"), SubResource("Resource_flhxu")])
+reaction_lines = Array[ExtResource("2_u5kt5")]([SubResource("Resource_2qqhn")])
+
+[node name="RodneyHead" type="Sprite2D" parent="." unique_id=1519089378]
+visible = false
+position = Vector2(1048, 546)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_iodop")
+
+[node name="Rodneybody" type="Sprite2D" parent="RodneyHead" unique_id=722174662]
+z_index = -2
+position = Vector2(29.333334, 81.666664)
+texture = ExtResource("2_vttfu")
+
+[node name="Rodneyneck" type="Sprite2D" parent="RodneyHead" unique_id=815657353]
+z_index = -1
+position = Vector2(48, 80.5)
+texture = ExtResource("3_u5kt5")

@@ -36,6 +36,7 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 Background="*res://Scripts/Level/Background.gd"
 GlobalSignals="*res://Scripts/Global/GlobalSignals.gd"
 Camera2d="*uid://bk6guicx7ti3"
+YeahSureWhateverMan="*uid://c6ow0ml3c0ek5"
 
 [display]
 
