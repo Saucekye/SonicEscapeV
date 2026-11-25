@@ -2307,6 +2307,7 @@ trail_ball_position = Vector2(0, 5)
 [node name="Fly" parent="." unique_id=1081368087 node_paths=PackedStringArray("flymeter") instance=ExtResource("2_yk428")]
 flymeter = NodePath("../Flymeter")
 fly_meter_drain = 1.5
+keep_airspin = true
 
 [node name="Airspin" parent="." unique_id=1041590892 instance=ExtResource("3_hopts")]
 can_when_flying = true
@@ -2453,8 +2454,8 @@ position = Vector2(0.0799999, 0.280001)
 [node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=1234275953]
 visible = false
 z_index = 1
-position = Vector2(-0.0005471043, -0.30784926)
 scale = Vector2(0.009, 0.009)
+offset = Vector2(0, -34)
 sprite_frames = SubResource("SpriteFrames_crhyl")
 autoplay = "default"
 speed_scale = 0.8

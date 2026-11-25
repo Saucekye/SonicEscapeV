@@ -14,6 +14,7 @@ var enemy_body = null
 var damage_timer = 0.0
 var hurt = false
 var dying = false
+var _gone := false   # death() ran
 var launch = 0
 
 var spin = false
@@ -82,6 +83,9 @@ func start_death_check() -> void:
 
 
 func death():
+	if _gone:
+		return
+	_gone = true
 	var boom = smoke.instantiate()
 	boom.position = position
 	get_parent().add_child(boom)

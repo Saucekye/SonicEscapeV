@@ -2,6 +2,7 @@ extends AudioStreamPlayer
 
 signal song_started(song_name: String)
 signal song_stopped
+signal pool_changed   # the level songs changed
 
 var level = 0
 var current_scene_name := ""
@@ -11,9 +12,7 @@ var is_muted = false
 var display_teto : bool = true
 var can_play : bool = true
 
-# ─────────────────────────────
 # Fixed music per scene
-# ─────────────────────────────
 
 var scene_music := {
 	"CharacterSelectScreen": preload("res://Music/CharacterSelect/zerogravitymenumix.MP3"),
@@ -21,9 +20,7 @@ var scene_music := {
 	
 }
 
-# ─────────────────────────────
 # Node2D playlist
-# ─────────────────────────────
 var node2d_music_pool := [
 	preload("res://Music/Level/[Artisan] Azealia_Banks - Luxury Remix.mp3"),
 	preload("res://Music/Level/[Artisan] PinkPantheress ft. Rema - Another Life.MP3"),
@@ -33,6 +30,10 @@ var node2d_music_pool := [
 	preload("res://Music/Level/[TNH Nebula] Kasane Teto - 医学 Igaku (Medicine)   REMIX.mp3"),
 	preload("res://Music/Level/[Sonic Escape] Been Here Before.MP3")
 ]
+
+# The game's own level songs
+var game_pool: Array = []
+var custom_active := false   # node2d_music_pool is your playlist
 
 var node2d_track_index := 0
 var using_node2d_playlist := false
@@ -45,6 +46,15 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GlobalSignals.game_over.connect(_on_game_over)
 	set_owner(null)
+	var songs: Array = Content.data().level_songs.filter(func(s): return s != null)
+	if not songs.is_empty():
+		node2d_music_pool = songs   # game_content.tres decides
+	game_pool = node2d_music_pool.duplicate()
+	_use_playlist_pool()
+	# Your songs play once, then the playlist moves on to the next
+	finished.connect(func() -> void:
+		if using_node2d_playlist:
+			Test.musicplaying = false)
 
 	current_scene_name = get_tree().current_scene.name
 	update_scene_music()
@@ -54,13 +64,14 @@ func _process(delta: float) -> void:
 		return
 
 	new_scene_name = get_tree().current_scene.name
+	# The vision scenes' root is also called "Node2D", like a level
+	if get_tree().current_scene.scene_file_path.ends_with("vision.tscn") or new_scene_name == "Salvage":
+		new_scene_name = "Vision"
 	if new_scene_name != current_scene_name:
 		current_scene_name = new_scene_name
 		update_scene_music()
 
-	# ─────────────────────────────
 	# Playlist advance trigger
-	# ─────────────────────────────
 	if using_node2d_playlist:
 		if was_music_playing and not Test.musicplaying:
 			_advance_node2d_playlist()
@@ -76,10 +87,15 @@ func _process(delta: float) -> void:
 			if Test.level == 25 and Test.complete:
 				_force_last_track()
 
-	# ─────────────────────────────
-	# Music play logic (yours)
-	# ─────────────────────────────
-	
+	# Music play logic
+	if current_scene_name == "Vision":
+		# Nothing from the levels or rest areas plays during a vision
+		if playing:
+			stop()
+		Test.musicplaying = false
+		return
+
+
 	if current_scene_name != "Node2D" and current_scene_name != "Titlescreen":
 		if Test.music and not Test.musicplaying:
 			Test.musicplaying = true
@@ -97,8 +113,45 @@ func _process(delta: float) -> void:
 	if volume_db != volume:
 		volume_db = volume
 
+# Use the playlist picked in the MUSIC screen, or the game's songs if none
+func _use_playlist_pool() -> bool:
+	var mine: Array = MusicLibrary.playing_songs()
+	var want: Array = mine if not mine.is_empty() else game_pool
+	if want == node2d_music_pool:
+		return false
+	node2d_music_pool = want
+	custom_active = not mine.is_empty()
+	node2d_track_index = 0
+	pool_changed.emit()
+	return true
+
+
+# The MUSIC screen changed which playlist plays
+func apply_playlist() -> void:
+	MusicLibrary._cache.clear()
+	var changed := _use_playlist_pool()
+	if not changed and not custom_active:
+		return
+	if current_scene_name == "Node2D" and using_node2d_playlist and not Test.music_locked:
+		node2d_track_index = _first_index()
+		stream = node2d_music_pool[node2d_track_index] if not node2d_music_pool.is_empty() else null
+		if playing:
+			stop()
+		Test.musicplaying = false
+		was_music_playing = false
+
+
+func _first_index() -> int:
+	if custom_active:
+		return randi() % node2d_music_pool.size() if MusicLibrary.shuffle() and node2d_music_pool.size() > 0 else 0
+	var playable := _get_playable_indices()
+	return 0 if playable.is_empty() else playable[randi() % playable.size()]
+
+
 func _get_playable_indices() -> Array:
 	var indices : Array = []
+	if custom_active:
+		return range(node2d_music_pool.size())
 	var last_index := node2d_music_pool.size() - 1
 	for i in range(node2d_music_pool.size()):
 		if i == last_index and not Test.complete:
@@ -116,18 +169,16 @@ func update_scene_music() -> void:
 	was_music_playing = false
 
 	if current_scene_name == "Node2D":
+		_use_playlist_pool()
 		if node2d_music_pool.is_empty():
 			return
 
 		# 🎲 Random starting track (last track reserved for Test.complete == true)
-		if Test.level == 25 and Test.complete:
+
+		if Test.level == 25 and Test.complete and not custom_active:
 			node2d_track_index = node2d_music_pool.size() - 1
 		else:
-			var playable := _get_playable_indices()
-			if playable.is_empty():
-				node2d_track_index = 0
-			else:
-				node2d_track_index = playable[randi() % playable.size()]
+			node2d_track_index = _first_index()
 
 		stream = node2d_music_pool[node2d_track_index]
 		using_node2d_playlist = true
@@ -149,7 +200,15 @@ func _advance_node2d_playlist() -> void:
 	if node2d_music_pool.is_empty():
 		return
 
-	if Test.level == 25 and Test.complete:
+	if custom_active:
+		# Your playlist
+		if MusicLibrary.shuffle() and node2d_music_pool.size() > 1:
+			var before := node2d_track_index
+			while node2d_track_index == before:
+				node2d_track_index = randi() % node2d_music_pool.size()
+		else:
+			node2d_track_index = (node2d_track_index + 1) % node2d_music_pool.size()
+	elif Test.level == 25 and Test.complete:
 		node2d_track_index = node2d_music_pool.size() - 1
 	else:
 		node2d_track_index += 1
@@ -167,7 +226,7 @@ func _advance_node2d_playlist() -> void:
 		stream.resource_path)
 
 func _force_last_track() -> void:
-	if node2d_music_pool.is_empty():
+	if node2d_music_pool.is_empty() or custom_active:
 		return
 	if not Test.complete:
 		return

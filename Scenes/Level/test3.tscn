@@ -145,7 +145,7 @@ texture_normal = SubResource("CompressedTexture2D_jhuxi")
 texture_pressed = SubResource("CompressedTexture2D_tgfrd")
 
 [node name="Sprite2Dicon" parent="CanvasLayer" index="5" unique_id=132587915]
-scale = Vector2(0.06819895, 0.07281002)
+scale = Vector2(0.1363979, 0.14562004)
 
 [node name="Label" parent="CanvasLayer" index="6" unique_id=86961369]
 offset_bottom = -48.0

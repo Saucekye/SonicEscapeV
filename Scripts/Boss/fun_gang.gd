@@ -24,6 +24,7 @@ const IDLE_AFTER_INTRO_TIME: float = 2.0
 const AXE_TRACK_SPEED: float = 700.0
 const AXE_LOCK_TIME: float = 0.2
 const AXE_X_OFFSET: float = -130.0
+const AXE_SPIN_FROM: float = 0.4   # where Attack2part1's spinning
 
 # Axe x tracking state
 var axe_hold_x: bool = false
@@ -42,6 +43,8 @@ signal end
 @export var position_1: Marker2D
 @export var position_2: Marker2D
 @export var axe_launch_marker: Marker2D
+## How long the hammer follows you before it comes down
+@export var axe_track_time := 2.5
 
 @onready var sprite = $Sprite2D
 @onready var lightning_anim = $Node/LightningEffect/AnimationTree
@@ -59,9 +62,7 @@ func _ready():
 	process_priority = 100
 
 
-# --------------------------------------------------
 # HEART PROJECTILE
-# --------------------------------------------------
 
 func spawn_heart() -> void:
 	if dying or heart_active:
@@ -91,9 +92,7 @@ func remove_heart() -> void:
 	heart_active = false
 
 
-# --------------------------------------------------
 # INTRO
-# --------------------------------------------------
 
 func _start():
 	randomize()
@@ -123,28 +122,14 @@ func _on_makima_intro_done() -> void:
 	_start()
 
 
-# --------------------------------------------------
 # FIND ACTIVE PLAYER
-# --------------------------------------------------
 
 func _find_active_player() -> CharacterBody2D:
-	var players = get_tree().get_nodes_in_group("active_player")
-
-	if players.size() > 0 and is_instance_valid(players[0]):
-		return players[0]
-
-	var all_characters = get_tree().get_nodes_in_group("all_characters")
-
-	for body in all_characters:
-		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
-			return body
-
-	return null
+	# With more than one player it takes turns going after each
+	return BossTargets.pick(self) as CharacterBody2D
 
 
-# --------------------------------------------------
 # RESYNC ACTIVE PLAYER
-# --------------------------------------------------
 
 func _resync_active_player() -> void:
 	var current_player = _find_active_player()
@@ -189,9 +174,7 @@ func _on_action_timer_timeout() -> void:
 	pass
 
 
-# --------------------------------------------------
 # ATTACKS
-# --------------------------------------------------
 
 func attack_line():
 	if dying or attacking:
@@ -267,10 +250,16 @@ func attack_axe_throw():
 
 	anim.play("Attack2part1")
 
+	# The hammer spins over you and follows you for axe_track_time seconds
+	var chased := 0.0
 	while anim.is_playing() and anim.current_animation == "Attack2part1" and not dying:
 		var time_left: float = anim.current_animation_length - anim.current_animation_position
+		if time_left <= AXE_LOCK_TIME + 0.05 and chased < axe_track_time:
+			anim.seek(AXE_SPIN_FROM, true)
+			time_left = anim.current_animation_length - anim.current_animation_position
 		axe_chase_x = time_left > AXE_LOCK_TIME
 		await get_tree().process_frame
+		chased += get_process_delta_time()
 
 	axe_chase_x = false
 
@@ -288,9 +277,7 @@ func attack_axe_throw():
 	anim.play("Attack2end")
 
 
-# --------------------------------------------------
 # ATTACK CHAIN
-# --------------------------------------------------
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if dying:
@@ -320,9 +307,7 @@ func set_new_position() -> void:
 		flip(true)
 
 
-# --------------------------------------------------
 # DEATH
-# --------------------------------------------------
 
 func start_death():
 	if dying:
@@ -367,9 +352,7 @@ func _death_physics(delta: float):
 		queue_free()
 
 
-# --------------------------------------------------
 # SPRITE FLASH
-# --------------------------------------------------
 
 func flash_sprite(duration: float = 0.1) -> void:
 	if sprite_mat == null:
@@ -386,9 +369,7 @@ func flash_sprite(duration: float = 0.1) -> void:
 	hitsfx.play()
 
 
-# --------------------------------------------------
 # DAMAGE
-# --------------------------------------------------
 
 func take_damage(amount = 1):
 	if dying or state == BossState.DEAD:
@@ -406,16 +387,16 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if dying:
 		return
 
-	if area.is_in_group("item"):
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
 		await flash_sprite()
 
 		if dying:
 			return
 
 		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
-			area.get_parent().queue_free()
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
-		take_damage()
+		take_damage(Test.boss_damage)
 		spawn_heart()
 
 	elif area.is_in_group("Playerattack"):
@@ -424,7 +405,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 		if dying:
 			return
 
-		take_damage()
+		take_damage(Test.boss_damage)
 		spawn_heart()
 
 		if area.is_in_group("Player"):

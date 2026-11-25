@@ -35,6 +35,7 @@
 [ext_resource type="Shader" uid="uid://rjapj8dx7ufb" path="res://Shaders/vhseffect.gdshader" id="29_mm3wv"]
 [ext_resource type="Texture2D" uid="uid://dkmnifpu1kn4k" path="res://Sprites/Intro/789.png" id="29_udxrr"]
 [ext_resource type="Texture2D" uid="uid://cjr4dukic68mv" path="res://Sprites/Characters/Knuckles/knucklesheet.png" id="29_xlc5t"]
+[ext_resource type="Texture2D" uid="uid://cog30eq5mawwy" path="res://Sprites/Characters/Sage/icon.png" id="40_sage"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cmxlk"]
 shader = ExtResource("10_4o5oy")
@@ -816,7 +817,7 @@ grow_vertical = 2
 scale = Vector2(4, 4)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-text = "Select Up to 3"
+text = "Select Up to 4"
 horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="." unique_id=51437787]
@@ -875,7 +876,7 @@ autoplay = "default"
 
 [node name="Shadowicon" type="Sprite2D" parent="Charborder/Shadow" unique_id=2134162072]
 position = Vector2(-8.000002, -10.666671)
-scale = Vector2(0.03, 0.03)
+scale = Vector2(0.06, 0.06)
 texture = ExtResource("11_2kwsm")
 
 [node name="Silver" type="AnimatedSprite2D" parent="Charborder" unique_id=1752855487]
@@ -888,11 +889,10 @@ frame_progress = 0.2057189
 
 [node name="Silvericon" type="Sprite2D" parent="Charborder/Silver" unique_id=1855748548]
 position = Vector2(-8.000002, -10.666671)
-scale = Vector2(0.03, 0.03)
+scale = Vector2(0.06, 0.06)
 texture = ExtResource("13_dhxux")
 
 [node name="Sage" type="AnimatedSprite2D" parent="Charborder" unique_id=1635988817]
-visible = false
 modulate = Color(0.41568628, 0.41568628, 0.41568628, 1)
 position = Vector2(-352, 576)
 scale = Vector2(3, 3)
@@ -902,8 +902,8 @@ frame_progress = 0.2057189
 
 [node name="Sageicon" type="Sprite2D" parent="Charborder/Sage" unique_id=1073617707]
 position = Vector2(-8.000002, -8.000004)
-scale = Vector2(0.03, 0.03)
-texture = ExtResource("13_dhxux")
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("40_sage")
 
 [node name="Rouge" parent="Charborder" unique_id=606043377 instance=ExtResource("2_d8uyd")]
 position = Vector2(-336, 150)
@@ -946,7 +946,7 @@ color = Color(1, 0, 0, 1)
 [node name="Texture" type="Sprite2D" parent="Charborder/Highlight1" unique_id=49371218]
 position = Vector2(20.1746, 20.0506)
 rotation = -0.993383
-scale = Vector2(0.00913439, 0.0333845)
+scale = Vector2(0.01826878, 0.066769)
 skew = 0.958781
 texture = ExtResource("9_cgfmd")
 
@@ -967,7 +967,7 @@ color = Color(1, 0, 0, 1)
 [node name="Texture" type="Sprite2D" parent="Charborder/Highlight2" unique_id=1272724558]
 position = Vector2(20.175, 20.051)
 rotation = -0.993383
-scale = Vector2(0.00913439, 0.0333845)
+scale = Vector2(0.01826878, 0.066769)
 skew = 0.958781
 
 [node name="Highlight3" type="ColorRect" parent="Charborder" unique_id=407185626]
@@ -987,7 +987,7 @@ color = Color(1, 0, 0, 1)
 [node name="Texture" type="Sprite2D" parent="Charborder/Highlight3" unique_id=1969912267]
 position = Vector2(20.175, 20.051)
 rotation = -0.993383
-scale = Vector2(0.00913439, 0.0333845)
+scale = Vector2(0.01826878, 0.066769)
 skew = 0.958781
 
 [node name="ColorRect4" type="ColorRect" parent="." unique_id=899511136]

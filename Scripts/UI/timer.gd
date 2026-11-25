@@ -11,12 +11,13 @@ func _ready():
 	text = format_time(time_passed)
 	GlobalSignals.game_over.connect(_on_game_over)
 
+# Speedrun timer
 func _process(delta):
-	if not start:
+	if not start or Test.in_rest_area or Test.floor_done:
 		return
-	if not Test.level % 4 == 0:
-		time_passed += delta
-		text = format_time(time_passed)
+	time_passed += delta
+	Test.elapsed_sesion_time += delta
+	text = format_time(time_passed)
 
 func format_time(t: float) -> String:
 	# total centiseconds since start
@@ -34,9 +35,11 @@ func format_time(t: float) -> String:
 func _on_restartflash_goal() -> void:
 	if Test.fail == true:
 		Test.bestTimeText = "BEST TIME: 666:66:66"
-	elif (time_passed < Test.bestTimeFloat) and not (Test.level-1) % 4 == 0:
+	elif (time_passed < Test.bestTimeFloat) and time_passed > 0.0 and not Test.in_rest_area and not (Test.level-1) % 4 == 0:
 		Test.bestTimeFloat = time_passed
 		Test.bestTimeText = "BEST TIME: " + format_time(time_passed)
+		if not Test.playtesting:
+			Test.save_progress()
 
 func _on_game_over():
 	set_process(false)

@@ -56,7 +56,7 @@ libraries/ = SubResource("AnimationLibrary_yhiut")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2031905728]
 position = Vector2(-9, -10.6667)
-scale = Vector2(0.03, 0.03)
+scale = Vector2(0.06, 0.06)
 texture = ExtResource("2_cbjba")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1075750837]

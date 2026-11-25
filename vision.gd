@@ -199,6 +199,10 @@ func _go_to_next_scene() -> void:
 	# Reset the final cutscene flag after Vision 5.
 	if current_vision == 5:
 		Test.final = false
+	else:
+		# A vision watched at the rest tree
+		var lg = load("res://Scripts/Level/level_generator.gd")
+		lg.rest_done_level = -1
 
 	Test.rest = true
 
@@ -311,7 +315,6 @@ func fade_to_black() -> void:
 	await tween.finished
 
 	music.stop()
-
 
 func wait_for_input() -> bool:
 	while true:

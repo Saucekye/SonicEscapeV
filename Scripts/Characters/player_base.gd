@@ -3,13 +3,10 @@ class_name Player extends CharacterBody2D
 
 # ─────────────────────────────────────────────
 # Debug Variables
-# ─────────────────────────────────────────────
 @export_group("Debug Variables")
 @export var debug_prevent_death = false
 
-# ─────────────────────────────────────────────
 # Node References
-# ─────────────────────────────────────────────
 @onready var ap = $AnimationPlayer
 @onready var sprite = $Sprite2D
 @onready var timer = $Timer          # Used to reset max_speed after leaving a wall
@@ -28,6 +25,8 @@ class_name Player extends CharacterBody2D
 
 @export_group("Character Audio")
 @export var audio_files : Array
+## Echo on the voice lines, like Sonic's
+@export var voice_echo := true
 
 var in_loop = false  # True while the character is inside a loop section
 
@@ -49,9 +48,7 @@ signal awesome
 signal outstanding
 signal amazing
 
-# ─────────────────────────────────────────────
 # Movement State Variables
-# ─────────────────────────────────────────────
 @export_group("Movement Variables")
 @export var max_speed = 500             ## Current speed cap — increases with momentum
 @export var acc = 15                    ## Horizontal acceleration — increases with slope/momentum
@@ -61,12 +58,16 @@ signal amazing
 @export var  BASE_MAX_SPEDD : float = 1000	## The max speed a player can attain on flat ground
 @export var  MAX_SPEED : float = 1800	## The max speed the player can achieve throug
 @export var  MAX_LOW_SPEED : float = 500	## The maximum motion.x when player is traveling at low speed
+var run_smoke_interval : float = 0.06   # seconds between run dust puffs
+var run_smoke_timer := 0.0
 var is_boosting = false         ## True while the ground boost is active (drains meter)
 var stomp_no_bounce = false     ## Unused/reserved: prevent bounce after stomp
 var is_jumping = false          ## True between pressing jump and releasing it
 var jump_pressed = false        ## Tracks whether jump was pressed this frame
 var wait = false                ## True when the idle "wait" animation is playing
 const SPEED = 10.0              ## Unused base speed constant (legacy)
+const BOOST_SPEED := 1800.0      # ground boost top speed
+const EXTRA_LIFE_WAIT := 1.5     # seconds down before an extra life starts the floor over
 const JUMP_VELOCITY = -500.0    ## Unused constant (jump uses the formula-based jump_velocity instead)
 const fric = 60.0                 ## Base friction constant used in several friction calculations
 const DASHSPEED = 10000         ## Unused dash speed constant (legacy)
@@ -86,35 +87,58 @@ var next_bounce = false         ## True when the character should bounce on the 
 var is_ready = false            ## True when the peel-out charge is active
 var is_spinningdash = false     ## True when the spin dash charge is active
 var is_player_dead : bool = false		## Indicates that the player character has died, remove all playability
+
+
+
+func _hands_off() -> bool:
+	return Test.reading_page or Pause.visible
+
+func inp_pressed(action: String) -> bool:
+	return Input.is_action_pressed(action) and not _hands_off()
+
+func inp_just_pressed(action: String) -> bool:
+	if action == "trick" and _super_frame == Engine.get_physics_frames():
+		return false
+	return Input.is_action_just_pressed(action) and not _hands_off()
+
+func inp_just_released(action: String) -> bool:
+	return Input.is_action_just_released(action)
+
+func inp_axis(negative: String, positive: String) -> float:
+	return 0.0 if _hands_off() else Input.get_axis(negative, positive)
+
+func joy_axis(axis: JoyAxis) -> float:
+	return Input.get_joy_axis(0, axis) if not _hands_off() else 0.0
+
+# This character's rings and meter
+var my_rings:
+	get: return Test.rings
+	set(v): Test.rings = v
+var my_meter:
+	get: return Test.meter
+	set(v): Test.meter = v
+
 var last_animation : String = ""			## Keeps track of the last animation. Useful for things like airup where you go from air up aniamtion to falling animation only if you were previously in air
-# ─────────────────────────────────────────────
 # Flying State Variables
-# ─────────────────────────────────────────────
 @export_group("Flying Variables")
 @export var flymeter_amount = 85	## Max amount of flying energy
 var flymeter_current_amount : float = 85	## Remaining fly energy (drains per flutter, resets on ground/rail)
 var flying = false      ## True while the fly/hover ability is active
 var swipe = false       ## True during the swipe attack animation window
 
-# ─────────────────────────────────────────────
 # Drilling State Variables
-# ─────────────────────────────────────────────
 var is_drilling = false             ## True while the wall-drill ability is active
 var drill_start_time = 0.0          ## Timestamp when drilling started (currently unused)
 var original_collision_mask = collision_mask  ## Saved mask — restored when drilling ends
 
-# ─────────────────────────────────────────────
 # Drop Dash Variables
-# ─────────────────────────────────────────────
 var is_drop_dashing = false         ## True once the drop dash is fully charged in the air
 var drop_dash_charge = 0.0          ## Timer tracking how long jump has been held in air
 var drop_dash_charge_time = 0.3     ## Seconds required to fully charge a drop dash
 var drop_dash_speed = 1400          ## Speed applied when the drop dash triggers on landing
 
-# ─────────────────────────────────────────────
 # Physics & Rotation State
-# ─────────────────────────────────────────────
-var motion := Vector2(0,0)      ## Internal velocity — applied to CharacterBody2D.velocity each frame
+var motion := Vector2(0,0)      # Internal velocity - applied to CharacterBody2D.velocity each frame
 var rot := 0.0                  ## Current rotation (snapped to floor angle)
 var slopeangle := 0.0           ## Angle of the surface the character is standing on
 var slopefactor := 0.0          ## X component of the floor normal; used to scale slope effects
@@ -131,7 +155,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 # ─────────────────────────────────────────────
 # Jump Arc (formula-based — avoids magic numbers)
 # These exports allow tuning jump feel from the Inspector.
-# ─────────────────────────────────────────────
 @export_group("Jump Arc Variables")
 @export var jump_height : float = 260           ## Peak height in pixels
 @export var jump_time_to_peak : float = 0.5     ## Seconds to reach peak
@@ -152,15 +175,11 @@ var default = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_desce
 var attached_to_entity: Node2D = null       ## The flying player this character is holding onto
 var entity_attachment_offset: Vector2 = Vector2.ZERO  ## Offset from the entity's position at time of attach
 
-# ─────────────────────────────────────────────
 # Item Holding System
-# ─────────────────────────────────────────────
 var held_item: Node2D = null                        ## Reference to the item currently being carried
 var item_hold_offset: Vector2 = Vector2(0, -30)     ## Where the item appears relative to the character
 
-# ─────────────────────────────────────────────
 # Direction & Wall Jump State
-# ─────────────────────────────────────────────
 var reverse_to_right = false    ## Unused reverse direction flag
 var reverse_to_left = true      ## Unused reverse direction flag
 var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0  ## Initial upward velocity on jump
@@ -169,17 +188,13 @@ var just_wall_jumped = false    ## Prevents double-triggering wall jump logic
 var has_jumped = false          ## Prevents coyote jump after a real jump
 var hanging_on_wall : bool = false
 
-# ─────────────────────────────────────────────
 # Preloaded Scenes
-# ─────────────────────────────────────────────
 var smoke = preload("res://Scenes/Effect/Smoke Attack.tscn")          ## Air dash / burst smoke
 var sparkle = preload("res://Scenes/Effect/Sparkle.tscn")             ## Trick sparkle effect
 var smokeground = preload("res://misc/runsmoke.tscn")   ## Foot dust when running fast
 var ring_scene = preload("res://Scenes/Obstacles/Rings/Rings.tscn")  ## Rings scattered on damage
 
-# ─────────────────────────────────────────────
 # Spin Dash Variables
-# ─────────────────────────────────────────────
 @export_group("Spin Dash Variables")
 @export var spin_dash_max_charge_speed : int = 1550	## The max x value from releasing the spindash
 @export var spin_dash_charge_amount : int = 600    ## Speed added per charge press
@@ -189,18 +204,14 @@ var spin_charge = 0                 ## Number of times the charge button was pre
 var is_spinning = false             ## True while any spinning charge is held
 var max_spin_charge = 20            ## Unused cap on spin charge level
 
-# ─────────────────────────────────────────────
 # Coyote Time Variables
-# ─────────────────────────────────────────────
 var coyote_time := 0.25             ## Seconds after leaving a ledge where you can still jump
 var last_grounded_time := 0.0       ## Timestamp of the last frame on the ground
 var was_on_floor := false           ## Whether the character was on the floor last frame
 var prev_grounded = false           ## Previous grounded state (for landing detection)
 var grinding = false                ## True while grinding on a rail
 
-# ─────────────────────────────────────────────
 # Player Signals
-# ─────────────────────────────────────────────
 
 @export_group("UI Elements")
 @export var music_color : Color = Color(0.0, 0.478, 1.0, 1.0)
@@ -220,14 +231,22 @@ var texture = "res://Sprites/Characters/Sonic/sonicsheetsonic-sheetmakeup2-sheet
 var stickdir = Vector2(0,0)         ## Virtual joystick input direction (mobile only)
 var player: Player         ## Reference to the followed player, resolved from player_path
 
-# ─────────────────────────────────────────────
 # Hanging / Rail State
-# ─────────────────────────────────────────────
 var hang = false        ## True while attached to a flying player (disables move_and_slide)
 var hangable = false    ## Whether attachment is currently allowed (cleared on ground contact)
 
 
 func _ready():
+	# Voice lines through the echo
+	var voice_player := get_node_or_null("Voice")
+	if voice_echo and voice_player and AudioServer.get_bus_index(Test.VOICE_ECHO_BUS) != -1:
+		voice_player.bus = Test.VOICE_ECHO_BUS
+	# Dying drops your rings, with their sound
+	var ring_loss := AudioStreamPlayer2D.new()
+	ring_loss.name = "DeathRings"
+	ring_loss.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
+	ring_loss.bus = sfx.bus if sfx else "SFX"
+	add_child(ring_loss)
 	$Trail2D.visible = false    # #Trail starts hidden; shown when speed is high enough
 	timer.wait_time = 12        # Wall-exit speed reset delay
 	$Sprite2D.visible = true
@@ -244,13 +263,16 @@ func assign_formation_slot():
 		follow_offset = Test.FORMATION_OFFSETS[0]
 	elif character_id == Test.characterthree:
 		follow_offset = Test.FORMATION_OFFSETS[1]
+	elif character_id == Test.characterfour:
+		follow_offset = Test.FORMATION_OFFSETS[2]
 	
 func _process(_delta):
-	# Handle virtual joystick on mobile — converts stick input into action events
-	if Test.mobile == true:
+	_update_shield()
+	# Handle virtual joystick on mobile - converts stick input into action events
+	if Test.mobile == true and not Test.touch_controls_v2:	# the new touch controls press up/down themselves
 		handle_stick_input()	
-	if debug_prevent_death and Input.is_action_just_pressed("debug"):
-		Test.rings = 999
+	if debug_prevent_death and inp_just_pressed("debug"):
+		my_rings = 999
 		Test.level = 3
 	
 func handle_stick_input():
@@ -284,9 +306,13 @@ func _on_launch_finished():
 	print("Spring path finished! Movement restored.")
 
 func _physics_process(delta):
-	
+	_ld_carry = maxf(_ld_carry - delta, 0.0)
+	if _light_dash(delta):
+		return
+	_check_super(delta)
+
 	# Release boost if the airspin button is let go
-	if Input.is_action_just_released("airspin"):
+	if inp_just_released("airspin"):
 		is_boosting = false
 
 	# ── Track floor state ──────────────────────────────────────────────
@@ -296,12 +322,14 @@ func _physics_process(delta):
 	was_on_floor = is_grounded
 	
 	if is_grounded and not prev_grounded:
-		# Just landed — reset flying state and hide the fly arrow indicator
+		# Just landed - reset flying state and hide the fly arrow indicator
+		if motion.y > 500 and not grinding:
+			landing_dust(motion.y)  # dust burst on hard landings
 		$Arrow.visible = false
 		flying = false
 		fall_gravity = default
 		has_jumped = false
-		if not Input.is_action_pressed("crouch"):
+		if not inp_pressed("crouch"):
 			ball = false
 	
 	# Reset has_jumped on fresh landing (allows coyote jump on next edge)
@@ -311,31 +339,34 @@ func _physics_process(delta):
 	prev_grounded = is_grounded
 	
 	# Cap the boost meter so it never exceeds maximum
-	if Test.meter > Test.maxmeter:
-		Test.meter = Test.maxmeter
+	if my_meter > Test.maxmeter:
+		my_meter = Test.maxmeter
 		
 	# ── Ground Boost Logic ─────────────────────────────────────────────
 	if is_on_floor_only():
 		if is_boosting:
 			# Drain meter while boosting; cancel if depleted
-			Test.meter -= 10 * delta
-			if Test.meter <= 0:
-				Test.meter = 0
+			my_meter -= Test.meter_cost(10 * delta)
+			if my_meter <= 0:
+				my_meter = 0
 				is_boosting = false
 			else:
 				# Allow steering during boost — use current direction input
 				var boost_dir = direction if direction != 0 else (1 if not sprite.flip_h else -1)
-				motion.x = move_toward(motion.x, 1800 * boost_dir, 5000 * delta)
+				motion.x = move_toward(motion.x, boost_speed() * boost_dir, 5000 * delta)
 				max_speed = 1800
 		else:
 			# Passively recharge meter when not boosting
-			Test.meter += 1 * delta
+			my_meter += 1 * delta
 			
 	# ── Slope Calculation ──────────────────────────────────────────────
 	if is_on_floor():
+		finished_in_air = false
+		insta_used = false
 		if is_player == true and held_item == null:	
-			tricknumber()                   # Check if trick count warrants a rating label
-			GlobalCanvasLayer.tricks = 0   # Reset trick counter on landing
+			if GlobalCanvasLayer.tricks > 0:
+				tricknumber()   # landing on 3+ tricks
+			GlobalCanvasLayer.tricks = 0
 			
 		# Floor normal angle offset by 90° gives the surface's "forward" angle
 		slopeangle = get_floor_normal().angle() + (PI/2)
@@ -348,6 +379,25 @@ func _physics_process(delta):
 	# ── Rotation & Sprite Alignment ────────────────────────────────────
 	$CollisionShape2D.rotation = rot           # Collision shape snaps to floor angle immediately
 	$Sprite2D.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)
+	if finish_spinning:
+		# The trick finisher
+		if is_on_floor() or is_on_wall() or is_on_ceiling() or grinding or is_player_dead:
+			finish_spinning = false
+			finish_spin = 0.0
+			$Sprite2D.rotation = rot
+		else:
+			finish_spin = fmod(finish_spin + FINISH_SPIN_SPEED * get_physics_process_delta_time(), TAU)
+			$Sprite2D.rotation = rot + finish_spin
+	if _insta_spin_left > 0.0:
+		var turn := minf(_insta_spin_left, INSTA_SPIN_SPEED * get_physics_process_delta_time())
+		_insta_spin_left -= turn
+		_insta_spin += turn
+		if _insta_spin_left <= 0.0 or is_on_floor() or grinding or is_player_dead:
+			_insta_spin_left = 0.0
+			_insta_spin = 0.0
+			$Sprite2D.rotation = rot
+		else:
+			$Sprite2D.rotation = rot - _insta_spin   # minus: anticlockwise
 	if grounded:
 		boost_sprite.rotation = lerp_angle($Sprite2D.rotation, rot, 0.25)  # Sprite smoothly follows
 
@@ -358,10 +408,7 @@ func _physics_process(delta):
 			# convert some vertical speed into horizontal speed (like Sonic's slope physics)
 			if abs(slopeangle) >= 0.5 and abs(motion.y) > abs(motion.x):
 				var downhill_direction = sign(slopefactor)
-				print(sign(motion.x))
-				print(downhill_direction)
 				if sign(motion.x) == downhill_direction or motion.x == 0:
-					print(motion.y * slopefactor)
 					const SLOPE_FACTOR_MULTIPLIER : float = 0.8
 					motion.x += motion.y * slopefactor * SLOPE_FACTOR_MULTIPLIER
 			grounded = true
@@ -413,7 +460,6 @@ func _physics_process(delta):
 					if ball == true:
 						max_speed = ABOSLUTE_MAX_SPEED
 						acc = 5 + 10 * slope_influence
-						print(acc)
 					else:
 						max_speed = MAX_SPEED
 						acc = 12.5 + 5 * slope_influence
@@ -464,6 +510,8 @@ func _physics_process(delta):
 				# Close enough to formation slot — decelerate to stop
 				direction = 0
 				max_speed = move_toward(max_speed, 0, speed_change_rate * delta)
+				if is_on_floor() and absf(motion.x) < 60.0 and sprite.flip_h != player.sprite.flip_h:
+					sprite.flip_h = player.sprite.flip_h
 	else:
 		# ── Player Input ───────────────────────────────────────────────
 		if ((not is_on_floor() and ball == true) or ball == false):
@@ -474,15 +522,15 @@ func _physics_process(delta):
 					control_lock = false
 				direction = sign(direction)  # Normalize to -1 or 1
 			else:
-				if abs(Input.get_joy_axis(0,JOY_AXIS_LEFT_X)) > 0.5:
-					# Controller analog stick — combine with digital input
-					direction = Input.get_axis("ui_left", "ui_right") + Input.get_joy_axis(0,JOY_AXIS_LEFT_X)
+				if abs(joy_axis(JOY_AXIS_LEFT_X)) > 0.5:
+					# Controller analog stick - combine with digital input
+					direction = inp_axis("ui_left", "ui_right") + joy_axis(JOY_AXIS_LEFT_X)
 					if spin_charge == 0:
 						control_lock = false
 					direction = sign(direction)
 				else:
 					# Keyboard / digital input
-					direction = Input.get_axis("ui_left", "ui_right")
+					direction = inp_axis("ui_left", "ui_right")
 					if direction > 0 or direction < 0:
 						if spin_charge == 0:
 							control_lock = false
@@ -558,12 +606,48 @@ func _physics_process(delta):
 	handle_attachment(delta)
 	
 	if not hang:
-		move_and_slide()  # Skip physics movement while hanging (position is set manually)
+		var before := global_transform
+		var run_velocity := velocity
+		var was_grounded := is_on_floor()
+		move_and_slide()  # Skip physics movement while hanging
+		_step_up(before, run_velocity, was_grounded)
 		just_wall_jumped = false
 		
 	update_attachment_position()  # Keep attached player snapped to this character
 	update_held_item_position()   # Keep held item snapped to this character
 		
+# Running into a small step carries you up onto it instead of stopping you dead
+const STEP_HEIGHT := 52.0      # the tallest step you run up
+const STEP_MIN_SPEED := 60.0   # slower than this, a step still stops you
+
+func _step_up(before: Transform2D, run_velocity: Vector2, was_grounded: bool) -> void:
+	if not was_grounded or grinding or absf(run_velocity.x) < STEP_MIN_SPEED or absf(run_velocity.y) > absf(run_velocity.x):
+		return
+	var dir := signf(run_velocity.x)
+	var forward := Vector2(run_velocity.x * get_physics_process_delta_time(), 0.0)
+	var blocked := is_on_wall() and get_wall_normal().x * dir < -0.9
+	for i in get_slide_collision_count():
+		if get_slide_collision(i).get_normal().x * dir < -0.9:
+			blocked = true   # something upright in front of you
+	if not blocked:
+		return
+	var lifted := before.translated(Vector2(0.0, -STEP_HEIGHT))
+	if test_move(before, Vector2(0.0, -STEP_HEIGHT)) or test_move(lifted, forward):
+		return   # a ceiling above, or more wall
+	# Up, forward, then down onto the step
+	global_transform = lifted.translated(forward)
+	var landing := move_and_collide(Vector2(0.0, STEP_HEIGHT + 4.0), true)
+	if landing == null or landing.get_normal().y > -0.7:
+		global_transform = before   # nothing to stand on up there
+		return
+	global_position += landing.get_travel()
+	# Refresh the floor/wall checks
+	var keep := velocity
+	velocity = Vector2(0.0, 1.0)
+	move_and_slide()
+	velocity = Vector2(run_velocity.x, keep.y)
+
+
 func update_attachment_position():
 	# If currently hanging onto a flying player, manually snap position to their marker
 	if hang and attached_to_entity and is_instance_valid(attached_to_entity):
@@ -619,7 +703,7 @@ func handle_attachment(delta):
 		elif not attached_to_entity.get("flying"):
 			should_detach = true
 			detach_reason = "player stopped flying"
-		elif Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("trick"):
+		elif inp_just_pressed("airspin") or inp_just_pressed("trick"):
 			should_detach = true
 			detach_reason = "player input"
 		
@@ -635,7 +719,7 @@ func ground_boost():
 	time_elapsed = 300
 	max_speed = 1800
 	acc = 5000
-	motion.x = 1800 * boost_direction
+	motion.x = boost_speed() * boost_direction
 	
 	smokeemit()
 	sfx.pitch_scale = 1.8
@@ -648,12 +732,12 @@ func handle_item(delta):
 		item_pickup_cooldown -= delta
 	
 	# Drop / throw item on trick button
-	if held_item and Input.is_action_just_pressed("trick"):
+	if held_item and inp_just_pressed("trick"):
 		drop_item()
 		return
 	
-	# Pick up a nearby item when holding up (and not already carrying something)
-	if not held_item and Input.is_action_pressed("ui_up") and item_pickup_cooldown <= 0:
+	# Pick up a nearby item when holding up
+	if not held_item and inp_pressed("ui_up") and item_pickup_cooldown <= 0:
 		var item = find_item_nearby()
 		if item and not hang:  # Can't pick up while hanging on a flying player
 			pick_up_item(item)
@@ -743,7 +827,7 @@ func pick_up_item(item: Node2D):
 	
 	# Prefer the item's own disable function; fall back to manual disabling
 	if item.has_method("disable_physics"):
-		item.disable_physics()
+		item.disable_physics(self)
 	else:
 		if item.has_method("set_physics_process"):
 			item.set_physics_process(false)
@@ -771,18 +855,18 @@ func throw_item():
 		has_input = true
 		print("Mobile throw:", throw_direction)
 
-	elif abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_X)) > 0.5 or abs(Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)) > 0.5:
+	elif abs(joy_axis(JOY_AXIS_LEFT_X)) > 0.5 or abs(joy_axis(JOY_AXIS_LEFT_Y)) > 0.5:
 		throw_direction = Vector2(
-			Input.get_joy_axis(0, JOY_AXIS_LEFT_X),
-			Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
+			joy_axis(JOY_AXIS_LEFT_X),
+			joy_axis(JOY_AXIS_LEFT_Y)
 		).normalized()
 		has_input = true
 		print("Controller raw:", throw_direction)
 
 	else:
 		throw_direction = Vector2(
-			Input.get_axis("ui_left", "ui_right"),
-			Input.get_axis("ui_down", "ui_up")
+			inp_axis("ui_left", "ui_right"),
+			inp_axis("ui_down", "ui_up")
 		)
 		if throw_direction != Vector2.ZERO:
 			throw_direction = throw_direction.normalized()
@@ -859,7 +943,7 @@ func find_flying_player_nearby():
 	# Search overlapping hitbox areas for a flying player while holding ui_up
 	var areas = $Hitbox.get_overlapping_areas()
 	for area in areas:
-		if area.is_in_group("Player") and Input.is_action_pressed("ui_up"):
+		if area.is_in_group("Player") and inp_pressed("ui_up"):
 			var player_node = area.get_parent()
 			if player_node != self and player_node.has_method("get") and player_node.get("flying"):
 				return player_node
@@ -875,27 +959,35 @@ func find_item_nearby():
 
 
 func tricknumber():
-	# Update the global trick rating label based on how many tricks have been chained
-	if GlobalCanvasLayer.tricks > 5:
-		Test.trick = "good"
-	if GlobalCanvasLayer.tricks > 10:
-		Test.trick = "great"
-	if GlobalCanvasLayer.tricks > 15:
-		Test.trick = "awesome"
-	if GlobalCanvasLayer.tricks > 20:
-		Test.trick = "outstanding"
-	if GlobalCanvasLayer.tricks > 30:
-		Test.trick = "amazing"
+	# Miku pops up with a rating for the chain
+	rate_chain(GlobalCanvasLayer.tricks, false)
+
+const CHAIN_RATINGS := ["good", "great", "awesome", "outstanding", "amazing"]
+const CHAIN_RATING_AT := [3, 6, 10, 15, 20]   # tricks in the chain for each rating
+
+# Miku's rating for a chain
+func rate_chain(n: int, finished: bool) -> void:
+	var idx := -1
+	for i in CHAIN_RATING_AT.size():
+		if n >= CHAIN_RATING_AT[i]:
+			idx = i
+	if idx < 0:
+		return
+	if finished:
+		idx = mini(idx + 1, CHAIN_RATINGS.size() - 1)
+	Test.trick = CHAIN_RATINGS[idx]
 
 func handle_movement_input(delta):
 	if direction and not control_lock:
 		if ball == false or !is_on_floor():
-			var target_speed = max_speed * direction
+			var target_speed = max_speed * direction * Test.speed_scale() * _super_speed()
 			var current_acc = acc
 			
 			# Reversing direction — use high deceleration for a "skidding" feel
 			if sign(motion.x) != sign(target_speed) and motion.x != 0:
 				current_acc = 2500 * delta
+				if is_on_floor() and abs(motion.x) > 300 and not ball:
+					skid_dust()  # dust sprays forward while braking
 				
 			motion.x = approach(motion.x, target_speed, current_acc)
 			
@@ -931,6 +1023,8 @@ func handle_movement_input(delta):
 			apply_friction(delta)
 
 func apply_friction(delta):
+	if _ld_carry > 0.0 and not is_on_floor():
+		return
 	if ball == false:
 		if time_elapsed > 50 or not is_on_floor():
 			# High-speed or airborne friction — gradual slowdown
@@ -1015,8 +1109,8 @@ func calculate_dynamic_speed():
 			acc = 25
 
 func preserve_ball_momentum():
-	# Optional helper — call in handle_floor_logic to enter ball mode naturally without forcing speed
-	if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+	# Optional helper - call in handle_floor_logic to enter ball mode naturally without forcing speed
+	if ((velocity.x != 0 or velocity.y != 0) and inp_just_pressed("ui_down")) or ((rot != 0) and inp_just_pressed("ui_down")) and next_bounce == false:
 		crouch = true
 		ball = true
 
@@ -1071,17 +1165,17 @@ func handle_floor_logic(delta):
 			control_lock = false
 		
 		# Enter crouch from still
-		if Input.is_action_pressed("ui_down") and motion.x == 0 and is_spinning == false and next_bounce == false:
+		if inp_pressed("ui_down") and motion.x == 0 and is_spinning == false and next_bounce == false:
 			crouch = true
 			ap.play("Crouch")
 			
 		# Stand up from crouch on release
-		if Input.is_action_just_released("crouch") or Input.is_action_just_released("ui_up") and motion.x == 0:
+		if inp_just_released("crouch") or inp_just_released("ui_up") and motion.x == 0:
 			control_lock = false
 			crouch = false
 			
 		# Enter ball mode when pressing down while moving or on a slope
-		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and Input.is_action_just_pressed("ui_down") and next_bounce == false:
+		if (motion.x != 0 or abs(rot) >= MIN_ROT_BALL) and inp_just_pressed("ui_down") and next_bounce == false:
 			crouch = true
 			ball = true
 			
@@ -1095,14 +1189,14 @@ func handle_floor_logic(delta):
 		handle_ground_action()	## Abstract method
 
 	# Exit ball mode when any action button is pressed
-	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("trick") or Input.is_action_just_pressed("airspin") or Input.is_action_just_pressed("airup")) and ball == true and is_on_floor():
+	if (inp_just_pressed("ui_up") or inp_just_pressed("trick") or inp_just_pressed("airspin") or inp_just_pressed("airup")) and ball == true and is_on_floor():
 		control_lock = false
 		ball = false
 		crouch = false
 		roll()
 		
-	# Boost input check (currently returns early without doing anything — boost is handled in _physics_process)
-	if Input.is_action_just_pressed("airspin") and ball == false and not crouch and not is_spinning and not is_spinningdash and Test.meter >= 50 and abs(motion.x) > 0:
+	# Boost input check
+	if inp_just_pressed("airspin") and ball == false and not crouch and not is_spinning and not is_spinningdash and my_meter >= 50 and abs(motion.x) > 0:
 		return
 			
 func reset_dash_after_delay() -> void:
@@ -1140,13 +1234,12 @@ func handle_air_logic(delta, is_grounded):
 		next_bounce = false
 	
 	# You can enter ball mode upon landing
-	if ((velocity.x != 0 or velocity.y != 0) and Input.is_action_just_pressed("ui_down")) or ((rot != 0) and Input.is_action_just_pressed("ui_down")) and next_bounce == false:
+	if ((velocity.x != 0 or velocity.y != 0) and inp_just_pressed("ui_down")) or ((rot != 0) and inp_just_pressed("ui_down")) and next_bounce == false:
 		crouch = true
 		ball = true
 	
-	# ── Drop Dash Charging ─────────────────────────────────────────
-	# Charge the drop dash by holding jump while airborne
-	if Input.is_action_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
+	# Drop Dash Charging Charge the drop dash by holding jump while airborne
+	if inp_pressed("ui_accept") and drop_dash_charge < drop_dash_charge_time:
 		drop_dash_charge += delta
 		if drop_dash_charge >= drop_dash_charge_time:
 			is_drop_dashing = true  # Fully charged — ready to fire on landing
@@ -1160,7 +1253,7 @@ func handle_air_logic(delta, is_grounded):
 		if time_elapsed < 50 and ball == false:
 			motion.x = clamp(motion.x , -1000, 1000)
 			time_elapsed = 0
-		elif time_elapsed >= 60 and ball == false:
+		elif time_elapsed >= 60 and ball == false and _ld_carry <= 0.0:   # not straight out of a light speed dash
 			# Slightly higher clamp on flat trajectory
 			if slopefactor == 0:
 				motion.x = clamp(motion.x , -1300, 1300)
@@ -1183,17 +1276,17 @@ func handle_jump_input(is_grounded):
 	var slope_acceleration = sign(-slopefactor * direction)
 	
 	# Variable jump height: cut upward velocity when button is released early
-	if is_jumping and !Input.is_action_pressed("ui_accept") and motion.y < 0:
+	if is_jumping and !inp_pressed("ui_accept") and motion.y < 0:
 		motion.y *= 0.8
 		is_jumping = false
 	
-	if Input.is_action_just_pressed("ui_accept") and (grinding or is_grounded or is_coyote_time_active()) and (ball or (!crouch and !ball)) and not just_wall_jumped and not is_spinning:
+	if inp_just_pressed("ui_accept") and (grinding or is_grounded or is_coyote_time_active()) and (ball or (!crouch and !ball)) and not just_wall_jumped and not is_spinning:
 		floor_snap_length = 0
 		
 		# Allow jumping while pressing down only if also pressing a direction
-		var can_jump_with_down = Input.is_action_pressed("ui_down") and direction != 0
+		var can_jump_with_down = inp_pressed("ui_down") and direction != 0
 		
-		if !Input.is_action_pressed("ui_down") or can_jump_with_down:
+		if !inp_pressed("ui_down") or can_jump_with_down:
 			if slope_acceleration < 0:
 				if time_elapsed >= 50:
 					# Boost launch angle on steep uphill slopes at high speed
@@ -1208,9 +1301,9 @@ func handle_jump_input(is_grounded):
 			
 			# Coyote jump gets a bonus — slightly higher arc
 			if is_coyote_time_active() == true:
-				motion.y += jump_velocity * 1.3
+				motion.y += jump_velocity * 1.3 * Test.jump_scale() * _super_jump()
 			else:
-				motion.y += jump_velocity
+				motion.y += jump_velocity * Test.jump_scale() * _super_jump()
 			motion.rotated(rotation)
 			
 			has_jumped = true
@@ -1230,9 +1323,7 @@ func is_coyote_time_active():
 	var time_since_grounded = Time.get_ticks_msec() / 1000.0 - last_grounded_time
 	return time_since_grounded < coyote_time and motion.y >= 0 and not was_on_floor
 
-# ─────────────────────────────────────────────
 # Animation
-# ─────────────────────────────────────────────
 func update_animations():
 	# doturn is a 0–2 scale representing how close to max speed the character is (used for anim speed)
 	var doturn = abs(((abs(motion.x)/max_speed)*2))
@@ -1264,8 +1355,12 @@ func handle_idle_animations():
 		else:
 			ap.play("stance")
 		ap.speed_scale = 1
-		if Input.is_action_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false and swipe == false:
+		if inp_pressed("ui_down") and is_spinning == false and next_bounce == false and grinding == false and swipe == false:
 			ap.play("Crouch")
+		# Look up: every character, standing still and holding up
+		elif inp_pressed("ui_up") and direction == 0 and motion.x == 0 and is_on_floor() and not is_ready \
+				and next_bounce == false and grinding == false and swipe == false and ap.has_animation("ready"):
+			ap.play("ready")
 
 func handle_movement_animations(doturn):
 	# doturn < 1 means the character is slower than half speed — play "turn" transition anim
@@ -1283,13 +1378,53 @@ func handle_movement_animations(doturn):
 				runsmoke()
 
 func runsmoke():
-	# Spawn a ground dust puff at the feet and mirror it to the movement direction
-	var runsmoke_effect : Node = smokeground.instantiate()
-	runsmoke_effect.position = position
-	get_parent().add_child(runsmoke_effect)
-	runsmoke_effect.rotation_degrees = rot
-	runsmoke_effect.flip_h = velocity.x < 0
-	await get_tree().create_timer(0.13).timeout  # Brief delay before cleanup (handled in runsmoke scene)
+	# Rate-limited
+	var speed_t : float = clamp((abs(motion.x) - 500.0) / 1300.0, 0.0, 1.0)
+	var interval : float = lerp(run_smoke_interval * 1.6, run_smoke_interval * 0.6, speed_t)
+	if not is_player:
+		interval *= 2.0  # AI followers kick up half as much
+	var now = Time.get_ticks_msec() / 1000.0
+	if now - run_smoke_timer < interval:
+		return
+	# Irregular rhythm
+	run_smoke_timer = now + interval * randf_range(-0.35, 0.35)
+	# Kick the puff back from the feet and let it drift up as it fades
+	var dir : float = sign(motion.x) if motion.x != 0 else (-1.0 if sprite.flip_h else 1.0)
+	var kick := Vector2(-dir * lerp(60.0, 240.0, speed_t), -randf_range(8.0, 40.0))
+	spawn_dust(Vector2(-dir * randf_range(0.0, 12.0), randf_range(-4.0, 1.0)), kick, dir < 0)
+
+func spawn_dust(offset: Vector2, kick: Vector2, face_left: bool, anim_speed: float = -1.0) -> void:
+	# One dust puff from the runsmoke sprite
+	var puff : Node = smokeground.instantiate()
+	puff.position = position + offset.rotated(rot)
+	get_parent().add_child(puff)
+	puff.rotation = rot
+	puff.scale = Vector2(1.125, 1.125)
+	puff.flip_h = face_left
+	puff.speed_scale = anim_speed if anim_speed > 0.0 else randf_range(1.7, 2.5)
+	if randf() < 0.5:
+		puff.frame = 1  # skip the small first blob half the time, for variety
+	if "velocity" in puff:
+		puff.velocity = kick.rotated(rot)
+		puff.drag = 420.0
+		puff.fade_out = true
+
+func skid_dust() -> void:
+	# Classic Sonic skid
+	var now = Time.get_ticks_msec() / 1000.0
+	if now - run_smoke_timer < 0.045:
+		return
+	run_smoke_timer = now
+	var dir : float = sign(motion.x)
+	spawn_dust(Vector2(dir * randf_range(4.0, 10.0), randf_range(-2.0, 1.0)),
+		Vector2(dir * randf_range(80.0, 160.0), -randf_range(20.0, 60.0)), dir > 0, 2.6)
+
+func landing_dust(impact: float) -> void:
+	# A hard landing kicks dust out to both sides
+	var power : float = clamp(impact / 1200.0, 0.4, 1.0)
+	for side in [-1.0, 1.0]:
+		spawn_dust(Vector2(side * 6.0, 0.0),
+			Vector2(side * lerp(80.0, 200.0, power), -lerp(10.0, 40.0, power)), side < 0, 2.4)
 
 func smokeemit():
 	# Spawn a burst smoke effect at the character's position (used on dashes and boosts)
@@ -1306,9 +1441,7 @@ func sparkemit():
 	instantsmoke.position = position
 	get_parent().add_child(instantsmoke)
 
-# ─────────────────────────────────────────────
 # Movement Utilities
-# ─────────────────────────────────────────────
 func approach(current, target, speed):
 	# Moves 'current' toward 'target' by at most 'speed' — never overshoots
 	if current < target:
@@ -1333,9 +1466,7 @@ func switch_direction(_direction):
 	sprite.flip_h = direction == -1
 	boost_sprite.flip_h = direction == -1
 
-# ─────────────────────────────────────────────
 # Special Moves
-# ─────────────────────────────────────────────
 func spinaudio():
 	if audio_files.size() < 1:
 		sfx.stream = load("res://Sounds/SonicSFX/Trick.wav")
@@ -1350,9 +1481,7 @@ func spinaudio():
 			sfx.play()
 			voice.play()
 
-# ─────────────────────────────────────────────
 # Signal Handlers
-# ─────────────────────────────────────────────
 func _on_timer_timeout():
 	# After leaving a wall, bring max_speed back down from the burst
 	max_speed = 1000
@@ -1383,12 +1512,12 @@ func _on_animation_player_current_animation_changed(anim_name: String):
 
 func spindash():
 	# Guard: don't process spindash if peelout is active
-	if is_ready or Input.is_action_pressed("ui_up"):
+	if is_ready or inp_pressed("ui_up"):
 		return
 		
-	if is_on_floor() and Input.is_action_pressed("ui_down") and ball == false and motion.x == 0 and direction == 0:
+	if is_on_floor() and inp_pressed("ui_down") and ball == false and motion.x == 0 and direction == 0:
 		control_lock = true
-		if Input.is_action_just_pressed("ui_accept"):
+		if inp_just_pressed("ui_accept"):
 			# Each accept press adds one charge and revs up the sound
 			ap.play("revcharge")
 			await(get_tree().create_timer(0.05)).timeout
@@ -1403,7 +1532,7 @@ func spindash():
 			sfx.stream = load("res://Sounds/SonicSFX/rev.MP3")
 			sfx.play()
 
-	elif is_on_floor() and Input.is_action_just_released("ui_down") and is_spinning and is_spinningdash:
+	elif is_on_floor() and inp_just_released("ui_down") and is_spinning and is_spinningdash:
 		# Release: calculate and apply burst speed based on charge level
 		sfx.pitch_scale = 1.5
 		sfx.stream = load("res://Sounds/SonicSFX/spindash.MP3")
@@ -1450,7 +1579,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		tricknumber()
 		flying = false          # Springs cancel the glide
 		GlobalCanvasLayer.tricks = 0
-		Test.meter += 50  # Springs give a meter bonus
+		my_meter += 50  # Springs give a meter bonus
 		
 	if area.is_in_group("Rail"):
 		# Grinding resets fly state and meter
@@ -1471,7 +1600,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		
 	if area.is_in_group("Player") and flying:
 		# Show the directional arrow when near a player while flying
-		# (signals to the other player that this character can carry them)
 		$Arrow.visible = true
 		
 	if area.is_in_group("enemyattack") and ouch == false:
@@ -1510,7 +1638,12 @@ func pick_upward_angle() -> float:
 	return randf_range(selected_range.x, selected_range.y)		
 		
 func player_death():
-	if not is_player:
+	if not is_player or has_meta("downed"):
+		return
+	if has_node("DeathRings") and not is_player_dead:
+		$DeathRings.play()
+	if Test.extra_lives > 0:
+		_use_extra_life()
 		return
 	trail.visible = false
 	ap.speed_scale = 1
@@ -1524,13 +1657,429 @@ func player_death():
 	# Reset level back to 0
 	if Test.level != 20:
 		Test.level = 0
-		Test.elapsed_sesion_time = 0
-	# Prevent physics process method from running anymore
+		# Prevent physics process method from running anymore
 	set_physics_process(false)
 	
+# An extra life from Salvage
+func _use_extra_life() -> void:
+	Test.extra_lives -= 1
+	is_player_dead = true
+	trail.visible = false
+	ap.speed_scale = 1
+	ap.play("death")
+	sfx.volume_db = 10
+	sfx.pitch_scale = 1
+	sfx.stream = load("res://Sounds/SonicSFX/sonic-game-over-sfx.wav")
+	sfx.play()
+	set_physics_process(false)
+	await get_tree().create_timer(EXTRA_LIFE_WAIT).timeout
+	if is_inside_tree():
+		load("res://Scripts/Level/level_generator.gd").rest_done_level = Test.level
+		get_tree().change_scene_to_file("res://Scenes/Level/test3.tscn")
+
+
+# The shield from Salvage
+const SHIELD_SHEET := preload("res://Sprites/Effects/Shield/green_shield.png")   # six frames across
+const SHIELD_FRAMES := 6
+const SHIELD_FPS := 15.0
+const SHIELD_ALPHA := 0.65
+var _shield: Node2D
+
+func _update_shield() -> void:
+	var want := is_player and Test.shields_left > 0 and not is_player_dead
+	if want and _shield == null:
+		_shield = Node2D.new()
+		_shield.name = "Shield"
+		_shield.z_index = 2
+		var spr := Sprite2D.new()
+		spr.name = "Sprite"
+		spr.texture = SHIELD_SHEET
+		spr.hframes = SHIELD_FRAMES
+		spr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		_shield.add_child(spr)
+		add_child(_shield)
+	if _shield:
+		_shield.visible = want
+		if want:
+			_shield.position = $Sprite2D.position
+			var spr: Sprite2D = _shield.get_node("Sprite")
+			var size := float(SHIELD_SHEET.get_height())
+			spr.scale = Vector2.ONE * (_shield_radius() * 2.0 / size)
+			spr.frame = int(Time.get_ticks_msec() / 1000.0 * SHIELD_FPS) % SHIELD_FRAMES
+			_shield.modulate.a = SHIELD_ALPHA
+
+
+func _shield_radius() -> float:
+	var spr: Sprite2D = $Sprite2D
+	var cell := spr.get_rect().size * spr.scale.abs()
+	return maxf(cell.x, cell.y) * 0.42
+
+
+# It takes the hit
+func _pop_shield() -> void:
+	Test.shields_left -= 1
+	sfx.pitch_scale = 1.4
+	sfx.stream = load("res://Sounds/SonicSFX/sonic-rings-drop.MP3")
+	sfx.play()
+	if _shield:
+		_shield.visible = false
+	$invincibity.start()
+	invincible = true
+
+
+var finished_in_air := false     # done a trick finisher this jump
+
+# The insta shield
+const INSTA_SHIELD_TIME := 0.25   # how long it lasts
+const INSTA_SHIELD_REACH := 2.0   # how much bigger your attack reach gets
+const INSTA_SHIELD_SIZE := 0.9    # how big the swipe looks
+var insta_used := false           # used the insta shield this jump
+var insta_on := false
+var _insta_count := 0
+
+func insta_shield() -> void:
+	insta_used = true
+	insta_on = true
+	_insta_count += 1
+	var mine := _insta_count
+	var box := get_node_or_null("Attackbox") as Node2D
+	if box:
+		box.scale = Vector2.ONE * INSTA_SHIELD_REACH
+	var fx := Sprite2D.new()
+	fx.set_script(preload("res://Scripts/Effects/insta_shield.gd"))
+	fx.time = INSTA_SHIELD_TIME
+	fx.radius = _shield_radius() * INSTA_SHIELD_SIZE
+	fx.flip_h = $Sprite2D.flip_h   # swipes the way you face
+	fx.z_index = 3
+	fx.position = $Sprite2D.position
+	add_child(fx)
+	# It hits too: a round attack the size of the swipe
+	var hit := Area2D.new()
+	hit.name = "InstaHit"
+	hit.add_to_group("Playerattack")
+	if box is Area2D:
+		hit.collision_layer = (box as Area2D).collision_layer
+		hit.collision_mask = (box as Area2D).collision_mask
+	var ring := CollisionShape2D.new()
+	ring.shape = CircleShape2D.new()
+	hit.add_child(ring)
+	hit.area_entered.connect(_insta_landed)
+	add_child(hit)
+	# Centred on (and as far round as) the attack box at its insta shield size
+	var box_shape := get_node_or_null("Attackbox/CollisionShape2D") as CollisionShape2D
+	if box_shape and box_shape.shape:
+		ring.global_position = box_shape.global_position
+		var ext: Vector2 = box_shape.shape.get_rect().size * 0.5 * box_shape.global_scale.abs()
+		(ring.shape as CircleShape2D).radius = maxf(ext.x, ext.y) / maxf(0.001, ring.global_scale.abs().x)
+	else:
+		ring.position = $Sprite2D.position
+		(ring.shape as CircleShape2D).radius = _shield_radius() * INSTA_SHIELD_SIZE
+	await get_tree().create_timer(INSTA_SHIELD_TIME, false).timeout
+	if is_instance_valid(hit):
+		hit.queue_free()
+	if mine != _insta_count or not is_instance_valid(self):
+		return
+	insta_on = false
+	if box and is_instance_valid(box):
+		box.scale = Vector2.ONE
+# A landed insta shield
+const INSTA_SPIN_SPEED := 18.0   # how fast
+var _insta_spin_left := 0.0
+var _insta_spin := 0.0
+func _insta_landed(area: Area2D) -> void:
+	_on_attackbox_area_entered(area)
+	if area.is_in_group("Enemy") and _insta_spin_left <= 0.0 and not finish_spinning:
+		_insta_spin_left = TAU
+		_insta_spin = 0.0
+var finish_spinning := false     # spinning from the trick finisher
+const FINISH_SPIN_SPEED := 16.0  # how fast
+var finish_spin := 0.0           # the trick finisher spinning the sprite round
+
+# SUPER: all 7 Chaos Emeralds and 50 rings
+const SUPER_SPEED := 1.35        # how much faster a super form without its own scene runs
+const SUPER_JUMP := 1.2          # and how much harder it jumps
+# Characters whose super glow isn't gold
+const SUPER_GLOW := {"Knuckles": Color(1.0, 0.5, 0.82), "Blaze": Color(1.0, 0.36, 0.48)}
+const SUPER_GLOW_SHADER := preload("res://Shaders/super_glow.gdshader")
+var _material_before: Material
+var is_super := false            # glowing gold
+# HYPER: with all 7 Super Emeralds too, going super makes you hyper
+const HYPER_SPEED := 1.6
+const HYPER_JUMP := 1.3
+const HYPER_AFTERIMAGE_EVERY := 0.045   # seconds between afterimages while moving
+var is_hyper := false
+var _after_t := 0.0
+var _super_frame := -1
+
+# LIGHT SPEED DASH, like Sonic Adventure 1 & 2
+@export var can_light_dash := true       ## up + trick near rings zips you along them
+@export var light_dash_reach := 170.0    ## how near a ring has to be to start
+@export var light_dash_gap := 150.0      ## how far apart rings can be and still be one line
+@export var light_dash_speed := 2600.0   ## how fast you zip along
+@export var light_dash_exit := 1500.0    ## the least you're going when the line runs out
+@export var light_dash_carry := 0.6      ## how long that speed is held before it starts to slow
+var _ld_in_speed := 0.0
+var _ld_carry := 0.0
+var light_dashing := false
+var _ld_target: Area2D = null
+var _ld_seen := {}
+var _ld_dir := Vector2.RIGHT
+var _ld_stuck := 0
+var _ld_ghost := 0.0
+
+
+func _ring_ok(r: Node) -> bool:
+	if not (r is Area2D) or not is_instance_valid(r) or not r.is_inside_tree() or _ld_seen.has(r):
+		return false
+	var body := r.get_parent()
+	return r.monitoring and body != null and not body.get("_collected") and not body.get("loss")
+
+
+func _nearest_ring(from: Vector2, reach: float, ahead := Vector2.ZERO) -> Area2D:
+	var best: Area2D = null
+	var best_d := reach * reach
+	for r in get_tree().get_nodes_in_group("Rings"):
+		if not _ring_ok(r):
+			continue
+		var off: Vector2 = (r as Area2D).global_position - from
+		if ahead != Vector2.ZERO and off.normalized().dot(ahead) < -0.3:
+			continue   # not doubling back on yourself
+		var d := off.length_squared()
+		if d < best_d:
+			best_d = d
+			best = r
+	return best
+
+
+# A ring near enough to light speed dash to
+func light_dash_ready() -> bool:
+	return can_light_dash and not light_dashing and not grinding and _nearest_ring(global_position, light_dash_reach) != null
+
+
+# Returns true while dashing
+func _light_dash(delta: float) -> bool:
+	if not light_dashing:
+		if not can_light_dash or not is_player or grinding or hang or is_player_dead:
+			return false
+		if not (inp_pressed("ui_up") and inp_just_pressed("trick")):
+			return false
+		var first := _nearest_ring(global_position, light_dash_reach)
+		if first == null:
+			return false
+		_super_frame = Engine.get_physics_frames()
+		light_dashing = true
+		_ld_in_speed = motion.length()
+		_ld_seen.clear()
+		_ld_target = first
+		_ld_stuck = 0
+		finish_spinning = false
+		_insta_spin_left = 0.0
+		is_boosting = false
+		ball = false
+		crouch = false
+		flying = false
+		dashed = true
+		falling = true
+		ap.play("jump")
+		trail.visible = true
+		sfx.pitch_scale = 1.6
+		sfx.stream = load("res://Sounds/SonicSFX/SA_113.wav")
+		sfx.play()
+		smokeemit()
+	# Next ring in the line
+	if not _ring_ok(_ld_target):
+		_ld_target = _nearest_ring(global_position, light_dash_gap, _ld_dir)
+		if _ld_target == null:
+			_end_light_dash()
+			return false
+	var to: Vector2 = _ld_target.global_position - global_position
+	var step := light_dash_speed * delta
+	if to.length() <= step:
+		_ld_seen[_ld_target] = true   # reached it: it gets picked up as you pass
+		if to.length() > 0.5:
+			_ld_dir = to.normalized()
+		var hit := move_and_collide(to)
+		if hit:
+			move_and_collide(hit.get_remainder().slide(hit.get_normal()))
+		_ld_target = null
+	else:
+		_ld_dir = to.normalized()
+		var before := global_position
+		var hit := move_and_collide(_ld_dir * step)
+		if hit:
+			move_and_collide(hit.get_remainder().slide(hit.get_normal()))
+		# Can't get there
+		_ld_stuck = _ld_stuck + 1 if global_position.distance_to(before) < step * 0.2 else 0
+		if _ld_stuck >= 4:
+			_ld_seen[_ld_target] = true
+			_ld_target = null
+			_ld_stuck = 0
+	$Sprite2D.flip_h = _ld_dir.x < 0.0 if absf(_ld_dir.x) > 0.1 else $Sprite2D.flip_h
+	$Sprite2D.rotation = _ld_dir.angle() if not $Sprite2D.flip_h else _ld_dir.angle() - PI
+	motion = _ld_dir * light_dash_speed
+	velocity = motion
+	_ld_ghost -= delta
+	if _ld_ghost <= 0.0:
+		_ld_ghost = 0.03
+		_afterimage(Color(0.55, 0.8, 1.0, 0.55))
+	return true
+
+
+func _end_light_dash() -> void:
+	light_dashing = false
+	_ld_target = null
+	_ld_seen.clear()
+	# Your speed carries on out of it, the way you were going
+	var speed := maxf(light_dash_exit, _ld_in_speed)
+	motion = _ld_dir * speed
+	motion.y = maxf(motion.y, -900.0)   # not off into the sky
+	velocity = motion
+	time_elapsed = max(time_elapsed, 300)
+	max_speed = maxf(absf(motion.x), float(max_speed))
+	acc = 5
+	trail.visible = true
+	_ld_carry = light_dash_carry
+	$Sprite2D.rotation = rot
+	fall_gravity = default
+	dashed = false
+	can_dash = true
+	can_stomp = true
+var _super_drain := 0.0
+
+func _check_super(delta: float) -> void:
+	if is_super or is_in_group("super_form"):
+		_super_drain += delta
+		if _super_drain >= 1.0:
+			_super_drain -= 1.0
+			my_rings = maxi(my_rings - 1, 0)
+		if is_hyper:
+			_hyper_look(delta)
+		elif is_super:
+			var gold := 0.5 + 0.5 * sin(Time.get_ticks_msec() / 90.0)
+			var spr: Sprite2D = $Sprite2D
+			if SUPER_GLOW.has(get_meta("character_id", "")):
+				if not (spr.material is ShaderMaterial and spr.material.shader == SUPER_GLOW_SHADER):
+					_material_before = spr.material
+					var m := ShaderMaterial.new()
+					m.shader = SUPER_GLOW_SHADER
+					m.set_shader_parameter("glow", SUPER_GLOW[get_meta("character_id", "")])
+					spr.material = m
+				spr.material.set_shader_parameter("pulse", gold)
+			else:
+				spr.modulate = Color(1.0, 0.9, 0.35).lerp(Color(1.6, 1.4, 0.7), gold)
+		if my_rings <= 0:
+			_end_super()
+		return
+	if not is_player or is_on_floor() or Test.chaos_emeralds < Test.SUPER_EMERALDS or my_rings < Test.SUPER_RINGS:
+		return
+	if inp_pressed("ui_up") and inp_just_pressed("trick"):
+		_super_frame = Engine.get_physics_frames()
+		_go_super()
+
+
+func _super_speed() -> float:
+	return HYPER_SPEED if is_hyper else SUPER_SPEED if is_super else 1.0
+
+
+func _super_jump() -> float:
+	return HYPER_JUMP if is_hyper else SUPER_JUMP if is_super else 1.0
+
+
+# Hyper: through every colour, quickly, with white flashes, and afterimages behind
+func _hyper_look(delta: float) -> void:
+	var spr: Sprite2D = $Sprite2D
+	if spr.material is ShaderMaterial and spr.material.shader == SUPER_GLOW_SHADER:
+		spr.material = _material_before
+	var t := Time.get_ticks_msec() / 1000.0
+	var hue := fmod(t * 2.2, 1.0)
+	var flash := fmod(t * 8.0, 1.0) < 0.18
+	spr.modulate = Color(1.9, 1.9, 1.9) if flash else Color.from_hsv(hue, 0.5, 1.0) * 1.35
+	_after_t -= delta
+	if _after_t <= 0.0 and absf(motion.x) + absf(motion.y) > 150.0:
+		_after_t = HYPER_AFTERIMAGE_EVERY
+		_afterimage(Color.from_hsv(fmod(hue + 0.5, 1.0), 0.7, 1.0, 0.6))
+
+
+func _afterimage(colour: Color) -> void:
+	var spr: Sprite2D = $Sprite2D
+	var parent := get_parent()
+	if parent == null or spr.texture == null:
+		return
+	var ghost := Sprite2D.new()
+	ghost.texture = spr.texture
+	ghost.hframes = spr.hframes
+	ghost.vframes = spr.vframes
+	ghost.frame = spr.frame
+	ghost.flip_h = spr.flip_h
+	ghost.flip_v = spr.flip_v
+	ghost.centered = spr.centered
+	ghost.offset = spr.offset
+	ghost.region_enabled = spr.region_enabled
+	ghost.region_rect = spr.region_rect
+	ghost.texture_filter = spr.texture_filter
+	ghost.modulate = colour
+	ghost.z_index = z_index - 1
+	parent.add_child(ghost)
+	ghost.global_transform = spr.global_transform
+	var tw := ghost.create_tween()
+	tw.tween_property(ghost, "modulate:a", 0.0, 0.3)
+	tw.tween_callback(ghost.queue_free)
+
+
+# Turning hyper
+func _hyper_flash() -> void:
+	if not is_player:
+		return
+	var layer := CanvasLayer.new()
+	layer.layer = 90
+	var white := ColorRect.new()
+	white.color = Color(1, 1, 1, 0.9)
+	white.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	white.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(white)
+	get_tree().current_scene.add_child(layer)
+	var tw := white.create_tween()
+	tw.tween_property(white, "color:a", 0.0, 0.5)
+	tw.tween_callback(layer.queue_free)
+
+
+func _go_super() -> void:
+	sfx.pitch_scale = 1
+	sfx.stream = load("res://Sounds/SonicSFX/sparklesfx.MP3")
+	sfx.play()
+	var id: String = get_meta("character_id", "")
+	var entry := Content.character(id)
+	var pc := get_parent()
+	if entry and entry.super_scene and pc and pc.has_method("swap_to_scene"):
+		pc.swap_to_scene(entry.super_scene, id, true)   # its own super form, with its own moves
+		return
+	is_super = true
+	is_hyper = Test.super_emeralds >= Test.SUPER_EMERALDS
+	_super_drain = 0.0
+	if is_hyper:
+		_hyper_flash()
+
+
+func _end_super() -> void:
+	var pc := get_parent()
+	if is_in_group("super_form") and pc and pc.has_method("swap_to_scene"):
+		var id: String = get_meta("character_id", "")
+		pc.swap_to_scene(Content.character(id).scene, id, false)
+		return
+	is_super = false
+	is_hyper = false
+	$Sprite2D.modulate = Color.WHITE
+	if $Sprite2D.material is ShaderMaterial and $Sprite2D.material.shader == SUPER_GLOW_SHADER:
+		$Sprite2D.material = _material_before
+
+
+# Ground boost top speed, with Faster Boost from Salvage
+func boost_speed() -> float:
+	return BOOST_SPEED * Test.boost_scale()
+
 func emit_rings():
-	# Scatter a portion of held rings on taking damage (mimics classic Sonic ring loss)
-	if Test.rings <= 0 and invincible == false and ouch == false:
+	# Scatter a portion of held rings on taking damage
+	if my_rings <= 0 and invincible == false and ouch == false:
 		player_death()
 		return
 	else:
@@ -1543,15 +2092,15 @@ func emit_rings():
 	var loss : int
 	var spawn_count : int
 	
-	if Test.rings < 6:
-		Test.rings = 0
+	if my_rings < 6:
+		loss = Test.rings_lost(my_rings)
 	else:
-		loss = round((float)(Test.rings) / 2)
-		Test.rings -= loss
+		loss = Test.rings_lost(round((float)(my_rings) / 2))
+	my_rings -= loss
 		
 	
 	# Lookup table: maps total rings held to how many ring objects to spawn
-	match Test.rings + loss:
+	match my_rings + loss:
 		1:  spawn_count = 0
 		2:  spawn_count = 1
 		3:  spawn_count = 2
@@ -1586,12 +2135,24 @@ func emit_rings():
 		get_parent().call_deferred("add_child", ring)
 		
 func hurt():
-	# Trigger damage response: scatter rings, drain meter, play hurt animation, begin invincibility
+	# Trigger damage response
+	if is_super or insta_on:
+		return
+	if is_player and Test.shields_left > 0 and not invincible:
+		_pop_shield()
+		return
+	if not invincible and held_item and is_instance_valid(held_item) and held_item.has_method("knock_off") \
+			and float(held_item.get("spawn_safe") if held_item.get("spawn_safe") != null else 0.0) <= 0.0:
+		var lost_item = held_item
+		held_item = null
+		item_pickup_cooldown = 0.5
+		var away := -signf(motion.x) if absf(motion.x) > 1.0 else (1.0 if $Sprite2D.flip_h else -1.0)
+		lost_item.knock_off(away)
 	if is_player == true:
 		emit_rings()
-		Test.meter -= 50
-		if Test.meter <= 0:
-			Test.meter = 0
+		my_meter -= 50
+		if my_meter <= 0:
+			my_meter = 0
 		var rand : float = randf()
 		if !is_player_dead:
 			if rand >= 1.0/2.0:
@@ -1626,7 +2187,7 @@ func _on_attackbox_area_entered(area: Area2D) -> void:
 				motion.y = -1000
 			else:
 				motion.y = -750
-		Test.meter += 5  # Gain meter for every enemy hit
+		my_meter += 5  # Gain meter for every enemy hit
 
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	$onscreentimer.stop()  # Stop the out-of-screen repositioning timer when back on screen
@@ -1639,8 +2200,15 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 
 func _on_onscreentimer_timeout() -> void:
 	# Teleport off-screen AI character to just above the camera to keep it near the player
-	global_position.x = get_viewport().get_camera_2d().global_position.x
-	global_position.y = get_viewport().get_camera_2d().global_position.y - 500 
+	var cam := get_viewport().get_camera_2d()
+	var want := cam.global_position + Vector2(0, -500)
+	# Under a roof (the built chunks are solid overhead), that's inside the ground
+	var lead := get_node_or_null(player_path) as CollisionObject2D if player_path != NodePath() else null
+	if lead:
+		var q := PhysicsRayQueryParameters2D.create(lead.global_position, want, collision_mask, [get_rid(), lead.get_rid()])
+		if not get_world_2d().direct_space_state.intersect_ray(q).is_empty():
+			want = lead.global_position + Vector2(0, -30)
+	global_position = want
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

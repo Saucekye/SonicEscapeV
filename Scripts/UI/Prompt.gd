@@ -40,7 +40,9 @@ func update_position_based_on_orientation():
 	mobile_var = "Good"
 
 func spawn_follower():
-	# Option 1: If you created a scene file (follower.tscn)
+	if follower_spawned or Test.in_rest_area:
+		return   # never in the rest areas
+	# Option 1: If you created a scene file
 	follower_instance = follower_scene.instantiate()
 	get_parent().get_parent().add_child(follower_instance)
 	follower_spawned = true

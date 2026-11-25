@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RhythmSong" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/rhythm_song.gd" id="1_song"]
+[ext_resource type="AudioStream" path="res://Sounds/Salvage/TV Songs/Space Channel 5 Mix/audio.mp3" id="2_audio"]
+
+[resource]
+script = ExtResource("1_song")
+title = "S.O.S PARTY SPACESHIP (TNH NEBULA HOUSE REMIX)"
+song = ExtResource("2_audio")
+chart = "res://Sounds/Salvage/TV Songs/Space Channel 5 Mix/TNH Nebula - space_channel_5_mix (MuG Diffusion v1.0.0) [AI v1].osu"

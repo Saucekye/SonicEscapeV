@@ -2,6 +2,8 @@ extends Components_Action
 
 @export var flymeter : TextureProgressBar
 @export var fly_meter_drain : float = 1		## Number of units drained while flying
+## Flying straight after an airspin keeps the airspin animation
+@export var keep_airspin : bool = false
 
 var was_flying : bool = false
 
@@ -10,17 +12,16 @@ func _process(_delta):
 	flymeter.value = player.flymeter_current_amount  
 
 func action() -> void:
-	# ── Fly (hold jump while airborne) ────────────────────────────
-	# Two separate conditions: sustained fly while holding, and initial press
-	if player.can_dash and player.flying and player.flymeter_amount >= 1 and Input.is_action_pressed("ui_accept") and (not Input.is_action_pressed("ui_down") or Input.is_action_pressed("ui_down")):
+	# Fly Two separate conditions
+	if player.can_dash and player.flying and player.flymeter_amount >= 1 and player.inp_pressed("ui_accept") and (not player.inp_pressed("ui_down") or player.inp_pressed("ui_down")):
 		_flight()
 		was_flying = true
 		player.flymeter.visible = true  # Show meter only while actively flying
 
-	if Input.is_action_just_pressed("ui_accept") and (not Input.is_action_pressed("ui_down") or Input.is_action_pressed("ui_down")) and player.can_dash and not player.is_coyote_time_active():
+	if player.inp_just_pressed("ui_accept") and (not player.inp_pressed("ui_down") or player.inp_pressed("ui_down")) and player.can_dash and not player.is_coyote_time_active():
 		_flight()
 		player.can_stomp = true
-		player.ap.play("fly")
+		_fly_anim()
 		
 	if !player.flying:
 		player.fall_gravity = player.default
@@ -33,8 +34,8 @@ func _flight() -> void:
 	player.ball = false
 	player.crouch = false
 	player.flying = true
-	player.flymeter_current_amount -= fly_meter_drain	# Drain one unit of fly energy per flutter call
-	player.ap.play("fly")
+	player.flymeter_current_amount -= fly_meter_drain * Test.fly_drain_scale()	# Drain fly energy per flutter call
+	_fly_anim()
 	player.motion.y = -450            # Small upward push per flutter
 	player.sfx.pitch_scale = 2
 	player.fall_gravity = 700         # Reduced gravity while hovering (vs default ~1700+)
@@ -47,3 +48,9 @@ func _flight() -> void:
 	else:
 		player.can_dash = false
 	
+
+
+func _fly_anim() -> void:
+	if keep_airspin and player.ap.current_animation == "airspin":
+		return
+	player.ap.play("fly")

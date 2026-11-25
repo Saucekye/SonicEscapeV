@@ -10,14 +10,6 @@ var music = false
 var mobile = false
 var end = false
 
-@onready var sonic_scene = preload("res://Scenes/Characters/Sonic/Sonic.tscn")
-@onready var tails_scene = preload("res://Scenes/Characters/Tails/Tails.tscn")
-@onready var knuckles_scene = preload("res://Scenes/Characters/Knuckles/Knuckles.tscn")
-@onready var amy_scene = preload("res://Scenes/Characters/Amy/amy.tscn")
-@onready var blaze_scene = preload("res://Scenes/Characters/Blaze/Blaze.tscn")
-@onready var rouge_scene = preload("res://Scenes/Characters/Rouge/Rouge.tscn")
-@onready var cream_scene = preload("res://Scenes/Characters/Cream/Cream.tscn")
-@onready var metal_scene = preload("res://Scenes/Characters/Metal Sonic/metalsonic.tscn")
 @onready var camera = preload("res://Scenes/Level/camera.tscn")
 
 var sonic_instance: CharacterBody2D
@@ -32,30 +24,14 @@ var current_character_index: int = 0
 
 func _ready() -> void:
 	GlobalSignals.connect("black", black)
-	var character_order = [Test.characterone, Test.charactertwo, Test.characterthree]
+	var character_order = [Test.characterone, Test.charactertwo, Test.characterthree, Test.characterfour]
 	
 	for name in character_order:
-		var instance: CharacterBody2D = null
-		
-		match name:
-			"Sonic":
-				instance = sonic_scene.instantiate()
-			"Tails":
-				instance = tails_scene.instantiate()
-			"Knuckles":
-				instance = knuckles_scene.instantiate()
-			"Amy":
-				instance = amy_scene.instantiate()
-			"Rouge":
-				instance = rouge_scene.instantiate()
-			"Blaze":
-				instance = blaze_scene.instantiate()
-			"Cream":
-				instance = cream_scene.instantiate()
-			"MetalSonic":
-				instance = metal_scene.instantiate()
-			_: 
-				continue  # Skip if no match
+		var entry := Content.character(name)
+		if entry == null or entry.scene == null:
+			continue   # empty slot, or a character missing from game_content.tres
+		var instance: CharacterBody2D = entry.scene.instantiate()
+		instance.set_meta("character_id", name)
 		
 		if instance:
 			instance.scale = Vector2(125, 125)
@@ -81,16 +57,37 @@ func _ready() -> void:
 	camera_instance = camera.instantiate()
 	current_character.add_child(camera_instance)
 	camera_instance.position = Vector2.ZERO
+	if camera_instance.enabled:
+		camera_instance.make_current()   # the player's camera is the one that shows the level
 
 	update_character_states()
-	
+	# Everyone starts facing right, the followers already in their places behind
+	for c in characters:
+		c.sprite.flip_h = false
+		if c != current_character:
+			c.position = current_character.position + c.follow_offset
 
+	if not Test.zoom_chosen:
+		Test.zoom_level = 1
+	# The moves you can do right now, down the right side
+	var prompts_layer := CanvasLayer.new()
+	prompts_layer.name = "MovePrompts"
+	prompts_layer.layer = 11
+	add_child(prompts_layer)
+	var prompts := preload("res://Scripts/UI/move_prompts.gd").new()
+	prompts.controller = self
+	prompts_layer.add_child(prompts)
+	# A small mark at the bottom of the screen
+	var warning := preload("res://Scripts/UI/fall_warning.gd").new()
+	warning.name = "FallWarning"
+	warning.controller = self
+	prompts_layer.add_child(warning)
 
 
 func setup_characters():
 	"""Initialize all characters with proper settings"""
 	# Layer mapping: can only be 2, 3, 1
-	var character_layers = [2, 3, 1]
+	var character_layers = [2, 3, 1, 1]
 	
 	for i in range(characters.size()):
 		var character = characters[i]
@@ -141,7 +138,7 @@ func update_character_states():
 			
 			# Set up following behavior
 			character.player_path = current_character.get_path()
-			character.follow_offset = Test.FORMATION_OFFSETS[follower_slot]
+			character.follow_offset = Test.FORMATION_OFFSETS[mini(follower_slot, Test.FORMATION_OFFSETS.size() - 1)]
 			
 			follower_slot += 1
 
@@ -192,6 +189,50 @@ func on_player_change():
 	current_character.add_child(camera_instance)
 	camera_instance.position = Vector2.ZERO
 
+# Become a different character where you stand
+func swap_character(char_name: String) -> bool:
+	var entry := Content.character(char_name)
+	if entry == null or entry.scene == null:
+		return false
+	return swap_to_scene(entry.scene, char_name, false)
+
+
+# Swap the character you're playing for this scene, where you stand
+func swap_to_scene(scene: PackedScene, char_name: String, is_super_form: bool) -> bool:
+	if scene == null or current_character == null:
+		return false
+	var old := current_character
+	var fresh: CharacterBody2D = scene.instantiate()
+	if is_super_form:
+		fresh.add_to_group("super_form")
+	fresh.set_meta("character_id", char_name)
+	fresh.scale = old.scale
+	fresh.add_to_group("all_characters")
+	add_child(fresh)
+	fresh.global_position = old.global_position
+	fresh.collision_layer = old.collision_layer
+	fresh.stored_layer = old.stored_layer
+	fresh.collision_mask = old.collision_mask
+	fresh.stored_mask = old.stored_mask
+	if "velocity" in old:
+		fresh.velocity = old.velocity
+	characters[current_character_index] = fresh
+	current_character = fresh
+	# Anyone following the old one follows the new one
+	for c in characters:
+		if c != fresh:
+			c.player_path = fresh.get_path()
+	camera_instance.get_parent().remove_child(camera_instance)
+	fresh.add_child(camera_instance)
+	camera_instance.position = Vector2.ZERO
+	update_character_states()
+	GlobalSignals.switch_new_active_player.emit(fresh)
+	old.remove_from_group("active_player")
+	old.remove_from_group("all_characters")
+	old.queue_free()
+	return true
+
+
 func on_touch_screen_button_joystick_change(new_pos: Vector2) -> void:
 	# Apply input to all characters (current player will use it, partners might need it for following logic)
 	for character in characters:
@@ -205,16 +246,9 @@ func on_texture_button_pressed() -> void:
 
 # Helper function to get current character name (useful for UI/debugging)
 func get_current_character_name() -> String:
-	match current_character_index:
-		0: return "Sonic"
-		1: return "Tails"
-		2: return "Knuckles"
-		3: return "Amy"
-		4: return "Rouge"
-		5: return "Blaze"
-		6: return "Cream"
-		7: return "MetalSonic"
-		_: return "Unknown"
+	if current_character and current_character.has_meta("character_id"):
+		return current_character.get_meta("character_id")
+	return "Unknown"
 
 # Helper function to switch to a specific character by index
 func switch_to_character(index: int):

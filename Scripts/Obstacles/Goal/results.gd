@@ -28,6 +28,8 @@ func _on_game_over():
 	
 func _on_complete():
 	fade_animation_player.play("complete")
+	if not Test.complete:
+		Test.note_beaten()
 	Test.complete = true
 	
 func _on_vision():

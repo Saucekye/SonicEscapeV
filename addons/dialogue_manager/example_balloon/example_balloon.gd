@@ -16,6 +16,10 @@ class_name DialogueManagerExampleBalloon extends CanvasLayer
 ## The action to use for advancing the dialogue
 @export var next_action: StringName = &"ui_accept"
 
+# The controller button and the key that press the scene's SKIP button
+const SKIP_BUTTON := JOY_BUTTON_START
+const SKIP_KEY := KEY_ESCAPE
+
 ## The action to use to skip typing the dialogue
 @export var skip_action: StringName = &"ui_cancel"
 
@@ -148,6 +152,19 @@ func _process(delta: float) -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	# Only the balloon is allowed to handle input while it's showing.
 	get_viewport().set_input_as_handled()
+
+
+# Start on a controller, or Escape, presses the cutscene's SKIP button (a Button
+# child, when the scene gives the balloon one)
+func _input(event: InputEvent) -> void:
+	var pad: bool = event is InputEventJoypadButton and event.pressed and event.button_index == SKIP_BUTTON
+	var key: bool = event is InputEventKey and event.pressed and not event.echo and event.keycode == SKIP_KEY
+	if not (pad or key):
+		return
+	var skip_button := get_node_or_null("Button") as Button
+	if skip_button and skip_button.is_visible_in_tree() and not skip_button.disabled:
+		get_viewport().set_input_as_handled()
+		skip_button.pressed.emit()
 
 
 func _notification(what: int) -> void:
@@ -319,6 +336,7 @@ func _on_responses_menu_response_selected(
 	response: DialogueResponse
 ) -> void:
 	next(response.next_id)
+
 
 #endregion
 

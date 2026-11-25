@@ -721,7 +721,7 @@ libraries/ = SubResource("AnimationLibrary_yhiut")
 
 [node name="Sprite2Dicon" type="Sprite2D" parent="." unique_id=132587915]
 position = Vector2(78, -88)
-scale = Vector2(0.07, 0.07)
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("15_02dvw")
 
 [node name="Label" type="Label" parent="." unique_id=86961369]

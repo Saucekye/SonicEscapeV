@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_kind"]
+
+[resource]
+script = ExtResource("1_kind")
+display_name = "Lucky Charm"
+cost = 30
+effect = 13
+amount = 1
+shape = "diamond"
+color = Color(0.4, 1, 0.5, 1)

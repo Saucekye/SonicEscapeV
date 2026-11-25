@@ -10,21 +10,69 @@ extends Control
 @onready var video_stream_player: VideoStreamPlayer = $TutorialElements/Video/VideoStreamPlayer
 @onready var character_types: Control = $TutorialElements/CharacterTypes
 
+const CUSTOM_WINDOW := preload("res://Scripts/Menu/custom_window.gd")
+
 var wipe_rect: ColorRect
 var fade_rect: ColorRect
 var has_said_start : bool = false
+
+func _enter_tree() -> void:
+	Content.reload_custom()
+
 
 func _ready():
 	Test.characterone = ""
 	Test.charactertwo = ""
 	Test.characterthree = ""
+	Test.characterfour = ""
 	Test.rings = 0
+	Test.mikus_saved = 0   # new run
+	Test.tricks_done = 0
+	Test.elapsed_sesion_time = 0.0
 	Test.meter = 100
 	Pause.current_scene = "Character_Select_Screen"
 	tutorial_cover.visible = false
 	create_flashy_intro()
 	$Openingsfx.play()
+	# Controller / keyboard navigation
+	if has_node("Tutorial"):
+		# CUSTOM: opens the characters folder
+		if not OS.has_feature("web"):
+			var custom_btn := $Tutorial.duplicate(Node.DUPLICATE_GROUPS | Node.DUPLICATE_SCRIPTS) as Label
+			custom_btn.name = "Custom"
+			custom_btn.text = "CUSTOM"
+			custom_btn.offset_top += 70
+			custom_btn.offset_bottom += 70
+			add_child(custom_btn)
+			custom_btn.connect("tutorial", _open_custom)
+			var layer := CanvasLayer.new()   # on top of everything, in screen space
+			layer.name = "CustomLayer"
+			layer.layer = 20
+			add_child(layer)
+			var window := CUSTOM_WINDOW.new()
+			layer.add_child(window)
+			window.setup(self)
+	var nav = preload("res://Scripts/Menu/controller_select.gd").new()
+	nav.name = "ControllerSelect"
+	add_child(nav)
+	nav.setup(self)
 	
+# CUSTOM: the window with your custom characters
+func _open_custom() -> void:
+	var window := get_node_or_null("CustomLayer/CustomWindow")
+	if window:
+		window.open()
+
+
+# Back in the game window after changing the folder
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_IN and is_inside_tree() and CustomCharacters.changed():
+		var window := get_node_or_null("CustomLayer/CustomWindow")
+		if window and window.visible:
+			CUSTOM_WINDOW.reopen = true
+		get_tree().reload_current_scene.call_deferred()
+
+
 func create_flashy_intro():
 	# Create wipe overlay
 	wipe_rect = ColorRect.new()
@@ -37,16 +85,17 @@ func create_flashy_intro():
 	
 	# Flash sequence: White -> Black -> Wipe out
 	tween.tween_property(wipe_rect, "color", Color.BLACK, 0.1)
-	await get_tree().create_timer(0.05).timeout
 	
 	# Lightning-fast wipe with bounce
 #	tween.tween_method(update_wipe, 0.0, 1.2, 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
 	# Screen shake effect
-	tween.parallel().tween_method(shake_screen, 0.0, 1.0, 0.4)
+	tween.parallel().tween_method(shake_screen, 0.0, 1.0, 0.4).set_delay(0.05)
 	
 	# Clean up
-	tween.tween_callback(func(): wipe_rect.queue_free())
+	tween.tween_callback(func():
+		wipe_rect.queue_free()
+		position = Vector2.ZERO)   # settle exactly back in place after the shake
 
 func update_wipe(progress: float):
 	if wipe_rect:

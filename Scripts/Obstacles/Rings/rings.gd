@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var loss = false
+var _collected := false
 var timer_started = false
 const GRAVITY = 900.0
 
@@ -29,11 +30,10 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func _on_node_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		var player_body = area.get_parent()
-		if player_body.ouch == false:
+		if player_body.ouch == false and not _collected:
+			_collected = true
 			$Node2D.set_deferred("monitoring", false)
 			$Node2D.set_deferred("monitorable", false)
-			print("WHAT NODE 2D")
-			print($Node2D)
 			Test.rings += 1
 			Test.meter += 5
 			$BlinkTimer.stop()
