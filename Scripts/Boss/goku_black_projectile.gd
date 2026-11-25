@@ -19,19 +19,16 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	current_player = _get_current_player()
+	if current_player == null:
+		return   # nobody to chase right now
 	var to_player = (current_player.global_position- global_position).normalized()
 	global_position += to_player * speed * delta
 	if speed > base_speed:
 		speed -= int(decelerration * delta)
 
 func _get_current_player() -> Node2D:
-	var players = get_tree().get_nodes_in_group("Player")
-
-	for player in players:
-		if is_instance_valid(player) and player.get("is_player") == true:
-			return player
-
-	return null
+	# With more than one player it takes turns going after each
+	return BossTargets.pick(self)
 
 func _on_timer_timeout() -> void:
 	attackbox.monitoring = false

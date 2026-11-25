@@ -4,15 +4,19 @@ var levelover = false
 
 func _ready() -> void:
 	$Sprite2D.frame = 0
+	# Also watch Miku's physics layer, or she could never reach the goal
+	set_collision_mask_value(5, true)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		if body.is_player:
+			Test.floor_done = true   # stops the floor timer
 			GlobalSignals.emit_signal("camerashake")
 			$Sprite2D.play("default")
 			
-	if body.is_in_group("Miku"):
+	if preload("res://Scripts/Effects/miku_saved.gd").is_rescue(body):   # Miku, or an OC in her place
 		GlobalCanvasLayer.tricks += 10
+		preload("res://Scripts/Effects/miku_saved.gd").save(body)   # points pop-up and score
 
 func _on_sprite_2d_animation_finished() -> void:
 			GlobalCanvasLayer.tricks += 1

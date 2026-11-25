@@ -1,7 +1,7 @@
 extends Components_Action
 
 @export var homing_speed: float = 2000.0
-@export var homing_range: float = 450
+@export var homing_range: float = 340   ## how far it reaches
 @export var max_homing_time: float = 0.6
 @export var hit_distance: float = 40.0
 @export var hit_bounce_y: float = 650.0
@@ -10,6 +10,11 @@ extends Components_Action
 var reticle: Sprite2D
 var reticle_sfx: AudioStreamPlayer
 var homing_active := false
+var ring: Node2D   # the homing attack's reach, shown round you while you could use it
+
+## The circle showing how far the homing attack reaches
+@export var show_range := false
+@export var range_colour := Color(0.65, 0.9, 1.0, 0.22)
 
 
 func _ready() -> void:
@@ -33,6 +38,13 @@ func _ready() -> void:
 	reticle.visible = false
 	get_tree().current_scene.add_child.call_deferred(reticle)
 
+	# The reach circle
+	ring = RangeRing.new()
+	ring.radius = homing_range
+	ring.colour = range_colour
+	ring.visible = false
+	get_tree().current_scene.add_child.call_deferred(ring)
+
 	# Create reticle sound
 	reticle_sfx = AudioStreamPlayer.new()
 	reticle_sfx.stream = load("res://Sounds/SonicSFX/Sonic Homing Attack Reticle SFX.mp3")
@@ -46,6 +58,9 @@ func _exit_tree() -> void:
 	if is_instance_valid(reticle_sfx):
 		reticle_sfx.queue_free()
 
+	if is_instance_valid(ring):
+		ring.queue_free()
+
 
 func _process(_delta: float) -> void:
 	if player == null:
@@ -53,6 +68,17 @@ func _process(_delta: float) -> void:
 
 	if not is_instance_valid(reticle):
 		return
+
+	# The reach circle
+	if is_instance_valid(ring):
+		var show: bool = show_range and player.is_player and not player.is_on_floor() and player.can_dash and not homing_active \
+				and not player.get("flying") and player.visible
+		ring.fade = move_toward(ring.fade, 1.0 if show else 0.0, _delta / (RING_FADE_IN if show else RING_FADE_OUT))
+		ring.visible = ring.fade > 0.01
+		ring.global_position = player.global_position
+		ring.radius = homing_range
+		if ring.visible:
+			ring.queue_redraw()
 
 	# Only show the reticle while airborne
 	if player.is_on_floor() or homing_active:
@@ -115,11 +141,30 @@ func get_closest_enemy() -> CharacterBody2D:
 
 		var distance := player.global_position.distance_to(enemy.global_position)
 
-		if distance < closest_distance:
+		if distance < closest_distance and _on_screen(enemy.global_position) and _clear_path(enemy):
 			closest_distance = distance
 			closest_enemy = enemy
 
 	return closest_enemy
+
+
+# Only what you can see
+func _on_screen(at: Vector2) -> bool:
+	var cam: Camera2D = player.get_viewport().get_camera_2d()
+	if cam == null:
+		return true
+	var size: Vector2 = cam.get_viewport_rect().size / cam.zoom
+	return Rect2(cam.get_screen_center_position() - size * 0.5, size).has_point(at)
+
+
+# Nothing solid in the way
+func _clear_path(enemy: Node2D) -> bool:
+	var space := player.get_world_2d().direct_space_state
+	var q := PhysicsRayQueryParameters2D.create(player.global_position, enemy.global_position)
+	q.collision_mask = player.collision_mask | player.wall_cast.collision_mask   # the ground and walls the player stands on and bumps into
+	q.exclude = [player.get_rid(), enemy.get_rid()]
+	q.collide_with_areas = false
+	return space.intersect_ray(q).is_empty()
 
 
 func _can_start() -> bool:
@@ -127,8 +172,8 @@ func _can_start() -> bool:
 		return false
 
 	return (
-		Input.is_action_just_pressed("ui_accept")
-		and not Input.is_action_pressed("ui_down")
+		player.inp_just_pressed("ui_accept")
+		and not player.inp_pressed("ui_down")
 		and player.can_dash
 		and not player.wall_cast.is_colliding()
 		and not player.wall_cast_2.is_colliding()
@@ -169,6 +214,7 @@ func action() -> void:
 
 	player.trail.visible = true
 	player.smokeemit()
+	shake_a_little(1.2)
 
 	# Homing attack sound
 	player.sfx.pitch_scale = 2
@@ -251,3 +297,23 @@ func action() -> void:
 
 	# Finish homing attack
 	homing_active = false
+
+
+const RING_FADE_IN := 0.3     # seconds for the reach circle to fade in
+const RING_FADE_OUT := 0.35   # and to fade out
+
+
+# A thin see-through circle round you
+class RangeRing extends Node2D:
+	var radius := 450.0
+	var colour := Color(0.65, 0.9, 1.0, 0.22)
+	var fade := 0.0
+
+	func _ready() -> void:
+		top_level = true
+		z_index = 40
+
+	func _draw() -> void:
+		var c := colour
+		c.a *= smoothstep(0.0, 1.0, fade)
+		draw_arc(Vector2.ZERO, radius, 0.0, TAU, 96, c, 2.25, true)

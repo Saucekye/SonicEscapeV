@@ -4,8 +4,8 @@ extends Components_Action
 @export var speed_y : int = 1000
 @export var fall_gravity : int = 10500
 @export var bounce_one : float = 750
-@export var bounce_two : float = 950
-@export var bounce_three : float = 1100
+@export var bounce_two : float = 1150   # 2nd and 3rd bounces raised
+@export var bounce_three : float = 1400
 
 func _physics_process(_delta: float) -> void:
 	# ── Bounce Logic (from airdown / stomp) ────────────────────────────
@@ -18,7 +18,7 @@ func _physics_process(_delta: float) -> void:
 		if player.falling == false and player.next_bounce == false:
 			player.bounce = 0  # Reset bounce counter when landing normally
 			
-		if Input.is_action_pressed("airspin"):
+		if player.inp_pressed("airspin"):
 			# Holding airspin cancels the next bounce
 			player.next_bounce = false
 			player.can_stomp = true
@@ -35,7 +35,7 @@ func _physics_process(_delta: float) -> void:
 			player.can_stomp = true
 
 func action() -> void:
-	if not (Input.is_action_just_pressed("airspin") and Input.is_action_pressed("ui_down") and player.can_stomp == true and not player.hanging_on_wall):
+	if not (player.inp_just_pressed("airspin") and player.inp_pressed("ui_down") and player.can_stomp == true and not player.hanging_on_wall):
 		return
 	
 	player.can_dash = true
@@ -55,6 +55,7 @@ func action() -> void:
 	player.sfx.pitch_scale = 2
 	player.sfx.stream = load("res://Sounds/SonicSFX/Spiked.wav")
 	player.sfx.play()
+	shake_a_little(1.4)
 	if !carry_x_speed:
 		player.motion.x = 0             # Cancel all horizontal momentum for a clean vertical drop
 	await get_tree().create_timer(0.13).timeout

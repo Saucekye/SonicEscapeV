@@ -32,46 +32,29 @@ signal update_health_bar(boss_health : int, boss_max_health : int)
 
 @onready var marker: Node2D = get_parent().get_node("Marker2D3")
 
-# --------------------------------------------------
 # DEATH PHYSICS
-# --------------------------------------------------
 
 var death_velocity := Vector2.ZERO
 var gravity := 900
 
-# --------------------------------------------------
 # FLY VARIABLES
-# --------------------------------------------------
 
 var hover_offset = 0.0
 
-# --------------------------------------------------
 # READY
-# --------------------------------------------------
 
 func _ready():
 	randomize()
 	max_health = min(50, max(15, Test.level * 2))/2
-	health = max_health # Update the boss HP bar immediately update_health_bar.emit(health, max_health)
-# --------------------------------------------------
-# GET CURRENT PLAYER (IMPORTANT)
-# --------------------------------------------------
+	health = max_health # Update the boss HP bar immediately update_health_bar.emit
+# GET CURRENT PLAYER
 
 func _get_current_player() -> Node2D:
+	# With more than one player it takes turns going after each
+	active_player = BossTargets.pick(self)
+	return active_player
 
-	var players = get_tree().get_nodes_in_group("Player")
-
-	for player in players:
-
-		if is_instance_valid(player) and player.get("is_player") == true:
-			active_player = player
-			return player
-
-	return null
-
-# --------------------------------------------------
 # PROCESS
-# --------------------------------------------------
 
 func _process(delta):
 	
@@ -97,9 +80,7 @@ func _process(delta):
 	elif (state == BossState.IDLE or state == BossState.FLY) and _get_current_player() != null:
 		face_player()
 
-# --------------------------------------------------
 # PLAYER DETECTION
-# --------------------------------------------------
 
 func _on_area_2d_area_entered(area: Area2D):
 
@@ -107,9 +88,7 @@ func _on_area_2d_area_entered(area: Area2D):
 
 		start_intro()
 
-# --------------------------------------------------
 # INTRO
-# --------------------------------------------------
 
 func start_intro():
 
@@ -127,16 +106,12 @@ func start_intro():
 
 	start_attack_loop()
 	
-# --------------------------------------------------
 # FACE PLAYER
-# --------------------------------------------------
 
 func face_player():
 	sprite.flip_h = active_player.global_position.x < global_position.x
 
-# --------------------------------------------------
 # ATTACK LOOP
-# --------------------------------------------------
 
 func start_attack_loop():
 
@@ -171,9 +146,7 @@ func start_attack_loop():
 			else:
 				await do_beam_attack()
 
-# --------------------------------------------------
 # FLY BEHAVIOR
-# --------------------------------------------------
 
 func fly_behavior(delta):
 
@@ -205,9 +178,7 @@ func fly_behavior(delta):
 		delta * 2.5
 	)
 
-# --------------------------------------------------
 # BEAM ATTACK
-# --------------------------------------------------
 
 func do_beam_attack():
 	if dying or state == BossState.DEAD:
@@ -346,9 +317,7 @@ func _on_node_2d_phase_2() -> void:
 	# Set the Boss HP bar to now reflect Fleetway
 	set_new_boss.emit(self, "Fleetway")
 	
-	# --------------------------------------------------
 # FLASH / HIT
-# --------------------------------------------------
 
 func flash_sprite(duration: float = 0.1):
 
@@ -360,7 +329,7 @@ func flash_sprite(duration: float = 0.1):
 
 	$hitsfx.play()
 
-	health -= 1
+	health -= Test.boss_damage
 
 	if health <= 0 and not dying:
 		start_death()
@@ -370,26 +339,26 @@ func _on_hitbox_area_entered(area: Area2D):
 	if dying or state == BossState.DEAD:
 		return
 
-	if area.is_in_group("item"):
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
 
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
-			area.get_parent().queue_free()
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
+	if not is_instance_valid(area):
+		return   # freed during an earlier hit flash
 	if area.is_in_group("Playerattack"):
 
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 
-# --------------------------------------------------
 # DEATH
-# --------------------------------------------------
 func start_death():
 
 	if dying:

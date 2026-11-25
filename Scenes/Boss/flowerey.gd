@@ -33,9 +33,6 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, DYING }
 # Song + synced lyrics (FloweryLyrics node). Started with the fight, faded out on death.
 @export var lyrics: FloweryLyrics
 
-# Scrolling flower platforms (FlowerPlatformSpawner node). Started with the fight, cleared on death.
-@export var platforms: FlowerPlatformSpawner
-
 # Where Flowery waits while idling and returns to between lunges.
 # Add a Marker2D named "IdlePoint" under this node and move it where you want him.
 # If there is none, he uses the position his sprite has when the fight starts.
@@ -193,12 +190,8 @@ func _start_fight() -> void:
 
 	GlobalSignals.disable_boss_ui.emit(false) # show the boss HP bar, like the other bosses
 	_emit_health()
-
 	if lyrics:
 		lyrics.start()
-	if platforms:
-		platforms.start()
-
 	_enter_idle()
 
 
@@ -219,20 +212,17 @@ func _push_player_left(delta: float) -> void:
 		return
 	var push_speed := chase_push_speed * (1.0 + phase * chase_phase_bonus)
 	# move_and_collide respects walls, so the player can be pinned against the edge
-	active_player.move_and_collide(Vector2.LEFT * push_speed * delta)
+	for p in BossTargets.everyone(get_tree()):
+		if p is CharacterBody2D:
+			p.move_and_collide(Vector2.LEFT * push_speed * delta)
 
 
 # ---------------- PLAYER TRACKING ----------------
 func _resync_player() -> void:
-	var players := get_tree().get_nodes_in_group("active_player")
-	if players.size() > 0 and is_instance_valid(players[0]):
-		active_player = players[0]
-		return
-	# Fallback used by the other bosses
-	for body in get_tree().get_nodes_in_group("all_characters"):
-		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
-			active_player = body
-			return
+	# With more than one player it takes turns going after each
+	var p := BossTargets.pick(self)
+	if p:
+		active_player = p as CharacterBody2D
 
 
 # ---------------- HOME POSITION ----------------
@@ -1006,13 +996,11 @@ func _die() -> void:
 	state = State.DYING
 	_attack_token += 1
 	GlobalCanvasLayer.tricks += 10 # same reward as the other bosses
+	if lyrics:
+		lyrics.stop(0.8)
 	timer.stop()
 	_clear_hitboxes()
 	voice_player.stop()
-	if lyrics:
-		lyrics.stop(0.8)
-	if platforms:
-		platforms.stop()
 	attack_box.set_deferred("monitoring", false)
 	if _active_tween and _active_tween.is_valid():
 		_active_tween.kill()

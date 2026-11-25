@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://03q1kvmsipj5"]
 
 [ext_resource type="Script" uid="uid://dsgyysnfo3yrg" path="res://Scripts/Music/music_player.gd" id="1_6cpxb"]
-[ext_resource type="Texture2D" uid="uid://cvas3lgf8rrvy" path="res://Sprites/Obstacles/Miku/teto.png" id="2_a0vpg"]
+[ext_resource type="Texture2D" uid="uid://cjd684vl2cbut" path="res://Sprites/Obstacles/Miku/teto - 2 rows.png" id="2_a0vpg"]
 [ext_resource type="Texture2D" uid="uid://bkarbjxedvwkq" path="res://Sprites/Obstacles/Miku/teto - frames.png" id="2_nus2g"]
 [ext_resource type="Texture2D" uid="uid://daw3j6jbxqto2" path="res://Sprites/Obstacles/Miku/teto - pause.png" id="3_8vtfq"]
 [ext_resource type="Shader" uid="uid://cuyis2wsllxj" path="res://Shaders/crteffect.gdshader" id="3_mswaq"]
@@ -404,7 +404,8 @@ z_index = -1
 position = Vector2(8, -8)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_a0vpg")
-hframes = 24
+hframes = 12
+vframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=1777677002]
 libraries/ = SubResource("AnimationLibrary_5qbu2")

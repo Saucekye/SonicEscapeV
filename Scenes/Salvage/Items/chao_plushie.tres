@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SalvageItem" format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/item_kind.gd" id="1_hqser"]
+
+[resource]
+script = ExtResource("1_hqser")
+display_name = "Chao Plushie"
+cost = 10
+effect = 3
+amount = 0
+shape = "circle"
+color = Color(0.55, 0.8, 1, 1)

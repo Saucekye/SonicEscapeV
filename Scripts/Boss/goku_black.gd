@@ -69,9 +69,7 @@ signal end
 signal update_health_bar(boss_health : int, boss_max_health : int)	## Signal to emit to the boss hp bar UI element
 signal boss_defeated
 
-# --------------------------------------------------
 # READY
-# --------------------------------------------------
 
 func _ready():
 	sprite_mat = sprite.material
@@ -92,9 +90,7 @@ func _on_caine_start_goku_black() -> void:
 	animation_player.play("idle")
 	GlobalSignals.disable_boss_ui.emit(false)
 	
-# --------------------------------------------------
 # PROCESS
-# --------------------------------------------------
 
 func _process(delta):
 
@@ -130,18 +126,11 @@ func _process(delta):
 		start_death()
 
 func _get_current_player() -> Node2D:
-	var players = get_tree().get_nodes_in_group("Player")
-
-	for player in players:
-		if is_instance_valid(player) and player.get("is_player") == true:
-			active_player = player
-			return player
-
-	return null
+	# With more than one player it takes turns going after each
+	active_player = BossTargets.pick(self)
+	return active_player
 	
-# --------------------------------------------------
 # DO ATTACK
-# --------------------------------------------------
 
 # Wrapper function for when timer ends
 func _on_action_timer_timeout() -> void:
@@ -192,7 +181,6 @@ func _attack_choice():
 
 func _force_idle_period() -> void:
 	# Hold the boss idle for move_idle_duration seconds, then clear the move lock
-	# and restore the normal action cadence.
 	action_timer.stop()
 	action_timer.wait_time = move_idle_duration
 	action_timer.start()
@@ -234,9 +222,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	elif anim_name == "intro":
 		action_timer.start()
 
-# --------------------------------------------------
 # MOVE
-# --------------------------------------------------
 
 func move_behavior():
 	# Guard against re-entry: if we're already mid-move, don't let a second
@@ -265,16 +251,12 @@ func move_end_behavior():
 	global_position = new_pos
 	is_moving = false
 	
-# --------------------------------------------------
 # FACE PLAYER
-# --------------------------------------------------
 
 func face_player():
 	sprite.flip_h = active_player.global_position.x < global_position.x
 
-# --------------------------------------------------
 # ATTACK 1
-# --------------------------------------------------
 
 func attack_behavior() -> void:
 	var projecitle = attack1_projectile.instantiate()
@@ -292,43 +274,38 @@ func attack_behavior() -> void:
 	# Scale the projectile's lifetime with how low the boss's health is.
 	# Full health -> base_projectile_lifetime, zero health -> max_projectile_lifetime.
 	
-# --------------------------------------------------
 # ATTACK 2
-# --------------------------------------------------
 
 func start_follow_attack() -> void:
 	pass
 
-# --------------------------------------------------
 # FLASH
-# --------------------------------------------------
 
 func flash_sprite(duration: float = 0.1) -> void:
 	sprite_mat.set_shader_parameter("flash_amount", 1.0)
 	await get_tree().create_timer(duration).timeout
 	sprite_mat.set_shader_parameter("flash_amount", 0.0)
 
-# --------------------------------------------------
 # HIT DETECTION
-# --------------------------------------------------
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("item"):
-		update_health_bar.emit(health - 1, max_health)
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
-		area.get_parent().queue_free()
-		take_damage()
-	elif area.is_in_group("Playerattack"):
-		update_health_bar.emit(health - 1, max_health)
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
+		take_damage(Test.boss_damage)
+	if not is_instance_valid(area):
+		return   # freed during an earlier hit flash
+	if area.is_in_group("Playerattack"):
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
-		if area.is_in_group("Player"):
+		if is_instance_valid(area) and area.is_in_group("Player") and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
-		take_damage()
+		take_damage(Test.boss_damage)
 
-# --------------------------------------------------
 # DAMAGE
-# --------------------------------------------------
 
 func take_damage(amount = 1):
 	if state == BossState.DEAD:
@@ -340,9 +317,7 @@ func take_damage(amount = 1):
 	if health <= 0:
 		start_death()
 
-# --------------------------------------------------
 # DEATH
-# --------------------------------------------------
 
 func start_death():
 	action_timer.stop()

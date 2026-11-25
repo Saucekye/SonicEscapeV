@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+
 @export var textures : Array[Texture2D]
 
 # Physics variables
@@ -32,13 +33,17 @@ var idle_variant := ""
 var upright_speed = 12.0
 var upright_threshold = 0.1
 
-# --------------------------------------------------
 
 func _ready():
 
 	# RANDOM SPRITE
+	var looks: Array = Content.data().miku_looks.filter(func(t): return t != null)
+	if not looks.is_empty():
+		textures.assign(looks)   # game_content.tres decides
+	if Test.playtest_look:
+		textures.assign([Test.playtest_look])   # the Sonic Escape panel's Play
 	if textures.size() > 0:
-		$Sprite2D.texture = textures.pick_random()
+		$Sprite2D.texture = textures[randi_range(0, textures.size() - 1)]
 
 	$Arrow.visible = false
 	$Attackbox.monitorable = false
@@ -57,9 +62,20 @@ func set_item_group(active: bool) -> void:
 		if is_in_group("item"):
 			remove_from_group("item")
 
-# --------------------------------------------------
+
+# Seconds of invincibility left after she appears
+const SPAWN_SAFE_TIME := 2.0
+var spawn_safe := SPAWN_SAFE_TIME
 
 func _physics_process(delta):
+	if knocked_off:
+		_fall_off_screen(delta)
+		return
+	if spawn_safe > 0.0:
+		spawn_safe -= delta
+		# Blink while she's invincible Blink while invincible, in boss fights only
+		if get_tree().get_first_node_in_group("boss_arena") != null:
+			$Sprite2D.visible = spawn_safe <= 0.0 or int(spawn_safe * 12.0) % 2 == 0
 
 	if is_being_held:
 		$AnimationPlayer.play("ride")
@@ -94,9 +110,7 @@ func _physics_process(delta):
 				spin_speed = 0
 				set_item_group(false)
 
-	# --------------------------------------------------
 	# AUTO-UPRIGHT
-	# --------------------------------------------------
 	if is_on_floor() and not is_spinning and has_touched_surface:
 		if velocity.length() < upright_threshold * 100:
 			var target_rot = 0.0
@@ -109,9 +123,7 @@ func _physics_process(delta):
 		$Attackbox.monitorable = false
 		$Attackbox.monitoring = false
 
-	# --------------------------------------------------
 	# GRAVITY
-	# --------------------------------------------------
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
@@ -129,32 +141,24 @@ func _physics_process(delta):
 		else:
 			velocity.y = 0
 
-	# --------------------------------------------------
 	# WALL BOUNCE
-	# --------------------------------------------------
 	if is_on_wall():
 		if not has_touched_surface:
 			has_touched_surface = true
 
 		velocity.x = -velocity.x * wall_bounce_factor
 
-	# --------------------------------------------------
 	# MOVE
-	# --------------------------------------------------
 	move_and_slide()
 
-	# --------------------------------------------------
 	# STOP CONDITION
-	# --------------------------------------------------
 	if is_on_floor() and has_touched_surface and abs(velocity.x) < 10 and abs(velocity.y) < 10:
 		velocity = Vector2.ZERO
 		is_spinning = false
 		spin_speed = 0
 		set_item_group(false)
 
-	# --------------------------------------------------
 	# IDLE SYSTEM
-	# --------------------------------------------------
 	var should_be_idle = (
 		velocity == Vector2.ZERO and
 		is_on_floor() and
@@ -184,7 +188,6 @@ func _physics_process(delta):
 # --------------------------------------------------
 
 func start_spinning(throw_direction: Vector2):
-
 	is_spinning = true
 	has_touched_surface = false
 
@@ -204,11 +207,9 @@ func start_spinning(throw_direction: Vector2):
 
 	velocity = throw_direction * 900 * speed_multiplier
 
-# --------------------------------------------------
 # PICKUP
-# --------------------------------------------------
 
-func disable_physics():
+func disable_physics(by = null):
 
 	is_being_held = true
 	velocity = Vector2.ZERO
@@ -219,14 +220,15 @@ func disable_physics():
 
 	set_item_group(false)
 
-	Test.meter += 25
+	if by != null and "my_meter" in by:
+		by.my_meter += 25   # whoever picked her up
+	else:
+		Test.meter += 25
 
 # --------------------------------------------------
 # DROP
-# --------------------------------------------------
 
 func enable_physics():
-
 	is_being_held = false
 	has_touched_surface = false
 	velocity = Vector2.ZERO
@@ -235,16 +237,70 @@ func enable_physics():
 
 	set_item_group(false)
 
-	if Test.maxmeter > 100:
-		Test.maxmeter = 100
+	if Test.maxmeter > 100 + Test.meter_bonus:
+		Test.maxmeter = 100 + Test.meter_bonus
 
-# --------------------------------------------------
-# UI
-# --------------------------------------------------
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("Player"):
 		$Arrow.visible = true
+	# Hit by an enemy or a boss attack
+	if not knocked_off and not is_being_held and not is_spinning and _is_enemy_hit(area):
+		if area.get_parent().has_node("Sprite2D/AnimationPlayer"):
+			var eap: AnimationPlayer = area.get_parent().get_node("Sprite2D/AnimationPlayer")
+			if eap.has_animation("attack"):
+				eap.play("attack")
+		knock_off(signf(global_position.x - area.global_position.x))
+
+
+func _is_enemy_hit(area: Area2D) -> bool:
+	if area.is_in_group("enemyattack"):
+		return true
+	# Regular enemies hurt by touch, unless they've already been beaten
+	var e = area.get_parent()
+	return area.is_in_group("Enemy") and "dying" in e and not e.dying and not e.get("hurt")
+
+
+# KNOCKED OFF
+
+const KNOCK_UP := -560.0
+const KNOCK_SIDE := 260.0
+const KNOCK_GRAVITY := 1300.0
+var knocked_off := false
+
+# Pops her up and away, spinning, and lets her fall off screen through the ground
+func knock_off(dir_x: float) -> void:
+	if knocked_off or spawn_safe > 0.0:
+		return
+	knocked_off = true
+	set_meta("lost", true)
+	if dir_x == 0.0:
+		dir_x = [-1.0, 1.0].pick_random()
+	is_being_held = false
+	is_spinning = false
+	set_item_group(false)
+	remove_from_group("Miku")
+	collision_layer = 0
+	collision_mask = 0
+	$CollisionShape2D.set_deferred("disabled", true)
+	$Area2D.set_deferred("monitoring", false)
+	$Area2D.set_deferred("monitorable", false)
+	$Attackbox.set_deferred("monitoring", false)
+	$Attackbox.set_deferred("monitorable", false)
+	$Arrow.visible = false
+	$AnimationPlayer.play("ride")   # curled-up pose while she tumbles
+	$Sprite2D.offset = Vector2.ZERO
+	z_index = 60
+	velocity = Vector2(dir_x * KNOCK_SIDE, KNOCK_UP)
+	spin_speed = dir_x * 14.0
+	GlobalSignals.emit_signal("camerashake")
+	get_tree().create_timer(3.0, false).timeout.connect(queue_free)
+
+
+func _fall_off_screen(delta: float) -> void:
+	velocity.y += KNOCK_GRAVITY * delta
+	global_position += velocity * delta
+	rotation += spin_speed * delta
 
 func _on_area_2d_area_exited(area):
 	if area.is_in_group("Player"):

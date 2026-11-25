@@ -40,7 +40,11 @@ func _backup_default_bindings() -> void:
 	# FIXED: Added "airup" to the action list
 	for action in ["ui_accept", "airspin", "airup", "trick", "ui_left", "ui_right", "ui_up", "ui_down"]:
 		if InputMap.has_action(action):
+			# Defaults come from the project settings, not the live InputMap
 			var events = InputMap.action_get_events(action)
+			var setting = ProjectSettings.get_setting("input/" + action)
+			if setting is Dictionary and setting.has("events"):
+				events = setting["events"]
 			default_bindings[action] = []
 			
 			# Create DEEP COPIES of each event
@@ -48,7 +52,6 @@ func _backup_default_bindings() -> void:
 				var copied_event = _duplicate_event(event)
 				if copied_event:
 					default_bindings[action].append(copied_event)
-					print("Backed up ", action, ": ", copied_event.as_text())
 		else:
 			print("WARNING: Action '", action, "' does not exist in InputMap!")
 
@@ -75,6 +78,36 @@ func _duplicate_event(event: InputEvent) -> InputEvent:
 		return new_event
 	
 	return null
+
+# Salvage: its own controls replace the level ones on this screen
+const SALVAGE_ROWS := [["Forward", "forward"], ["Back", "back"], ["Left", "left"], ["Right", "right"],
+	["Jump", "jump"], ["Sprint", "sprint"], ["Crouch", "crouch"], ["Interact", "interact"], ["Map", "map"], ["Trick", "trick"], ["Stun", "stun"]]
+var _salvage_rows: Array[HBoxContainer] = []
+var salvage := false
+
+func use_salvage_keys(on: bool) -> void:
+	salvage = on
+	if on and _salvage_rows.is_empty():
+		for row in SALVAGE_ROWS:
+			var r := $ForJump.duplicate() as HBoxContainer
+			r.name = "Sv" + row[1]
+			r.get_node("Label").text = row[0]
+			var b: Button = r.get_node("Button")
+			b.set_meta("action_name", "sv_" + row[1])
+			b.pressed.connect(_on_bind_button_pressed.bind(b))
+			add_child(r)
+			move_child(r, $Button2.get_index())
+			_salvage_rows.append(r)
+	for n in [$ForJump, $forDash, $forDash2, $forTricks, $Left, $Right, $Up, $Down]:
+		n.visible = not on
+	for r in _salvage_rows:
+		r.visible = on
+	_update_button_texts()
+
+
+func first_button() -> Button:
+	return _salvage_rows[0].get_node("Button") if salvage else $ForJump/Button
+
 
 func _on_bind_button_pressed(button: Button) -> void:
 	action_to_rebind = button.get_meta("action_name")
@@ -106,8 +139,21 @@ func _input(event: InputEvent) -> void:
 			should_rebind = true
 			new_event = event
 		
+		if action_to_rebind.begins_with("sv_"):
+			# Salvage: keyboard keys and mouse buttons
+			should_rebind = (event is InputEventKey and event.pressed and event.keycode != KEY_ESCAPE) \
+				or (event is InputEventMouseButton and event.pressed)
+			new_event = event if should_rebind else null
+			if should_rebind:
+				_rebind_salvage(action_to_rebind, new_event)
+				waiting_for_rebind = false
+				button_being_rebound = null
+				_update_button_texts()
+				get_viewport().set_input_as_handled()
+			return
 		if should_rebind and new_event:
 			rebind_action(action_to_rebind, new_event)
+			Test.save_keybinds()   # keep the change between runs
 			waiting_for_rebind = false
 			button_being_rebound = null
 			_update_button_texts()
@@ -158,12 +204,21 @@ func _find_action_with_event(event: InputEvent, exclude_action: String) -> Strin
 	
 	return ""
 
+# The key a physical key types on this keyboard
+func _from_physical(code: Key) -> Key:
+	if OS.has_feature("web"):
+		return code
+	return DisplayServer.keyboard_get_keycode_from_physical(code)
+
 func _events_match(event1: InputEvent, event2: InputEvent) -> bool:
 	if event1.get_class() != event2.get_class():
 		return false
 	
 	if event1 is InputEventKey:
-		return event1.keycode == event2.keycode
+		# Project defaults only set the physical key
+		var k1: int = event1.keycode if event1.keycode != 0 else _from_physical(event1.physical_keycode)
+		var k2: int = event2.keycode if event2.keycode != 0 else _from_physical(event2.physical_keycode)
+		return k1 == k2
 	elif event1 is InputEventJoypadButton:
 		return event1.button_index == event2.button_index
 	elif event1 is InputEventJoypadMotion:
@@ -171,7 +226,27 @@ func _events_match(event1: InputEvent, event2: InputEvent) -> bool:
 	
 	return false
 
+func _rebind_salvage(action: String, e: InputEvent) -> void:
+	var saved := _duplicate_event(e) if e is InputEventKey else e.duplicate()
+	if saved is InputEventMouseButton:
+		saved.pressed = false
+		saved.double_click = false
+	Test.save_salvage_key(action.trim_prefix("sv_"), saved)
+	for ev in InputMap.action_get_events(action):
+		if ev.get_class() == saved.get_class():
+			InputMap.action_erase_event(action, ev)
+	InputMap.action_add_event(action, saved)
+
+
 func restore_all_bindings() -> void:
+	if salvage:
+		var here := get_tree().current_scene
+		if here and here.has_method("reset_keys"):
+			here.reset_keys()
+		else:
+			Test.clear_salvage_keys()
+		_update_button_texts()
+		return
 	print("=== RESTORING TO DEFAULTS ===")
 	
 	# Restore all actions to their default state using DEEP COPIES
@@ -185,10 +260,23 @@ func restore_all_bindings() -> void:
 					InputMap.action_add_event(action_name, copied_event)
 					print("Restored ", action_name, " to: ", copied_event.as_text())
 	
+	Test.clear_saved_keybinds()   # defaults again next run too
 	print("All bindings restored to defaults")
 	_update_button_texts()
 
 func _update_button_texts() -> void:
+	for r in _salvage_rows:
+		var b: Button = r.get_node("Button")
+		var action: String = b.get_meta("action_name")
+		b.text = "Unbound"
+		if InputMap.has_action(action):
+			for e in InputMap.action_get_events(action):
+				if e is InputEventKey:
+					b.text = OS.get_keycode_string(e.keycode if e.keycode != 0 else _from_physical(e.physical_keycode))
+					break
+				if e is InputEventMouseButton:
+					b.text = ["", "Left Click", "Right Click", "Middle Click"][e.button_index] if e.button_index <= 3 else "Mouse %d" % e.button_index
+					break
 	# FIXED: Added missing button
 	for button in [
 		$ForJump/Button,
@@ -209,7 +297,11 @@ func _update_button_texts() -> void:
 		var events = InputMap.action_get_events(action)
 		
 		if events.size() > 0:
-			button.text = events[0].as_text()
+			var e0 = events[0]
+			if e0 is InputEventKey and e0.keycode == 0 and e0.physical_keycode != 0:
+				button.text = OS.get_keycode_string(_from_physical(e0.physical_keycode))
+			else:
+				button.text = e0.as_text()
 		else:
 			button.text = "Unbound"
 

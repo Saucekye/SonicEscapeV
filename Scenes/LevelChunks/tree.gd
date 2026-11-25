@@ -6,6 +6,7 @@ var use_alt := false
 var nights = false  # true = show the alternate text set on Label
 
 func _ready():
+	$CanvasLayer.add_to_group("hidden_while_paused")   # the pause menu goes over the page, not through it
 	$Arrow.visible = false
 	$AudioStreamPlayer.play()
 	$CanvasLayer/TextSprite.visible = false
@@ -13,6 +14,7 @@ func _ready():
 	
 	$CanvasLayer/Label.visible = false
 	$CanvasLayer/Button.visible = false
+	_add_menu_options()
 	
 	$CanvasLayer/TextSprite.modulate.a = 0
 	$CanvasLayer/TextSprite2.modulate.a = 0
@@ -42,29 +44,54 @@ func _ready():
 		$Sprite2D.visible = true
 		$AnimatedSprite2D.visible = false
 		$NiGHTS.visible = false
+	if use_alt:
+		_add_market()   # Rewrite's: trade one of your items for another
+	if nights:
+		_add_market()
+		_market_page()
 
 
 func _process(delta):
-	if player_inside and Input.is_action_just_pressed("ui_up"):
-		toggle_text()
-		if use_alt:
-			$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/rewrite-laughing-lol.mp3")
-		else:
-			$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/page-flip-01a.mp3")
-			$CanvasLayer/PageSfx.play()
+	# Salvage and Chao Garden show whenever the tree's page is open
+	var page_open: bool = $CanvasLayer/Label.visible and $CanvasLayer/Label.modulate.a > 0.5
+	# While the page is open you stand still
+	Test.reading_page = $CanvasLayer/Label.visible
+	for b in _extra_buttons:
+		b.visible = page_open and not _market_open
+	if _market_open:
+		if not page_open:
+			_close_market()
+		return
+	_update_focus()
+	# With the page open, up/down move between the buttons
+	var up_closes := not page_open or _focus_before == null or _focus_before == _top_button()
+	_focus_before = get_viewport().gui_get_focus_owner()
+	if player_inside and Input.is_action_just_pressed("ui_up") and up_closes:
+		_toggle_page()
+
+
+# Open or put away the page, with its sound
+func _toggle_page() -> void:
+	toggle_text()
+	if use_alt:
+		$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/rewrite-laughing-lol.mp3")
+	else:
+		$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/page-flip-01a.mp3")
+		$CanvasLayer/PageSfx.play()
+	
+	# Only change text when opening
+	if $CanvasLayer/Label.visible:
+		update_text()
 		
-		# Only change text when opening
-		if $CanvasLayer/Label.visible:
-			update_text()
-			
-		if musicplay == false and nights == false:
-			$Timer.start()
-			
-		if nights == true and musicplay == false:
-			musicplay = true
-			$AudioStreamPlayer2D.stream = load("res://Music/MainMenu/Dreams Dreams _ A-Cappella Ver..mp3")
-			$AudioStreamPlayer2D.play()
+	if musicplay == false and nights == false:
+		$Timer.start()
 		
+	if nights == true and musicplay == false:
+		musicplay = true
+		$AudioStreamPlayer2D.stream = load("res://Music/MainMenu/Dreams Dreams _ A-Cappella Ver..mp3")
+		$AudioStreamPlayer2D.play()
+
+
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		player_inside = true
@@ -289,6 +316,22 @@ Now go make more memories!"""
 			_:
 				$CanvasLayer/Label.text = "Current Floor: " + str(20 - Test.level)
 
+	_center_page()
+
+
+# The page's text sits in the middle of the screen, shrinking a long one
+func _center_page() -> void:
+	var label: RichTextLabel = $CanvasLayer/Label
+	await get_tree().process_frame   # once it has worked out how tall the text is
+	if not is_instance_valid(label):
+		return
+	var view := get_viewport().get_visible_rect().size
+	var tall := float(label.get_content_height())
+	label.size.y = tall
+	var fit := minf(PAGE_SCALE, (view.y - PAGE_MARGIN * 2.0) / maxf(tall, 1.0))
+	label.scale = Vector2(fit, fit)
+	label.position = (view - label.size * fit) * 0.5
+
 
 func _on_timer_timeout() -> void:
 	if Test.level > 0 and Test.level != 20:
@@ -363,3 +406,349 @@ func _on_button_pressed() -> void:
 		await get_tree().create_timer(3.0).timeout
 		get_tree().change_scene_to_file("res://FinalCutscene/vision.tscn")
 )
+
+
+# Rest tree options
+var _extra_buttons: Array[Button] = []
+var _soon_label: Label
+
+const PAGE_SCALE := 1.4      # how big the page's text is
+const PAGE_MARGIN := 24.0    # a long page shrinks to keep this much room above and below it
+const OPTIONS_AT := Vector2(1296, 488)   # the bottom option
+
+func _add_menu_options() -> void:
+	var watch: Button = $CanvasLayer/Button
+	watch.position = OPTIONS_AT
+	var gap := watch.size.y + 12.0
+	var entries := [["Chao\nGarden", "Chao Garden"], ["Salvage", "Salvage"]]
+	for i in entries.size():
+		var b := watch.duplicate(0) as Button
+		b.name = entries[i][1].replace(" ", "")
+		b.text = entries[i][0]
+		b.position = watch.position - Vector2(0, gap * (i + 1))
+		b.visible = false
+		var what: String = entries[i][1]
+		b.pressed.connect(func(): _coming_soon(what, b))
+		if what == "Chao Garden":
+			b.disabled = true            # greyed out: not ready yet
+			b.focus_mode = Control.FOCUS_NONE
+		elif what == "Salvage" and Test.salvage_done_level == Test.level:
+			b.disabled = true            # already been in from this rest area
+			b.focus_mode = Control.FOCUS_NONE
+		watch.get_parent().add_child(b)
+		_extra_buttons.append(b)
+	# The way out: you can't walk off while the page is open
+	var close := watch.duplicate(0) as Button
+	close.name = "Close"
+	close.text = "Close"
+	close.position = watch.position + Vector2(0, gap)
+	close.visible = false
+	close.pressed.connect(_close_page)
+	watch.get_parent().add_child(close)
+	_extra_buttons.append(close)
+	_soon_label = Label.new()
+	_soon_label.name = "ComingSoon"
+	_soon_label.add_theme_font_size_override("font_size", 26)
+	_soon_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	_soon_label.add_theme_constant_override("outline_size", 8)
+	_soon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_soon_label.size = Vector2(400, 40)
+	_soon_label.visible = false
+	watch.get_parent().add_child(_soon_label)
+
+
+func _close_page() -> void:
+	if $CanvasLayer/Label.visible:
+		_toggle_page()
+
+
+func _exit_tree() -> void:
+	Test.reading_page = false   # leaving the floor with the page up
+
+
+func _coming_soon(what: String, from: Button) -> void:
+	if what == "Salvage":
+		if Test.salvage_done_level == Test.level:
+			return   # once per rest area		# The Salvage mini game
+		# The Rewrite tree's Salvage is a nastier one
+		Test.salvage_danger = use_alt
+		# Fade to black, the elevator, SALVAGE typed out, then in
+		preload("res://Scenes/Salvage/salvage_transition.gd").go(get_tree())
+		return
+
+
+# Controller When the page opens, the top button you can pick gets focus
+var _focus_before: Control = null
+var _had_focus_page := false
+
+
+# The buttons you can pick right now, top to bottom
+func _pickable_buttons() -> Array[Button]:
+	var out: Array[Button] = []
+	for b in _extra_buttons + [$CanvasLayer/Button]:
+		if b.visible and not b.disabled:
+			out.append(b)
+	out.sort_custom(func(x, y): return x.position.y < y.position.y)
+	return out
+
+
+func _top_button() -> Button:
+	var list := _pickable_buttons()
+	return list[0] if not list.is_empty() else null
+
+
+func _update_focus() -> void:
+	var label: Control = $CanvasLayer/Label
+	var open: bool = label.visible and label.modulate.a > 0.5
+	var list := _pickable_buttons()
+	if open and not list.is_empty():
+		# Up/down go to the next pickable button
+		for i in list.size():
+			var b := list[i]
+			var me := b.get_path()
+			b.focus_neighbor_top = list[i - 1].get_path() if i > 0 else me
+			b.focus_neighbor_bottom = list[i + 1].get_path() if i < list.size() - 1 else me
+			b.focus_neighbor_left = me
+			b.focus_neighbor_right = me
+			b.focus_previous = b.focus_neighbor_top
+			b.focus_next = b.focus_neighbor_bottom
+		var owner := get_viewport().gui_get_focus_owner()
+		if not _had_focus_page or not (owner in list):
+			list[0].grab_focus()
+		_had_focus_page = true
+	elif _had_focus_page:
+		_had_focus_page = false
+		var owner := get_viewport().gui_get_focus_owner()
+		if owner and (owner in _extra_buttons or owner == $CanvasLayer/Button):
+			owner.release_focus()
+
+
+
+# The Klonoa and NiGHTS market
+var _market_open := false
+var _market: VBoxContainer
+var _market_button: Button
+
+const SALVAGE_SCENE := "res://Scenes/Salvage/salvage.tscn"
+const MARKET_PAGE := preload("res://Sprites/Obstacles/RestTree/ightlona.png")   # NiGHTS and Klonoa, four frames across
+const MARKET_PAGE_FRAMES := 4
+const MARKET_WIDTH := 1000.0   # the list's two columns together
+const MARKET_COLUMNS := 2
+
+
+# The market's page
+func _market_page() -> void:
+	var sprite: AnimatedSprite2D = $CanvasLayer/TextSprite
+	var old_height := float(sprite.sprite_frames.get_frame_texture("default", 0).get_height())
+	var sheet := MARKET_PAGE
+	var frames := SpriteFrames.new()
+	frames.set_animation_speed("default", sprite.sprite_frames.get_animation_speed("default"))
+	var w := sheet.get_width() / MARKET_PAGE_FRAMES
+	for i in MARKET_PAGE_FRAMES:
+		var cell := AtlasTexture.new()
+		cell.atlas = sheet
+		cell.region = Rect2(i * w, 0, w, sheet.get_height())
+		frames.add_frame("default", cell)
+	sprite.sprite_frames = frames
+	var k := old_height / float(sheet.get_height())
+	sprite.scale *= k
+	# what's drawn with it, like the dark backdrop, stays the size and place it was
+	for c in sprite.get_children():
+		if c is Control:
+			c.scale /= k
+			c.position /= k
+	sprite.play("default")
+
+
+func _add_market() -> void:
+	var watch: Button = $CanvasLayer/Button
+	var b := watch.duplicate(0) as Button
+	b.name = "Market"
+	b.text = "Market"
+	b.position = watch.position - Vector2(0, (watch.size.y + 12.0) * (_extra_buttons.size() + 1))
+	b.visible = false
+	b.pressed.connect(_open_market)
+	var nothing_to_trade := use_alt and not Test.owned_items.any(func(path): return (load(path) as SalvageItem).tradeable())
+	if Test.market_done_level == Test.level or nothing_to_trade:
+		b.disabled = true   # already picked one here, or nothing of yours to trade
+		b.focus_mode = Control.FOCUS_NONE
+	watch.get_parent().add_child(b)
+	_extra_buttons.append(b)
+	_market_button = b
+
+
+# The items Salvage can have, from its scene
+func _market_items() -> Array:
+	var state := (load(SALVAGE_SCENE) as PackedScene).get_state()
+	for i in state.get_node_property_count(0):
+		if state.get_node_property_name(0, i) == "item_kinds":
+			return (state.get_node_property_value(0, i) as Array).filter(func(k): return k != null)
+	return []
+
+
+func _open_market() -> void:
+	if Test.market_done_level == Test.level or _market_open:
+		return
+	if use_alt:
+		_open_trade()
+		return
+	var label: RichTextLabel = $CanvasLayer/Label
+	_market_open = true
+	label.self_modulate.a = 0.0   # the page stays open behind the stall's list
+	$CanvasLayer/Button.visible = false
+	_market = VBoxContainer.new()
+	_market.add_theme_constant_override("separation", 12)
+	$CanvasLayer.add_child(_market)
+	_market.resized.connect(_center_market)   # in the middle whatever its size turns out to be
+	# Two columns, so the whole list fits on the screen
+	var grid := GridContainer.new()
+	grid.columns = MARKET_COLUMNS
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 8)
+	_market.add_child(grid)
+	var first: Button = null
+	for kind in _market_items():
+		if kind.effect == SalvageItem.Effect.SKIP_FLOORS and (not SalvageItem.can_skip(Test.level)):
+			continue
+		var item := Button.new()
+		item.text = kind.says()
+		item.add_theme_font_size_override("font_size", 22)
+		item.custom_minimum_size.x = MARKET_WIDTH / MARKET_COLUMNS
+		item.pressed.connect(_take_free.bind(kind))
+		grid.add_child(item)
+		if first == null:
+			first = item
+	var back := Button.new()
+	back.text = "Back"
+	back.add_theme_font_size_override("font_size", 22)
+	back.pressed.connect(_close_market)
+	_market.add_child(back)
+	_center_market.call_deferred()
+	if first:
+		first.grab_focus()
+
+
+func _center_market() -> void:
+	if is_instance_valid(_market):
+		var view := get_viewport().get_visible_rect().size
+		_market.reset_size()
+		_market.position = (view - _market.size) * 0.5
+
+
+func _close_market() -> void:
+	_market_open = false
+	if is_instance_valid(_market):
+		_market.queue_free()
+	var label: RichTextLabel = $CanvasLayer/Label
+	label.self_modulate.a = 1.0
+	$CanvasLayer/Button.visible = label.visible and Test.level != 0 and (Test.level < 24)
+	_had_focus_page = false
+
+
+func _take_free(kind: SalvageItem) -> void:
+	Test.market_done_level = Test.level
+	_market_button.disabled = true
+	_market_button.focus_mode = Control.FOCUS_NONE
+	$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/page-flip-01a.mp3")
+	$CanvasLayer/PageSfx.play()
+	_close_market()
+	Test.salvage_items += 1
+	_hand_over(kind)
+
+
+# What an item does once it's yours
+func _hand_over(kind: SalvageItem) -> void:
+	match kind.effect:
+		SalvageItem.Effect.RINGS:
+			Test.rings += kind.amount
+		SalvageItem.Effect.FULL_METER_EACH_FLOOR:
+			kind.give()
+			Test.meter = Test.maxmeter
+		SalvageItem.Effect.SKIP_FLOORS:
+			if SalvageItem.can_skip(Test.level):
+				# Straight on: this many floors further down
+				Test.level = SalvageItem.skipped_to(Test.level, kind.amount)
+				var lg = load("res://Scripts/Level/level_generator.gd")
+				lg.rest_done_level = -1
+				get_tree().change_scene_to_file("res://Scenes/Level/test3.tscn")
+		_:
+			kind.give()
+
+
+# Rewrite's market
+var _trade_give: SalvageItem = null
+
+
+func _open_trade() -> void:
+	_market_open = true
+	$CanvasLayer/Label.self_modulate.a = 0.0
+	$CanvasLayer/Button.visible = false
+	_trade_list(null)
+
+
+# The list: first your items
+func _trade_list(giving: SalvageItem) -> void:
+	_trade_give = giving
+	if is_instance_valid(_market):
+		_market.queue_free()
+	_market = VBoxContainer.new()
+	_market.add_theme_constant_override("separation", 12)
+	$CanvasLayer.add_child(_market)
+	_market.resized.connect(_center_market)
+	var head := Label.new()
+	head.text = "Give" if giving == null else "Get"
+	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	head.add_theme_font_size_override("font_size", 26)
+	_market.add_child(head)
+	var grid := GridContainer.new()
+	grid.columns = MARKET_COLUMNS
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 8)
+	_market.add_child(grid)
+	var first: Button = null
+	var kinds: Array = []
+	if giving == null:
+		for path in Test.owned_items:
+			var k := load(path) as SalvageItem
+			if k and k.tradeable():
+				kinds.append(k)
+	else:
+		for k in _market_items():
+			if k.resource_path == giving.resource_path:
+				continue
+			if k.effect == SalvageItem.Effect.SKIP_FLOORS and (not SalvageItem.can_skip(Test.level)):
+				continue
+			kinds.append(k)
+	for k in kinds:
+		var item := Button.new()
+		item.text = k.says()
+		item.add_theme_font_size_override("font_size", 22)
+		item.custom_minimum_size.x = MARKET_WIDTH / MARKET_COLUMNS
+		if giving == null:
+			item.pressed.connect(_trade_list.bind(k))
+		else:
+			item.pressed.connect(_trade.bind(k))
+		grid.add_child(item)
+		if first == null:
+			first = item
+	var back := Button.new()
+	back.text = "Back"
+	back.add_theme_font_size_override("font_size", 22)
+	back.pressed.connect(_close_market if giving == null else _trade_list.bind(null))
+	_market.add_child(back)
+	_center_market.call_deferred()
+	(first if first else back).grab_focus()
+
+
+func _trade(getting: SalvageItem) -> void:
+	if _trade_give == null:
+		return
+	Test.market_done_level = Test.level
+	_market_button.disabled = true
+	_market_button.focus_mode = Control.FOCUS_NONE
+	$CanvasLayer/PageSfx.stream = load("res://Sounds/SFX/rewrite-laughing-lol.mp3")
+	$CanvasLayer/PageSfx.play()
+	_trade_give.take_back()
+	_trade_give = null
+	_close_market()
+	_hand_over(getting)

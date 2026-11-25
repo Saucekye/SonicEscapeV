@@ -4,7 +4,7 @@ extends Components_Action
 @export var min_launch_x : float = 1050
 
 func action() -> void:
-	if not (Input.is_action_just_pressed("ui_accept") and player.can_dash == true and not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding() and not player.is_coyote_time_active()):
+	if not (player.inp_just_pressed("ui_accept") and player.can_dash == true and not player.wall_cast.is_colliding() and not player.wall_cast_2.is_colliding() and not player.is_coyote_time_active()):
 		return
 	
 	# Prevent from doing action while on wall
@@ -25,6 +25,7 @@ func action() -> void:
 	player.motion.y = -launch_y 
 	player.fall_gravity = 0           # Disable gravity briefly for the dash hang-time
 	player.smokeemit()
+	shake_a_little()
 	player.sfx.pitch_scale = 2
 	player.sfx.stream = load("res://Sounds/SonicSFX/SA_113.wav")
 	player.sfx.play()

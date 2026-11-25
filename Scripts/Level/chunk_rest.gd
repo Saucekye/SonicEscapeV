@@ -4,8 +4,8 @@ extends Node2D
 @onready var character2 = $CharacterBody2D2
 
 func _ready():
+	add_child(preload("res://Scripts/Level/rest_motes.gd").new())   # pale motes drifting by
 	randomize()
-
 	# Disable both first
 	disable_character(character1)
 	disable_character(character2)

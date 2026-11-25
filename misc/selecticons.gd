@@ -183,13 +183,15 @@ func animate_hover_out():
 	tween = create_tween().set_parallel(true)
 	tween.tween_property(self, "scale", original_scale, animation_duration).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	tween.tween_property(self, "modulate", original_modulate, animation_duration * 0.5)
-	flash_tween.kill()
+	if flash_tween:
+		flash_tween.kill()
 	if hover_outline:
 		tween.tween_property(hover_outline, "modulate:a", 0.0, animation_duration * 0.5)
 		tween.tween_callback(func(): hover_outline.visible = false).set_delay(animation_duration * 0.5)
 
 func animate_select():	
-	flash_tween.kill()
+	if flash_tween:
+		flash_tween.kill()
 	tween.kill()
 	tween = create_tween().set_parallel(true)
 	var pop_scale = original_scale * select_scale * 1.2

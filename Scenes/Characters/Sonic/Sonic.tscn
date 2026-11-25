@@ -2358,6 +2358,7 @@ collision_mask = 2
 floor_block_on_wall = false
 floor_max_angle = 1.55334
 script = ExtResource("1_vuqnu")
+voice_echo = false
 audio_files = [ExtResource("2_sex4o"), ExtResource("3_bxdx6"), ExtResource("4_n0mdj")]
 icon_background = ExtResource("5_bxdx6")
 trail_position = Vector2(0, 3)
@@ -2506,8 +2507,8 @@ libraries/ = SubResource("AnimationLibrary_l6ohk")
 [node name="Arrow" type="AnimatedSprite2D" parent="." unique_id=1149421649]
 visible = false
 z_index = 1
-position = Vector2(-0.0005471043, -0.30784926)
 scale = Vector2(0.009, 0.009)
+offset = Vector2(0, -34)
 sprite_frames = SubResource("SpriteFrames_x6aia")
 autoplay = "default"
 speed_scale = 0.8

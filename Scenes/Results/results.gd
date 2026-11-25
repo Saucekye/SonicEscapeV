@@ -33,31 +33,67 @@ func _calculate_score() -> void:
 	var minutes : float = Test.elapsed_sesion_time / 60
 	var seconds : float = fmod(Test.elapsed_sesion_time, 60)
 	var miliseconds : float = fmod(Test.elapsed_sesion_time, 1) * 100
-	## If 15 minutes or less, max rank
-	## Otherwise, lose 1000 score every 5 minutes
-	var time_bonus_amount : int = int(MAX_TIME_BONUS if minutes <= 10 else MAX_TIME_BONUS - (int((int(minutes) - 10) / 5) * 2000))
-	if time_bonus_amount < 0:
-		time_bonus_amount = 0
-	var ring_bonus_amount : int = Test.rings * RING_SCORE_MULTIPLER
-	var total_score_amount : int = time_bonus_amount + ring_bonus_amount
+	var sc := Test.run_score()   # the same sums the score under the timer shows during the run
+	var time_bonus_amount : int = sc.time
+	var all_rings : int = Test.rings
+	var ring_bonus_amount : int = sc.rings
+	var miku_bonus_amount : int = sc.mikus
+	var trick_bonus_amount : int = sc.tricks
+	var total_score_amount : int = sc.total
+	_add_bonus_rows([
+		["Miku Bonus", str(Test.mikus_saved, " x ", Test.MIKU_SCORE, " = ", miku_bonus_amount)],
+		["Trick Bonus", str(Test.tricks_done, " x ", Test.TRICK_SCORE, " = ", trick_bonus_amount)],
+		["Item Bonus", str(Test.owned_items.size(), " x ", Test.ITEM_SCORE, " = ", sc.items)],
+	])
 	# Display the time as MINUTES : SECONDS : MILISECONDS
 	time_display.text = "%01d : %02d : %02d" % [minutes, seconds, miliseconds]
 	time_score.text = str(time_bonus_amount)
-	ring_bonus_score.text = str(Test.rings, " x ", RING_SCORE_MULTIPLER, " = ", ring_bonus_amount)
+	ring_bonus_score.text = str(all_rings, " x ", RING_SCORE_MULTIPLER, " = ", ring_bonus_amount)
 	final_score.text = str(total_score_amount)
 	
-	if total_score_amount >= 10000:
-		rank_rating.text = "S"
-	elif total_score_amount >= 8000:
-		rank_rating.text = "A"
-	elif total_score_amount >= 6000:
-		rank_rating.text = "B"
-	elif total_score_amount >= 4000:
-		rank_rating.text = "C"
-	elif total_score_amount >= 2000:
-		rank_rating.text = "D"
-	else:
-		rank_rating.text = "E"
+	rank_rating.text = sc.rank
+
+# Extra bonus rows under Ring Bonus
+func _add_bonus_rows(rows: Array) -> void:
+	var names := $AnimationPlayer/Node2D/Node2D
+	var ring_name: Label = names.get_node("Label3")
+	var name_step := 74.0    # one row in the names column
+	var value_step := 62.0   # one row in the numbers column
+	var n := rows.size()
+	for r in n:
+		var title := ring_name.duplicate() as Label
+		title.name = "BonusLabel%d" % r
+		title.text = rows[r][0]
+		names.add_child(title)
+		title.position.y += name_step * (r + 1)
+		var value := ring_bonus_score.duplicate() as Label
+		value.name = "BonusScore%d" % r
+		value.text = rows[r][1]
+		ring_bonus_score.get_parent().add_child(value)
+		value.position.y += value_step * (r + 1)
+	for node_name in ["Label2", "Label5", "Label6"]:   # Score, Rank, Thank you for Playing!
+		names.get_node(node_name).position.y += name_step * n
+	final_score.position.y += value_step * n
+	rank_rating.position.y += value_step * n
+	# The animations pin the numbers' positions
+	var ap: AnimationPlayer = $AnimationPlayer
+	for anim_name in ap.get_animation_list():
+		var anim := ap.get_animation(anim_name)
+		for i in anim.get_track_count():
+			var path := str(anim.track_get_path(i))
+			if path.ends_with("Scores/Final Score:position") or path.ends_with("Scores/RankRating:position"):
+				for k in anim.track_get_key_count(i):
+					anim.track_set_key_value(i, k, anim.track_get_key_value(i, k) + Vector2(0, value_step * n))
+			elif path.ends_with("Scores/RingBonusScore:position"):
+				# Each new number slides in exactly like Ring Bonus, one row lower per row
+				for r in n:
+					var t := anim.add_track(Animation.TYPE_VALUE)
+					anim.track_set_path(t, NodePath(path.replace("RingBonusScore", "BonusScore%d" % r)))
+					anim.track_set_interpolation_type(t, anim.track_get_interpolation_type(i))
+					anim.value_track_set_update_mode(t, anim.value_track_get_update_mode(i))
+					for k in anim.track_get_key_count(i):
+						anim.track_insert_key(t, anim.track_get_key_time(i, k),
+								anim.track_get_key_value(i, k) + Vector2(0, value_step * (r + 1)), anim.track_get_key_transition(i, k))
 
 func _input(event):
 	if accept_input_start_dialogue:
@@ -87,7 +123,12 @@ func fade_and_change_scene():
 
 
 func change_scene():
-	#Test.level = 24
+	# "Continue" in the closing dialogue sets the floor to 24
+	if Test.level == 24:
+		Test.final = false
+		Test.end = false
+		get_tree().change_scene_to_file("res://Scenes/Level/test3.tscn")
+		return
 	get_tree().change_scene_to_file(next_scene_path)
 
 

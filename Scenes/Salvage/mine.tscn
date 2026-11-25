@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/Salvage/mine.gd" id="1_qnh4i"]
+[ext_resource type="Material" path="res://Scenes/Salvage/Materials/metal.tres" id="2_yjgnf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nytuq"]
+top_radius = 0.24
+bottom_radius = 0.3
+height = 0.08
+radial_segments = 10
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0olat"]
+shading_mode = 0
+albedo_color = Color(1, 0.08, 0.05, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_nl0qx"]
+radius = 0.045
+height = 0.09
+radial_segments = 6
+rings = 3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wwu5m"]
+height = 0.4
+radius = 0.35
+
+[node name="Mine" type="Node3D" unique_id=904889929]
+script = ExtResource("1_qnh4i")
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1766241075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+material_override = ExtResource("2_yjgnf")
+mesh = SubResource("CylinderMesh_nytuq")
+
+[node name="Light" type="MeshInstance3D" parent="." unique_id=589660036]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0)
+material_override = SubResource("StandardMaterial3D_0olat")
+mesh = SubResource("SphereMesh_nl0qx")
+
+[node name="Trigger" type="Area3D" parent="." unique_id=1333629282]
+
+[node name="Shape" type="CollisionShape3D" parent="Trigger" unique_id=726232935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_wwu5m")

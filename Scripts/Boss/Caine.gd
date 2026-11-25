@@ -40,20 +40,22 @@ func _process(delta: float) -> void:
 		death_velocity = Vector2.ZERO
 
 func _get_current_player() -> Node2D:
-	var players = get_tree().get_nodes_in_group("Player")
-
-	for player in players:
-		if is_instance_valid(player) and player.get("is_player") == true:
-			active_player = player
-			return player
-
-	return null
+	# With more than one player it takes turns going after each
+	active_player = BossTargets.pick(self)
+	return active_player
 		
 func face_player():
 	animated_sprite.flip_h = active_player.global_position.x < global_position.x
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
-	if !area.is_in_group("Playerattack"):
+	if !area.is_in_group("Playerattack") or death:
+		return
+	net_hit()
+
+
+# Caine goes down
+func net_hit() -> void:
+	if death:
 		return
 	hitsfx.play()
 	update_health_bar.emit(0, max_health)
