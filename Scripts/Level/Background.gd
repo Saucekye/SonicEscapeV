@@ -56,6 +56,7 @@ func _spawn_parallax():
 
 	var bg = scene.instantiate()
 	add_child(bg)
+	_add_atmosphere(bg, Test.current_background)
 
 
 func _spawn_specific(scene: PackedScene, id: int):
@@ -68,6 +69,7 @@ func _spawn_specific(scene: PackedScene, id: int):
 
 	var bg = scene.instantiate()
 	add_child(bg)
+	_add_atmosphere(bg, Test.current_background)
 
 func _get_background_id(scene: PackedScene) -> int:
 	if _styles.has(scene): return int(_styles[scene])
@@ -77,6 +79,14 @@ func _get_background_id(scene: PackedScene) -> int:
 	if scene == parallax_5: return 5
 	if scene == parallax_6: return 6
 	return 0
+
+
+func _add_atmosphere(bg: Node, id: int) -> void:
+	# Per-stage haze, colour grade, glow and particles
+	preload("res://Scripts/Level/pixel_match.gd").apply(bg)
+	var atmosphere = preload("res://Scripts/Level/atmosphere.gd").new()
+	add_child(atmosphere)
+	atmosphere.setup(bg, id)
 
 
 # The backgrounds are drawn to fill the screen at the Close zoom

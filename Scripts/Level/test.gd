@@ -14,6 +14,8 @@ var force_touch_controls := false
 # Camera zoom setting
 var zoom_level := 1
 var zoom_chosen := false   # picked in the pause menu
+var effects_enabled := true   # stage atmosphere
+var rush_terrain := true   # Sonic Rush Adventure tiles on the terrain
 # The music widget only shows for a few seconds when a song starts, and while paused
 var music_widget_always := false
 # True in a boss arena
@@ -128,6 +130,8 @@ var salvage_done_level := -1   # the floor whose rest area you've already been i
 var market_done_level := -1   # the floor whose rest area you've had your free item from
 var salvage_danger := false   # this Salvage was entered from the Rewrite tree
 var back_from_salvage := false   # the next floor to load is the rest area Salvage brought you back to
+var crt_enabled := false   # analog CRT look over the whole game
+var crt: CanvasLayer
 var mobile = force_touch_controls or OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 var touch_controls_v2 := false	# true while the new touch controls
 var touch_style := 0	# Touch controls
@@ -370,8 +374,8 @@ const FORMATION_OFFSETS := [   # each follower's place behind the leader
 	Vector2(-215, 0),
 ]
 
-const FORMATION_STOP_RANGE := 20.0          ## Distance from target slot where AI stops closing in
-const FORMATION_SEPARATION_DISTANCE := 66.0  ## Min distance AI followers keep from each other
+const FORMATION_STOP_RANGE := 20.0          # Distance from target slot where AI stops closing in
+const FORMATION_SEPARATION_DISTANCE := 66.0  # Min distance AI followers keep from each other
 const FORMATION_SEPARATION_STRENGTH := 1.5   ## How hard followers push apart when too close
 
 var boss_rotation_order: Array = []
@@ -441,6 +445,11 @@ func _ready() -> void:
 	_load_touch_style()
 	_load_keybinds()   # rebound keys carry over between runs
 	_load_progress()
+	# Red / white / black buttons, dropdowns, toggles and sliders on every screen
+	get_tree().root.theme = preload("res://Scripts/UI/rush_theme.gd").build_global()
+	# Analog CRT over everything
+	crt = preload("res://Scripts/UI/crt_overlay.gd").new()
+	add_child(crt)
 	print(mobile)
 	get_tree().paused = false
 	Pause.current_scene = "Node2D"

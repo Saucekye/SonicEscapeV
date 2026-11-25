@@ -13,7 +13,27 @@ func _ready():
 	_setup_button_focus()
 	_add_zoom_setting()
 	_add_song_picker()
+	_apply_rush_style()
 	_load_saved_settings.call_deferred()
+
+func _apply_rush_style():
+	# Bold slanted Rush/XG-style buttons, sliders and labels
+	var rush_theme = preload("res://Scripts/UI/rush_theme.gd")
+	$Panel.theme = rush_theme.build()
+	# Dim the game behind the menus
+	if not $Panel.has_node("Backdrop"):
+		var backdrop := ColorRect.new()
+		backdrop.name = "Backdrop"
+		backdrop.color = Color(rush_theme.BLACK, 0.6)
+		backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		backdrop.position = Vector2(-4000, -4000)
+		backdrop.size = Vector2(8000, 8000)
+		$Panel.add_child(backdrop)
+		$Panel.move_child(backdrop, 0)
+	# A little more room between buttons so the slanted shapes don't touch
+	for box in ["Menu", "Settings", "Keybind"]:
+		if $Panel.has_node(box):
+			$Panel.get_node(box).add_theme_constant_override("separation", 6)
 
 func _add_zoom_setting():
 	# Zoom option, built here so the scene file doesn't need editing
@@ -50,6 +70,18 @@ func _add_zoom_setting():
 	mw_toggle.toggled.connect(func(on): Test.music_widget_always = on)
 	mw_row.add_child(mw_toggle)
 	settings.add_child(mw_row)
+	# CRT on/off
+	var crt_row := HBoxContainer.new()
+	crt_row.name = "CRTBox"
+	var crt_label := Label.new()
+	crt_label.text = "CRT"
+	crt_row.add_child(crt_label)
+	var crt_toggle := CheckButton.new()
+	crt_toggle.focus_mode = Control.FOCUS_ALL
+	crt_toggle.button_pressed = Test.crt_enabled
+	crt_toggle.toggled.connect(func(on): Test.crt_enabled = on)
+	crt_row.add_child(crt_toggle)
+	settings.add_child(crt_row)
 	# Touch controls
 	var tc_row := HBoxContainer.new()
 	tc_row.name = "TouchBox"
@@ -109,6 +141,7 @@ func _add_zoom_setting():
 	if keybind:
 		settings.move_child(row, keybind.get_index())
 		settings.move_child(mw_row, keybind.get_index())
+		settings.move_child(crt_row, keybind.get_index())
 		settings.move_child(tc_row, keybind.get_index())
 		settings.move_child(td_row, keybind.get_index())
 		settings.move_child(ls_row, keybind.get_index())

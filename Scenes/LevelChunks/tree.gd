@@ -15,6 +15,11 @@ func _ready():
 	$CanvasLayer/Label.visible = false
 	$CanvasLayer/Button.visible = false
 	_add_menu_options()
+	# Kept out of the red menu style
+	for c in $CanvasLayer.get_children():
+		if c is Control:
+			c.theme = ThemeDB.get_default_theme()
+	$CanvasLayer.child_entered_tree.connect(func(c): if c is Control: c.theme = ThemeDB.get_default_theme())
 	
 	$CanvasLayer/TextSprite.modulate.a = 0
 	$CanvasLayer/TextSprite2.modulate.a = 0

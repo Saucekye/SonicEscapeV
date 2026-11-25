@@ -3,6 +3,7 @@ extends CanvasLayer
 
 signal closed
 
+const RUSH := preload("res://Scripts/UI/rush_theme.gd")
 
 var _note: Label
 
@@ -12,9 +13,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	var root := Control.new()
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.theme = RUSH.build()
 	add_child(root)
 	var dim := ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.92)
+	dim.color = Color(RUSH.BLACK, 0.97)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.add_child(dim)
 

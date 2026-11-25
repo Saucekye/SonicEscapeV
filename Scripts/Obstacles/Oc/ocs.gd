@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+const GROUNDED := preload("res://Scripts/Obstacles/grounded_sprite.gd")
 
 @export var textures : Array[Texture2D]
 @export var item_labels : Array[String]   # same order/index as textures
@@ -83,6 +84,8 @@ func _physics_process(delta):
 		# Blink while invincible, in boss fights only
 		if get_tree().get_first_node_in_group("boss_arena") != null:
 			$Sprite2D.visible = spawn_safe <= 0.0 or int(spawn_safe * 12.0) % 2 == 0
+	# Feet on the ground, like the playable characters
+	GROUNDED.update(self, $Sprite2D, $CollisionShape2D, is_being_held)
 
 	if is_being_held:
 		$Label.visible = false

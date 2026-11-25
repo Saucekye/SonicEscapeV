@@ -6,6 +6,10 @@ func _ready() -> void:
 	# The wall run stays out of loops
 	add_to_group("loops")
 	_measure.call_deferred()
+	# Dress the loop like the ground
+	var skin = preload("res://Scripts/Level/rush_skin.gd")
+	for layer in find_children("*", "TileMapLayer", true, false):
+		skin.apply.call_deferred(layer, Test.current_background)
 
 func _on_bl_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("Player"):

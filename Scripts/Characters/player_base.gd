@@ -1,6 +1,8 @@
 @abstract
 class_name Player extends CharacterBody2D
 
+signal enemy_hit(at: Vector2)   # fired when this character strikes an enemy
+
 # ─────────────────────────────────────────────
 # Debug Variables
 @export_group("Debug Variables")
@@ -2179,6 +2181,7 @@ func _on_invincibity_timeout() -> void:
 
 func _on_attackbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Enemy"):
+		enemy_hit.emit(area.global_position)   # hit flash
 		can_stomp = true
 		bounce = 0
 		if not is_on_floor() and swipe == false:

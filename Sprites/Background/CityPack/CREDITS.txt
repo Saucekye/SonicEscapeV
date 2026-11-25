@@ -1,0 +1,12 @@
+City depth layers (Night/ and Sunset/)
+
+Taken unedited from the same city background asset pack the game's existing
+Sprites/Background/City/ art comes from (the "towers" set in that pack):
+  Night/   = the pack's "close - night" set
+  Sunset/  = the pack's "cars" set, plus viaduct.png, viaduct-train.png and
+             poles.png from its "close" set
+
+Credit the pack's author the same way as the existing city backgrounds.
+Some files were renamed: "7---lights.png" became "7-lights.png", and the
+three "close" files above were renamed as listed.
+Used by Scripts/Level/city_depth.gd.
