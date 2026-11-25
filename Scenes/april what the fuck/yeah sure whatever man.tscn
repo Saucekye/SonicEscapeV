@@ -58,7 +58,7 @@ segment_times = null
 
 [node name="YeahSureWhateverMan" type="CanvasLayer" unique_id=2049967260 node_paths=PackedStringArray("Rodney")]
 process_mode = 3
-layer = 99
+layer = 9999
 script = ExtResource("1_twxb4")
 Rodney = NodePath("RodneyHead")
 notTalking = ExtResource("4_iodop")
@@ -72,7 +72,7 @@ reaction_lines = Array[ExtResource("2_u5kt5")]([SubResource("Resource_2qqhn")])
 
 [node name="RodneyHead" type="Sprite2D" parent="." unique_id=1519089378]
 visible = false
-position = Vector2(1048, 546)
+position = Vector2(996, 527.75)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_iodop")
 

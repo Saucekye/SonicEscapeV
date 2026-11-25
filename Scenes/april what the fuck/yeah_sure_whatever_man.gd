@@ -96,6 +96,10 @@ func _ready() -> void:
 		attempt_timer = Timer.new()
 		attempt_timer.name = "AttemptTimer"
 		add_child(attempt_timer)
+	
+	if not Engine.is_editor_hint():
+		_move_to_bottom.call_deferred()
+		get_tree().node_added.connect(_on_node_added)
 
 	_make_subtitle()
 	_sync_active_state()
@@ -120,6 +124,18 @@ func _ready() -> void:
 	if active:
 		attempt_timer.start()
 
+func _on_node_added(node: Node) -> void:
+	# A new scene was added to the root, so drop back below it.
+	if node != self and node.get_parent() == get_tree().root:
+		_move_to_bottom.call_deferred()
+
+
+func _move_to_bottom() -> void:
+	var root := get_tree().root
+	if get_parent() != root:
+		return
+	if root.get_child(root.get_child_count() - 1) != self:
+		root.move_child(self, root.get_child_count() - 1)
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint() or Rodney == null:

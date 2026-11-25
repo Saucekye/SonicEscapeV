@@ -37,6 +37,7 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 Background="*res://Scripts/Level/Background.gd"
 GlobalSignals="*res://Scripts/Global/GlobalSignals.gd"
 Camera2d="*uid://bk6guicx7ti3"
+YeahSureWhateverMan="*uid://c6ow0ml3c0ek5"
 
 [display]
 
@@ -197,20 +198,18 @@ pointing/emulate_touch_from_mouse=true
 
 locale/translations_pot_files=PackedStringArray("res://dialogue/1.dialogue", "res://dialogue/tutorial-1.dialogue", "res://FinalCutscene/Final1.dialogue", "res://FinalCutscene/Final2.dialogue", "res://FinalCutscene/Final3.dialogue", "res://dialogue/2.dialogue", "res://dialogue/3.dialogue", "res://dialogue/4.dialogue", "res://dialogue/untitled.dialogue", "res://dialogue/result_screen_continue.dialogue", "res://FinalCutscene/Final4.dialogue", "res://FinalCutscene/Final34.dialogue", "res://vision1.dialogue", "res://vision2.dialogue", "res://vision3.dialogue", "res://vision4.dialogue", "res://vision5.dialogue", "res://vision6.dialogue")
 
-[rendering]
-
-2d/snap/snap_2d_transforms_to_pixel=true
-textures/canvas_textures/default_texture_filter=0
-textures/canvas_textures/default_texture_repeat=1
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-renderer/rendering_method.web="gl_compatibility"
-textures/vram_compression/import_s3tc_bptc=true
-textures/vram_compression/import_etc2_astc=true
-textures/lossless_compression/force_png=true
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)
-
 [network]
 
 tls/enable_tls_v1.3=false
 
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_repeat=1
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_s3tc_bptc=true
+textures/vram_compression/import_etc2_astc=true
+textures/lossless_compression/force_png=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+2d/snap/snap_2d_transforms_to_pixel=true
