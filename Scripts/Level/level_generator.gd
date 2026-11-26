@@ -15,6 +15,8 @@ extends Node2D
 @export var chunk_finalrest: PackedScene = preload("res://Scenes/LevelChunks/Chunk_RestFinal.tscn")
 @export var chunk_running_test: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Running_Test.tscn")
 
+@export var CHUNK_BOSS_ELDEN_RING: PackedScene = preload("res://Scenes/LevelChunks/Chunk_Boss_EldenRing.tscn")
+
 
 # Load all level and boss chunks from an exported array
 @export var level_chunks : Array[PackedScene] 
@@ -105,7 +107,7 @@ func _spawn_next_boss_level():
 			Test.build_boss_rotation()
 		index = Test.boss_rotation_order.pop_front()
 
-	var scene_map := [chunk_running_test, chunk_running_test, chunk_running_test, chunk_running_test, chunk_running_test, chunk_running_test, chunk_running_test]
+	var scene_map := [chunk_boss, chunk_boss1, CHUNK_BOSS_ELDEN_RING, CHUNK_BOSS_ELDEN_RING, CHUNK_BOSS_ELDEN_RING, CHUNK_BOSS_ELDEN_RING]
 	_spawn_single_chunk(scene_map[index])
 
 # Spawns one chunk as the entire level

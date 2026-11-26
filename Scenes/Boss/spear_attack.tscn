@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bwts83o1817a2"]
+
+[ext_resource type="Script" uid="uid://dc223fhateecd" path="res://Scripts/Boss/EldenRing_spear_attack.gd" id="1_0ebgm"]
+[ext_resource type="Texture2D" uid="uid://bg7qmwgf5axuv" path="res://Sprites/Boss/Elden Ring/test 2.png" id="1_52wls"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uociw"]
+size = Vector2(64, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ebgm"]
+radius = 48.0
+
+[node name="SpearAttack" type="CharacterBody2D" unique_id=1791984870]
+script = ExtResource("1_0ebgm")
+
+[node name="Test2" type="Sprite2D" parent="." unique_id=1324358848]
+texture = ExtResource("1_52wls")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1945950628]
+position = Vector2(0, 472)
+shape = SubResource("RectangleShape2D_uociw")
+
+[node name="Attackbox" type="Area2D" parent="." unique_id=19601558 groups=["enemyattack"]]
+position = Vector2(0, 384)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attackbox" unique_id=1459297991]
+position = Vector2(0, 152)
+shape = SubResource("CircleShape2D_0ebgm")
+debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)

@@ -1,15 +1,7 @@
-shader_type spatial;
+shader_type canvas_item;
+uniform float scalar_x : hint_range(-5, 5) = 1.25;
 
 void vertex() {
-	vec2 translate = UV.x + vec2(10.0, 0.0);
-	VERTEX += vec3(10.0, 0.0, 0.0);
+	// Called for every vertex the material is visible on.
+	UV.x += TIME * scalar_x;
 }
-
-void fragment() {
-	
-}
-
-//void light() {
-//	// Called for every pixel for every light affecting the material.
-//	// Uncomment to replace the default light processing function with this one.
-//}

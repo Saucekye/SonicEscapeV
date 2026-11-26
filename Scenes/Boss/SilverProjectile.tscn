@@ -126,7 +126,7 @@ shape = SubResource("CircleShape2D_mvuam")
 debug_color = Color(0.6886426, 0, 0.12248207, 0.41960785)
 
 [node name="Timer" type="Timer" parent="." unique_id=355483283]
-wait_time = 20.0
+wait_time = 10.0
 one_shot = true
 autostart = true
 
