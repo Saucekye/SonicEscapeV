@@ -28,17 +28,13 @@ signal update_health_bar(boss_health : int, boss_max_health : int)
 var death_velocity := Vector2.ZERO
 var gravity := 900
 
-# --------------------------------------------------
 # READY
-# --------------------------------------------------
 
 func _ready():
 	randomize()
 	max_health = min(50, max(10, Test.level * 2))/2
 	health = max_health
-# --------------------------------------------------
 # PROCESS
-# --------------------------------------------------
 
 func _process(delta):
 
@@ -65,9 +61,7 @@ func _on_area_2d_area_entered(area: Area2D):
 		active_player = area.get_parent()
 		start_intro()
 
-# --------------------------------------------------
 # INTRO
-# --------------------------------------------------
 
 func start_intro():
 
@@ -86,9 +80,7 @@ func start_intro():
 
 	start_attack_loop()
 
-# --------------------------------------------------
 # ATTACK LOOP
-# --------------------------------------------------
 
 func start_attack_loop():
 
@@ -109,9 +101,7 @@ func start_attack_loop():
 		if state == BossState.IDLE:
 			await do_charge()
 
-# --------------------------------------------------
 # CHARGE ATTACK
-# --------------------------------------------------
 
 func do_charge():
 
@@ -165,9 +155,7 @@ func do_charge():
 	state = BossState.IDLE
 	anim.play("idle")
 
-# --------------------------------------------------
 # FLASH / HIT
-# --------------------------------------------------
 
 func flash_sprite(duration: float = 0.1):
 
@@ -179,7 +167,7 @@ func flash_sprite(duration: float = 0.1):
 
 	$hitsfx.play()
 
-	health -= 1
+	health -= Test.boss_damage
 
 	if health <= 0 and not dying:
 		start_death()
@@ -189,26 +177,26 @@ func _on_hitbox_area_entered(area: Area2D):
 	if state == BossState.DEAD:
 		return
 
-	if area.is_in_group("item"):
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
 
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
-			area.get_parent().queue_free()
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
+	if not is_instance_valid(area):
+		return   # freed during an earlier hit flash
 	if area.is_in_group("Playerattack"):
 		
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
 
-		if area.get_parent():
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 
-# --------------------------------------------------
 # DEATH
-# --------------------------------------------------
 
 func start_death():
 	

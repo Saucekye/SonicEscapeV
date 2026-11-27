@@ -5,7 +5,7 @@
 
 [node name="Pause" type="CanvasLayer" unique_id=252242124]
 process_mode = 3
-layer = 100
+layer = 110
 follow_viewport_enabled = true
 script = ExtResource("1_epbul")
 
@@ -69,7 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01000000000931322
-value = 0.50000000046566
+value = 0.8125
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/Settings" unique_id=792891429]
 layout_mode = 2
@@ -83,7 +83,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01000000000931322
-value = 0.50000000046566
+value = 0.8333
 
 [node name="TetoBox" type="HBoxContainer" parent="Panel/Settings" unique_id=904410025]
 layout_mode = 2

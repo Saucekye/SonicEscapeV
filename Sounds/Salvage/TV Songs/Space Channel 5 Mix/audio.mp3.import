@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d0vm3khxk74lp"
+path="res://.godot/imported/audio.mp3-17618a93e76264175a66c744ed3864f0.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Salvage/TV Songs/Space Channel 5 Mix/audio.mp3"
+dest_files=["res://.godot/imported/audio.mp3-17618a93e76264175a66c744ed3864f0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

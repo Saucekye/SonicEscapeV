@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://jvcnreiapydm"
+path="res://.godot/imported/IMBUSY.ogg-dbab62f6e11029b1d92cedba4543087f.oggvorbisstr"
+
+[deps]
+
+source_file="res://Scenes/april what the fuck/lines/IMBUSY.ogg"
+dest_files=["res://.godot/imported/IMBUSY.ogg-dbab62f6e11029b1d92cedba4543087f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

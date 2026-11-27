@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://duaknis5weaum"]
+
+[ext_resource type="Script" uid="uid://c10n6u3q38msu" path="res://Scenes/ScrollingPlatforms/flowe_platform.gd" id="1_m643e"]
+[ext_resource type="Texture2D" uid="uid://btxe65dv3axmc" path="res://Sprites/Boss/Flowery/flower_ralsei/flower_ralsei_00.png" id="2_spjqq"]
+[ext_resource type="Texture2D" uid="uid://bt4ohq1rsusb3" path="res://Sprites/Boss/Flowery/flower_ralsei/flower_ralsei_01.png" id="3_iur04"]
+[ext_resource type="Texture2D" uid="uid://fs7csot38uao" path="res://Sprites/Boss/Flowery/flower_ralsei/flower_ralsei_02.png" id="4_5kud3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xjt8x"]
+size = Vector2(29, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l60fa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_spjqq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_iur04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5kud3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="FlowePlatformB" type="AnimatableBody2D" unique_id=37525116 node_paths=PackedStringArray("sprite", "shape")]
+script = ExtResource("1_m643e")
+sprite = NodePath("AnimatedSprite2D")
+shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1729901720]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_xjt8x")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1074598178]
+sprite_frames = SubResource("SpriteFrames_l60fa")
+speed_scale = 2.0

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bxh5d7di2socf"
+path="res://.godot/imported/Jumpscare.ogg-6d3ac1e6324890c6d1ef77053fa2f894.oggvorbisstr"
+
+[deps]
+
+source_file="res://Scenes/april what the fuck/lines/Jumpscare.ogg"
+dest_files=["res://.godot/imported/Jumpscare.ogg-6d3ac1e6324890c6d1ef77053fa2f894.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

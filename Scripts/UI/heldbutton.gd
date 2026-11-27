@@ -99,5 +99,5 @@ func _input(event: InputEvent) -> void:
 				_force_release()
 	
 	# Debug key presses
-	if event is InputEventKey and event.pressed:
+	if debug_prints and event is InputEventKey and event.pressed:
 		print(event.keycode, " ", event.as_text())

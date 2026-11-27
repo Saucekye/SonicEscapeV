@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://m2dlw7yfvsgp"
+path="res://.godot/imported/Toby Fox - DELTARUNE Chapter 5 (Original Game Soundtrack) - 34 Flower Man feat. Camellia.mp3-81abcd23bd5380ef176178bc858078a7.mp3str"
+
+[deps]
+
+source_file="res://Music/Boss/Flowery & AHA/Toby Fox - DELTARUNE Chapter 5 (Original Game Soundtrack) - 34 Flower Man feat. Camellia.mp3"
+dest_files=["res://.godot/imported/Toby Fox - DELTARUNE Chapter 5 (Original Game Soundtrack) - 34 Flower Man feat. Camellia.mp3-81abcd23bd5380ef176178bc858078a7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

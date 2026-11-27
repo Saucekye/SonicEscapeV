@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bije27xlsp50l"
+path="res://.godot/imported/AdRevenue.ogg-346705c28d0b069de5cfc6094eca72d1.oggvorbisstr"
+
+[deps]
+
+source_file="res://Scenes/april what the fuck/lines/AdRevenue.ogg"
+dest_files=["res://.godot/imported/AdRevenue.ogg-346705c28d0b069de5cfc6094eca72d1.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

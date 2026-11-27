@@ -107,6 +107,7 @@ func _start():
 		_finish_intro()
 
 func _ready():
+	health = max_health
 	$Sprite2D/CanvasLayer/RED.visible = false
 	$TextureRect2.visible = false
 	$TextureRect3.visible = false
@@ -114,39 +115,20 @@ func _ready():
 	anim.play("intro")
 	get_parent().get_node("AnimatedSprite2D").visible = false
 
-# --------------------------------------------------
 # FIND ACTIVE PLAYER
-# --------------------------------------------------
 
 func _find_active_player() -> CharacterBody2D:
-	# Use the group system - much more reliable!
-	var players = get_tree().get_nodes_in_group("active_player")
-	if players.size() > 0 and is_instance_valid(players[0]):
-		return players[0]
+	# With more than one player it takes turns going after each
+	return BossTargets.pick(self) as CharacterBody2D
 
-	# Fallback: Check all CharacterBody2D nodes for is_player property
-	var all_characters = get_tree().get_nodes_in_group("all_characters")
-	for body in all_characters:
-		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
-			return body
-
-	return null
-
-# --------------------------------------------------
-# RESYNC ACTIVE PLAYER
-# --------------------------------------------------
-# Call this every frame (or right before using active_player after an
-# await) so a mid-fight character switch is picked up immediately instead
-# of the boss staying locked onto whichever character it started with.
+# RESYNC ACTIVE PLAYER Call this every frame
 
 func _resync_active_player() -> void:
 	var current_player = _find_active_player()
 	if current_player != null:
 		active_player = current_player
 
-# --------------------------------------------------
 # PROCESS
-# --------------------------------------------------
 
 func _process(delta):
 	if start:
@@ -204,9 +186,7 @@ func _process(delta):
 		if state == BossState.FLY:
 			fly_behavior(delta)
 
-# --------------------------------------------------
 # MAIN LOOP
-# --------------------------------------------------
 
 func start_attack_loop():
 
@@ -249,9 +229,7 @@ func start_attack_loop():
 		if state != BossState.DEAD:
 			state = BossState.FLY
 
-# --------------------------------------------------
 # FLYING
-# --------------------------------------------------
 
 func fly_behavior(delta):
 
@@ -263,9 +241,7 @@ func fly_behavior(delta):
 	# -----------------------------
 	var center = fly_center.global_position
 
-	# -----------------------------
 	# ORBIT MOTION
-	# -----------------------------
 	hover_offset += delta * 2.0
 
 	var orbit_radius = 200.0
@@ -275,9 +251,7 @@ func fly_behavior(delta):
 		sin(hover_offset)
 	) * orbit_radius
 
-	# -----------------------------
 	# SLIGHT PLAYER INFLUENCE
-	# -----------------------------
 	var player_bias = Vector2.ZERO
 
 	if active_player != null and is_instance_valid(active_player):
@@ -285,14 +259,10 @@ func fly_behavior(delta):
 
 	var target = orbit_pos + player_bias
 
-	# -----------------------------
 	# SMOOTH MOVE
-	# -----------------------------
 	global_position = global_position.lerp(target, delta * 2.5)
 
-# --------------------------------------------------
 # MOVE TO POSITION
-# --------------------------------------------------
 
 func move_to_position(target_pos: Vector2, speed: float) -> void:
 
@@ -305,17 +275,13 @@ func move_to_position(target_pos: Vector2, speed: float) -> void:
 
 		await get_tree().process_frame
 
-# --------------------------------------------------
 # FACE PLAYER
-# --------------------------------------------------
 
 func face_player():
 
 	sprite.flip_h = active_player.global_position.x < global_position.x
 
-# --------------------------------------------------
 # ATTACK 1
-# --------------------------------------------------
 
 func start_punch_attack() -> void:
 
@@ -336,15 +302,11 @@ func start_punch_attack() -> void:
 		$TextureRect2/AnimationPlayer.play("left")
 	await get_tree().create_timer(0.15).timeout
 
-	# --------------------------------------------------
 	# attack1 START
-	# --------------------------------------------------
 	anim.play("Attack1")
 	await anim.animation_finished
 
-	# --------------------------------------------------
 	# attack1to (INTERRUPTIBLE + PLAYER SUCK)
-	# --------------------------------------------------
 	if state == BossState.FALLING or state == BossState.DEAD:
 		return
 
@@ -370,15 +332,12 @@ func start_punch_attack() -> void:
 			break
 
 		# 🌀 SUCK PLAYER IN
-		var pull_dir = (global_position - active_player.global_position).normalized()
-		active_player.global_position += pull_dir * pull_strength * get_process_delta_time()
+		BossTargets.pull_everyone(get_tree(), global_position, pull_strength, get_process_delta_time())
 
 		t += get_process_delta_time()
 		await get_tree().process_frame
 
-	# --------------------------------------------------
 	# attack1end (KEEP SUCKING UNTIL ANIMATION ENDS)
-	# --------------------------------------------------
 	anim.play("Attack1end")
 	attack_behavior()
 	
@@ -387,8 +346,7 @@ func start_punch_attack() -> void:
 		_resync_active_player()
 
 		if active_player != null and is_instance_valid(active_player):
-			var pull_dir = (global_position - active_player.global_position).normalized()
-			active_player.global_position += pull_dir * pull_strength * get_process_delta_time()
+			BossTargets.pull_everyone(get_tree(), global_position, pull_strength, get_process_delta_time())
 
 			await get_tree().process_frame
 
@@ -399,9 +357,7 @@ func start_punch_attack() -> void:
 	anim.play("Idle")
 	$TextureRect2.visible = false
 
-# --------------------------------------------------
 # ATTACK 4
-# --------------------------------------------------
 
 func start_follow_attack() -> void:
 
@@ -446,9 +402,7 @@ func start_follow_attack() -> void:
 	anim.play("Idle")
 	state = BossState.FLY
 
-# --------------------------------------------------
 # ATTACK 2
-# --------------------------------------------------
 
 func start_attack2():
 	if health > 0:
@@ -536,9 +490,7 @@ func start_attack3() -> void:
 	anim.play("Idle")
 	state = BossState.FLY
 	start_attack_loop()
-# --------------------------------------------------
 # FLASH
-# --------------------------------------------------
 
 func flash_sprite(duration: float = 0.1) -> void:
 
@@ -548,7 +500,7 @@ func flash_sprite(duration: float = 0.1) -> void:
 
 	sprite_mat.set_shader_parameter("flash_amount", 0.0)
 	$hitsfx.play()
-	health -= 1
+	health -= Test.boss_damage
 
 	if health <= 0:
 		if phase == 1:
@@ -557,9 +509,7 @@ func flash_sprite(duration: float = 0.1) -> void:
 			emit_signal("over")
 			start_death()
 
-# --------------------------------------------------
 # PLAYER DETECTION
-# --------------------------------------------------
 
 func _on_area_2d_area_entered(area: Area2D):
 
@@ -570,9 +520,7 @@ func _on_area_2d_area_entered(area: Area2D):
 		start = true
 		_start()
 
-# --------------------------------------------------
 # DAMAGE
-# --------------------------------------------------
 
 func take_damage(amount = 1):
 
@@ -587,9 +535,7 @@ func take_damage(amount = 1):
 		else:
 			start_death()
 
-# --------------------------------------------------
 # PHASE 1 "DEATH" -> FALL OFFSCREEN -> PHASE 2
-# --------------------------------------------------
 
 func start_fall_phase1() -> void:
 	GlobalCanvasLayer.tricks = 10
@@ -600,9 +546,7 @@ func start_fall_phase1() -> void:
 	#velocity.y = -600
 	#velocity.x = randf_range(-200, 200)
 
-# --------------------------------------------------
 # PHASE 2 TRANSITION
-# --------------------------------------------------
 
 func start_phase2() -> void:
 	state = BossState.PHASE2TRANSITION
@@ -651,15 +595,18 @@ func start_death():
 
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
-	if area.is_in_group("item"):
-		update_health_bar.emit(health - 1, max_health)
+	if area.is_in_group("item") and preload("res://Scripts/Effects/item_hit.gd").counts(area, self):   # only a thrown Miku/OC hurts the boss
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
-		area.get_parent().queue_free()
+		if is_instance_valid(area) and is_instance_valid(area.get_parent()):
+			preload("res://Scripts/Effects/item_hit.gd").consume(area.get_parent(), self)   # she bounces away off screen
 
+	if not is_instance_valid(area):
+		return   # freed during an earlier hit flash
 	if area.is_in_group("Playerattack"):
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
-		if area.is_in_group("Player"):
+		if is_instance_valid(area) and area.is_in_group("Player") and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 

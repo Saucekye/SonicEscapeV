@@ -66,30 +66,13 @@ func _ready():
 	#get_parent().get_node("CharacterBody2D").visible = false
 	#get_parent().get_node("CharacterBody2D").process_mode = Node.PROCESS_MODE_DISABLED
 
-# --------------------------------------------------
 # FIND ACTIVE PLAYER
-# --------------------------------------------------
 
 func _find_active_player() -> CharacterBody2D:
-	# Use the group system - much more reliable!
-	var players = get_tree().get_nodes_in_group("active_player")
-	if players.size() > 0 and is_instance_valid(players[0]):
-		return players[0]
+	# With more than one player it takes turns going after each
+	return BossTargets.pick(self) as CharacterBody2D
 
-	# Fallback: Check all CharacterBody2D nodes for is_player property
-	var all_characters = get_tree().get_nodes_in_group("all_characters")
-	for body in all_characters:
-		if is_instance_valid(body) and "is_player" in body and body.is_player == true:
-			return body
-
-	return null
-
-# --------------------------------------------------
-# RESYNC ACTIVE PLAYER
-# --------------------------------------------------
-# Call this every frame (or right before using active_player after an
-# await) so a mid-fight character switch is picked up immediately instead
-# of the boss staying locked onto whichever character it started with.
+# RESYNC ACTIVE PLAYER Call this every frame
 
 func _resync_active_player() -> void:
 	var current_player = _find_active_player()
@@ -114,7 +97,6 @@ func _process(delta):
 			emit_signal("end")
 			queue_free()
 		return
-	# ------------------------------------------------
 
 	# Always resync with whoever is currently in the "active_player" group.
 	_resync_active_player()
@@ -129,7 +111,6 @@ func _process(delta):
 		anim.speed_scale = 1.0
 
 	lightning_anim.speed_scale = lerp(lightning_anim.speed_scale, target_speed, delta * 3)
-	# ---------------------------------------
 
 	match state:
 
@@ -331,16 +312,16 @@ func flash_sprite(duration: float = 0.1) -> void:
 	sprite_mat.set_shader_parameter("flash_amount", 0.0)
 
 	$hitsfx.play()
-	health -= 1
+	health -= Test.boss_damage
 
 
 # ---------------- HITBOX ----------------
 func _on_hit_box_area_entered(area: Area2D) -> void:
 
 	if area.is_in_group("Playerattack") and begin == true:
-		update_health_bar.emit(health - 1, max_health)
+		update_health_bar.emit(health - Test.boss_damage, max_health)
 		await flash_sprite()
-		if area.is_in_group("Player"):
+		if is_instance_valid(area) and area.is_in_group("Player") and is_instance_valid(area.get_parent()):
 			area.get_parent().can_stomp = true
 			area.get_parent().bounce = 0
 

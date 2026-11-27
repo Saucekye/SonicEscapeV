@@ -45,13 +45,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _get_current_player() -> Node2D:
-	var players = get_tree().get_nodes_in_group("Player")
-
-	for player in players:
-		if is_instance_valid(player) and player.get("is_player") == true:
-			return player
-
-	return null
+	# With more than one player it takes turns going after each
+	return BossTargets.pick(self)
 
 
 func _on_timer_timeout() -> void:

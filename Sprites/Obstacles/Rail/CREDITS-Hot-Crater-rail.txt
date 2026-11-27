@@ -1,0 +1,73 @@
+-----------------------
+SONIC ADVANCE LEVEL RIP
+-----------------------
+
+1) CREDITS
+The tilesets contained within were originally created by SEGA 
+and Dimps.  The rip was created via an automated process by 
+Techokami, with information and help from JoseTB & Retriever II.
+
+If you use the contents of this package, you must give credit
+to SEGA, Dimps, and Techokami.
+
+If you did not download this tileset from the following domains:
+http://holenet.info/
+http://www.spriters-resource.com/
+http://www.sonicfangameshq.com/
+http://www.themfz.com/
+then you should immediately start yelling at the webmaster for
+mirroring this file without permission.
+PROTIP: If you ask first, I'll almost always say yes!
+
+2) THE RIPPING PROCESS
+Sonic Advance level tiles are stored uncompressed in the ROM.
+The pallete starts before the tiles, and the 96x96 mappings are
+a short distance from the end of the tiles. A PHP script was made
+to automate the process of building the 96x96 tiles into images
+that are then numbered and saved. The script is available under a
+BSD license (e.g. do whatever you want, but give credit) from
+holenet.info at the following locations:
+SONIC ADVANCE 1: http://holenet.info/junks/sadv1_levelrip.phps
+SONIC ADVANCE 2: http://holenet.info/junks/sadv2_levelrip.phps
+SONIC ADVANCE 3: http://holenet.info/junks/sadv3_levelrip.phps
+
+For more information, please read the thread on Sonic Retro:
+http://forums.sonicretro.org/index.php?showtopic=15941
+
+3) EXPLANATION OF TILESET
+Due to a limitation on the GBA graphical system, you cannot have
+tile priority, only layer priority. In order to have parts of the
+level appear in front of Sonic, it is formed by combining layers
+BG2 (bottom) and BG3 (top) with the Object layer in between.
+
+The levels are built from 96x96 pixel blocks. Do NOT alter their
+dimensions or they will NOT work correctly!
+
+The background itself is completely separate from the block and
+tile data, so they have not been ripped. They will not be ripped.
+DO NOT ASK FOR BACKGROUND RIPS.
+
+4) CONTACT
+DO NOT ASK FOR BACKGROUND RIPS.
+DO NOT ASK FOR LEVEL EDITING INSTRUCTIONS.
+DO NOT ASK FOR THINGS TO BE RIPPED.
+DO NOT ASK HOW I RIPPED THIS.
+DO NOT ASK HOW TO HACK ROMS.
+DO NOT ASK HOW TO WRITE PHP CODE.
+Email: techokami [AT] gdarcade [D0T] taloncrossing [D0T] com
+
+5) GREETS
+JoseTB, Retriever II, Ainsworth, The Kins, Shadsy, the Something 
+Awful goons, Tweaker, Scarred Sun, drx, phugolz, Sazpaimon, Coburn64,
+MatthewPZC, Naoshi, and all the staff at:
+-Mario Fan Games Galaxy
+-Metroid: Fan Mission
+-XCulT
+-Sonic Retro
+-Goshi-Dan's Arcade
+-The Spriter's Resource
+-SMW Central
+
+6) THE END
+Enjoy the tilesets.
+-Techokami

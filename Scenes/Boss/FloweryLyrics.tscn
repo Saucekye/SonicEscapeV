@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c7k7wv5uebtap"]
+
+[ext_resource type="Script" uid="uid://cppa36ai6sfs7" path="res://Scenes/Boss/flowery_lyrics.gd" id="1_iihfr"]
+[ext_resource type="AudioStream" uid="uid://m2dlw7yfvsgp" path="res://Music/Boss/Flowery & AHA/Toby Fox - DELTARUNE Chapter 5 (Original Game Soundtrack) - 34 Flower Man feat. Camellia.mp3" id="2_2lhyy"]
+
+[node name="FloweryLyrics" type="Node2D" unique_id=1495710990 node_paths=PackedStringArray("music", "label")]
+script = ExtResource("1_iihfr")
+music = NodePath("AudioStreamPlayer2D")
+label = NodePath("RichTextLabel")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=941002849]
+offset_right = 500.0
+offset_bottom = 50.0
+bbcode_enabled = true
+text = "heh, its my jaboner"
+scroll_active = false
+tab_size = 24
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1464887811]
+stream = ExtResource("2_2lhyy")
