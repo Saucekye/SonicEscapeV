@@ -31,7 +31,7 @@
 [ext_resource type="AudioStream" uid="uid://cqoqmpfdjs5ll" path="res://Scenes/Boss/flowery/snd_badexplosion.wav" id="21_d6x4r"]
 [ext_resource type="Texture2D" uid="uid://cetcba4ocjcxw" path="res://Sprites/Boss/Flowery/orangeGlove.png" id="23_qixhl"]
 [ext_resource type="Texture2D" uid="uid://bgor25w2css4k" path="res://Sprites/Boss/Flowery/greens_flame/greens_flame_00.png" id="24_lh2mj"]
-[ext_resource type="Texture2D" uid="uid://wrb8st148heu" path="res://Sprites/Boss/Flowery/puuunch/puuunch_01.png" id="25_0md2l"]
+[ext_resource type="Texture2D" uid="uid://chhd3bfoytc8m" path="res://Sprites/Boss/Flowery/puuunch/puuunch_00.png" id="25_0md2l"]
 [ext_resource type="AudioStream" uid="uid://d12akn5grxnqh" path="res://Scenes/Boss/flowery/snd_forthefans.wav" id="26_f28l4"]
 [ext_resource type="AudioStream" uid="uid://cn7v1cr8q0msm" path="res://Scenes/Boss/flowery/snd_flowery_clash_cymbal.wav" id="27_oq6te"]
 [ext_resource type="Texture2D" uid="uid://bcs8cm38k6cr" path="res://Sprites/Boss/Flowery/download (1).png" id="28_opfg0"]
@@ -928,11 +928,12 @@ finale_boss_texture = ExtResource("25_0md2l")
 finale_boss_scale = Vector2(2, 2)
 finale_voice = ExtResource("26_f28l4")
 finale_clash_sound = ExtResource("27_oq6te")
-finale_spindash_anim = &"ball"
+finale_spindash_anim = &"Ball"
 finale_meter_texture = ExtResource("28_opfg0")
 finale_meter_scale = Vector2(0.25, 0.25)
 finale_meter_size = Vector2(250, 48)
 finale_press_sound = ExtResource("29_nprdo")
+finale_hit_sound = ExtResource("12_8h5u5")
 finale_push_texture = ExtResource("30_myojj")
 skip_intro = true
 

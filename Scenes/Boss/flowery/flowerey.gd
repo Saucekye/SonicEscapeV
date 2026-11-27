@@ -453,17 +453,19 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var rise_scroll_reverses: bool = false # true: after every pause a row goes the other way
 
 @export_subgroup("4. Finale: Voice & Lunge")
-# After the last attack: Flowery slides in from the right, says his line and lunges at the heart. The heart is
-# frozen (and can't be hurt) from the moment he lunges. Everything here is drawn on the heart's layer, above the black.
+# After the last attack: Flowery waits OFF SCREEN to the right and says his line, then lunges at the heart straight
+# from off screen. The heart is frozen (and can't be hurt) from the moment he lunges. Everything here is drawn on
+# the heart's layer, above the black.
 @export var finale_enabled: bool = true
-@export var finale_boss_texture: Texture2D # his look while he slides in, lunges and clashes (empty = a copy of his normal sprite). Draw it facing right.
+@export var finale_boss_texture: Texture2D # his look in the whole finale (empty = a copy of his normal sprite)
 @export var finale_boss_scale: Vector2 = Vector2.ONE # only used with finale_boss_texture
-@export var finale_boss_flip: bool = true # true: mirrored so he faces left, towards the heart (the art is assumed to face right)
+# false: the art is used as drawn. true: mirrored. He comes in from the right, so he should face LEFT. If he faces the
+# wrong way, flip this. It applies to the whole finale (waiting, lunge, clash, being shot off).
+@export var finale_boss_flip: bool = false
 @export var finale_voice: AudioStream # his line before the lunge
 @export var finale_voice_pause: float = 0.6 # how long he waits when there is no voice line
-@export_range(0.0, 1.0, 0.05) var finale_wait_x: float = 0.85 # where he stops to speak (fraction of the screen width)
-@export var finale_enter_time: float = 0.6 # slide-in
-@export var finale_lunge_time: float = 0.22 # the lunge: short = quick
+@export var finale_offscreen_margin: float = 100.0 # extra px past the right edge where he waits, so none of him shows
+@export var finale_lunge_time: float = 0.3 # the lunge from off screen to the heart: short = quick
 @export var finale_clash_gap: float = 90.0 # px between the heart and him when they clash
 @export var finale_clash_sound: AudioStream # played on impact
 @export var finale_music_fade: float = 0.8 # seconds the song and lyrics fade out for, starting at the impact
@@ -474,14 +476,23 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var finale_spindash_frames: SpriteFrames # optional override (empty = look it up on the player)
 @export var finale_spindash_anim: StringName = &"spindash"
 @export var finale_spindash_scale: Vector2 = Vector2.ONE
-@export var finale_shake_amount: float = 4.0 # px each way the two shake while they clash
+@export var finale_shake_amount: float = 4.0 # px each way the two shake while they clash (multiplied by the zoom)
 @export var finale_shake_interval: float = 0.03 # seconds between one shake step and the next
+# Clash zoom: the two are scaled up around their midpoint and moved into the top part of the screen,
+# so the timing meter and the prompt get the bottom part to themselves. When the press is made the zoom goes back
+# to normal while he is knocked away (see "4. Finale: Push").
+@export var finale_zoom_enabled: bool = true
+@export var finale_zoom: float = 2.0 # how much bigger the two get (1 = no zoom)
+@export_range(0.0, 1.0, 0.05) var finale_zoom_focus_y: float = 0.3 # screen height where the pair is centred (0.3 = middle of the top 60%)
+@export var finale_zoom_in_time: float = 0.35
+@export var finale_zoom_out_time: float = 0.25 # the zoom going back to normal after the press
+@export_range(0.0, 1.0, 0.05) var finale_meter_screen_y: float = 0.78 # meter height when zoomed (bottom 40% starts at 0.6)
 # The timing meter below them: a texture, and a white marker of the same height that scrolls from the left edge
 # to the centre (reaches it after finale_marker_time) and carries on to the right edge if Z is never pressed.
 @export var finale_meter_texture: Texture2D # empty = a plain dark bar with a red centre line
 @export var finale_meter_scale: Vector2 = Vector2.ONE
 @export var finale_meter_size: Vector2 = Vector2(520.0, 48.0) # placeholder bar size (no texture)
-@export var finale_meter_offset_y: float = 140.0 # px below the clash
+@export var finale_meter_offset_y: float = 140.0 # px below the clash (only used when the zoom is off)
 @export var finale_marker_width: float = 14.0
 @export var finale_marker_time: float = 1.6 # seconds for the marker to reach the centre
 @export var finale_meter_fade: float = 0.3 # fade in, before the marker starts
@@ -493,14 +504,18 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var finale_rings_max: int = 20
 @export var finale_closeness_curve: float = 2.0 # 1 = linear, higher = only a press very near the centre pays well
 
-@export_subgroup("4. Finale: Push")
-# After the press: he is pushed right to finale_follow_x of the screen, then the "camera" follows him: he stays
-# put while the character is left behind off the left edge and speed lines rush past. The fight stops there.
-# (Screen space: the black overlay is still up, so this is done with the visuals, not the level camera.)
-@export var finale_push_texture: Texture2D # his look while he is pushed (empty = he keeps his clash look). Draw it facing right.
+@export_subgroup("4. Finale: Hit & Push")
+# The press (or the marker running out): the character dashes straight onto him (drawn on top of him, with their
+# boost effect in their own colour) and he is shot off. He is thrown to finale_stop_pos (fast at first, slowing down)
+# while the zoom goes back to normal and the "camera" follows him: the character stays where the hit was, so it is
+# left behind off the left edge while speed lines rush past. The fight stops there.
+@export var finale_hit_time: float = 0.12 # the character's dash onto him: short = quick
+@export var finale_hit_boost: bool = true # the player's "Boost" effect, tinted with their music_color, while they dash
+@export var finale_hit_sound: AudioStream # played when the character hits him
+@export var finale_push_texture: Texture2D # his look while he is shot off (empty = he keeps his clash look). Same facing as the clash art.
 @export var finale_push_scale: Vector2 = Vector2.ONE
-@export_range(0.0, 1.0, 0.05) var finale_follow_x: float = 0.7 # where he ends up (fraction of the screen width)
-@export var finale_push_time: float = 0.5
+@export var finale_drift_time: float = 2.0 # seconds he takes to reach finale_stop_pos
+@export var finale_stop_pos: Vector2 = Vector2(0.5, 0.5) # where he ends up (fractions of the screen width and height)
 @export var finale_left_behind_time: float = 1.6 # how long the character takes to fall off the left edge
 @export var finale_speed_lines: bool = true
 @export var finale_line_color: Color = Color(1.0, 1.0, 1.0, 0.5)
@@ -609,6 +624,8 @@ var _clash_shaking: bool = false
 var _shake_nodes: Array = []
 var _shake_bases: Array = []
 var _shake_timer: float = 0.0
+var _shake_zoom: float = 1.0 # current clash zoom (the shake is scaled by it)
+var _zoom_saved: Array = [] # one entry per zoomed node: [node, position before the zoom, scale before the zoom]
 var _speed_lines_on: bool = false
 var _lines_timer: float = 0.0
 
@@ -1588,8 +1605,7 @@ func _home_in(delta: float) -> void:
 func _end_lunge() -> void:
 	if _lunging:
 		_lunging = false
-		lunge_done.emit()
-
+		lunge_done.emit.call_deferred()
 
 func _deflect() -> void:
 	_deflected = true
@@ -1893,7 +1909,7 @@ func _on_phase_started(_new_phase: int) -> void:
 #   wipe_start_delay later the rectangles start covering the screen (it ends fully black)
 #   when voice 2 AND the wipe are both done: the heart fades in and the player controls it
 #   then                  the attacks (lilypads, bomb flowers, words, ricochet shots, rising bullets)
-#   then                  the finale (voice line, lunge, clash + timing meter, push). The fight stops there.
+#   then                  the finale (voice line, lunge, clash + timing meter, knockback). The fight stops there.
 # NOTE: _update_phase() is NOT called here, so phase 2 hasn't started yet. When you add the
 # next part, call _update_phase() once the transition is over.
 func _start_transition() -> void:
@@ -2761,7 +2777,7 @@ func _spawn_lilypad_pattern(spacing: float, x: float) -> HeartLilypad:
 #   attack 3  the word walls
 #   attack 4  the ricochet shots
 #   attack 5  the rising bullets
-#   finale    voice line, lunge, clash + timing meter, push (the fight stops there for now)
+#   finale    voice line, lunge, clash + timing meter, knockback (the fight stops there for now)
 # Each one starts once the one before it is completely over. Add the next part at the end of this list.
 func _run_bomb_attack() -> void:
 	await _bomb_flowers_sequence()
@@ -3223,9 +3239,11 @@ func _spawn_rise_row(index: int, y: float) -> HeartRiseRow:
 #   1) Flowery slides in from the right, says his line, then lunges at the heart (the heart is frozen and
 #      can't be hurt from the lunge on)
 #   2) impact: the music and lyrics fade out, the heart is swapped for the character's spindash animation and
-#      the two shake; a timing meter appears below them and the player presses Z as the marker passes the centre
+#      the two shake. The camera zooms in on them (they fill the top part of the screen); a timing meter and a
+#      "Press Z" prompt appear in the bottom part and the player presses Z as the marker passes the centre
 #   3) rings by how close the press was to the centre
-#   4) he is pushed right, then the "camera" follows him while the character is left behind
+#   4) he is knocked away: he drifts for finale_drift_time seconds and stops at the centre of the screen, while
+#      the camera zooms back out to normal. Then the "camera" follows him while the character is left behind.
 # The fight stops at the end (nothing follows yet).
 func _finale_alive() -> bool:
 	return is_inside_tree() and _heart != null and is_instance_valid(_heart)
@@ -3237,15 +3255,11 @@ func _run_finale() -> void:
 	_dismiss_dash_hint()
 	var rect := _screen_rect()
 
-	# 1) he slides in from the right...
+	# 1) he waits OFF SCREEN to the right, so nothing of him shows while he talks
 	var boss := _make_finale_boss()
 	_heart_layer.add_child(boss)
-	boss.position = Vector2(rect.end.x + _visual_half_width(boss) + 40.0, _heart.position.y)
-	var enter := boss.create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	enter.tween_property(boss, "position:x", rect.size.x * finale_wait_x, finale_enter_time)
-	await enter.finished
-	if not _finale_alive():
-		return
+	var off_x := rect.end.x + _visual_half_width(boss) + finale_offscreen_margin
+	boss.position = Vector2(off_x, _heart.position.y)
 
 	# ...says his line (the stream's length is used, so a missing line can't freeze the fight)...
 	voice_player.stop()
@@ -3258,7 +3272,7 @@ func _run_finale() -> void:
 	if not _finale_alive():
 		return
 
-	# ...and lunges at the heart. From here the heart is frozen and safe.
+	# ...and lunges at the heart straight from off screen. From here the heart is frozen and safe.
 	_finale_started = true
 	_heart_forced = true
 	_heart_locked = true
@@ -3268,13 +3282,14 @@ func _run_finale() -> void:
 	_stop_charge_sound()
 	var heart_pos := _heart.position
 	var clash_pos := Vector2(minf(heart_pos.x + finale_clash_gap, rect.end.x - 40.0), heart_pos.y)
+	boss.position = Vector2(off_x, heart_pos.y) # at the heart's height (still off screen), so the lunge is a straight line
 	var lunge := boss.create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 	lunge.tween_property(boss, "position", clash_pos, finale_lunge_time)
 	await lunge.finished
 	if not _finale_alive():
 		return
 
-	# 2) impact: music and lyrics fade out, heart -> spindash, shake
+	# 2) impact: music and lyrics fade out, heart -> the character's ball, shake
 	_heart_active = false # stops the heart's movement and blinking
 	if lyrics:
 		lyrics.stop(finale_music_fade)
@@ -3285,12 +3300,20 @@ func _run_finale() -> void:
 		clasher.position = heart_pos
 		_heart_layer.add_child(clasher)
 	else:
-		clasher = _heart # no spindash animation found: the heart itself clashes
+		clasher = _heart # no animation found: the heart itself clashes
+
+	# Zoom in on the two first, then shake (the shake bases are taken after the zoom)
+	if finale_zoom_enabled:
+		await _finale_zoom_in(boss, clasher)
+		if not _finale_alive():
+			return
 	_start_clash_shake([boss, clasher])
 
-	# The timing meter, centred below the two
+	# The timing meter: in the bottom part of the screen when zoomed, otherwise centred below the two
 	var meter_center := Vector2((heart_pos.x + clash_pos.x) * 0.5, maxf(heart_pos.y, clash_pos.y) + finale_meter_offset_y)
-	var closeness := await _finale_timing_meter(meter_center)
+	if finale_zoom_enabled:
+		meter_center = Vector2(rect.size.x * 0.5, rect.size.y * finale_meter_screen_y)
+	var closeness := await _finale_timing_meter(meter_center) # returns the moment Z is pressed
 	if not _finale_alive():
 		return
 
@@ -3300,31 +3323,12 @@ func _run_finale() -> void:
 		Test.rings += rings
 		_play_heart_sfx(heart_break_ring_sound)
 
-	# 4) the push: he is shoved right (the character stays glued to him)...
+	# 4) the press: the character dashes onto him, then he is shot off with the camera following him
 	_stop_clash_shake()
-	if finale_push_texture:
-		boss.texture = finale_push_texture
-		boss.hframes = 1
-		boss.vframes = 1
-		boss.frame = 0
-		boss.region_enabled = false
-		boss.centered = true
-		boss.offset = Vector2.ZERO
-		boss.scale = finale_push_scale
-	var follow_x := maxf(boss.position.x, rect.size.x * finale_follow_x)
-	var gap_x := clasher.position.x - boss.position.x # negative: the character is on his left
-	var push := boss.create_tween().set_parallel(true).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	push.tween_property(boss, "position:x", follow_x, finale_push_time)
-	push.tween_property(clasher, "position:x", follow_x + gap_x, finale_push_time)
-	await push.finished
+	await _finale_hit(boss, clasher)
 	if not _finale_alive():
 		return
-
-	# ...then the camera follows him: he stays put, the character is left behind and the world rushes past
-	_speed_lines_on = finale_speed_lines
-	var behind := clasher.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	behind.tween_property(clasher, "position:x", -400.0, finale_left_behind_time)
-	await behind.finished
+	await _finale_shoot_off(boss, clasher)
 	if not _finale_alive():
 		return
 	if clasher == _heart:
@@ -3332,7 +3336,6 @@ func _run_finale() -> void:
 	else:
 		clasher.queue_free()
 	# (nothing follows yet: the fight stops here, Flowery stays where he is with the lines rushing past)
-
 
 # Flowery's visual in the finale: finale_boss_texture, or a copy of his normal sprite (its current frame).
 func _make_finale_boss() -> Sprite2D:
@@ -3361,35 +3364,198 @@ func _visual_half_width(s: Sprite2D) -> float:
 	return w * 0.5
 
 
-# The character's spindash animation. finale_spindash_frames if set, otherwise the first AnimatedSprite2D inside
-# the current player that has an animation called finale_spindash_anim. Returns null when there is none.
+# Swaps the heart for the player character playing its "ball" animation.
+# The player's sprites are Sprite2D nodes driven by an AnimationPlayer, so the nodes that the animation
+# animates are duplicated onto a holder together with a copy of the animation (looping).
+# finale_spindash_frames (an AnimatedSprite2D SpriteFrames) still works as an override.
 func _make_spindash_visual() -> Node2D:
-	var frames: SpriteFrames = finale_spindash_frames
-	var is_centered := true
-	var off := Vector2.ZERO
-	if frames == null:
-		var player: Node = get_tree().get_first_node_in_group("active_player")
-		if player == null:
-			player = active_player
-		if player != null:
-			for n in player.find_children("*", "AnimatedSprite2D", true, false):
-				var a := n as AnimatedSprite2D
-				if a.sprite_frames and a.sprite_frames.has_animation(finale_spindash_anim):
-					frames = a.sprite_frames
-					is_centered = a.centered
-					off = a.offset
-					break
-	if frames == null or not frames.has_animation(finale_spindash_anim):
-		push_warning("Flowery: no spindash animation '%s' found (set finale_spindash_frames), the heart clashes instead" % finale_spindash_anim)
+	if finale_spindash_frames != null and finale_spindash_frames.has_animation(finale_spindash_anim):
+		var af := AnimatedSprite2D.new()
+		af.sprite_frames = finale_spindash_frames
+		af.scale = finale_spindash_scale
+		af.animation = finale_spindash_anim
+		af.play(finale_spindash_anim)
+		return af
+
+	var player: Node = get_tree().get_first_node_in_group("active_player")
+	if player == null:
+		player = active_player
+	if player == null:
 		return null
-	var s := AnimatedSprite2D.new()
-	s.sprite_frames = frames
-	s.centered = is_centered
-	s.offset = off
-	s.scale = finale_spindash_scale
-	s.animation = finale_spindash_anim
-	s.play(finale_spindash_anim)
-	return s
+
+	# Find the AnimationPlayer that has the animation (case-insensitive, any library)
+	var src_ap: AnimationPlayer = null
+	var src_anim: Animation = null
+	var seen: Array[String] = []
+	for n in player.find_children("*", "AnimationPlayer", true, false):
+		var ap := n as AnimationPlayer
+		for full_name in ap.get_animation_list():
+			seen.append(String(full_name))
+			var short := String(full_name).get_slice("/", String(full_name).get_slice_count("/") - 1)
+			if short.to_lower() == String(finale_spindash_anim).to_lower():
+				src_ap = ap
+				src_anim = ap.get_animation(full_name)
+				break
+		if src_ap != null:
+			break
+	if src_ap == null:
+		push_warning("Flowery: no '%s' animation found on the player's AnimationPlayers. Found: %s" % [finale_spindash_anim, seen])
+		return null
+
+	# The node the animation's track paths start from
+	var root: Node = src_ap.get_node_or_null(src_ap.root_node)
+	if root == null:
+		root = src_ap.get_parent()
+
+	var holder := Node2D.new()
+	var root_scale := Vector2.ONE
+	if root is Node2D:
+		root_scale = (root as Node2D).global_scale.abs() # same on-screen size as the real character
+	holder.scale = root_scale * finale_spindash_scale
+
+	var anim := src_anim.duplicate() as Animation
+	anim.loop_mode = Animation.LOOP_LINEAR
+	var copies := {}
+	for i in range(anim.get_track_count() - 1, -1, -1):
+		var path := anim.track_get_path(i)
+		var top := ""
+		if path.get_name_count() > 0:
+			top = String(path.get_name(0))
+		var target: Node = null
+		if top != "" and top != ".." and top != ".":
+			target = root.get_node_or_null(NodePath(top))
+		if not (target is Node2D):
+			anim.remove_track(i) # tracks for anything that isn't copied (hitboxes, methods, sounds...)
+			continue
+		if not copies.has(top):
+			var copy := target.duplicate() as Node2D
+			copy.visible = true
+			holder.add_child(copy)
+			copy.name = top # track paths use this name
+			copies[top] = copy
+
+	if copies.is_empty():
+		push_warning("Flowery: the '%s' animation doesn't animate any Node2D under the player" % finale_spindash_anim)
+		holder.free()
+		return null
+
+	var lib := AnimationLibrary.new()
+	lib.add_animation(finale_spindash_anim, anim)
+	var player_copy := AnimationPlayer.new()
+	player_copy.add_animation_library(&"", lib)
+	holder.add_child(player_copy) # root_node defaults to its parent, the holder
+	player_copy.autoplay = String(finale_spindash_anim) # starts as soon as the holder enters the tree
+	return holder
+
+
+# Scales the two up around their midpoint and moves that midpoint to the middle of the top part of the screen.
+# What they were before is kept in _zoom_saved (the knockback uses it to bring the camera back to normal).
+func _finale_zoom_in(boss: Node2D, clasher: Node2D) -> void:
+	var rect := _screen_rect()
+	var z := maxf(finale_zoom, 0.01)
+	var mid := (boss.position + clasher.position) * 0.5
+	var target := Vector2(rect.size.x * 0.5, rect.size.y * finale_zoom_focus_y)
+	_zoom_saved = []
+	_shake_zoom = z
+	var tw := boss.create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	for n in [boss, clasher]:
+		_zoom_saved.append([n, n.position, n.scale])
+		tw.tween_property(n, "position", target + (n.position - mid) * z, finale_zoom_in_time)
+		tw.tween_property(n, "scale", n.scale * z, finale_zoom_in_time)
+	await tw.finished
+
+# The press: the character dashes straight onto him (drawn above him), with their boost effect.
+func _finale_hit(boss: Sprite2D, clasher: Node2D) -> void:
+	clasher.z_index = 1 # on top of him
+	if finale_hit_boost:
+		_add_finale_boost(clasher)
+	var tw := clasher.create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tw.tween_property(clasher, "position", boss.position, maxf(finale_hit_time, 0.01))
+	await tw.finished
+	_play_heart_sfx(finale_hit_sound)
+
+
+# The player's own "Boost" effect, painted in their music_color, behind the character (it points right: they dash right).
+# It is a child of the character's visual, which uses the player's own coordinate space, so the position and scale
+# set on the player's Boost node carry over as they are.
+func _add_finale_boost(clasher: Node2D) -> void:
+	if clasher == _heart:
+		return # no ball was found, nothing sensible to attach it to
+	var player: Node = get_tree().get_first_node_in_group("active_player")
+	if player == null:
+		player = active_player
+	if player == null:
+		return
+	var src := player.get_node_or_null("Boost") as AnimatedSprite2D
+	if src == null or src.sprite_frames == null:
+		return
+	var fx := AnimatedSprite2D.new()
+	fx.sprite_frames = src.sprite_frames
+	fx.centered = src.centered
+	fx.offset = src.offset
+	fx.position = src.position
+	fx.scale = src.scale
+	fx.texture_filter = src.texture_filter
+	fx.flip_h = false
+	var mat := _make_recolor_material(_player_heart_color())
+	mat.set_shader_parameter("amount", 0.8) # keeps a little of the art's own shading
+	fx.material = mat
+	clasher.add_child(fx)
+	fx.show_behind_parent = true
+	var anim_name: StringName = src.animation
+	if not src.sprite_frames.has_animation(anim_name):
+		anim_name = StringName(src.sprite_frames.get_animation_names()[0])
+	fx.play(anim_name)
+
+
+# The hit lands: he is shot off and the "camera" follows him. He is thrown to finale_stop_pos (fast, slowing down)
+# while the zoom goes back to normal. The character stays where the hit was, so it slides off the left edge and
+# the speed lines rush past.
+func _finale_shoot_off(boss: Sprite2D, clasher: Node2D) -> void:
+	var rect := _screen_rect()
+	var z := maxf(_shake_zoom, 0.01)
+
+	# The sizes they go back to: what they were before the zoom
+	var boss_end_scale: Vector2 = boss.scale / z
+	var clasher_end_scale: Vector2 = clasher.scale / z
+	if finale_push_texture:
+		# His shot-off look: drawn at its own scale (kept zoomed for now, so there is no jump)
+		boss.texture = finale_push_texture
+		boss.hframes = 1
+		boss.vframes = 1
+		boss.frame = 0
+		boss.region_enabled = false
+		boss.centered = true
+		boss.offset = Vector2.ZERO
+		boss_end_scale = finale_push_scale
+		boss.scale = finale_push_scale * z
+	_shake_zoom = 1.0
+	_zoom_saved = []
+
+	_speed_lines_on = finale_speed_lines
+	var stop := Vector2(rect.size.x * finale_stop_pos.x, rect.size.y * finale_stop_pos.y)
+	var zoom_out := maxf(finale_zoom_out_time, 0.01)
+	var needs_scale := not is_equal_approx(z, 1.0) or finale_push_texture != null
+
+	# Him: thrown fast, slowing down until he stops
+	var tw := boss.create_tween().set_parallel(true)
+	tw.tween_property(boss, "position", stop, maxf(finale_drift_time, 0.01)) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if needs_scale:
+		tw.tween_property(boss, "scale", boss_end_scale, zoom_out) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+
+	# The character: left behind, off the left edge
+	var behind := clasher.create_tween().set_parallel(true)
+	behind.tween_property(clasher, "position:x", -400.0, maxf(finale_left_behind_time, 0.01)) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	if needs_scale:
+		behind.tween_property(clasher, "scale", clasher_end_scale, zoom_out) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+
+	await tw.finished
+	if behind.is_valid() and behind.is_running():
+		await behind.finished
 
 
 # The two keep jittering a few px around where they are until _stop_clash_shake().
@@ -3418,7 +3584,7 @@ func _update_clash_shake(delta: float) -> void:
 	if _shake_timer > 0.0:
 		return
 	_shake_timer = maxf(finale_shake_interval, 0.005)
-	var a := finale_shake_amount
+	var a := finale_shake_amount * _shake_zoom
 	for i in _shake_nodes.size():
 		if is_instance_valid(_shake_nodes[i]):
 			_shake_nodes[i].position = _shake_bases[i] + Vector2(randf_range(-a, a), randf_range(-a, a))
@@ -3506,16 +3672,15 @@ func _finale_timing_meter(center: Vector2) -> float:
 			closeness = 1.0 - absf(2.0 * t - 1.0)
 			break
 
-	# The marker stops, flashes, and the meter goes away after a moment
+	# The marker stops and flashes; the meter fades away by itself after a moment (the hit doesn't wait for it)
 	_play_heart_sfx(finale_press_sound)
 	marker.color = Color(1.0, 0.9, 0.3)
 	var pf := prompt.create_tween()
 	pf.tween_property(prompt, "modulate:a", 0.0, 0.2)
-	await get_tree().create_timer(finale_result_hold).timeout
-	if is_instance_valid(meter):
-		var out := meter.create_tween()
-		out.tween_property(meter, "modulate:a", 0.0, 0.25)
-		out.tween_callback(meter.queue_free)
+	var out := meter.create_tween()
+	out.tween_interval(finale_result_hold)
+	out.tween_property(meter, "modulate:a", 0.0, 0.25)
+	out.tween_callback(meter.queue_free)
 	return closeness
 
 
