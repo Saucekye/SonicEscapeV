@@ -5,14 +5,13 @@ extends Node2D
 @export var scroll_speed: float = 300.0
 @export var ground_y: float = 700.0   # y the player stands on (this node's local y)
 @export var margin: float = 600.0     # road is kept this far beyond each screen edge
+# Added to every flower's width when placing it. Negative closes gaps (transparent padding in the
+# sprite), positive adds space. Tune it until the flowers touch without overlapping.
+@export var spacing_adjust: float = 0.0
 
-var running := false
+var running := true
 var _platforms: Array = []
 var _printed := false
-
-
-func start() -> void:
-	running = true
 
 
 # By default the road stays where it is, so the player isn't left with nothing to stand on.
@@ -33,6 +32,12 @@ func _physics_process(delta: float) -> void:
 				p.global_position.x -= dx
 
 	_cover_view()
+
+
+# Width of the slot one flower takes up in the road. Everything (placing, measuring, culling)
+# uses this, so the spacing stays consistent.
+func _slot_width(p: FlowerPlatform) -> float:
+	return maxf(p.get_width() + spacing_adjust, 1.0) # never 0 or less, or the spawn loops would never end
 
 
 # Global x range currently visible on screen
@@ -58,7 +63,7 @@ func _cover_view() -> void:
 		if not is_instance_valid(p):
 			_platforms.remove_at(i)
 			continue
-		var half: float = p.get_width() * 0.5
+		var half: float = _slot_width(p) * 0.5
 		if p.global_position.x + half < view.x - margin * 2.0 or p.global_position.x - half > view.y + margin * 2.0:
 			p.queue_free()
 			_platforms.remove_at(i)
@@ -71,7 +76,7 @@ func _cover_view() -> void:
 	var left := INF
 	var right := -INF
 	for p in _platforms:
-		var half: float = p.get_width() * 0.5
+		var half: float = _slot_width(p) * 0.5
 		left = minf(left, p.global_position.x - half)
 		right = maxf(right, p.global_position.x + half)
 
@@ -115,7 +120,7 @@ func _road_y() -> float:
 # New flower with its left edge at left_x; returns its right edge
 func _spawn_from(left_x: float) -> float:
 	var p := _make()
-	var w := p.get_width()
+	var w := _slot_width(p)
 	p.global_position = Vector2(left_x + w * 0.5, _road_y())
 	return left_x + w
 
@@ -123,6 +128,6 @@ func _spawn_from(left_x: float) -> float:
 # New flower with its right edge at right_x; returns its left edge
 func _spawn_to(right_x: float) -> float:
 	var p := _make()
-	var w := p.get_width()
+	var w := _slot_width(p)
 	p.global_position = Vector2(right_x - w * 0.5, _road_y())
 	return right_x - w

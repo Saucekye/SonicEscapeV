@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c7k7wv5uebtap"]
 
-[ext_resource type="Script" uid="uid://cppa36ai6sfs7" path="res://Scenes/Boss/flowery_lyrics.gd" id="1_iihfr"]
+[ext_resource type="Script" uid="uid://cppa36ai6sfs7" path="res://Scenes/Boss/flowery/flowery_lyrics.gd" id="1_iihfr"]
 [ext_resource type="AudioStream" uid="uid://m2dlw7yfvsgp" path="res://Music/Boss/Flowery & AHA/Toby Fox - DELTARUNE Chapter 5 (Original Game Soundtrack) - 34 Flower Man feat. Camellia.mp3" id="2_2lhyy"]
 
 [node name="FloweryLyrics" type="Node2D" unique_id=1495710990 node_paths=PackedStringArray("music", "label")]
