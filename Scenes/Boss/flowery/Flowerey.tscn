@@ -1,16 +1,29 @@
 [gd_scene format=3 uid="uid://y0tuk0he8lw3"]
 
-[ext_resource type="Script" uid="uid://ccauxpeq7o0hb" path="res://Scenes/Boss/flowerey.gd" id="1_j4prp"]
-[ext_resource type="Shader" uid="uid://dxliwfv4rql5a" path="res://Shaders/rain.gdshader" id="2_jo2ac"]
-[ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="3_2mcqd"]
-[ext_resource type="Texture2D" uid="uid://cqkmakx35rgvr" path="res://Sprites/Boss/Flowery/deflected/deflected_00.png" id="4_j4prp"]
-[ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="5_o25vk"]
-[ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="6_oimtm"]
-[ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="7_klxi0"]
-[ext_resource type="AudioStream" uid="uid://bprfc8e5lshpo" path="res://misc/ha(2).MP3" id="10_qxii1"]
+[ext_resource type="Script" uid="uid://ccauxpeq7o0hb" path="res://Scenes/Boss/flowery/flowerey.gd" id="1_rfw5f"]
+[ext_resource type="AudioStream" uid="uid://bg3hpvf85jq2i" path="res://Scenes/Boss/flowery/snd_flowery_voiceclip_jarona1.wav" id="2_24yww"]
+[ext_resource type="AudioStream" uid="uid://rva6hmstrtv8" path="res://Scenes/Boss/flowery/snd_flowery_voiceclip_jarona2.wav" id="3_6my17"]
+[ext_resource type="AudioStream" uid="uid://cnnqamvtwfupq" path="res://Scenes/Boss/flowery/snd_flowery_voiceclip_jarona3.wav" id="4_op860"]
+[ext_resource type="AudioStream" uid="uid://dqfhcaot3qnxk" path="res://Scenes/Boss/flowery/snd_flowery_voiceclip_jarona4.wav" id="5_x4kqd"]
+[ext_resource type="PackedScene" uid="uid://bw1fae4g7yojj" path="res://Scenes/Boss/flowery/FloweryPetals.tscn" id="6_24yww"]
+[ext_resource type="Texture2D" uid="uid://c52ymoixrm48x" path="res://Sprites/Boss/Flowery/cactus/cactus_00.png" id="7_6my17"]
+[ext_resource type="Texture2D" uid="uid://cjxr8o34nefhy" path="res://Sprites/Boss/Flowery/bamboo/bamboo_00.png" id="8_op860"]
+[ext_resource type="AudioStream" uid="uid://b6gly5a0twega" path="res://Scenes/Boss/flowery/Flowery_voiceclip_you're_a_hero.wav" id="9_up7cy"]
+[ext_resource type="Shader" uid="uid://dxliwfv4rql5a" path="res://Shaders/rain.gdshader" id="9_x4kqd"]
+[ext_resource type="AudioStream" uid="uid://d0km82uy0n1a8" path="res://Scenes/Boss/flowery/Flowery_voiceclip_get_a_chance_2.wav" id="10_s53v6"]
+[ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="10_up7cy"]
+[ext_resource type="Texture2D" uid="uid://bo84lnc8i2ema" path="res://Sprites/Boss/Flowery/Soul Sprite/SOUL_battle_orange.png" id="11_fslvq"]
+[ext_resource type="Texture2D" uid="uid://cqkmakx35rgvr" path="res://Sprites/Boss/Flowery/deflected/deflected_00.png" id="11_s53v6"]
+[ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="12_fslvq"]
+[ext_resource type="AudioStream" uid="uid://cbuguaci5i6ts" path="res://Scenes/Boss/flowery/snd_flowery_power_up.wav" id="12_xnqj0"]
+[ext_resource type="AudioStream" uid="uid://dslctfeopgl3c" path="res://Scenes/Boss/flowery/snd_glove_launch.wav" id="13_5uxqj"]
+[ext_resource type="AudioStream" uid="uid://b76ryiqwpl36p" path="res://misc/SA3_554.wav" id="13_xnqj0"]
+[ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="14_5uxqj"]
+[ext_resource type="Texture2D" uid="uid://dixen0a6mux3f" path="res://Sprites/Boss/Flowery/lillypads/lillypads_00.png" id="14_6my17"]
+[ext_resource type="AudioStream" uid="uid://bprfc8e5lshpo" path="res://misc/ha(2).MP3" id="15_8h5u5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wlcxu"]
-shader = ExtResource("2_jo2ac")
+shader = ExtResource("9_x4kqd")
 shader_parameter/rain_amount = 200.0
 shader_parameter/near_rain_length = 0.00999999977648
 shader_parameter/far_rain_length = 0.00999999977648
@@ -60,7 +73,7 @@ _data = {
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_58vct"]
-shader = ExtResource("3_2mcqd")
+shader = ExtResource("10_up7cy")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="Animation" id="Animation_h04th"]
@@ -148,7 +161,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0.19947784, 0.19949242, 0.19951689),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [ExtResource("5_o25vk"), ExtResource("6_oimtm"), ExtResource("5_o25vk")]
+"values": [ExtResource("12_fslvq"), ExtResource("13_xnqj0"), ExtResource("12_fslvq")]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -444,7 +457,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_klxi0")]
+"values": [ExtResource("14_5uxqj")]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -657,7 +670,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("6_oimtm")]
+"values": [ExtResource("13_xnqj0")]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
@@ -858,16 +871,30 @@ size = Vector2(37.499954, 46.25)
 
 [node name="Flowery" type="Node2D" unique_id=14096194]
 scale = Vector2(2.4, 2.4)
-script = ExtResource("1_j4prp")
-skip_intro = true
+script = ExtResource("1_rfw5f")
 chase_push_speed = 650.0
+jarona_voice_lines = Array[AudioStream]([ExtResource("2_24yww"), ExtResource("3_6my17"), ExtResource("4_op860"), ExtResource("5_x4kqd")])
+jarona2HitboxScene = ExtResource("6_24yww")
+jarona2HitboxAnim = &"SpinningPetal"
+jarona2HitboxLaunchAnim = &"SpinningPetal"
+jarona3HurtTexture = ExtResource("7_6my17")
+jarona3SafeTexture = ExtResource("8_op860")
+transition_voice_1 = ExtResource("9_up7cy")
+transition_voice_2 = ExtResource("10_s53v6")
+heart_texture = ExtResource("11_fslvq")
+heart_charge_sound = ExtResource("12_xnqj0")
+heart_dash_light_sound = ExtResource("13_5uxqj")
+heart_dash_heavy_sound = ExtResource("13_5uxqj")
+lilypad_texture = ExtResource("14_6my17")
+skip_intro = true
 
 [node name="TextureRect" type="ColorRect" parent="." unique_id=1711039593]
 material = SubResource("ShaderMaterial_wlcxu")
-offset_left = -160.0
-offset_top = -453.33328
-offset_right = 1176.0
-offset_bottom = 234.66672
+offset_left = 1043.75
+offset_top = -334.1667
+offset_right = 2379.75
+offset_bottom = 353.8333
+scale = Vector2(-1, 1)
 color = Color(1, 1, 1, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect" unique_id=1336683115]
@@ -876,11 +903,10 @@ libraries/ = SubResource("AnimationLibrary_qmkhx")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=764279375]
 material = SubResource("ShaderMaterial_58vct")
 position = Vector2(780, 20)
-texture = ExtResource("4_j4prp")
+texture = ExtResource("11_s53v6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=1250821519]
 libraries/ = SubResource("AnimationLibrary_58vct")
-autoplay = &"RESET"
 
 [node name="HitBox" type="Area2D" parent="Sprite2D" unique_id=861169678 groups=["Enemy"]]
 
@@ -926,15 +952,15 @@ position = Vector2(393.333, -4.7683716e-06)
 position = Vector2(379.9997, -300)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=700291145]
-stream = ExtResource("10_qxii1")
+stream = ExtResource("15_8h5u5")
 volume_db = -20.0
 
 [node name="hitsfx" type="AudioStreamPlayer" parent="." unique_id=1525265719]
-stream = ExtResource("6_oimtm")
+stream = ExtResource("13_xnqj0")
 volume_db = -20.0
 
 [node name="hitsfx2" type="AudioStreamPlayer" parent="." unique_id=1368252556]
-stream = ExtResource("6_oimtm")
+stream = ExtResource("13_xnqj0")
 volume_db = -20.0
 
 [node name="IdlePoint" type="Marker2D" parent="." unique_id=1943215389]
