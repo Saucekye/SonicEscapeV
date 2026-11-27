@@ -14,6 +14,7 @@
 [ext_resource type="Shader" uid="uid://cccaamr31e552" path="res://misc/flashwhite.gdshader" id="10_up7cy"]
 [ext_resource type="Texture2D" uid="uid://bo84lnc8i2ema" path="res://Sprites/Boss/Flowery/Soul Sprite/SOUL_battle_orange.png" id="11_fslvq"]
 [ext_resource type="Texture2D" uid="uid://cqkmakx35rgvr" path="res://Sprites/Boss/Flowery/deflected/deflected_00.png" id="11_s53v6"]
+[ext_resource type="AudioStream" uid="uid://bqkgdlbuvmsig" path="res://Scenes/Boss/flowery/snd_great_shine.ogg" id="12_8h5u5"]
 [ext_resource type="AudioStream" uid="uid://buxux6a8pq17b" path="res://misc/startup1.MP3" id="12_fslvq"]
 [ext_resource type="AudioStream" uid="uid://cbuguaci5i6ts" path="res://Scenes/Boss/flowery/snd_flowery_power_up.wav" id="12_xnqj0"]
 [ext_resource type="AudioStream" uid="uid://dslctfeopgl3c" path="res://Scenes/Boss/flowery/snd_glove_launch.wav" id="13_5uxqj"]
@@ -21,6 +22,21 @@
 [ext_resource type="AudioStream" uid="uid://wvo1vqx8fa8w" path="res://Sounds/BossSFX/NeoMetal/startup4(3).MP3" id="14_5uxqj"]
 [ext_resource type="Texture2D" uid="uid://dixen0a6mux3f" path="res://Sprites/Boss/Flowery/lillypads/lillypads_00.png" id="14_6my17"]
 [ext_resource type="AudioStream" uid="uid://bprfc8e5lshpo" path="res://misc/ha(2).MP3" id="15_8h5u5"]
+[ext_resource type="Texture2D" uid="uid://bgf302xmnn0a3" path="res://Sprites/Boss/Flowery/reticle_blue_flower/reticle_blue_flower_00.png" id="15_up7cy"]
+[ext_resource type="Texture2D" uid="uid://crngqbf2epoy5" path="res://Sprites/Boss/Flowery/bullet/bullet_00.png" id="16_s53v6"]
+[ext_resource type="Texture2D" uid="uid://disu1so1671u" path="res://Sprites/Boss/Flowery/leaf_large/leaf_large_00.png" id="17_fslvq"]
+[ext_resource type="Texture2D" uid="uid://brvonagrymfs3" path="res://Sprites/Boss/Flowery/reticle_yellow/reticle_yellow_00.png" id="18_s53v6"]
+[ext_resource type="AudioStream" uid="uid://bgxefauyvj8i4" path="res://Scenes/Boss/flowery/snd_menumove.wav" id="19_5uxqj"]
+[ext_resource type="AudioStream" uid="uid://blpyfjd0cay23" path="res://Scenes/Boss/flowery/snd_scytheburst.wav" id="20_8h5u5"]
+[ext_resource type="AudioStream" uid="uid://cqoqmpfdjs5ll" path="res://Scenes/Boss/flowery/snd_badexplosion.wav" id="21_d6x4r"]
+[ext_resource type="Texture2D" uid="uid://cetcba4ocjcxw" path="res://Sprites/Boss/Flowery/orangeGlove.png" id="23_qixhl"]
+[ext_resource type="Texture2D" uid="uid://bgor25w2css4k" path="res://Sprites/Boss/Flowery/greens_flame/greens_flame_00.png" id="24_lh2mj"]
+[ext_resource type="Texture2D" uid="uid://wrb8st148heu" path="res://Sprites/Boss/Flowery/puuunch/puuunch_01.png" id="25_0md2l"]
+[ext_resource type="AudioStream" uid="uid://d12akn5grxnqh" path="res://Scenes/Boss/flowery/snd_forthefans.wav" id="26_f28l4"]
+[ext_resource type="AudioStream" uid="uid://cn7v1cr8q0msm" path="res://Scenes/Boss/flowery/snd_flowery_clash_cymbal.wav" id="27_oq6te"]
+[ext_resource type="Texture2D" uid="uid://bcs8cm38k6cr" path="res://Sprites/Boss/Flowery/download (1).png" id="28_opfg0"]
+[ext_resource type="AudioStream" uid="uid://cfwqh213xhgh2" path="res://Scenes/Boss/flowery/snd_closet_impact.ogg" id="29_nprdo"]
+[ext_resource type="Texture2D" uid="uid://dnrcwbnp356g" path="res://Sprites/Boss/Flowery/hurt/hurt_00.png" id="30_myojj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wlcxu"]
 shader = ExtResource("9_x4kqd")
@@ -882,10 +898,42 @@ jarona3SafeTexture = ExtResource("8_op860")
 transition_voice_1 = ExtResource("9_up7cy")
 transition_voice_2 = ExtResource("10_s53v6")
 heart_texture = ExtResource("11_fslvq")
+heart_awaken_sound = ExtResource("12_8h5u5")
+heart_speed = 450.0
 heart_charge_sound = ExtResource("12_xnqj0")
 heart_dash_light_sound = ExtResource("13_5uxqj")
 heart_dash_heavy_sound = ExtResource("13_5uxqj")
 lilypad_texture = ExtResource("14_6my17")
+bomb_flower_texture = ExtResource("15_up7cy")
+bomb_projectile_texture = ExtResource("16_s53v6")
+bomb_bullet_texture = ExtResource("17_fslvq")
+bomb_blue_chance = 0.15
+bomb_reticle_texture = ExtResource("18_s53v6")
+bomb_tick_sound = ExtResource("19_5uxqj")
+bomb_launch_sound = ExtResource("20_8h5u5")
+bomb_explode_sound = ExtResource("21_d6x4r")
+bomb_flower_count = 25
+bomb_bullet_count = 15
+word_list = Array[String](["IMAGE", "DREAM", "QUANTITY", "KNIFE", "DOOR", "SONIC", "EGGMAN", "TAILS", "DETERMINATION", "SIXSEVEN", "¿¡AHA?!", "¿¡ELATION?!", "2011X", "SAUCEKYE", "FRIEND"])
+word_wall_count = 10
+ricochet_texture = ExtResource("23_qixhl")
+ricochet_scale = Vector2(0.25, 0.25)
+ricochet_hit_size = Vector2(12, 12)
+ricochet_bounce_sound = ExtResource("13_5uxqj")
+ricochet_deflect_sound = ExtResource("20_8h5u5")
+rise_bullet_texture = ExtResource("24_lh2mj")
+rise_blue_chance = 0.0
+rise_scroll_speed = 120.0
+finale_boss_texture = ExtResource("25_0md2l")
+finale_boss_scale = Vector2(2, 2)
+finale_voice = ExtResource("26_f28l4")
+finale_clash_sound = ExtResource("27_oq6te")
+finale_spindash_anim = &"ball"
+finale_meter_texture = ExtResource("28_opfg0")
+finale_meter_scale = Vector2(0.25, 0.25)
+finale_meter_size = Vector2(250, 48)
+finale_press_sound = ExtResource("29_nprdo")
+finale_push_texture = ExtResource("30_myojj")
 skip_intro = true
 
 [node name="TextureRect" type="ColorRect" parent="." unique_id=1711039593]

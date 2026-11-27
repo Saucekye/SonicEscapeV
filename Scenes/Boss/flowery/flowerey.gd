@@ -18,9 +18,9 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, TRANSITION, DYING }
 
 # ---------------- TUNING ----------------
 # Inspector layout (every group is a dropdown):
-#   General                    health, bar, music, chase, flow
+#   General                    health, bar, music, chase, flow, rewards
 #   Phase 1                    every attack so far (Jarona, Jarona 2, Jarona 3)
-#   Middle Point (Transition)  parry + exit, voices, screen wipe and the heart section
+#   Middle Point (Transition)  parry + exit, voices, screen wipe, the heart section and the finale
 #   Phase 2                    empty for now, no attacks yet
 #   Debug                      testing helpers
 
@@ -76,6 +76,15 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, TRANSITION, DYING }
 @export var trail_rainbow_speed: float = 1.0 # full rainbow cycles per second
 @export_range(0.0, 1.0, 0.05) var trail_rainbow_saturation: float = 0.7 # lower = paler colours
 
+@export_subgroup("Rewards (blue attacks)")
+# ONE reward for every blue attack the player breaks: the Jarona 3 blue block (stomp / attack) and
+# anything the heart breaks with a dash. Same counters as picking up a ring.
+@export var heart_break_rings: int = 1 # rings (Test.rings) granted for breaking ANY blue attack
+@export var heart_break_meter: int = 5 # meter (Test.meter) granted with it, like picking up a ring
+@export var heart_break_ring_sound: AudioStream
+# Free rings (Test.rings) the moment the fight reaches its middle point.
+@export var middle_point_rings: int = 10
+
 
 # =====================================================================
 @export_group("Phase 1")
@@ -109,7 +118,8 @@ enum State { INACTIVE, INTRO, IDLE, ATTACKING, TRANSITION, DYING }
 @export var jarona2FlipToDirection: bool = false # flip the hitbox to face its travel direction (assumes the art faces right)
 
 @export_subgroup("Attack: Jarona 3 (walls)")
-# Walls of three hitboxes: ground + ceiling always hurt, the middle one breaks when the player stomps/attacks it.
+# Walls of three hitboxes: ground + ceiling always hurt, the middle one breaks when the player stomps/attacks it
+# (and grants the shared reward from General > Rewards).
 # Positions below use the arena's coordinates (the same numbers the editor shows for nodes in the arena scene).
 @export var jarona3Count: int = 3 # how many walls per attack
 @export var jarona3Spacing: float = 500.0 # distance in px between one wall and the next
@@ -185,6 +195,14 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var heart_texture: Texture2D # put the heart image here (it is never rotated or flipped, so draw it facing right)
 @export var heart_scale: Vector2 = Vector2.ONE
 @export var heart_fade_time: float = 0.8
+# Intro: the heart fades in POINTING DOWN in the colour of the current player character (their music_color),
+# hangs there, then glows as it turns to face right and turns back into its own (orange) colours.
+# The player can only move once that is over. Draw the heart in its final colours (orange): the colour
+# of the player character is painted over it during the intro.
+@export var heart_intro_hold: float = 0.7 # seconds it hangs there pointing down
+@export var heart_turn_time: float = 0.6 # seconds the turn + glow + colour change take
+@export var heart_glow_color: Color = Color(1.0, 0.85, 0.5, 1.0) # colour of the glow
+@export var heart_awaken_sound: AudioStream # played as it glows and turns
 @export var heart_edge_margin: float = 0.0 # extra px kept between the heart and the screen edges
 @export_range(0.1, 1.0, 0.05) var heart_hitbox_scale: float = 0.8 # hurtbox size relative to the heart's size
 
@@ -211,12 +229,14 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export_subgroup("3. Heart: Dash Attack")
 # The dash is an attack: it breaks BLUE attacks (like a regular character's jump/stomp does) and
 # flies through them. Everything else still hurts, even during the dash.
+# What breaking a blue attack gives is set in General > Rewards (blue attacks).
 @export var heart_weak_dash_attacks: bool = false # true: the weak hop breaks blue attacks too
 @export var heart_dash_invulnerable: bool = false # true: the dash is also immune to non-blue attacks
 
 @export_subgroup("3. Heart: Damage")
 # When the heart is hurt, every player character is hurt too
 @export var heart_iframes_time: float = 1.0
+@export var heart_hurt_sound_window: float = 0.5 # seconds the players' own sounds (their hurt sound) are let through after the heart is hurt; the rest of the time they are silent
 
 @export_subgroup("3. Heart: Sounds")
 @export var heart_charge_sound: AudioStream # optional: loops while charging, pitch rises with charge
@@ -224,7 +244,7 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var heart_dash_heavy_sound: AudioStream
 
 @export_subgroup("3. Heart: Hint")
-# Hint shown on screen (behind the heart) until the first dash
+# Hint shown on screen (behind the heart) until the first dash. The finale's "Press Z" prompt uses the same font, size and colour.
 @export var dash_hint_text: String = "press and hold Z"
 @export var dash_hint_font: Font # optional
 @export var dash_hint_font_size: int = 28
@@ -237,7 +257,7 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var heart_action_right: StringName = &"ui_right"
 @export var heart_action_up: StringName = &"ui_up"
 @export var heart_action_down: StringName = &"ui_down"
-@export var heart_action_charge: StringName = &"ui_accept" # Z: hold to charge, release to dash
+@export var heart_action_charge: StringName = &"ui_accept" # Z: hold to charge, release to dash (also the finale's timing press)
 
 @export_subgroup("3. Heart: Lilypads")
 # Touching a lilypad BOUNCES the heart forward: it is invincible, rises, grows and keeps its dash
@@ -278,7 +298,6 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export_range(0.1, 1.0, 0.05) var lilypad_attack_reach_safety: float = 0.8 # only this fraction of the strafe distance is ever asked of the player
 @export var lilypad_attack_start_delay: float = 0.8 # pause after the push-back, before the first pattern
 @export var lilypad_attack_speed: float = 320.0 # px/s everything moves left
-@export var lilypad_attack_use_chain_speed: bool = false # true: speed is multiplied by get_chain_speed_multiplier()
 @export var lilypad_attack_cactus_rows: int = 3
 @export var lilypad_attack_cactus_width: float = 60.0
 @export var lilypad_attack_cactus_extra_height: float = 50.0 # added to the screen height (half above, half below)
@@ -286,7 +305,7 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 @export var lilypad_attack_pad_gap: float = 80.0 # space between the pad's right edge and the first cactus row
 @export_range(0.0, 1.0, 0.05) var lilypad_attack_pad_y_min: float = 0.2 # the pad appears at a random height between these two (fractions of the screen)
 @export_range(0.0, 1.0, 0.05) var lilypad_attack_pad_y_max: float = 0.8
-@export_range(0.0, 1.0, 0.05) var lilypad_pushback_x: float = 0.2 # where the heart is pushed to (fraction of the screen width)
+@export_range(0.0, 1.0, 0.05) var lilypad_pushback_x: float = 0.2 # where the heart is pushed to (fraction of the screen width); also used by the ricochet shots' push-back
 @export var lilypad_pushback_time: float = 0.5
 
 @export_subgroup("3. Heart: Lilypad Speed-up")
@@ -312,6 +331,180 @@ enum WallArt { STRETCH, TILE } # STRETCH: art is scaled to fill the block. TILE:
 
 
 # =====================================================================
+@export_subgroup("3. Heart: Bomb Flowers")
+# Attack 2, right after the lilypads: a flower appears at the far right, a projectile hits it and it bursts into
+# spinning bullets. This repeats; each flower appears sooner and bursts sooner than the one before.
+@export var bomb_enabled: bool = true
+@export var bomb_flower_texture: Texture2D # the flower
+@export var bomb_flower_scale: Vector2 = Vector2.ONE
+@export var bomb_projectile_texture: Texture2D # what is shot at the flower (it points to the right in the image)
+@export var bomb_projectile_scale: Vector2 = Vector2.ONE
+@export var bomb_bullet_texture: Texture2D # each bullet of the burst
+@export var bomb_bullet_scale: Vector2 = Vector2.ONE
+@export_range(0.0, 1.0, 0.05) var bomb_blue_chance: float = 0.25 # chance for EACH bullet of a burst to be blue (a dash breaks blue ones)
+@export var bomb_bullet_blue_texture: Texture2D # blue bullets use this (empty = the normal bullet texture, tinted blue)
+@export var bomb_blue_color: Color = Color(0.3, 0.7, 1.0)
+@export var bomb_bullet_hit_size: Vector2 = Vector2(28.0, 28.0) # the part of a bullet that hurts (px)
+@export var bomb_reticle_texture: Texture2D # drawn on top of each flower while it waits to be shot
+@export var bomb_reticle_scale: Vector2 = Vector2.ONE
+@export var bomb_reticle_close_in: float = 1.8 # the reticle starts this many times bigger and shrinks onto the flower (1 = no shrinking)
+@export var bomb_reticle_spin: float = 0.0 # radians per second (0 = it doesn't turn)
+@export var bomb_tick_sound: AudioStream # a very short sound, repeated faster and faster until the flower is shot
+@export var bomb_tick_start_interval: float = 0.4 # seconds between ticks when the flower appears...
+@export var bomb_tick_end_interval: float = 0.06 # ...and right before the shot
+@export var bomb_tick_start_pitch: float = 1.0 # pitch of the first tick (1 = the sound as it is)...
+@export var bomb_tick_end_pitch: float = 2.0 # ...rising to this one right before the shot (2 = an octave higher)
+@export var bomb_launch_sound: AudioStream # the noise when the projectile is sent
+@export var bomb_explode_sound: AudioStream
+@export var bomb_start_delay: float = 1.0 # pause after the lilypads before the first flower
+@export var bomb_flower_count: int = 8
+@export var bomb_flower_margin: float = 120.0 # distance from the right edge of the screen
+@export_range(0.0, 1.0, 0.05) var bomb_y_min: float = 0.15 # flowers appear at a random height between these (fractions of the screen)
+@export_range(0.0, 1.0, 0.05) var bomb_y_max: float = 0.85
+@export var bomb_min_y_gap: float = 140.0 # a flower is never closer in height than this to the one before it
+@export var bomb_first_interval: float = 2.6 # seconds from the first flower to the second
+@export_range(0.3, 1.0, 0.01) var bomb_interval_factor: float = 0.75 # every interval is this fraction of the one before (faster and faster)
+@export var bomb_min_interval: float = 0.25
+@export var bomb_fuse: float = 1.5 # seconds from a flower appearing to the projectile being sent
+@export_range(0.3, 1.0, 0.01) var bomb_fuse_factor: float = 0.92 # every fuse is this fraction of the one before
+@export var bomb_min_fuse: float = 0.4
+@export var bomb_projectile_speed: float = 1100.0
+@export var bomb_projectile_speed_gain: float = 1.15 # the projectile gets this much faster for every flower
+@export var bomb_projectile_from: Vector2 = Vector2.UP # side of the screen it is shot from (UP = from above)
+@export var bomb_bullet_count: int = 8
+@export var bomb_bullet_speed: float = 340.0
+@export var bomb_bullet_speed_gain: float = 1.04 # the bullets get this much faster for every flower
+@export var bomb_bullet_spin: float = 8.0 # radians per second
+
+@export_subgroup("3. Heart: Word Walls")
+# Attack 3, after the last bomb flower has exploded: lanes of words, stacked end to end with small gaps between
+# them, move left across the screen. The words in a lane scroll VERTICALLY (round and round), in pulses: they
+# slide, pause, slide... Neighbouring lanes scroll in opposite directions (one up, the next down).
+# Some words are blue: a dash breaks them (and gives a ring).
+@export var word_attack_enabled: bool = true
+@export var word_list: Array[String] = ["IMAGE", "DREAM", "QUANTITY", "KNIFE", "DOOR"] # the words that appear
+@export var word_wall_count: int = 6 # how many columns go by before the attack is over
+@export var word_blue_chance: float = 0.2 # chance for each word to be blue
+@export var word_start_delay: float = 1.0 # pause after the last flower, before the first column
+@export var word_wall_speed: float = 240.0 # px/s the columns move left
+@export var word_wall_spacing: float = 420.0 # px from one column to the next
+@export var word_wall_gap: float = 80.0 # empty space between two words of a column (px); the heart has to fit through it
+@export var word_rotation_degrees: float = 90.0 # 90 = the words read downwards, along the lane (as in the reference image); 0 = normal horizontal text
+@export var word_scroll_speed: float = 220.0 # average px/s the words scroll up or down
+@export var word_scroll_move_time: float = 0.9 # seconds it scrolls...
+@export var word_scroll_pause_time: float = 0.5 # ...then pauses (0 = one smooth continuous flow)
+@export var word_scroll_reverses: bool = false # true: after every pause a lane goes the other way (up, then down, then up...)
+@export var word_font: Font # empty = the default font
+@export var word_font_size: int = 48
+@export var word_color: Color = Color.WHITE
+@export var word_blue_color: Color = Color(0.3, 0.7, 1.0)
+
+@export_subgroup("3. Heart: Ricochet Shots")
+# Attack 4, after the word walls: blue projectiles are fired at a WALL (the top, bottom or right edge of the
+# screen), bounce off it and fly at the heart (aimed at where the heart is at the moment of the bounce).
+# Every shot is faster than the one before. A dash does NOT break them: it pushes the heart back (like the
+# first lilypad landing) and the projectile flies off to the back. Touching one without a dash hurts.
+# The attack is over once every shot has been deflected or has left the screen.
+@export var ricochet_enabled: bool = true
+@export var ricochet_texture: Texture2D # the projectile (it points to the right in the image)
+@export var ricochet_scale: Vector2 = Vector2.ONE
+@export var ricochet_hit_size: Vector2 = Vector2(32.0, 32.0) # the part of the projectile that hurts / gets dashed (px)
+@export var ricochet_color: Color = Color(0.3, 0.7, 1.0) # placeholder colour (used when there is no texture)
+@export var ricochet_bounce_sound: AudioStream # played when a shot hits the wall
+@export var ricochet_deflect_sound: AudioStream # played when the heart dashes into a shot
+@export var ricochet_wall_top: bool = true # the walls a shot may bounce off (at least one; none = top)
+@export var ricochet_wall_bottom: bool = true
+@export var ricochet_wall_right: bool = true
+@export_range(0.0, 1.0, 0.05) var ricochet_wall_x_min: float = 0.45 # where on the top/bottom wall a shot bounces (fractions of the screen width)
+@export_range(0.0, 1.0, 0.05) var ricochet_wall_x_max: float = 0.85
+@export_range(0.0, 1.0, 0.05) var ricochet_wall_y_min: float = 0.2 # where on the right wall a shot bounces (fractions of the screen height)
+@export_range(0.0, 1.0, 0.05) var ricochet_wall_y_max: float = 0.8
+@export var ricochet_start_delay: float = 1.0 # pause after the word walls, before the first shot
+@export var ricochet_count: int = 8
+@export var ricochet_first_interval: float = 1.6 # seconds from the first shot to the second
+@export_range(0.3, 1.0, 0.01) var ricochet_interval_factor: float = 0.88 # every interval is this fraction of the one before
+@export var ricochet_min_interval: float = 0.4
+@export var ricochet_start_speed: float = 380.0 # px/s of the first shot (before AND after the bounce)
+@export var ricochet_speed_gain: float = 1.12 # every shot is this much faster than the last
+@export var ricochet_max_speed: float = 1400.0
+@export var ricochet_flyoff_direction: Vector2 = Vector2(-1.0, -0.3) # where a deflected shot flies off to (to the back)
+@export var ricochet_flyoff_speed: float = 1600.0
+
+@export_subgroup("3. Heart: Rising Bullets")
+# Attack 5, after every ricochet shot is gone: rows of bullets start below the screen and rise. The bullets of a
+# row sit side by side with gaps, and scroll HORIZONTALLY (round and round) in pulses, like the words do, only
+# turned a quarter: they slide, pause, slide... Neighbouring rows scroll in opposite directions (one left, the next
+# right). Some bullets are blue: a dash breaks them (shared reward from General > Rewards).
+@export var rise_enabled: bool = true
+@export var rise_bullet_texture: Texture2D # the bullet
+@export var rise_bullet_scale: Vector2 = Vector2.ONE
+@export var rise_bullet_blue_texture: Texture2D # blue bullets use this (empty = the normal texture, tinted blue)
+@export_range(0.0, 1.0, 0.05) var rise_blue_chance: float = 0.2 # chance for each bullet to be blue
+@export var rise_blue_color: Color = Color(0.3, 0.7, 1.0)
+@export var rise_bullet_hit_size: Vector2 = Vector2(28.0, 28.0) # the part of a bullet that hurts (px); x is also the bullet's slot width
+@export var rise_row_count: int = 6 # how many rows go by before the attack is over
+@export var rise_start_delay: float = 1.0 # pause after the last ricochet shot, before the first row
+@export var rise_speed: float = 240.0 # px/s the rows rise
+@export var rise_row_spacing: float = 380.0 # px from one row to the next
+@export var rise_bullet_gap: float = 90.0 # empty space between two bullets of a row (px); the heart has to fit through it
+@export var rise_scroll_speed: float = 220.0 # average px/s the bullets scroll left or right
+@export var rise_scroll_move_time: float = 0.9 # seconds it scrolls...
+@export var rise_scroll_pause_time: float = 0.5 # ...then pauses (0 = one smooth continuous flow)
+@export var rise_scroll_reverses: bool = false # true: after every pause a row goes the other way
+
+@export_subgroup("4. Finale: Voice & Lunge")
+# After the last attack: Flowery slides in from the right, says his line and lunges at the heart. The heart is
+# frozen (and can't be hurt) from the moment he lunges. Everything here is drawn on the heart's layer, above the black.
+@export var finale_enabled: bool = true
+@export var finale_boss_texture: Texture2D # his look while he slides in, lunges and clashes (empty = a copy of his normal sprite). Draw it facing right.
+@export var finale_boss_scale: Vector2 = Vector2.ONE # only used with finale_boss_texture
+@export var finale_boss_flip: bool = true # true: mirrored so he faces left, towards the heart (the art is assumed to face right)
+@export var finale_voice: AudioStream # his line before the lunge
+@export var finale_voice_pause: float = 0.6 # how long he waits when there is no voice line
+@export_range(0.0, 1.0, 0.05) var finale_wait_x: float = 0.85 # where he stops to speak (fraction of the screen width)
+@export var finale_enter_time: float = 0.6 # slide-in
+@export var finale_lunge_time: float = 0.22 # the lunge: short = quick
+@export var finale_clash_gap: float = 90.0 # px between the heart and him when they clash
+@export var finale_clash_sound: AudioStream # played on impact
+@export var finale_music_fade: float = 0.8 # seconds the song and lyrics fade out for, starting at the impact
+
+@export_subgroup("4. Finale: Clash")
+# The heart is swapped for the character's spindash animation. It is taken from an AnimatedSprite2D inside the
+# current player that has an animation called finale_spindash_anim; or set finale_spindash_frames to use your own.
+@export var finale_spindash_frames: SpriteFrames # optional override (empty = look it up on the player)
+@export var finale_spindash_anim: StringName = &"spindash"
+@export var finale_spindash_scale: Vector2 = Vector2.ONE
+@export var finale_shake_amount: float = 4.0 # px each way the two shake while they clash
+@export var finale_shake_interval: float = 0.03 # seconds between one shake step and the next
+# The timing meter below them: a texture, and a white marker of the same height that scrolls from the left edge
+# to the centre (reaches it after finale_marker_time) and carries on to the right edge if Z is never pressed.
+@export var finale_meter_texture: Texture2D # empty = a plain dark bar with a red centre line
+@export var finale_meter_scale: Vector2 = Vector2.ONE
+@export var finale_meter_size: Vector2 = Vector2(520.0, 48.0) # placeholder bar size (no texture)
+@export var finale_meter_offset_y: float = 140.0 # px below the clash
+@export var finale_marker_width: float = 14.0
+@export var finale_marker_time: float = 1.6 # seconds for the marker to reach the centre
+@export var finale_meter_fade: float = 0.3 # fade in, before the marker starts
+@export var finale_prompt_text: String = "Press Z" # under the meter (font, size and colour: Heart > Hint)
+@export var finale_press_sound: AudioStream
+@export var finale_result_hold: float = 0.6 # how long the stopped marker stays before the meter goes away
+# Rings = lerp(min, max, closeness ^ curve). Closeness is 1 at the centre and 0 at either edge (or no press).
+@export var finale_rings_min: int = 0
+@export var finale_rings_max: int = 20
+@export var finale_closeness_curve: float = 2.0 # 1 = linear, higher = only a press very near the centre pays well
+
+@export_subgroup("4. Finale: Push")
+# After the press: he is pushed right to finale_follow_x of the screen, then the "camera" follows him: he stays
+# put while the character is left behind off the left edge and speed lines rush past. The fight stops there.
+# (Screen space: the black overlay is still up, so this is done with the visuals, not the level camera.)
+@export var finale_push_texture: Texture2D # his look while he is pushed (empty = he keeps his clash look). Draw it facing right.
+@export var finale_push_scale: Vector2 = Vector2.ONE
+@export_range(0.0, 1.0, 0.05) var finale_follow_x: float = 0.7 # where he ends up (fraction of the screen width)
+@export var finale_push_time: float = 0.5
+@export var finale_left_behind_time: float = 1.6 # how long the character takes to fall off the left edge
+@export var finale_speed_lines: bool = true
+@export var finale_line_color: Color = Color(1.0, 1.0, 1.0, 0.5)
+
 @export_group("Phase 2")
 # =====================================================================
 # No attacks yet. When Phase 2 gets its own attacks, put each one in a subgroup here
@@ -361,6 +554,8 @@ var _wipe_layer: CanvasLayer
 var _heart_layer: CanvasLayer
 var _heart: Node2D
 var _heart_active: bool = false
+var _heart_color_mat: ShaderMaterial
+var _bomb_flowers_alive: int = 0
 var _heart_iframes: float = 0.0
 var _charge: float = 0.0 # 0..1
 var _charging: bool = false
@@ -376,7 +571,9 @@ var _test_hazard_timer: float = 0.0
 var _charge_sfx: AudioStreamPlayer
 var _dash_hint: Label
 var _dash_hint_done: bool = false
-var _frozen_players: Array = [] # [[node, previous process_mode], ...]
+var _pinned: Dictionary = {} # player node -> the screen position it is held at
+var _muted_audio: Dictionary = {} # audio player node (inside a player) -> its normal volume
+var _hurt_audio_token: int = 0
 
 # Lilypads
 var _lilypads: Array = []
@@ -405,6 +602,15 @@ var _lyrics_layer: CanvasLayer
 var _lyrics_old_parent: Node
 var _lyrics_old_index: int = 0
 var _lyrics_old_position: Vector2 = Vector2.ZERO
+
+# Finale
+var _finale_started: bool = false # the heart can't be hurt from here on
+var _clash_shaking: bool = false
+var _shake_nodes: Array = []
+var _shake_bases: Array = []
+var _shake_timer: float = 0.0
+var _speed_lines_on: bool = false
+var _lines_timer: float = 0.0
 
 # One list per phase. Phase 2 has no attacks yet: add them to the second list when they exist.
 var attack_pools: Array = [
@@ -444,6 +650,8 @@ class TransitionRect extends Node2D:
 #   get_hazard_rect() -> Rect2   (screen coordinates)
 # and, optionally, a "blue" property and an on_heart_dash_break() method (it should remove itself;
 # without that method the node is simply freed).
+# A blue hazard with a "deflects" property set to true is not broken by a dash: the dash pushes the heart back
+# and calls the hazard's fly_off(speed) instead (see HeartRicochet).
 class HeartHazard extends Node2D:
 	var size: Vector2 = Vector2(40.0, 40.0)
 	var blue: bool = false
@@ -468,6 +676,249 @@ class HeartHazard extends Node2D:
 			return
 		var col := Color(0.3, 0.7, 1.0) if blue else Color(1.0, 0.3, 0.4)
 		draw_rect(Rect2(-size * 0.5, size), col, true)
+
+
+# A picture (or a plain circle when there is no texture) for the bomb flowers and their projectile.
+class HeartArt extends Node2D:
+	var texture: Texture2D
+	var fallback_radius: float = 40.0
+	var fallback_color: Color = Color.WHITE
+	var ring: bool = false # placeholder drawn as a reticle (ring + cross) instead of a filled circle
+
+	func _draw() -> void:
+		if texture:
+			draw_texture(texture, -texture.get_size() * 0.5)
+		elif ring:
+			draw_arc(Vector2.ZERO, fallback_radius, 0.0, TAU, 32, fallback_color, 3.0)
+			for k in 4:
+				var d := Vector2.from_angle(k * PI * 0.5)
+				draw_line(d * fallback_radius * 0.6, d * fallback_radius * 1.3, fallback_color, 3.0)
+		else:
+			draw_circle(Vector2.ZERO, fallback_radius, fallback_color)
+
+
+# A bullet that hurts the heart (it is in the group "heart_hazard"). It spins while it flies.
+class HeartBullet extends Node2D:
+	var velocity: Vector2 = Vector2.ZERO
+	var spin: float = 0.0 # radians per second
+	var hit_size: Vector2 = Vector2(28.0, 28.0)
+	var texture: Texture2D
+	var blue: bool = false # blue: a dash breaks it instead of it hurting the heart
+	var blue_color: Color = Color(0.3, 0.7, 1.0)
+	var bounds: Rect2 = Rect2() # it is removed once it leaves this area
+
+	func _ready() -> void:
+		add_to_group("heart_hazard")
+
+	func _process(delta: float) -> void:
+		position += velocity * delta
+		rotation += spin * delta
+		if not bounds.has_point(position):
+			queue_free()
+
+	func get_hazard_rect() -> Rect2:
+		return Rect2(global_position - hit_size * 0.5, hit_size)
+
+	func _draw() -> void:
+		if texture:
+			draw_texture(texture, -texture.get_size() * 0.5)
+		else:
+			draw_circle(Vector2.ZERO, hit_size.x * 0.5, blue_color if blue else Color(1.0, 0.3, 0.4))
+			draw_line(Vector2.ZERO, Vector2(hit_size.x * 0.5, 0.0), Color.WHITE, 2.0) # shows the spin
+
+
+# A blue projectile that first flies at a wall, bounces off it and then flies at the heart.
+# A dash does not break it: the hazard check calls fly_off() on it and pushes the heart back.
+class HeartRicochet extends Node2D:
+	signal bounced # emitted when it hits the wall
+
+	var texture: Texture2D # points to the right
+	var hit_size: Vector2 = Vector2(32.0, 32.0)
+	var blue: bool = true
+	var deflects: bool = true # a dash deflects it instead of breaking it
+	var color: Color = Color(0.3, 0.7, 1.0) # placeholder colour
+	var speed: float = 400.0
+	var velocity: Vector2 = Vector2.ZERO
+	var wall_point: Vector2 = Vector2.ZERO # a point on the wall it flies at
+	var wall_normal: Vector2 = Vector2.DOWN # the wall's normal, pointing into the screen
+	var aim_at: Callable # returns where the heart is (called at the moment of the bounce)
+	var bounced_off: bool = false
+	var flying_off: bool = false
+	var bounds: Rect2 = Rect2() # it is removed once it leaves this area
+
+	func _ready() -> void:
+		add_to_group("heart_hazard")
+		add_to_group("heart_ricochet")
+		rotation = velocity.angle()
+
+	func _process(delta: float) -> void:
+		position += velocity * delta
+		# It reaches the wall once it has crossed the wall's line
+		if not bounced_off and not flying_off and (position - wall_point).dot(wall_normal) <= 0.0:
+			_bounce()
+		if not bounds.has_point(position):
+			queue_free()
+
+	func _bounce() -> void:
+		bounced_off = true
+		var target: Vector2 = aim_at.call() if aim_at.is_valid() else position + wall_normal * 100.0
+		var dir := (target - position).normalized()
+		if dir == Vector2.ZERO:
+			dir = wall_normal
+		velocity = dir * speed
+		rotation = velocity.angle()
+		bounced.emit()
+
+	# Deflected by a dash: it stops being a hazard and flies off to the back.
+	func fly_off(direction: Vector2, fly_speed: float) -> void:
+		flying_off = true
+		deflects = false
+		remove_from_group("heart_hazard")
+		var d := direction.normalized()
+		if d == Vector2.ZERO:
+			d = Vector2.LEFT
+		velocity = d * fly_speed
+		rotation = velocity.angle()
+
+	func get_hazard_rect() -> Rect2:
+		return Rect2(global_position - hit_size * 0.5, hit_size)
+
+	func _draw() -> void:
+		if texture:
+			draw_texture(texture, -texture.get_size() * 0.5)
+		else:
+			draw_circle(Vector2.ZERO, hit_size.x * 0.5, color)
+			draw_line(Vector2.ZERO, Vector2(hit_size.x * 0.5, 0.0), Color.WHITE, 2.0) # shows where it points
+
+
+# One word of a word wall: a hazard whose hitbox is the size of the text. Blue ones are broken by a dash.
+class HeartWord extends Node2D:
+	var text: String = ""
+	var font: Font
+	var font_size: int = 48
+	var color: Color = Color.WHITE
+	var blue: bool = false
+	var size: Vector2 = Vector2(100.0, 50.0)
+
+	func _ready() -> void:
+		add_to_group("heart_hazard")
+
+	func get_hazard_rect() -> Rect2:
+		return Rect2(global_position - size * 0.5, size)
+
+	func _draw() -> void:
+		var f: Font = font if font else ThemeDB.fallback_font
+		var ts := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+		var pos := Vector2(-ts.x * 0.5, -ts.y * 0.5 + f.get_ascent(font_size))
+		f.draw_string_outline(get_canvas_item(), pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, 6, Color.BLACK)
+		f.draw_string(get_canvas_item(), pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
+
+
+# A lane of words stacked end to end. It moves left; its words scroll vertically (wrapping round) in pulses.
+class HeartWordWall extends Node2D:
+	var words: Array = []
+	var offsets: Array = [] # where each word's centre sits along the lane (from the start of the loop)
+	var speed: float = 240.0
+	var span: float = 1000.0 # total length of the loop: where the words wrap round
+	var top: float = 0.0 # y where the loop starts (off screen)
+	var scroll: float = 0.0
+	var scroll_speed: float = 220.0
+	var move_time: float = 0.9
+	var pause_time: float = 0.5
+	var reverses: bool = false
+	var dir: float = 1.0 # +1 = down, -1 = up
+	var free_x: float = -200.0 # removed once its words are left of this
+	var _t: float = 0.0
+
+	func get_x() -> float:
+		for w in words:
+			if is_instance_valid(w):
+				return w.global_position.x
+		return position.x
+
+	func _process(delta: float) -> void:
+		position.x -= speed * delta
+
+		# Scroll for move_time (smooth start and stop), pause, repeat
+		_t += delta
+		if _t >= move_time + pause_time:
+			_t -= move_time + pause_time
+			if reverses:
+				dir = -dir
+		if _t < move_time:
+			# sin shape: its average is 2/PI, so PI/2 makes the average speed equal scroll_speed
+			scroll += dir * scroll_speed * (PI * 0.5) * sin(PI * _t / maxf(move_time, 0.01)) * delta
+
+		var alive := 0
+		for i in words.size():
+			var w = words[i]
+			if not is_instance_valid(w):
+				continue
+			alive += 1
+			w.position.y = top + fposmod(offsets[i] + scroll, span)
+		if alive == 0 or get_x() < free_x:
+			queue_free()
+
+
+# One bullet of a rising row: a hazard with a hitbox of hit_size. Blue ones are broken by a dash.
+class HeartRiseBullet extends Node2D:
+	var texture: Texture2D
+	var hit_size: Vector2 = Vector2(28.0, 28.0)
+	var blue: bool = false
+	var blue_color: Color = Color(0.3, 0.7, 1.0)
+
+	func _ready() -> void:
+		add_to_group("heart_hazard")
+
+	func get_hazard_rect() -> Rect2:
+		return Rect2(global_position - hit_size * 0.5, hit_size)
+
+	func _draw() -> void:
+		if texture:
+			draw_texture(texture, -texture.get_size() * 0.5)
+		else:
+			draw_circle(Vector2.ZERO, hit_size.x * 0.5, blue_color if blue else Color(1.0, 0.3, 0.4))
+
+
+# A row of bullets side by side. It rises; its bullets scroll horizontally (wrapping round) in pulses.
+# (The word wall turned a quarter: it moves up instead of left and scrolls sideways instead of up and down.)
+class HeartRiseRow extends Node2D:
+	var items: Array = []
+	var offsets: Array = [] # where each bullet's centre sits along the row (from the start of the loop)
+	var speed: float = 240.0 # px/s it rises
+	var span: float = 1000.0 # total length of the loop: where the bullets wrap round
+	var left: float = 0.0 # x where the loop starts (off screen)
+	var scroll: float = 0.0
+	var scroll_speed: float = 220.0
+	var move_time: float = 0.9
+	var pause_time: float = 0.5
+	var reverses: bool = false
+	var dir: float = 1.0 # +1 = right, -1 = left
+	var free_y: float = -200.0 # removed once it is above this
+	var _t: float = 0.0
+
+	func _process(delta: float) -> void:
+		position.y -= speed * delta
+
+		# Scroll for move_time (smooth start and stop), pause, repeat
+		_t += delta
+		if _t >= move_time + pause_time:
+			_t -= move_time + pause_time
+			if reverses:
+				dir = -dir
+		if _t < move_time:
+			# sin shape: its average is 2/PI, so PI/2 makes the average speed equal scroll_speed
+			scroll += dir * scroll_speed * (PI * 0.5) * sin(PI * _t / maxf(move_time, 0.01)) * delta
+
+		var alive := 0
+		for i in items.size():
+			var b = items[i]
+			if not is_instance_valid(b):
+				continue
+			alive += 1
+			b.position.x = left + fposmod(offsets[i] + scroll, span)
+		if alive == 0 or position.y < free_y:
+			queue_free()
 
 
 # A lilypad, in screen coordinates (centred on its origin). It can drift with "velocity".
@@ -560,6 +1011,9 @@ func _start_fight() -> void:
 func _process(delta: float) -> void:
 	_resync_player()
 	_update_trail(delta)
+	_hold_players()
+	_update_clash_shake(delta)
+	_update_speed_lines(delta)
 
 
 # ---------------- TRAIL ----------------
@@ -720,6 +1174,15 @@ func _play_and_wait(anim_name: StringName) -> void:
 		return
 	anim.play(anim_name)
 	await get_tree().create_timer(anim.current_animation_length).timeout
+
+
+# ---------------- REWARD (shared by every blue attack that gives rings) ----------------
+# One place for the reward: Jarona 3's blue block and every blue attack the heart dashes through.
+# Same counters as the ring script (rings + meter), values from General > Rewards.
+func _grant_break_reward() -> void:
+	Test.rings += heart_break_rings
+	Test.meter += heart_break_meter
+	_play_heart_sfx(heart_break_ring_sound)
 
 
 # ---------------- VOICE ----------------
@@ -1051,6 +1514,7 @@ func _break_wall_piece(piece: Area2D) -> void:
 		return
 	piece.set_meta(&"broken", true)
 	piece.set_deferred("monitoring", false)
+	_grant_break_reward() # the blue block pays out once (guarded by the "broken" meta above)
 	_spawn_break_particles(piece)
 	piece.queue_free()
 
@@ -1422,12 +1886,14 @@ func _on_phase_started(_new_phase: int) -> void:
 
 # ---------------- HALFWAY TRANSITION ----------------
 # Flow:
-#   t = 0                 parried animation + voice line 1, then voice line 2 right after it
+#   t = 0                 the player gets middle_point_rings free rings
+#                         parried animation + voice line 1, then voice line 2 right after it
 #   t = parried_hold_time he flies off screen to the right
 #   then                  he surges up from below under the player and carries them off the top
 #   wipe_start_delay later the rectangles start covering the screen (it ends fully black)
 #   when voice 2 AND the wipe are both done: the heart fades in and the player controls it
-# Right now the fight stays here (softlock) until the next part is added.
+#   then                  the attacks (lilypads, bomb flowers, words, ricochet shots, rising bullets)
+#   then                  the finale (voice line, lunge, clash + timing meter, push). The fight stops there.
 # NOTE: _update_phase() is NOT called here, so phase 2 hasn't started yet. When you add the
 # next part, call _update_phase() once the transition is over.
 func _start_transition() -> void:
@@ -1443,6 +1909,10 @@ func _start_transition() -> void:
 	_end_lunge()
 	if freeze_players_during_transition:
 		_freeze_players.call_deferred() # deferred: we may be inside a physics callback right now
+
+	# Reaching the middle point is worth some free rings
+	Test.rings += middle_point_rings
+	_play_heart_sfx(heart_break_ring_sound)
 
 	_keep_music_playing()
 
@@ -1604,6 +2074,8 @@ func _surge_grab() -> void:
 		for i in players.size():
 			if is_instance_valid(players[i]):
 				players[i].global_position.y = starts[i].y - lifted
+				if _pinned.has(players[i]):
+					_pinned[players[i]] = players[i].global_position # the hold follows them up
 	tw.tween_method(step, 0.0, 1.0, surge_time)
 	await tw.finished
 
@@ -1668,10 +2140,77 @@ func _spawn_heart() -> void:
 	_heart.modulate.a = 0.0
 	_spawn_lilypads()
 
-	# Fades in; the player gets control once it is fully visible
+	# Intro: pointing down, painted in the player character's colour (the texture faces right, so +90 degrees = down)
+	_heart.rotation = PI * 0.5
+	_heart_color_mat = _make_recolor_material(_player_heart_color())
+	_heart.material = _heart_color_mat
+
+	# Fades in, hangs there, then glows and turns; the player gets control only after that
 	var tw := _heart.create_tween()
 	tw.tween_property(_heart, "modulate:a", 1.0, heart_fade_time)
+	tw.tween_interval(heart_intro_hold)
+	tw.tween_callback(_heart_awaken)
+	tw.tween_interval(heart_turn_time)
 	tw.tween_callback(func(): _heart_active = true)
+
+
+# The colour of the character the player is using (music_color on the player, as the music visualizer uses it).
+func _player_heart_color() -> Color:
+	var p: Node = get_tree().get_first_node_in_group("active_player")
+	if p == null:
+		p = active_player
+	if p != null and p.get("music_color") is Color:
+		return p.get("music_color")
+	return Color.WHITE
+
+
+# Paints the heart in one colour (keeping its shading); "amount" 1 = fully painted, 0 = its own colours.
+func _make_recolor_material(tint: Color) -> ShaderMaterial:
+	var sh := Shader.new()
+	sh.code = """shader_type canvas_item;
+uniform vec4 tint : source_color = vec4(1.0);
+uniform float amount : hint_range(0.0, 1.0) = 1.0;
+void fragment() {
+	float l = max(COLOR.r, max(COLOR.g, COLOR.b));
+	COLOR.rgb = mix(COLOR.rgb, tint.rgb * l, amount);
+}"""
+	var mat := ShaderMaterial.new()
+	mat.shader = sh
+	mat.set_shader_parameter("tint", tint)
+	mat.set_shader_parameter("amount", 1.0)
+	return mat
+
+
+# The heart glows, turns to face right and goes back to its own (orange) colours.
+func _heart_awaken() -> void:
+	if _heart == null or not is_instance_valid(_heart):
+		return
+	_play_heart_sfx(heart_awaken_sound)
+	var t := maxf(heart_turn_time, 0.01)
+
+	# The glow: a bigger, additive copy that flashes and fades out
+	var glow := _heart.duplicate() as Node2D
+	_heart_layer.add_child(glow)
+	_heart_layer.move_child(glow, _heart.get_index())
+	var add := CanvasItemMaterial.new()
+	add.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	glow.material = add
+	glow.position = _heart.position
+	glow.self_modulate = heart_glow_color
+	glow.modulate.a = 0.0
+	var gt := glow.create_tween().set_parallel(true)
+	gt.tween_property(glow, "rotation", 0.0, t).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	gt.tween_property(glow, "scale", glow.scale * 1.8, t)
+	var flash := glow.create_tween()
+	flash.tween_property(glow, "modulate:a", 1.0, t * 0.25)
+	flash.tween_property(glow, "modulate:a", 0.0, t * 0.75)
+	flash.tween_callback(glow.queue_free)
+
+	# The heart itself: turn to face right, colour of the character -> its own colours
+	var ht := _heart.create_tween().set_parallel(true)
+	ht.tween_property(_heart, "rotation", 0.0, t).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if _heart_color_mat:
+		ht.tween_property(_heart_color_mat, "shader_parameter/amount", 0.0, t)
 
 
 # The whole screen (the heart's CanvasLayer has no camera or offset, so these are screen pixels).
@@ -1691,6 +2230,13 @@ func _heart_extent() -> Vector2:
 	if heart_texture:
 		base = heart_texture.get_size() * 0.5
 	return base * Vector2(absf(heart_scale.x), absf(heart_scale.y))
+
+
+# Where the heart is on the screen right now (used to aim the ricochet shots).
+func _heart_position() -> Vector2:
+	if _heart != null and is_instance_valid(_heart):
+		return _heart.position
+	return _screen_rect().get_center()
 
 
 func _make_heart() -> Node2D:
@@ -1865,11 +2411,12 @@ func _stop_charge_sound() -> void:
 	_charge_sfx = null
 
 
-func _play_heart_sfx(stream: AudioStream) -> void:
+func _play_heart_sfx(stream: AudioStream, pitch: float = 1.0) -> void:
 	if stream == null:
 		return
 	var p := AudioStreamPlayer.new()
 	p.stream = stream
+	p.pitch_scale = maxf(pitch, 0.01)
 	add_child(p)
 	p.finished.connect(p.queue_free)
 	p.play()
@@ -2002,6 +2549,9 @@ func _shift_world(dx: float) -> void:
 	for p in _lilypads:
 		if is_instance_valid(p):
 			p.position.x += dx
+	for f in get_tree().get_nodes_in_group("heart_scroll"):
+		if is_instance_valid(f) and f is Node2D:
+			f.global_position.x += dx
 	for g in get_tree().get_nodes_in_group("heart_ghost"):
 		if is_instance_valid(g) and g is Node2D:
 			g.position.x += dx
@@ -2067,22 +2617,33 @@ func _land_hop(pos: Vector2) -> void:
 # ---------------- TRANSITION: LILYPAD ATTACK ----------------
 # Called whenever a bounce chain ends; only the first one starts the attack.
 func _on_first_bounce_done() -> void:
-	if _lily_attack_started or not lilypad_attack_enabled:
+	if _lily_attack_started:
 		return
 	_lily_attack_started = true
-	_run_lilypad_attack() # runs on its own
+	if lilypad_attack_enabled:
+		_run_lilypad_attack() # runs on its own (the bomb flowers follow it)
+	else:
+		_run_bomb_attack()
 
 
-func _run_lilypad_attack() -> void:
-	# 1) push the heart back to the left (controls off meanwhile) and clear the intro pads
+# Pushes the heart back to the left (controls off meanwhile). Used by the first lilypad push-back and by the
+# ricochet shots. With never_forward the heart is only ever pushed back, never forward if it is already
+# further left than the push-back point.
+func _pushback_heart(never_forward: bool = false) -> void:
+	if _heart == null or not is_instance_valid(_heart) or _heart_forced:
+		return
 	_heart_forced = true
 	_heart_locked = true
 	_charging = false
 	_charge = 0.0
 	_stop_charge_sound()
-	_clear_lilypads()
+	if _dashing:
+		_dashing = false
+		_dash_cooldown = _dash_cooldown_len
 	var limits := _heart_limits()
 	var target_x := clampf(_screen_rect().size.x * lilypad_pushback_x, limits.position.x, limits.end.x)
+	if never_forward:
+		target_x = minf(target_x, _heart.position.x)
 	var tw := _heart.create_tween()
 	tw.tween_property(_heart, "position:x", target_x, lilypad_pushback_time) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -2092,21 +2653,44 @@ func _run_lilypad_attack() -> void:
 	_heart_forced = false
 	_heart_locked = false
 
+
+func _run_lilypad_attack() -> void:
+	# 1) push the heart back to the left (controls off meanwhile) and clear the intro pads
+	_clear_lilypads()
+	await _pushback_heart()
+	if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+		return
+
 	# 2) the pattern, repeated
 	await get_tree().create_timer(lilypad_attack_start_delay).timeout
 	var spacing := _pattern_spacing()
 	_attack_pad_spacing = spacing
 	_last_pad_y = -1.0
+	var prev_pad: HeartLilypad = null
 	for i in lilypad_attack_count:
+		var spawn_x := _screen_rect().end.x + pad_half_width() + 60.0
+		var x := spawn_x
+		if prev_pad != null:
+			# Wait until the previous pad has moved far enough, then place the new one at EXACTLY
+			# "spacing" from it. Spacing is measured from the previous pad, not from a timer, so every
+			# pad + cacti combo is the same distance from the next whatever the jumps do to the scroll.
+			while is_instance_valid(prev_pad) and prev_pad.position.x + spacing > spawn_x:
+				await get_tree().process_frame
+				if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+					return
+			if is_instance_valid(prev_pad):
+				x = prev_pad.position.x + spacing
 		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
 			return
-		_spawn_lilypad_pattern(spacing)
-		if i < lilypad_attack_count - 1:
-			# Everything moves at the same speed, so spacing / speed gives exactly that distance between pads
-			var speed := lilypad_attack_speed
-			if lilypad_attack_use_chain_speed:
-				speed *= get_chain_speed_multiplier()
-			await get_tree().create_timer(spacing / maxf(speed, 1.0)).timeout
+		prev_pad = _spawn_lilypad_pattern(spacing, x)
+
+	# 3) once the last combo has gone by, the next attack
+	while is_instance_valid(prev_pad):
+		await get_tree().process_frame
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+	_attack_pad_spacing = 0.0
+	await _run_bomb_attack()
 
 
 # Distance from one pad's centre to the next pad's centre: half a pad, the gap, the cactus rows,
@@ -2135,13 +2719,10 @@ func _max_pad_dy(spacing: float) -> float:
 
 
 # One lilypad followed by rows of cacti, all drifting left together.
-func _spawn_lilypad_pattern(spacing: float) -> void:
+func _spawn_lilypad_pattern(spacing: float, x: float) -> HeartLilypad:
 	var rect := _screen_rect()
 	var limits := _heart_limits()
-	var speed := lilypad_attack_speed
-	if lilypad_attack_use_chain_speed:
-		speed *= get_chain_speed_multiplier()
-	var vel := Vector2(-speed, 0.0)
+	var vel := Vector2(-lilypad_attack_speed, 0.0)
 
 	# Height: random inside the allowed band, but never further from the previous pad than the heart can strafe
 	var y_low := lerpf(limits.position.y, limits.end.y, minf(lilypad_attack_pad_y_min, lilypad_attack_pad_y_max))
@@ -2156,8 +2737,7 @@ func _spawn_lilypad_pattern(spacing: float) -> void:
 	var y := randf_range(y_low, y_high)
 	_last_pad_y = y
 	var pad_half := pad_half_width()
-	var x := rect.end.x + pad_half + 20.0
-	spawn_lilypad(Vector2(x, y), vel)
+	var pad := spawn_lilypad(Vector2(x, y), vel)
 
 	# The cacti are the ones from the wall attack: same texture, full height of the screen
 	var w := lilypad_attack_cactus_width
@@ -2172,6 +2752,793 @@ func _spawn_lilypad_pattern(spacing: float) -> void:
 		cactus.position = Vector2(first_x + (w + lilypad_attack_cactus_gap) * i, rect.size.y * 0.5)
 		_heart_layer.add_child(cactus)
 		_heart_layer.move_child(cactus, _heart.get_index()) # behind the heart
+	return pad
+
+
+# ---------------- TRANSITION: ATTACK CHAIN + BOMB FLOWERS ----------------
+# The attacks after the lilypads, one after the other:
+#   attack 2  the bomb flowers
+#   attack 3  the word walls
+#   attack 4  the ricochet shots
+#   attack 5  the rising bullets
+#   finale    voice line, lunge, clash + timing meter, push (the fight stops there for now)
+# Each one starts once the one before it is completely over. Add the next part at the end of this list.
+func _run_bomb_attack() -> void:
+	await _bomb_flowers_sequence()
+	await _run_word_attack()
+	await _run_ricochet_attack()
+	await _run_rising_attack()
+	await _run_finale()
+	# (nothing follows yet: the fight stops here. Add the next part here.)
+
+
+func _bomb_flowers_sequence() -> void:
+	if not bomb_enabled:
+		return
+	await get_tree().create_timer(bomb_start_delay).timeout
+	var interval := bomb_first_interval
+	var fuse := bomb_fuse
+	var proj_speed := bomb_projectile_speed
+	var bullet_speed := bomb_bullet_speed
+	var last_y := -1.0
+	var count := maxi(bomb_flower_count, 0)
+	for i in count:
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+		var y := _bomb_random_y()
+		for attempt in 8: # not at the same height as the last flower
+			if last_y < 0.0 or absf(y - last_y) >= bomb_min_y_gap:
+				break
+			y = _bomb_random_y()
+		last_y = y
+		# The burst is turned half a step more each time, so consecutive bursts leave different gaps
+		var angle_offset := float(i) * TAU / float(maxi(bomb_bullet_count, 1)) * 0.5
+		_run_bomb_flower(y, fuse, proj_speed, bullet_speed, angle_offset) # runs on its own
+		if i < count - 1:
+			await get_tree().create_timer(interval).timeout
+		# Faster and faster
+		interval = maxf(interval * bomb_interval_factor, bomb_min_interval)
+		fuse = maxf(fuse * bomb_fuse_factor, bomb_min_fuse)
+		proj_speed *= bomb_projectile_speed_gain
+		bullet_speed *= bomb_bullet_speed_gain
+	# Done once the last flower has exploded
+	while _bomb_flowers_alive > 0:
+		await get_tree().process_frame
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+
+
+func _bomb_random_y() -> float:
+	var limits := _heart_limits()
+	return randf_range(
+		lerpf(limits.position.y, limits.end.y, minf(bomb_y_min, bomb_y_max)),
+		lerpf(limits.position.y, limits.end.y, maxf(bomb_y_min, bomb_y_max)))
+
+
+# One flower: it appears, waits, gets hit by a projectile and bursts.
+func _run_bomb_flower(y: float, fuse: float, proj_speed: float, bullet_speed: float, angle_offset: float) -> void:
+	_bomb_flowers_alive += 1
+	await _bomb_flower_body(y, fuse, proj_speed, bullet_speed, angle_offset)
+	_bomb_flowers_alive -= 1
+
+
+func _bomb_flower_body(y: float, fuse: float, proj_speed: float, bullet_speed: float, angle_offset: float) -> void:
+	var rect := _screen_rect()
+	var flower := _make_art(bomb_flower_texture, bomb_flower_scale, 44.0, Color(1.0, 0.55, 0.8))
+	flower.position = Vector2(rect.end.x - bomb_flower_margin, y)
+	flower.add_to_group("heart_scroll") # scrolls with the lilypad jumps, like everything else
+	var base_scale := flower.scale
+	flower.scale = base_scale * 0.3
+	flower.modulate.a = 0.0
+	var pop := flower.create_tween().set_parallel(true)
+	pop.tween_property(flower, "modulate:a", 1.0, 0.25)
+	pop.tween_property(flower, "scale", base_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	# Reticle on top of the flower; it closes in (and can turn) while the fuse burns
+	var reticle := _make_art(bomb_reticle_texture, bomb_reticle_scale, 60.0, Color(1.0, 0.2, 0.3))
+	reticle.ring = true
+	reticle.position = flower.position
+	reticle.add_to_group("heart_scroll")
+	var reticle_scale := reticle.scale
+	reticle.scale = reticle_scale * maxf(bomb_reticle_close_in, 0.01)
+	reticle.modulate.a = 0.0
+	var rt := reticle.create_tween().set_parallel(true)
+	rt.tween_property(reticle, "modulate:a", 1.0, 0.2)
+	rt.tween_property(reticle, "scale", reticle_scale, fuse).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if not is_zero_approx(bomb_reticle_spin):
+		rt.tween_property(reticle, "rotation", bomb_reticle_spin * fuse, fuse)
+
+	# The tick sound repeats faster and faster until it is time to shoot
+	var elapsed := 0.0
+	while elapsed < fuse:
+		if not is_instance_valid(flower):
+			if is_instance_valid(reticle):
+				reticle.queue_free()
+			return
+		var progress := elapsed / maxf(fuse, 0.01)
+		_play_heart_sfx(bomb_tick_sound, lerpf(bomb_tick_start_pitch, bomb_tick_end_pitch, progress))
+		var wait := lerpf(bomb_tick_start_interval, bomb_tick_end_interval, progress)
+		wait = minf(maxf(wait, 0.02), fuse - elapsed) # never longer than what is left of the fuse
+		await get_tree().create_timer(wait).timeout
+		elapsed += wait
+	if not is_instance_valid(flower):
+		if is_instance_valid(reticle):
+			reticle.queue_free()
+		return
+
+	# The noise, then the projectile flies in from outside the screen
+	_play_heart_sfx(bomb_launch_sound)
+	var from := _ray_to_screen_edge(flower.position, bomb_projectile_from, rect) + bomb_projectile_from.normalized() * 60.0
+	var proj := _make_art(bomb_projectile_texture, bomb_projectile_scale, 12.0, Color(1.0, 0.9, 0.3))
+	proj.position = from
+	proj.rotation = (flower.position - from).angle()
+	var flight := proj.create_tween()
+	flight.tween_property(proj, "position", flower.position, from.distance_to(flower.position) / maxf(proj_speed, 1.0))
+	await flight.finished
+	if is_instance_valid(proj):
+		proj.queue_free()
+	if is_instance_valid(reticle):
+		reticle.queue_free()
+	if not is_instance_valid(flower):
+		return
+	_explode_flower(flower, bullet_speed, angle_offset)
+
+
+# The flower disappears and bomb_bullet_count spinning bullets fly out of it in a circle.
+func _explode_flower(flower: Node2D, bullet_speed: float, angle_offset: float) -> void:
+	var pos := flower.position
+	flower.queue_free()
+	_play_heart_sfx(bomb_explode_sound)
+	var count := maxi(bomb_bullet_count, 1)
+	var bounds := _screen_rect().grow(260.0)
+	for k in count:
+		var b := HeartBullet.new()
+		b.blue = randf() < bomb_blue_chance
+		b.blue_color = bomb_blue_color
+		b.texture = bomb_bullet_texture
+		if b.blue and bomb_bullet_blue_texture:
+			b.texture = bomb_bullet_blue_texture
+		elif b.blue:
+			b.self_modulate = bomb_blue_color # no blue texture: the normal one, tinted
+		if b.texture:
+			b.scale = bomb_bullet_scale
+		b.hit_size = bomb_bullet_hit_size
+		b.velocity = Vector2.from_angle(angle_offset + TAU * float(k) / float(count)) * bullet_speed
+		b.spin = bomb_bullet_spin
+		b.bounds = bounds
+		b.position = pos
+		_heart_layer.add_child(b)
+		_heart_layer.move_child(b, _heart.get_index()) # behind the heart
+
+
+# A texture (or a plain circle if none is set) in the heart's layer, behind the heart.
+func _make_art(tex: Texture2D, tex_scale: Vector2, fallback_radius: float, fallback_color: Color) -> HeartArt:
+	var a := HeartArt.new()
+	a.texture = tex
+	a.fallback_radius = fallback_radius
+	a.fallback_color = fallback_color
+	if tex:
+		a.scale = tex_scale
+	_heart_layer.add_child(a)
+	_heart_layer.move_child(a, _heart.get_index())
+	return a
+
+
+# Where a line from "from" going in direction "dir" leaves the screen.
+func _ray_to_screen_edge(from: Vector2, dir: Vector2, rect: Rect2) -> Vector2:
+	var d := dir.normalized()
+	if d == Vector2.ZERO:
+		d = Vector2.UP
+	var t := INF
+	if d.x > 0.0:
+		t = minf(t, (rect.end.x - from.x) / d.x)
+	elif d.x < 0.0:
+		t = minf(t, (rect.position.x - from.x) / d.x)
+	if d.y > 0.0:
+		t = minf(t, (rect.end.y - from.y) / d.y)
+	elif d.y < 0.0:
+		t = minf(t, (rect.position.y - from.y) / d.y)
+	return from + d * maxf(t, 0.0)
+
+
+# ---------------- TRANSITION: WORD WALLS ----------------
+func _run_word_attack() -> void:
+	if not word_attack_enabled or word_list.is_empty():
+		return
+	if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+		return
+	await get_tree().create_timer(word_start_delay).timeout
+	var widest := _word_lane_width()
+	var prev: HeartWordWall = null
+	for i in maxi(word_wall_count, 0):
+		var spawn_x := _screen_rect().end.x + widest * 0.5 + 60.0
+		var x := spawn_x
+		if prev != null:
+			# Same idea as the lilypads: each column is placed exactly "spacing" after the one before
+			while is_instance_valid(prev) and prev.get_x() + word_wall_spacing > spawn_x:
+				await get_tree().process_frame
+				if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+					return
+			if is_instance_valid(prev):
+				x = prev.get_x() + word_wall_spacing
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+		prev = _spawn_word_wall(i, x, widest)
+
+	# The attack is over once the last column has gone by
+	while is_instance_valid(prev):
+		await get_tree().process_frame
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+
+
+func _word_font() -> Font:
+	return word_font if word_font else ThemeDB.fallback_font
+
+
+func _widest_word() -> float:
+	var f := _word_font()
+	var w := 10.0
+	for t in word_list:
+		w = maxf(w, f.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, word_font_size).x)
+	return w
+
+
+# True when the words are turned a quarter (90 / 270 degrees): their length then runs up and down.
+func _words_sideways() -> bool:
+	return int(round(word_rotation_degrees / 90.0)) % 2 != 0
+
+
+# How wide (x) a lane is, and how long (y) its longest word is.
+func _word_lane_width() -> float:
+	return _word_font().get_height(word_font_size) if _words_sideways() else _widest_word()
+
+
+func _word_longest() -> float:
+	return _widest_word() if _words_sideways() else _word_font().get_height(word_font_size)
+
+
+func _spawn_word_wall(index: int, x: float, lane_width: float) -> HeartWordWall:
+	var rect := _screen_rect()
+	var f := _word_font()
+	var gap := maxf(word_wall_gap, 0.0)
+	var longest := _word_longest()
+	var sideways := _words_sideways()
+
+	var wall := HeartWordWall.new()
+	wall.position = Vector2(x, 0.0)
+	wall.speed = word_wall_speed
+	wall.top = -(longest + gap)
+	wall.scroll_speed = word_scroll_speed
+	wall.move_time = word_scroll_move_time
+	wall.pause_time = word_scroll_pause_time
+	wall.reverses = word_scroll_reverses
+	wall.dir = 1.0 if index % 2 == 0 else -1.0 # neighbouring lanes scroll in opposite directions
+	wall.free_x = -lane_width - 100.0
+	_heart_layer.add_child(wall)
+	_heart_layer.move_child(wall, _heart.get_index()) # behind the heart
+
+	# Words end to end with the gap between them, until the loop is longer than the screen
+	var need := rect.size.y + 2.0 * (longest + gap)
+	var total := 0.0
+	var last := ""
+	while total < need:
+		var text: String = word_list[randi() % word_list.size()]
+		if word_list.size() > 1:
+			while text == last: # not the same word twice in a row
+				text = word_list[randi() % word_list.size()]
+		last = text
+		var ts := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, word_font_size)
+		var w := HeartWord.new()
+		w.text = text
+		w.font = word_font
+		w.font_size = word_font_size
+		w.rotation = deg_to_rad(word_rotation_degrees)
+		w.blue = randf() < word_blue_chance
+		w.color = word_blue_color if w.blue else word_color
+		w.size = Vector2(ts.y, ts.x) if sideways else ts # the hitbox is the box the text fills on screen
+		wall.add_child(w)
+		wall.words.append(w)
+		wall.offsets.append(total + w.size.y * 0.5)
+		total += w.size.y + gap
+	wall.span = total
+	wall.scroll = randf() * total # so neighbouring lanes don't line up
+	for i in wall.words.size():
+		wall.words[i].position = Vector2(0.0, wall.top + fposmod(wall.offsets[i] + wall.scroll, wall.span))
+	return wall
+
+
+# ---------------- TRANSITION: RICOCHET SHOTS ----------------
+# Attack 4: blue projectiles, each one faster than the last. A shot flies at a wall (top, bottom or right edge
+# of the screen), bounces off it and then flies at the heart. A dash into a shot does not break it: the heart is
+# pushed back and the shot flies off to the back (see _deflect_ricochet). Touching one without a dash hurts.
+func _run_ricochet_attack() -> void:
+	if not ricochet_enabled:
+		return
+	if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+		return
+	await get_tree().create_timer(ricochet_start_delay).timeout
+	var interval := ricochet_first_interval
+	var speed := ricochet_start_speed
+	var count := maxi(ricochet_count, 0)
+	for i in count:
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+		_spawn_ricochet(speed)
+		if i < count - 1:
+			await get_tree().create_timer(interval).timeout
+		# Faster and faster
+		interval = maxf(interval * ricochet_interval_factor, ricochet_min_interval)
+		speed = minf(speed * ricochet_speed_gain, ricochet_max_speed)
+
+	# The attack is over once every shot has been deflected or has left the screen
+	while not get_tree().get_nodes_in_group("heart_ricochet").is_empty():
+		await get_tree().process_frame
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+
+
+# One shot: it appears just outside the screen and flies at a randomly chosen wall.
+func _spawn_ricochet(speed: float) -> void:
+	var rect := _screen_rect()
+
+	# The walls a shot may use: 0 = top, 1 = bottom, 2 = right edge
+	var walls: Array[int] = []
+	if ricochet_wall_top:
+		walls.append(0)
+	if ricochet_wall_bottom:
+		walls.append(1)
+	if ricochet_wall_right:
+		walls.append(2)
+	if walls.is_empty():
+		walls.append(0)
+	var wall: int = walls.pick_random()
+
+	var x_lo := rect.size.x * minf(ricochet_wall_x_min, ricochet_wall_x_max)
+	var x_hi := rect.size.x * maxf(ricochet_wall_x_min, ricochet_wall_x_max)
+	var y_lo := rect.size.y * minf(ricochet_wall_y_min, ricochet_wall_y_max)
+	var y_hi := rect.size.y * maxf(ricochet_wall_y_min, ricochet_wall_y_max)
+
+	var spawn := Vector2.ZERO
+	var wall_pt := Vector2.ZERO
+	var normal := Vector2.DOWN # the wall's normal, pointing into the screen
+	match wall:
+		0: # top wall: from the right, up and left
+			normal = Vector2.DOWN
+			wall_pt = Vector2(randf_range(x_lo, x_hi), rect.position.y)
+			spawn = Vector2(rect.end.x + 60.0, randf_range(rect.size.y * 0.4, rect.size.y * 0.9))
+		1: # bottom wall: from the right, down and left
+			normal = Vector2.UP
+			wall_pt = Vector2(randf_range(x_lo, x_hi), rect.end.y)
+			spawn = Vector2(rect.end.x + 60.0, randf_range(rect.size.y * 0.1, rect.size.y * 0.6))
+		_: # right wall: from above or below, towards the right edge
+			normal = Vector2.LEFT
+			wall_pt = Vector2(rect.end.x, randf_range(y_lo, y_hi))
+			var from_top := randi() % 2 == 0
+			spawn = Vector2(randf_range(x_lo, x_hi), rect.position.y - 60.0 if from_top else rect.end.y + 60.0)
+
+	var r := HeartRicochet.new()
+	r.texture = ricochet_texture
+	if ricochet_texture:
+		r.scale = ricochet_scale
+	r.hit_size = ricochet_hit_size
+	r.color = ricochet_color
+	r.speed = speed
+	r.wall_point = wall_pt
+	r.wall_normal = normal
+	r.aim_at = _heart_position
+	r.bounds = rect.grow(400.0)
+	r.position = spawn
+	r.velocity = (wall_pt - spawn).normalized() * speed
+	r.bounced.connect(func(): _play_heart_sfx(ricochet_bounce_sound))
+	_heart_layer.add_child(r)
+	_heart_layer.move_child(r, _heart.get_index()) # behind the heart
+
+
+# A dash hit a ricochet shot: it flies off to the back and the heart is pushed back (like the first lilypad
+# landing, but never forward). No reward: the shot is not broken.
+func _deflect_ricochet(h: Node) -> void:
+	if h.has_method("fly_off"):
+		h.fly_off(ricochet_flyoff_direction, ricochet_flyoff_speed)
+	_play_heart_sfx(ricochet_deflect_sound)
+	_pushback_heart(true) # runs on its own
+
+
+# ---------------- TRANSITION: RISING BULLETS ----------------
+# Attack 5: rows of bullets rise from below the screen. The bullets of a row scroll horizontally in pulses;
+# neighbouring rows go opposite ways.
+func _run_rising_attack() -> void:
+	if not rise_enabled:
+		return
+	if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+		return
+	await get_tree().create_timer(rise_start_delay).timeout
+	var prev: HeartRiseRow = null
+	for i in maxi(rise_row_count, 0):
+		var spawn_y := _screen_rect().end.y + rise_bullet_hit_size.y * 0.5 + 60.0
+		var y := spawn_y
+		if prev != null:
+			# Same idea as the word walls: each row is placed exactly "spacing" after the one before
+			while is_instance_valid(prev) and prev.position.y + rise_row_spacing > spawn_y:
+				await get_tree().process_frame
+				if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+					return
+			if is_instance_valid(prev):
+				y = prev.position.y + rise_row_spacing
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+		prev = _spawn_rise_row(i, y)
+
+	# The attack is over once the last row has gone by
+	while is_instance_valid(prev):
+		await get_tree().process_frame
+		if not is_inside_tree() or _heart == null or not is_instance_valid(_heart):
+			return
+
+
+func _spawn_rise_row(index: int, y: float) -> HeartRiseRow:
+	var rect := _screen_rect()
+	var w := maxf(rise_bullet_hit_size.x, 1.0)
+	var slot := w + maxf(rise_bullet_gap, 0.0) # the room one bullet takes along the row
+
+	var row := HeartRiseRow.new()
+	row.position = Vector2(0.0, y)
+	row.speed = rise_speed
+	row.left = -slot
+	row.scroll_speed = rise_scroll_speed
+	row.move_time = rise_scroll_move_time
+	row.pause_time = rise_scroll_pause_time
+	row.reverses = rise_scroll_reverses
+	row.dir = 1.0 if index % 2 == 0 else -1.0 # neighbouring rows scroll in opposite directions
+	row.free_y = -rise_bullet_hit_size.y - 100.0
+	_heart_layer.add_child(row)
+	_heart_layer.move_child(row, _heart.get_index()) # behind the heart
+
+	# Bullets side by side with the gap between them, until the loop is longer than the screen
+	var count := maxi(ceili((rect.size.x + 2.0 * slot) / slot), 1)
+	for k in count:
+		var b := HeartRiseBullet.new()
+		b.blue = randf() < rise_blue_chance
+		b.blue_color = rise_blue_color
+		b.hit_size = rise_bullet_hit_size
+		b.texture = rise_bullet_texture
+		if b.blue and rise_bullet_blue_texture:
+			b.texture = rise_bullet_blue_texture
+		elif b.blue:
+			b.self_modulate = rise_blue_color # no blue texture: the normal one, tinted
+		if b.texture:
+			b.scale = rise_bullet_scale
+		row.add_child(b)
+		row.items.append(b)
+		row.offsets.append(float(k) * slot + w * 0.5)
+	row.span = float(count) * slot
+	row.scroll = randf() * row.span # so neighbouring rows don't line up
+	for i in row.items.size():
+		row.items[i].position = Vector2(row.left + fposmod(row.offsets[i] + row.scroll, row.span), 0.0)
+	return row
+
+
+# ---------------- TRANSITION: FINALE ----------------
+# After the last attack:
+#   1) Flowery slides in from the right, says his line, then lunges at the heart (the heart is frozen and
+#      can't be hurt from the lunge on)
+#   2) impact: the music and lyrics fade out, the heart is swapped for the character's spindash animation and
+#      the two shake; a timing meter appears below them and the player presses Z as the marker passes the centre
+#   3) rings by how close the press was to the centre
+#   4) he is pushed right, then the "camera" follows him while the character is left behind
+# The fight stops at the end (nothing follows yet).
+func _finale_alive() -> bool:
+	return is_inside_tree() and _heart != null and is_instance_valid(_heart)
+
+
+func _run_finale() -> void:
+	if not finale_enabled or not _finale_alive():
+		return
+	_dismiss_dash_hint()
+	var rect := _screen_rect()
+
+	# 1) he slides in from the right...
+	var boss := _make_finale_boss()
+	_heart_layer.add_child(boss)
+	boss.position = Vector2(rect.end.x + _visual_half_width(boss) + 40.0, _heart.position.y)
+	var enter := boss.create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	enter.tween_property(boss, "position:x", rect.size.x * finale_wait_x, finale_enter_time)
+	await enter.finished
+	if not _finale_alive():
+		return
+
+	# ...says his line (the stream's length is used, so a missing line can't freeze the fight)...
+	voice_player.stop()
+	if finale_voice:
+		voice_player.stream = finale_voice
+		voice_player.play()
+		await get_tree().create_timer(finale_voice.get_length()).timeout
+	else:
+		await get_tree().create_timer(finale_voice_pause).timeout
+	if not _finale_alive():
+		return
+
+	# ...and lunges at the heart. From here the heart is frozen and safe.
+	_finale_started = true
+	_heart_forced = true
+	_heart_locked = true
+	_charging = false
+	_charge = 0.0
+	_dashing = false
+	_stop_charge_sound()
+	var heart_pos := _heart.position
+	var clash_pos := Vector2(minf(heart_pos.x + finale_clash_gap, rect.end.x - 40.0), heart_pos.y)
+	var lunge := boss.create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	lunge.tween_property(boss, "position", clash_pos, finale_lunge_time)
+	await lunge.finished
+	if not _finale_alive():
+		return
+
+	# 2) impact: music and lyrics fade out, heart -> spindash, shake
+	_heart_active = false # stops the heart's movement and blinking
+	if lyrics:
+		lyrics.stop(finale_music_fade)
+	_play_heart_sfx(finale_clash_sound)
+	var clasher: Node2D = _make_spindash_visual()
+	if clasher != null:
+		_heart.visible = false
+		clasher.position = heart_pos
+		_heart_layer.add_child(clasher)
+	else:
+		clasher = _heart # no spindash animation found: the heart itself clashes
+	_start_clash_shake([boss, clasher])
+
+	# The timing meter, centred below the two
+	var meter_center := Vector2((heart_pos.x + clash_pos.x) * 0.5, maxf(heart_pos.y, clash_pos.y) + finale_meter_offset_y)
+	var closeness := await _finale_timing_meter(meter_center)
+	if not _finale_alive():
+		return
+
+	# 3) rings by how close the press was to the centre
+	var rings := roundi(lerpf(float(finale_rings_min), float(finale_rings_max), pow(closeness, maxf(finale_closeness_curve, 0.01))))
+	if rings > 0:
+		Test.rings += rings
+		_play_heart_sfx(heart_break_ring_sound)
+
+	# 4) the push: he is shoved right (the character stays glued to him)...
+	_stop_clash_shake()
+	if finale_push_texture:
+		boss.texture = finale_push_texture
+		boss.hframes = 1
+		boss.vframes = 1
+		boss.frame = 0
+		boss.region_enabled = false
+		boss.centered = true
+		boss.offset = Vector2.ZERO
+		boss.scale = finale_push_scale
+	var follow_x := maxf(boss.position.x, rect.size.x * finale_follow_x)
+	var gap_x := clasher.position.x - boss.position.x # negative: the character is on his left
+	var push := boss.create_tween().set_parallel(true).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	push.tween_property(boss, "position:x", follow_x, finale_push_time)
+	push.tween_property(clasher, "position:x", follow_x + gap_x, finale_push_time)
+	await push.finished
+	if not _finale_alive():
+		return
+
+	# ...then the camera follows him: he stays put, the character is left behind and the world rushes past
+	_speed_lines_on = finale_speed_lines
+	var behind := clasher.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	behind.tween_property(clasher, "position:x", -400.0, finale_left_behind_time)
+	await behind.finished
+	if not _finale_alive():
+		return
+	if clasher == _heart:
+		clasher.visible = false
+	else:
+		clasher.queue_free()
+	# (nothing follows yet: the fight stops here, Flowery stays where he is with the lines rushing past)
+
+
+# Flowery's visual in the finale: finale_boss_texture, or a copy of his normal sprite (its current frame).
+func _make_finale_boss() -> Sprite2D:
+	var s := Sprite2D.new()
+	if finale_boss_texture:
+		s.texture = finale_boss_texture
+		s.scale = finale_boss_scale
+	else:
+		s.texture = sprite.texture
+		s.hframes = sprite.hframes
+		s.vframes = sprite.vframes
+		s.frame = sprite.frame
+		s.region_enabled = sprite.region_enabled
+		s.region_rect = sprite.region_rect
+		s.centered = sprite.centered
+		s.offset = sprite.offset
+		s.scale = sprite.global_scale.abs()
+	s.flip_h = finale_boss_flip
+	return s
+
+
+func _visual_half_width(s: Sprite2D) -> float:
+	var w := 200.0
+	if s.texture:
+		w = s.texture.get_width() / float(maxi(s.hframes, 1)) * absf(s.scale.x)
+	return w * 0.5
+
+
+# The character's spindash animation. finale_spindash_frames if set, otherwise the first AnimatedSprite2D inside
+# the current player that has an animation called finale_spindash_anim. Returns null when there is none.
+func _make_spindash_visual() -> Node2D:
+	var frames: SpriteFrames = finale_spindash_frames
+	var is_centered := true
+	var off := Vector2.ZERO
+	if frames == null:
+		var player: Node = get_tree().get_first_node_in_group("active_player")
+		if player == null:
+			player = active_player
+		if player != null:
+			for n in player.find_children("*", "AnimatedSprite2D", true, false):
+				var a := n as AnimatedSprite2D
+				if a.sprite_frames and a.sprite_frames.has_animation(finale_spindash_anim):
+					frames = a.sprite_frames
+					is_centered = a.centered
+					off = a.offset
+					break
+	if frames == null or not frames.has_animation(finale_spindash_anim):
+		push_warning("Flowery: no spindash animation '%s' found (set finale_spindash_frames), the heart clashes instead" % finale_spindash_anim)
+		return null
+	var s := AnimatedSprite2D.new()
+	s.sprite_frames = frames
+	s.centered = is_centered
+	s.offset = off
+	s.scale = finale_spindash_scale
+	s.animation = finale_spindash_anim
+	s.play(finale_spindash_anim)
+	return s
+
+
+# The two keep jittering a few px around where they are until _stop_clash_shake().
+func _start_clash_shake(nodes: Array) -> void:
+	_shake_nodes = nodes
+	_shake_bases = []
+	for n in nodes:
+		_shake_bases.append(n.position)
+	_shake_timer = 0.0
+	_clash_shaking = true
+
+
+func _stop_clash_shake() -> void:
+	_clash_shaking = false
+	for i in _shake_nodes.size():
+		if is_instance_valid(_shake_nodes[i]):
+			_shake_nodes[i].position = _shake_bases[i]
+	_shake_nodes = []
+	_shake_bases = []
+
+
+func _update_clash_shake(delta: float) -> void:
+	if not _clash_shaking:
+		return
+	_shake_timer -= delta
+	if _shake_timer > 0.0:
+		return
+	_shake_timer = maxf(finale_shake_interval, 0.005)
+	var a := finale_shake_amount
+	for i in _shake_nodes.size():
+		if is_instance_valid(_shake_nodes[i]):
+			_shake_nodes[i].position = _shake_bases[i] + Vector2(randf_range(-a, a), randf_range(-a, a))
+
+
+# The timing meter: a texture (or a plain bar) with a white marker of the same height that scrolls from the
+# left edge to the centre and on to the right edge, and a "Press Z" prompt under it. Returns the closeness of
+# the press to the centre: 1 = dead centre, 0 = an edge (or never pressed).
+func _finale_timing_meter(center: Vector2) -> float:
+	var rect := _screen_rect()
+	var bar_size := finale_meter_size
+	if finale_meter_texture:
+		bar_size = finale_meter_texture.get_size() * Vector2(absf(finale_meter_scale.x), absf(finale_meter_scale.y))
+	# Keep the meter (and the prompt under it) on the screen
+	center.y = minf(center.y, rect.end.y - bar_size.y * 0.5 - 90.0)
+	center.x = clampf(center.x, bar_size.x * 0.5, rect.end.x - bar_size.x * 0.5)
+
+	var meter := Node2D.new()
+	meter.position = center
+	meter.modulate.a = 0.0
+	_heart_layer.add_child(meter)
+
+	if finale_meter_texture:
+		var tex := Sprite2D.new()
+		tex.texture = finale_meter_texture
+		tex.scale = Vector2(absf(finale_meter_scale.x), absf(finale_meter_scale.y))
+		meter.add_child(tex)
+	else:
+		var bar := ColorRect.new()
+		bar.color = Color(0.12, 0.12, 0.12, 0.9)
+		bar.size = bar_size
+		bar.position = -bar_size * 0.5
+		bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		meter.add_child(bar)
+		var tick := ColorRect.new()
+		tick.color = Color(1.0, 0.3, 0.4)
+		tick.size = Vector2(4.0, bar_size.y)
+		tick.position = Vector2(-2.0, -bar_size.y * 0.5)
+		tick.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		meter.add_child(tick)
+
+	# The white marker: same height as the texture
+	var mw := maxf(finale_marker_width, 1.0)
+	var marker := ColorRect.new()
+	marker.color = Color.WHITE
+	marker.size = Vector2(mw, bar_size.y)
+	marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var x_left := -bar_size.x * 0.5 + mw * 0.5 # marker centre at the left edge...
+	var x_right := bar_size.x * 0.5 - mw * 0.5 # ...and at the right edge (the centre is exactly in between)
+	marker.position = Vector2(x_left - mw * 0.5, -bar_size.y * 0.5)
+	meter.add_child(marker)
+
+	# "Press Z", same look as the hint at the start of the transition
+	var prompt := Label.new()
+	prompt.text = finale_prompt_text
+	prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	prompt.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	prompt.add_theme_font_size_override("font_size", dash_hint_font_size)
+	prompt.add_theme_color_override("font_color", dash_hint_color)
+	if dash_hint_font:
+		prompt.add_theme_font_override("font", dash_hint_font)
+	prompt.size = Vector2(400.0, 50.0)
+	prompt.position = Vector2(-200.0, bar_size.y * 0.5 + 12.0)
+	meter.add_child(prompt)
+
+	# Fades in, then the marker starts
+	var fade := meter.create_tween()
+	fade.tween_property(meter, "modulate:a", 1.0, maxf(finale_meter_fade, 0.01))
+	await fade.finished
+	if not _finale_alive():
+		return 0.0
+
+	var total := maxf(finale_marker_time, 0.1) * 2.0 # left edge -> centre -> right edge
+	var elapsed := 0.0
+	var closeness := 0.0
+	while elapsed < total:
+		await get_tree().process_frame
+		if not is_inside_tree():
+			return 0.0
+		elapsed += get_process_delta_time()
+		var t := minf(elapsed / total, 1.0)
+		marker.position.x = lerpf(x_left, x_right, t) - mw * 0.5
+		if Input.is_action_just_pressed(heart_action_charge):
+			closeness = 1.0 - absf(2.0 * t - 1.0)
+			break
+
+	# The marker stops, flashes, and the meter goes away after a moment
+	_play_heart_sfx(finale_press_sound)
+	marker.color = Color(1.0, 0.9, 0.3)
+	var pf := prompt.create_tween()
+	pf.tween_property(prompt, "modulate:a", 0.0, 0.2)
+	await get_tree().create_timer(finale_result_hold).timeout
+	if is_instance_valid(meter):
+		var out := meter.create_tween()
+		out.tween_property(meter, "modulate:a", 0.0, 0.25)
+		out.tween_callback(meter.queue_free)
+	return closeness
+
+
+# Thin streaks that rush across the screen from the right: it looks like the camera is following Flowery.
+func _update_speed_lines(delta: float) -> void:
+	if not _speed_lines_on or _heart_layer == null or not is_instance_valid(_heart_layer):
+		return
+	_lines_timer -= delta
+	if _lines_timer > 0.0:
+		return
+	_lines_timer = 0.03
+	var rect := _screen_rect()
+	var line := ColorRect.new()
+	line.color = finale_line_color
+	line.color.a = finale_line_color.a * randf_range(0.4, 1.0)
+	line.size = Vector2(randf_range(120.0, 380.0), randf_range(2.0, 5.0))
+	line.position = Vector2(rect.end.x + 20.0, randf_range(0.0, rect.size.y))
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_heart_layer.add_child(line)
+	_heart_layer.move_child(line, 0) # behind everything else on the layer
+	var tw := line.create_tween()
+	tw.tween_property(line, "position:x", -line.size.x - 20.0, randf_range(0.25, 0.5))
+	tw.tween_callback(line.queue_free)
 
 
 # Fades the pads that are on screen out (they stop bouncing the heart straight away).
@@ -2237,6 +3604,7 @@ func get_chain_speed_multiplier() -> float:
 # ---------------- TRANSITION: HEART vs ATTACKS ----------------
 # Checks every node in the group "heart_hazard" against the heart (see the HeartHazard class).
 #  - a dash (strong, or any dash if heart_weak_dash_attacks) breaks BLUE attacks and flies through them
+#    (except blue attacks that "deflect": the dash pushes the heart back and the attack flies off instead)
 #  - anything else that touches the heart hurts it (hurt_heart handles the invincibility)
 func _check_heart_hazards(pos: Vector2, ex: Vector2) -> void:
 	var half := ex * heart_hitbox_scale
@@ -2250,12 +3618,19 @@ func _check_heart_hazards(pos: Vector2, ex: Vector2) -> void:
 		if not r.intersects(heart_rect):
 			continue
 		if attacking and h.get("blue") == true:
-			_break_hazard(h, r)
+			if h.get("deflects") == true:
+				_deflect_ricochet(h)
+			else:
+				_break_hazard(h, r)
 		elif not (_dashing and heart_dash_invulnerable):
 			hurt_heart()
 
 
 func _break_hazard(h: Node, r: Rect2) -> void:
+	# Breaking ANY blue attack gives the shared reward (General > Rewards), exactly like picking up a ring.
+	# The only exception is a lilypad (they are blue too, but bouncing on one is not breaking it).
+	if not (h is HeartLilypad):
+		_grant_break_reward()
 	var p := CPUParticles2D.new()
 	_heart_layer.add_child(p)
 	p.position = r.get_center()
@@ -2312,14 +3687,17 @@ func _dismiss_dash_hint() -> void:
 
 # Call this from anything that should hurt the heart (walls, bullets...).
 # Every player character gets hurt, then the heart is invincible for a moment.
+# Nothing can hurt it once the finale's lunge has started.
 func hurt_heart() -> void:
-	if not _heart_active or _heart_iframes > 0.0 or _hopping:
+	if not _heart_active or _heart_iframes > 0.0 or _hopping or _finale_started:
 		return
 	if _dashing and heart_dash_invulnerable:
 		return
 	_heart_iframes = heart_iframes_time
 	for p in BossTargets.everyone(get_tree()):
-		_hurt_player(p)
+		if not _hurt_player(p):
+			push_warning("Flowery: hurt_heart() could not hurt %s (no hurt() method on it or its parents)" % p)
+	_let_hurt_sound_through()
 
 
 # A fading yellow copy left behind while dashing.
@@ -2337,19 +3715,66 @@ func _spawn_heart_afterimage() -> void:
 
 
 # Pauses the real players so they can't walk off or get hurt behind the black screen.
+# The players are NOT disabled (a disabled player can't take damage properly: its hurt() logic needs to run).
+# They keep processing, but can't be steered (input off) and are held at their position every frame.
 func _freeze_players() -> void:
 	for p in BossTargets.everyone(get_tree()):
-		if p is Node and is_instance_valid(p):
-			_frozen_players.append([p, p.process_mode])
-			p.process_mode = Node.PROCESS_MODE_DISABLED
+		if p is Node2D and is_instance_valid(p):
+			_pinned[p] = p.global_position
+			p.set_process_input(false)
+			p.set_process_unhandled_input(false)
+			p.set_process_unhandled_key_input(false)
+	_mute_player_audio()
+
+
+# The players keep running behind the black screen (so they can be hurt), which would play their footsteps
+# and other sounds. Every audio player inside them is silenced; hurt_heart() lets their sounds through
+# for a moment so the hurt sound still plays.
+func _mute_player_audio() -> void:
+	for p in _pinned.keys():
+		if not is_instance_valid(p):
+			continue
+		for a in p.find_children("*", "", true, false):
+			if (a is AudioStreamPlayer or a is AudioStreamPlayer2D or a is AudioStreamPlayer3D) and not _muted_audio.has(a):
+				_muted_audio[a] = a.volume_db
+	_apply_player_mute(true)
+
+
+func _apply_player_mute(muted: bool) -> void:
+	for a in _muted_audio.keys():
+		if is_instance_valid(a):
+			a.volume_db = -80.0 if muted else _muted_audio[a]
+
+
+func _let_hurt_sound_through() -> void:
+	_hurt_audio_token += 1
+	var mine := _hurt_audio_token
+	_apply_player_mute(false)
+	await get_tree().create_timer(heart_hurt_sound_window).timeout
+	if mine == _hurt_audio_token: # not extended by a newer hurt
+		_apply_player_mute(true)
+
+
+func _hold_players() -> void:
+	for p in _pinned.keys():
+		if not is_instance_valid(p):
+			_pinned.erase(p)
+			continue
+		p.global_position = _pinned[p]
+		if p is CharacterBody2D:
+			p.velocity = Vector2.ZERO
 
 
 # Not called anywhere yet: use it when the transition ends and the players get control back.
 func _unfreeze_players() -> void:
-	for entry in _frozen_players:
-		if is_instance_valid(entry[0]):
-			entry[0].process_mode = entry[1]
-	_frozen_players.clear()
+	_apply_player_mute(false)
+	_muted_audio.clear()
+	for p in _pinned.keys():
+		if is_instance_valid(p):
+			p.set_process_input(true)
+			p.set_process_unhandled_input(true)
+			p.set_process_unhandled_key_input(true)
+	_pinned.clear()
 
 
 # ---------------- DEATH ----------------
